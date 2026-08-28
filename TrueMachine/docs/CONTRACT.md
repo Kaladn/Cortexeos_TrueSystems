@@ -1,0 +1,60 @@
+# TrueMachine contract
+
+## Time
+
+`pulse_index` and locked `cadence_ns` are timeline truth. This follows the
+TrueVision rule that frame index and FPS are the clock and the TrueAudio rule
+that frame index and sample windows determine time. One `Clock.sample()` call
+adds wall-clock provenance to a pulse; wall time is not replay timeline truth.
+
+- `utc`: fixed-width UTC `YYYY-MM-DDTHH:MM:SS.NNNNNNNNNZ`
+- `utc_date`: UTC `YYYY-MM-DD`
+- `unix_time_ns`: signed integer nanoseconds since the Unix epoch
+- `monotonic_ns`: Linux monotonic-clock nanoseconds used for ordering
+- `elapsed_ns`: monotonic nanoseconds since this engine run began
+- `clock_offset_ns`: observed wall-clock difference from the run's monotonic
+  projection; this exposes clock adjustment rather than hiding it
+- `boot_id`: Linux kernel boot identity
+- `run_id`: identity of one engine invocation
+- `sequence`: contiguous pulse order within the run
+- `timeline_ns`: exactly `(sequence - 1) * cadence_ns`
+- `cadence_ns`: immutable cadence for the engine run
+
+`utc` and `utc_date` are rendered from the same `unix_time_ns`; they are never
+sampled independently. Wall-clock changes do not affect monotonic ordering.
+
+## Fusion Packs
+
+Each pulse contains the timestamp plus all collector observations from that
+sampling boundary. Collectors report either `ok` with data or `error` with an
+explicit error. Missing evidence is never replaced with invented values.
+
+The durable order is:
+
+1. serialize one canonical Fusion Pack;
+2. append and `fsync` its envelope to `fusion.wal.jsonl`;
+3. atomically publish `packs/<run_id>/<sequence>.fusion.json`;
+4. atomically update `current.fusion.json`.
+
+The WAL envelope carries the SHA-256 of the exact canonical pack bytes.
+Verification recalculates every hash and checks run sequence continuity.
+
+Every observation also carries its source-owned schema, stable content hash,
+and source coordinates. TrueVision, TrueAudio, AWRAG, and AWEAR state artifacts
+remain owned by those systems; TrueMachine admits their hashes and coordinates
+without rewriting their facts. Canonical JSON uses sorted keys and compact
+separators so identical admitted state produces identical hashes.
+
+## Boundaries
+
+Plugin Runner and TrueVision may later submit observations through the same
+engine intake. Neither is simulated here. TrueVision source truth must remain
+native state artifacts, never raw pixels, images, or video.
+
+The system order is locked:
+
+`TrueVision + TrueAudio + Linux state -> TrueMachine/CompuCog -> SecureCore`
+
+TrueMachine is the cognition and Fusion Pack authority. SecureCore is a
+downstream security consumer. SecureCore cannot own or rewrite capture,
+timestamps, admitted state, fusion, or cognition.

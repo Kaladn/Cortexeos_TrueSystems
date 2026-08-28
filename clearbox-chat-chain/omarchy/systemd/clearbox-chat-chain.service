@@ -1,0 +1,13 @@
+[Unit]
+Description=Clearbox Chat-Chain local API
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python -m clearbox_chat_chain.server --host 127.0.0.1 --port 3219 --database /home/lamercey/.local/state/clearbox-chat-chain/chat-chain.sqlite3
+Restart=on-failure
+RestartSec=2
+Environment=PYTHONPATH=/home/lamercey/clearbox-chat-chain/src
+
+[Install]
+WantedBy=default.target

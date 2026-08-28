@@ -1,0 +1,1 @@
+"""Action registry tests."""

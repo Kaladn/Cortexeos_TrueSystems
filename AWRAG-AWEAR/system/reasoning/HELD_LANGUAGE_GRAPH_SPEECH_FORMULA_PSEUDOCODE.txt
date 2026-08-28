@@ -1,0 +1,217 @@
+HELD PSEUDOCODE - LANGUAGE GRAPH SPEECH FORMULA
+
+Status:
+  HOLD ONLY.
+  Do not implement until explicitly approved.
+  Do not promote into AWEAR runtime behavior from this file.
+  Superseded for design purposes by:
+    HELD_LANGUAGE_GRAPH_SPEECH_FORMULA_ALIGNMENT_V2.txt
+
+Purpose:
+  Capture the language-graph / rear-watch formula idea for later review.
+  This is for outside formula thinking and future AWEAR-native reduction.
+
+Boundary:
+  Search remains locked.
+  Checkers and verifiers remain separate.
+  Speech remains preserved.
+  No answer-key logic.
+  No benchmark-specific recovery.
+  No Q-specific anchor ordering.
+  No ranking mutation.
+  No runtime mutation.
+
+Core idea:
+  AWEAR should not simply choose the first TopK result or walk TopK linearly.
+  It should build a language graph from gathered evidence, then choose anchors
+  that fill a pressure formation while watching what has already been written.
+
+
+INPUT:
+  question
+  evidence_packet
+  topK_passages
+  max_anchor_pool = 10
+
+OUTPUT:
+  speech_answer
+  evidence_trace
+  pressure_receipt
+
+
+function build_speech_from_evidence(question, evidence_packet):
+
+  QUESTION_FRAME = classify_question_anchors(question)
+
+  ANCHOR_GRAPH = build_anchor_graph(
+    nodes = anchors from topK passages,
+    edges = {
+      same_citation,
+      nearby_coordinate,
+      same_sentence,
+      same_rule_family,
+      actor_modal_action_object_relation,
+      contradiction_relation,
+      condition_relation,
+      exception_relation
+    }
+  )
+
+  REQUIRED_FORMATION = infer_required_pressure_formation(QUESTION_FRAME)
+
+  WRITTEN_BUFFER = []
+  EVIDENCE_COMMITMENTS = []
+  REJECTED_CHOICES = []
+
+  while REQUIRED_FORMATION.has_open_slots():
+
+    OPEN_SLOT = REQUIRED_FORMATION.next_open_slot(
+      written_buffer = WRITTEN_BUFFER,
+      evidence_commitments = EVIDENCE_COMMITMENTS
+    )
+
+    CANDIDATE_ANCHORS = select_topK_anchor_candidates(
+      graph = ANCHOR_GRAPH,
+      open_slot = OPEN_SLOT,
+      limit = 10
+    )
+
+    SCORED = []
+
+    for anchor in CANDIDATE_ANCHORS:
+
+      projected_buffer = WRITTEN_BUFFER + [anchor]
+
+      score = (
+          slot_fit_score(anchor, OPEN_SLOT, REQUIRED_FORMATION)
+        + source_span_strength(anchor)
+        + citation_pressure(anchor, EVIDENCE_COMMITMENTS)
+        + local_graph_pressure(anchor, ANCHOR_GRAPH)
+        + bridge_pressure(anchor, WRITTEN_BUFFER, QUESTION_FRAME)
+        - contradiction_penalty(anchor, WRITTEN_BUFFER)
+        - modal_conflict_penalty(anchor, WRITTEN_BUFFER)
+        - duplication_penalty(anchor, WRITTEN_BUFFER)
+        - unresolved_gap_penalty(anchor, REQUIRED_FORMATION)
+      )
+
+      rear_watch = verify_projection(
+        projected_buffer,
+        REQUIRED_FORMATION,
+        QUESTION_FRAME
+      )
+
+      if rear_watch.breaks_formation:
+        REJECTED_CHOICES.append({
+          anchor,
+          reason: rear_watch.reason,
+          score
+        })
+        continue
+
+      SCORED.append({
+        anchor,
+        score,
+        rear_watch
+      })
+
+    BEST = choose_highest_safe_score(SCORED)
+
+    if BEST is null:
+      REQUIRED_FORMATION.mark_slot_unresolved(OPEN_SLOT)
+      continue
+
+    WRITTEN_BUFFER.append(BEST.anchor)
+
+    EVIDENCE_COMMITMENTS.append({
+      slot: OPEN_SLOT,
+      anchor: BEST.anchor,
+      citation: BEST.anchor.citation,
+      quote: BEST.anchor.source_quote,
+      score: BEST.score,
+      rear_watch: BEST.rear_watch
+    })
+
+    REQUIRED_FORMATION.close_or_update_slot(OPEN_SLOT, BEST.anchor)
+
+  SPEECH_PLAN = build_speech_plan(
+    question_frame = QUESTION_FRAME,
+    commitments = EVIDENCE_COMMITMENTS,
+    unresolved_slots = REQUIRED_FORMATION.unresolved_slots,
+    rejected_choices = REJECTED_CHOICES
+  )
+
+  speech_answer = render_speech_from_plan(SPEECH_PLAN)
+
+  return {
+    speech_answer,
+    evidence_trace: EVIDENCE_COMMITMENTS,
+    pressure_receipt: {
+      required_formation: REQUIRED_FORMATION,
+      written_buffer: WRITTEN_BUFFER,
+      rejected_choices: REJECTED_CHOICES,
+      unresolved_slots: REQUIRED_FORMATION.unresolved_slots,
+      no_answer_key_used: true,
+      no_ranking_mutation: true
+    }
+  }
+
+
+CORE FORMULA SHAPE:
+
+anchor_score =
+    slot_fit_score
+  + source_span_strength
+  + citation_pressure
+  + local_graph_pressure
+  + bridge_pressure
+  - contradiction_penalty
+  - modal_conflict_penalty
+  - duplication_penalty
+  - unresolved_gap_penalty
+
+
+REAR-WATCH RULE:
+
+function verify_projection(projected_buffer, formation, question_frame):
+
+  if projected_buffer changes may into must:
+    return breaks("modal drift")
+
+  if projected_buffer swaps actor without explicit normalization:
+    return breaks("actor drift")
+
+  if projected_buffer answers a different legal object:
+    return breaks("object drift")
+
+  if projected_buffer skips required condition:
+    return warning("condition gap")
+
+  if projected_buffer has citation but no passage support:
+    return breaks("citation without support")
+
+  return safe
+
+
+PIPELINE SHAPE:
+
+TopK passages
+  -> anchor graph
+  -> TopK anchor candidates
+  -> pressure formation
+  -> rear-watch projection
+  -> committed evidence buffer
+  -> speech from committed evidence
+
+
+NOT THIS:
+
+take passage 1
+then passage 2
+then passage 3
+
+
+THIS:
+
+for each needed meaning-slot,
+choose the strongest safe anchor from the graph,
+while watching what has already been written.

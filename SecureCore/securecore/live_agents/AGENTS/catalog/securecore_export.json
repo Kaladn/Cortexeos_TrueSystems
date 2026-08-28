@@ -1,0 +1,135 @@
+{
+  "agents": [
+    {
+      "id": "recovered_security_snapshot",
+      "name": "check-connections-enhanced.ps1",
+      "category": "security",
+      "tier": "standalone",
+      "entry_point": "check-connections-enhanced.ps1",
+      "definition": "[script] report-only Windows security evidence snapshot",
+      "source_file": "AGENTS/recovered-security/check-connections-enhanced.ps1",
+      "risk": {
+        "score": 3,
+        "type": "filesystem",
+        "reason": "writes timestamped evidence files",
+        "confirmation": true,
+        "sandbox": false
+      },
+      "contract": {
+        "input": "OutDir:str",
+        "output": "case_dir:path",
+        "assumptions_in": "Windows host with PowerShell NetSecurity cmdlets; operator selects output directory",
+        "assumptions_out": "Creates timestamped evidence folder and CSV/TXT forensic snapshot",
+        "side_effects": "disk|logging",
+        "dependencies": "powershell|netsecurity|cim",
+        "statefulness": "STATELESS",
+        "sync_mode": "SYNC"
+      }
+    },
+    {
+      "id": "recovered_security_firewall_enforcer",
+      "name": "check-connections-enhanced.ps1",
+      "category": "security",
+      "tier": "standalone",
+      "entry_point": "check-connections-enhanced.ps1",
+      "definition": "[script] optional firewall enforcement for Egypt IP and Meta ranges",
+      "source_file": "AGENTS/recovered-security/check-connections-enhanced.ps1",
+      "risk": {
+        "score": 4,
+        "type": "network_control",
+        "reason": "adds Windows Firewall rules and writes evidence files",
+        "confirmation": true,
+        "sandbox": true
+      },
+      "contract": {
+        "input": "OutDir:str|BlockEgyptIP:bool|BlockMeta:bool",
+        "output": "case_dir:path|firewall_rules:state",
+        "assumptions_in": "Windows host with administrator rights; human explicitly approves firewall changes",
+        "assumptions_out": "Creates evidence snapshot and may add outbound firewall block rules",
+        "side_effects": "disk|subprocess|firewall_mutation",
+        "dependencies": "powershell|netsh|netsecurity",
+        "statefulness": "STATEFUL",
+        "sync_mode": "SYNC"
+      }
+    },
+    {
+      "id": "temporal_causality_log_checker",
+      "name": "temporal_causality_log_checker.py",
+      "category": "audit",
+      "tier": "operator",
+      "entry_point": "temporal_causality_log_checker.py",
+      "definition": "[agent] read-only temporal causality and log integrity verifier",
+      "source_file": "AGENTS/temporal-causality/temporal_causality_log_checker.py",
+      "risk": {
+        "score": 1,
+        "type": "audit_read",
+        "reason": "read-only log verification with optional separate diagnostic output",
+        "confirmation": false,
+        "sandbox": false
+      },
+      "contract": {
+        "input": "log_path:path|allowed_clock_skew_ms:int|focus_event_type:str",
+        "output": "diagnostic_report:json",
+        "assumptions_in": "Input log is JSONL with canonical temporal event fields; checker has read access to target log only",
+        "assumptions_out": "Reports schema timestamp sequence cursor hash payload and causal violations plus breach/error lead-up chains",
+        "side_effects": "read|stdout",
+        "dependencies": "python|json|hashlib",
+        "statefulness": "STATELESS",
+        "sync_mode": "SYNC"
+      }
+    },
+    {
+      "id": "docs_folder_to_pdf",
+      "name": "docs_folder_to_pdf.py",
+      "category": "transformers",
+      "tier": "standalone",
+      "entry_point": "docs_folder_to_pdf.py",
+      "definition": "[agent] convert docs folder to combined generated PDF artifact",
+      "source_file": "AGENTS/docs-to-pdf/docs_folder_to_pdf.py",
+      "risk": {
+        "score": 3,
+        "type": "filesystem",
+        "reason": "writes generated PDF artifact and receipts",
+        "confirmation": true,
+        "sandbox": false
+      },
+      "contract": {
+        "input": "source_folder:path|out_dir:path",
+        "output": "pdf_path:path|manifest_path:path|receipt_path:path",
+        "assumptions_in": "Source folder exists and contains Markdown TXT or image files",
+        "assumptions_out": "Creates generated PDF artifact plus metadata-only manifest and receipt",
+        "side_effects": "disk|logging",
+        "dependencies": "python|PIL",
+        "statefulness": "STATELESS",
+        "sync_mode": "SYNC"
+      }
+    },
+    {
+      "id": "winutil_plugin_inventory",
+      "name": "winutil_plugin_inventory.py",
+      "category": "audit",
+      "tier": "standalone",
+      "entry_point": "winutil_plugin_inventory.py",
+      "definition": "[agent] inventory desktop WinUtil plugin tool contracts without executing WinUtil operations",
+      "source_file": "AGENTS/winutil/winutil_plugin_inventory.py",
+      "risk": {
+        "score": 2,
+        "type": "filesystem",
+        "reason": "writes metadata-only inventory files and receipts",
+        "confirmation": true,
+        "sandbox": false
+      },
+      "contract": {
+        "input": "plugin_root:path|out_dir:path",
+        "output": "manifest_path:path|receipt_path:path",
+        "assumptions_in": "Desktop WinUtil plugin folder exists and contains Python tool definitions",
+        "assumptions_out": "Creates metadata-only inventory manifest and receipt; classifies read-only and mutation-capable WinUtil tools",
+        "side_effects": "disk|metadata_inventory",
+        "dependencies": "python|importlib|json",
+        "statefulness": "STATELESS",
+        "sync_mode": "SYNC"
+      }
+    }
+  ],
+  "count": 5
+}

@@ -1,0 +1,34 @@
+Scope,SummaryType,Name,Count
+Kept,Total,rows,2046
+Kept,Kind,data_or_config,959
+Kept,Kind,source_system,785
+Kept,Kind,document,226
+Kept,Kind,source_or_document,70
+Kept,Kind,log_file,5
+Kept,Kind,database,1
+Kept,Drive,D:,671
+Kept,Drive,G:,584
+Kept,Drive,C:,446
+Kept,Drive,E:,345
+Kept,Family,clearbox,1723
+Kept,Family,misc,235
+Kept,Family,forest_ai,88
+Removed,Total,rows,3238
+Removed,Kind,source_system,987
+Removed,Kind,document,986
+Removed,Kind,data_or_config,941
+Removed,Kind,source_or_document,233
+Removed,Kind,log_file,91
+Removed,Drive,C:,3238
+Removed,Family,misc,2908
+Removed,Family,clearbox,270
+Removed,Family,temporal_named,58
+Removed,Family,cortexos,1
+Removed,Family,compucog,1
+Removed,RemovalReason,AppData third-party app/tool artifact,1884
+Removed,RemovalReason,Codex/Claude app state and generated sessions,639
+Removed,RemovalReason,OneDrive ml_packages third-party bundle,418
+Removed,RemovalReason,ProgramData installed/system/vendor artifacts,241
+Removed,RemovalReason,Cinebench benchmark resources,52
+Removed,RemovalReason,Browser bundle folder,3
+Removed,RemovalReason,External dataset dump,1

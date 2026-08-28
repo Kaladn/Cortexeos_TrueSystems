@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "truemachine"
+version = "0.1.0"
+description = "Linux temporal machine cognition"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+truemachine = "truemachine.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

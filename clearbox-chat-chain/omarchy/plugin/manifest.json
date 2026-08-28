@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "lamercey.clearbox-chat-chain",
+  "name": "Clearbox Chat-Chain",
+  "version": "0.1.0",
+  "author": "lamercey",
+  "license": "MIT",
+  "description": "Local Clearbox Chat-Chain API status and conversation control.",
+  "kinds": ["bar-widget"],
+  "activation": "on-demand",
+  "entryPoints": {"barWidget": "BarWidget.qml"},
+  "barWidget": {
+    "displayName": "Clearbox Chat-Chain",
+    "description": "Shows backend status; right-click creates a durable conversation.",
+    "category": "AI",
+    "aliases": ["clearbox", "chat-chain"],
+    "allowMultiple": false,
+    "defaults": {"baseUrl": "http://127.0.0.1:3219", "refreshIntervalSec": 15},
+    "schema": [
+      {"key": "baseUrl", "type": "string", "label": "API base URL", "defaultValue": "http://127.0.0.1:3219"},
+      {"key": "refreshIntervalSec", "type": "integer", "label": "Refresh interval (seconds)", "min": 5, "max": 3600, "step": 5, "defaultValue": 15}
+    ]
+  }
+}
+

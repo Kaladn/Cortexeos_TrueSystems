@@ -1,0 +1,40 @@
+{
+  "agent_id": "winutil_plugin_inventory",
+  "id": "winutil_plugin_inventory",
+  "catalog_id": "winutil_plugin_inventory",
+  "name": "WinUtil Plugin Inventory",
+  "version": "1.0.0",
+  "description": "Inventories the desktop WinUtil plugin tools and classifies read-only versus mutation-capable operations without executing WinUtil actions.",
+  "runtime_language": "python",
+  "entrypoint": "AGENTS/winutil/winutil_plugin_inventory.py",
+  "entrypoint_hash": "sha256:3cfabb61699c664b3891c8f0643ab90df140e60af7b735a86cf92cf3715b5ac7",
+  "allowed_reads": [
+    "C:\\Users\\mydyi\\OneDrive\\Documents\\Desktop\\plugins\\winutil"
+  ],
+  "allowed_writes": [
+    "AGENTS/winutil/runtime"
+  ],
+  "requires_approval": true,
+  "approval_phrase": "APPROVE winutil_plugin_inventory",
+  "mutation_class": "filesystem_inventory_write",
+  "dry_run_supported": true,
+  "log_stream": "agent_decision",
+  "test_command": [
+    "python",
+    "-m",
+    "unittest",
+    "tests.live_agents.test_winutil_agent"
+  ],
+  "risk_tier": 2,
+  "prompt_only_allowed": false,
+  "required_params": [],
+  "default_out_dir": "AGENTS/winutil/runtime",
+  "command": [
+    "python",
+    "AGENTS/winutil/winutil_plugin_inventory.py",
+    "--plugin-root",
+    "C:\\Users\\mydyi\\OneDrive\\Documents\\Desktop\\plugins\\winutil",
+    "--out-dir",
+    "{out_dir}"
+  ]
+}

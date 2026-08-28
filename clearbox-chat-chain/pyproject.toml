@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "clearbox-chat-chain"
+version = "0.1.0"
+description = "Durable single-model and ordered model-chain API recovered from the Clearbox salvage contract"
+requires-python = ">=3.11"
+
+[project.scripts]
+clearbox-chat-chain = "clearbox_chat_chain.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+

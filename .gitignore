@@ -1,0 +1,12 @@
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.test-temp/
+**/runtime/
+**/State/
+**/state/
+**/output/
+**/coverage/
+**/.coverage
+**/node_modules/
+*.log

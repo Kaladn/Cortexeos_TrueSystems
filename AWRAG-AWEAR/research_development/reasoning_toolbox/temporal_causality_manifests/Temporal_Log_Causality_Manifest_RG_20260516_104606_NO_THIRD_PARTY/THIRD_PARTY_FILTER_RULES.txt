@@ -1,0 +1,25 @@
+Third-party removal pass
+
+Original manifest was left intact.
+Created:
+- TEMPORAL_SYSTEMS_DOCUMENTS_MANIFEST_NO_THIRD_PARTY.csv
+- REMOVED_THIRD_PARTY_ITEMS.csv
+- PRIORITY_REVIEW_NO_THIRD_PARTY.csv
+- NO_THIRD_PARTY_SUMMARY.csv
+
+Removed categories:
+- ProgramData installed/system/vendor artifacts
+- AppData third-party app/tool artifacts, except AppData\Local\ForestAI
+- .codex and .claude app state/session folders
+- Program Files / Windows / installed Python/package-manager dependency paths
+- node_modules, site-packages, dist-packages, vendor, third_party, external, deps
+- VS Code / Visual Studio / debugger/vendor bundles
+- browser, Docker, NVIDIA, Microsoft Store app artifacts
+- generated pull/manifest folders
+- Desktop ml_packages bundle, Cinebench resources, browser bundles, enwiki dumps
+
+Kept known local/project namespaces:
+- Clearbox / clearbox-plugins / clearbox-ai-studio / Clearbox AI Data Root
+- ForestAI / FOREST_AI_LOCAL / FOREST_AI_PRODUCTION
+- sovereign-data-engine
+- chat_citations_specs

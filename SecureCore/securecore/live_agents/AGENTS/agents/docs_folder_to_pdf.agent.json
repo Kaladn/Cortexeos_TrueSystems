@@ -1,0 +1,42 @@
+{
+  "agent_id": "docs_folder_to_pdf",
+  "id": "docs_folder_to_pdf",
+  "catalog_id": "docs_folder_to_pdf",
+  "name": "Docs Folder To PDF",
+  "version": "1.0.0",
+  "description": "Converts a documentation folder containing Markdown, TXT, and image files into a combined generated PDF artifact with metadata-only manifest and receipt.",
+  "runtime_language": "python",
+  "entrypoint": "AGENTS/docs-to-pdf/docs_folder_to_pdf.py",
+  "entrypoint_hash": "sha256:c5a3ac51a9c430437eb079c77d378cc75165429d2a90cd30bf7e07fe1bbd9bec",
+  "allowed_reads": [
+    "operator_selected_docs_folder"
+  ],
+  "allowed_writes": [
+    "AGENTS/docs-to-pdf/runtime"
+  ],
+  "requires_approval": true,
+  "approval_phrase": "APPROVE docs_folder_to_pdf",
+  "mutation_class": "generated_artifact_file_write",
+  "dry_run_supported": true,
+  "log_stream": "agent_decision",
+  "test_command": [
+    "python",
+    "-m",
+    "unittest",
+    "tests.live_agents.test_docs_folder_to_pdf_agent"
+  ],
+  "risk_tier": 2,
+  "prompt_only_allowed": false,
+  "required_params": [
+    "source_folder"
+  ],
+  "default_out_dir": "AGENTS/docs-to-pdf/runtime",
+  "command": [
+    "python",
+    "AGENTS/docs-to-pdf/docs_folder_to_pdf.py",
+    "--source-folder",
+    "{source_folder}",
+    "--out-dir",
+    "{out_dir}"
+  ]
+}

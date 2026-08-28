@@ -1,0 +1,2 @@
+F:\ unavailable: [WinError -2144272384] This drive is locked by BitLocker Drive Encryption. You must unlock this drive from Control Panel: 'F:\\'
+H:\ missing_or_unmounted

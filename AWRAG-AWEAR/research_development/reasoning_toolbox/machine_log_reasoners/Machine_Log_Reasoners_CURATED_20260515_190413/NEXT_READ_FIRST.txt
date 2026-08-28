@@ -1,0 +1,18 @@
+﻿Priority read order
+
+1. ACTIVE_ENTRYPOINTS.csv
+   Live Python scripts copied into files\active_python_entrypoints.
+
+2. PRIORITY_SHORTLIST.csv
+   Condensed list of active scripts, current Clearbox log/reason paths, machine/input/network collectors, and sensitive capture signals.
+
+3. HIGH_CONFIDENCE_CURRENTISH.csv
+   Strongest non-test/non-backup matches.
+
+4. MANIFEST.csv
+   Full curated scan with keyword evidence.
+
+Notes:
+- The scan was read/copy only; discovered scripts were not executed.
+- No Python/logger scheduled-task match was found beyond Windows compatibility tasks.
+- Startup match of interest was Ollama.lnk, not a Python logger.
