@@ -10,7 +10,7 @@ BarWidget {
 
   property bool online: false
   property int conversationCount: 0
-  readonly property string baseUrl: String(setting("baseUrl", "http://127.0.0.1:3219")).replace(/\/$/, "")
+  readonly property string baseUrl: String(setting("baseUrl", "http://127.0.0.1:3220")).replace(/\/$/, "")
   readonly property int refreshSeconds: Math.max(5, parseInt(setting("refreshIntervalSec", 15), 10) || 15)
 
   function refresh() {
@@ -90,4 +90,3 @@ BarWidget {
     }
   }
 }
-

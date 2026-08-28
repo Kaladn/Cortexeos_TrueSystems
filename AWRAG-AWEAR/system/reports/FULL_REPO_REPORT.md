@@ -105,7 +105,7 @@ system/roadmaps/EVIDENCE_CLOUD_BOIL_DOWN.md
 ## R&D Material State
 
 ```text
-research_development/reasoning_toolbox remains reference-only.
+research_reference_not_runtime/reasoning_toolbox remains reference-only.
 It is ignored/local research material unless promoted through normal docs/tests/code.
 No old engine was executed as product runtime in this pass.
 No old engine was imported into src.

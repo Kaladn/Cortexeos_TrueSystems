@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "truesystems-control-api"
+version = "0.1.0"
+description = "Local API over existing Linux TrueSystems"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+truesystems-api = "truesystems_api.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

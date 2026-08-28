@@ -1,0 +1,14 @@
+[Unit]
+Description=Linux TrueSystems local control API
+After=network.target clearbox-chat-chain.service
+
+[Service]
+Type=simple
+WorkingDirectory=/run/media/lamercey/AWRAG/linux\x20TrueSystems
+Environment="PYTHONPATH=/run/media/lamercey/AWRAG/linux TrueSystems/control-api/src"
+ExecStart=/usr/bin/python -m truesystems_api.server --host 127.0.0.1 --port 3220
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target

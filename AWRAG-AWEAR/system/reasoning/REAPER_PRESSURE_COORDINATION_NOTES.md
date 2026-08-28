@@ -11,8 +11,8 @@ not promoted core behavior
 Source references:
 
 ```text
-research_development/reasoning_toolbox/imported_reference_code/05_reaper_multi_anchor_scoring/reaper_cognitive_engine.py
-research_development/reasoning_toolbox/whole_pc_selected_references/phone_download_mtp/reaper_launcher.py
+research_reference_not_runtime/reasoning_toolbox/imported_reference_code/05_reaper_multi_anchor_scoring/reaper_cognitive_engine.py
+research_reference_not_runtime/reasoning_toolbox/whole_pc_selected_references/phone_download_mtp/reaper_launcher.py
 ```
 
 ## What REAPER Is
