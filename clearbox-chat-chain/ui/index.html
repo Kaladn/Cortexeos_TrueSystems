@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TrueSystems Chat</title>
+  <link rel="stylesheet" href="/app.css">
+</head>
+<body>
+  <main class="shell">
+    <aside class="days">
+      <div class="brand">TrueSystems Chat</div>
+      <label for="day">Calendar day</label>
+      <input id="day" type="date">
+      <button id="open-day" type="button">Open day</button>
+      <div id="day-list" class="day-list"></div>
+    </aside>
+
+    <section class="chat">
+      <header>
+        <div>
+          <h1 id="chat-title">No day selected</h1>
+          <p id="connection">Connecting…</p>
+        </div>
+        <button id="refresh" class="quiet" type="button">Refresh</button>
+      </header>
+
+      <div id="feed" class="feed" aria-live="polite"></div>
+
+      <form id="composer" class="composer">
+        <div class="route">
+          <label for="model">Identity</label>
+          <select id="model"></select>
+        </div>
+        <textarea id="message" rows="3" placeholder="Message the selected system…" required></textarea>
+        <button id="send" type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

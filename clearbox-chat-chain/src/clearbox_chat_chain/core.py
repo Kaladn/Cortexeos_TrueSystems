@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import hashlib
 import sqlite3
 import threading
 import urllib.request
@@ -31,7 +32,18 @@ PRAGMA foreign_keys=ON;
 PRAGMA journal_mode=WAL;
 CREATE TABLE IF NOT EXISTS conversations (
  id TEXT PRIMARY KEY, title TEXT NOT NULL, root_branch_id TEXT,
- created_at TEXT NOT NULL, updated_at TEXT NOT NULL, revision INTEGER NOT NULL);
+ created_at TEXT NOT NULL, updated_at TEXT NOT NULL, revision INTEGER NOT NULL,
+ calendar_day TEXT);
+CREATE TABLE IF NOT EXISTS identities (
+ id TEXT PRIMARY KEY, kind TEXT NOT NULL, provider TEXT NOT NULL,
+ model TEXT NOT NULL, display_name TEXT NOT NULL, configuration_hash TEXT NOT NULL,
+ created_at TEXT NOT NULL);
+CREATE TABLE IF NOT EXISTS message_identities (
+ message_id TEXT PRIMARY KEY, identity_id TEXT NOT NULL,
+ FOREIGN KEY(message_id) REFERENCES messages(id), FOREIGN KEY(identity_id) REFERENCES identities(id));
+CREATE TABLE IF NOT EXISTS output_identities (
+ output_id TEXT PRIMARY KEY, identity_id TEXT NOT NULL,
+ FOREIGN KEY(output_id) REFERENCES model_outputs(id), FOREIGN KEY(identity_id) REFERENCES identities(id));
 CREATE TABLE IF NOT EXISTS branches (
  id TEXT PRIMARY KEY, conversation_id TEXT NOT NULL, parent_branch_id TEXT,
  forked_from_output_id TEXT, forked_from_message_id TEXT, kind TEXT NOT NULL,
@@ -68,7 +80,14 @@ class Repository:
         self.lock = threading.RLock()
         with self.connect() as db:
             db.executescript(SCHEMA)
+            self._migrate(db)
             db.execute("UPDATE turns SET status='accepted', revision=revision+1, updated_at=? WHERE status='running'", (now(),))
+
+    @staticmethod
+    def _migrate(db: sqlite3.Connection) -> None:
+        if "calendar_day" not in {row[1] for row in db.execute("PRAGMA table_info(conversations)")}:
+            db.execute("ALTER TABLE conversations ADD COLUMN calendar_day TEXT")
+        db.execute("CREATE UNIQUE INDEX IF NOT EXISTS conversations_calendar_day ON conversations(calendar_day) WHERE calendar_day IS NOT NULL")
 
     @contextmanager
     def connect(self):
@@ -125,6 +144,31 @@ class ChatChain:
         self.adapters[provider] = adapter
 
     @staticmethod
+    def _identity_id(kind: str, provider: str, model: str) -> str:
+        digest = hashlib.sha256(f"{kind}\x00{provider}\x00{model}".encode("utf-8")).hexdigest()[:24]
+        return f"identity.{kind}.{digest}"
+
+    def _ensure_identity(
+        self,
+        db: sqlite3.Connection,
+        *,
+        kind: str,
+        provider: str,
+        model: str,
+        display_name: str | None = None,
+    ) -> str:
+        identity_id = self._identity_id(kind, provider, model)
+        configuration = {"kind": kind, "provider": provider, "model": model}
+        configuration_hash = hashlib.sha256(
+            json.dumps(configuration, sort_keys=True).encode("utf-8")
+        ).hexdigest()
+        db.execute(
+            "INSERT OR IGNORE INTO identities(id,kind,provider,model,display_name,configuration_hash,created_at) VALUES(?,?,?,?,?,?,?)",
+            (identity_id, kind, provider, model, display_name or model or provider, configuration_hash, now()),
+        )
+        return identity_id
+
+    @staticmethod
     def _row(row: sqlite3.Row | None) -> dict[str, Any] | None:
         return dict(row) if row else None
 
@@ -152,13 +196,34 @@ class ChatChain:
             raise ChatChainError(409, "idempotency_conflict", "key was used for another command")
         return json.loads(row["result_json"]) if row else None
 
-    def create_conversation(self, title: str | None = None) -> dict[str, Any]:
+    def create_conversation(self, title: str | None = None, calendar_day: str | None = None) -> dict[str, Any]:
         cid, bid, stamp = uid(), uid(), now()
         with self.repo.lock, self.repo.connect() as db:
-            db.execute("INSERT INTO conversations VALUES(?,?,?,?,?,?)", (cid, title or "New conversation", bid, stamp, stamp, 0))
+            db.execute(
+                "INSERT INTO conversations(id,title,root_branch_id,created_at,updated_at,revision,calendar_day) VALUES(?,?,?,?,?,?,?)",
+                (cid, title or "New conversation", bid, stamp, stamp, 0, calendar_day),
+            )
             db.execute("INSERT INTO branches VALUES(?,?,?,?,?,?,?,?)", (bid, cid, None, None, None, "main", stamp, 0))
             self._event(db, "ConversationCreated", {"conversation_id": cid, "branch_id": bid})
         return self.get_conversation(cid)
+
+    def get_or_create_day(self, calendar_day: str) -> dict[str, Any]:
+        try:
+            datetime.strptime(calendar_day, "%Y-%m-%d")
+        except (TypeError, ValueError) as exc:
+            raise ChatChainError(400, "invalid_calendar_day", "calendar_day must be YYYY-MM-DD") from exc
+        with self.repo.connect() as db:
+            row = db.execute("SELECT id FROM conversations WHERE calendar_day=?", (calendar_day,)).fetchone()
+        if row:
+            return self.get_conversation(row["id"])
+        try:
+            return self.create_conversation(calendar_day, calendar_day=calendar_day)
+        except sqlite3.IntegrityError:
+            with self.repo.connect() as db:
+                row = db.execute("SELECT id FROM conversations WHERE calendar_day=?", (calendar_day,)).fetchone()
+            if not row:
+                raise
+            return self.get_conversation(row["id"])
 
     def send_turn(self, conversation_id: str, data: dict[str, Any]) -> dict[str, Any]:
         plan = self._plan(data.get("plan"))
@@ -176,7 +241,9 @@ class ChatChain:
                 raise ChatChainError(409, "revision_conflict", "branch revision changed")
             parent = db.execute("SELECT id FROM messages WHERE branch_id=? ORDER BY created_at DESC,rowid DESC LIMIT 1", (branch["id"],)).fetchone()
             mid, tid = uid(), uid()
+            operator_id = self._ensure_identity(db, kind="human", provider="local", model="operator", display_name="Operator")
             db.execute("INSERT INTO messages VALUES(?,?,?,?,?,?,?)", (mid, conversation_id, branch["id"], parent["id"] if parent else None, "user", content, stamp))
+            db.execute("INSERT INTO message_identities VALUES(?,?)", (mid, operator_id))
             db.execute("INSERT INTO turns VALUES(?,?,?,?,?,'accepted',0,NULL,NULL,0,?,?,0)", (tid, conversation_id, branch["id"], mid, json.dumps(plan), stamp, stamp))
             revision = branch["revision"] + 1
             db.execute("UPDATE branches SET revision=? WHERE id=?", (revision, branch["id"]))
@@ -195,9 +262,14 @@ class ChatChain:
             if not source: raise ChatChainError(404, "output_not_found", "completed output not found")
             bid, seed, mid, tid = uid(), uid(), uid(), uid()
             db.execute("INSERT INTO branches VALUES(?,?,?,?,?,?,?,0)", (bid, source["conversation_id"], source["branch_id"], output_id, None, "continue", stamp))
+            source_link = db.execute("SELECT identity_id FROM output_identities WHERE output_id=?", (source["id"],)).fetchone()
+            source_identity = source_link["identity_id"] if source_link else self._ensure_identity(db, kind="model", provider=source["provider"], model=source["model"])
             db.execute("INSERT INTO messages VALUES(?,?,?,?,?,?,?)", (seed, source["conversation_id"], bid, source["user_message_id"], "assistant", source["content"], stamp))
+            db.execute("INSERT INTO message_identities VALUES(?,?)", (seed, source_identity))
             instruction = data.get("additional_instruction") or "Continue from this output without repeating completed material."
+            operator_id = self._ensure_identity(db, kind="human", provider="local", model="operator", display_name="Operator")
             db.execute("INSERT INTO messages VALUES(?,?,?,?,?,?,?)", (mid, source["conversation_id"], bid, seed, "user", instruction, stamp))
+            db.execute("INSERT INTO message_identities VALUES(?,?)", (mid, operator_id))
             db.execute("INSERT INTO turns VALUES(?,?,?,?,?,'accepted',0,NULL,NULL,0,?,?,0)", (tid, source["conversation_id"], bid, mid, json.dumps(plan), stamp, stamp))
             result = {"branch_id": bid, "turn_id": tid}
             db.execute("INSERT INTO idempotency_keys VALUES(?,?,?,?)", (key, "continue_output", json.dumps(result), stamp))
@@ -216,7 +288,9 @@ class ChatChain:
             if not source: raise ChatChainError(404, "message_not_found", "message not found")
             bid, mid, tid = uid(), uid(), uid()
             db.execute("INSERT INTO branches VALUES(?,?,?,?,?,?,?,0)", (bid, source["conversation_id"], source["branch_id"], None, message_id, "branch", stamp))
+            operator_id = self._ensure_identity(db, kind="human", provider="local", model="operator", display_name="Operator")
             db.execute("INSERT INTO messages VALUES(?,?,?,?,?,?,?)", (mid, source["conversation_id"], bid, message_id, "user", content, stamp))
+            db.execute("INSERT INTO message_identities VALUES(?,?)", (mid, operator_id))
             db.execute("INSERT INTO turns VALUES(?,?,?,?,?,'accepted',0,NULL,NULL,0,?,?,0)", (tid, source["conversation_id"], bid, mid, json.dumps(plan), stamp, stamp))
             result = {"branch_id": bid, "turn_id": tid}
             db.execute("INSERT INTO idempotency_keys VALUES(?,?,?,?)", (key, "branch_message", json.dumps(result), stamp))
@@ -259,7 +333,13 @@ class ChatChain:
                     if item["id"] == fork_id: break
                 parent = clipped
         else: parent = []
-        own = [dict(r) for r in db.execute("SELECT * FROM messages WHERE branch_id=? ORDER BY created_at,rowid", (branch_id,))]
+        own = [dict(r) for r in db.execute(
+            "SELECT m.*,i.kind AS identity_kind,i.provider AS identity_provider,i.model AS identity_model,i.display_name AS identity_display_name, "
+            "(SELECT o.id FROM turns t JOIN model_outputs o ON o.turn_id=t.id WHERE t.final_assistant_message_id=m.id ORDER BY o.ordinal DESC LIMIT 1) AS model_output_id "
+            "FROM messages m LEFT JOIN message_identities mi ON mi.message_id=m.id LEFT JOIN identities i ON i.id=mi.identity_id "
+            "WHERE m.branch_id=? ORDER BY m.created_at,m.rowid",
+            (branch_id,),
+        )]
         return parent + own
 
     def execute_turn(self, turn_id: str) -> None:
@@ -287,11 +367,16 @@ class ChatChain:
                 try: content = adapter(seat["model"], context)
                 except Exception as exc:
                     with self.repo.lock, self.repo.connect() as db:
-                        db.execute("INSERT OR REPLACE INTO model_outputs VALUES(?,?,?,?,?,'','failed',?,?)", (uid(), turn_id, ordinal, seat["provider"], seat["model"], str(exc), now()))
+                        identity_id = self._ensure_identity(db, kind="model", provider=seat["provider"], model=seat["model"])
+                        failed_id = uid()
+                        db.execute("INSERT OR REPLACE INTO model_outputs VALUES(?,?,?,?,?,'','failed',?,?)", (failed_id, turn_id, ordinal, seat["provider"], seat["model"], str(exc), now()))
+                        db.execute("INSERT OR REPLACE INTO output_identities VALUES(?,?)", (failed_id, identity_id))
                     raise
                 with self.repo.lock, self.repo.connect() as db:
                     oid = uid()
+                    identity_id = self._ensure_identity(db, kind="model", provider=seat["provider"], model=seat["model"])
                     db.execute("INSERT INTO model_outputs VALUES(?,?,?,?,?,?, 'completed',NULL,?)", (oid, turn_id, ordinal, seat["provider"], seat["model"], content, now()))
+                    db.execute("INSERT INTO output_identities VALUES(?,?)", (oid, identity_id))
                     db.execute("UPDATE turns SET current_step=?,revision=revision+1,updated_at=? WHERE id=?", (ordinal + 1, now(), turn_id))
                     self._event(db, "ModelOutputCompleted", {"turn_id": turn_id, "output_id": oid, "ordinal": ordinal})
             with self.repo.lock, self.repo.connect() as db:
@@ -299,6 +384,9 @@ class ChatChain:
                 output = db.execute("SELECT * FROM model_outputs WHERE turn_id=? AND status='completed' ORDER BY ordinal DESC LIMIT 1", (turn_id,)).fetchone()
                 mid, stamp = uid(), now()
                 db.execute("INSERT INTO messages VALUES(?,?,?,?,?,?,?)", (mid, turn["conversation_id"], turn["branch_id"], turn["user_message_id"], "assistant", output["content"], stamp))
+                output_link = db.execute("SELECT identity_id FROM output_identities WHERE output_id=?", (output["id"],)).fetchone()
+                if output_link:
+                    db.execute("INSERT INTO message_identities VALUES(?,?)", (mid, output_link["identity_id"]))
                 db.execute("UPDATE turns SET status='completed',final_assistant_message_id=?,revision=revision+1,updated_at=? WHERE id=?", (mid, stamp, turn_id))
                 self._event(db, "TurnCompleted", {"turn_id": turn_id, "assistant_message_id": mid})
         except Exception as exc:
@@ -308,6 +396,10 @@ class ChatChain:
 
     def list_conversations(self) -> list[dict[str, Any]]:
         with self.repo.connect() as db: return [dict(r) for r in db.execute("SELECT * FROM conversations ORDER BY updated_at DESC")]
+
+    def identities(self) -> list[dict[str, Any]]:
+        with self.repo.connect() as db:
+            return [dict(row) for row in db.execute("SELECT * FROM identities ORDER BY kind,display_name,id")]
 
     def get_conversation(self, conversation_id: str) -> dict[str, Any]:
         with self.repo.connect() as db:
@@ -333,7 +425,12 @@ class ChatChain:
             turn = self._row(db.execute("SELECT * FROM turns WHERE id=?", (turn_id,)).fetchone())
             if not turn: raise ChatChainError(404, "turn_not_found", "turn not found")
             turn["plan"] = json.loads(turn.pop("plan_json")); turn["cancel_requested"] = bool(turn["cancel_requested"])
-            outputs = [dict(r) for r in db.execute("SELECT * FROM model_outputs WHERE turn_id=? ORDER BY ordinal", (turn_id,))]
+            outputs = [dict(r) for r in db.execute(
+                "SELECT o.*,i.id AS identity_id,i.kind AS identity_kind,i.display_name AS identity_display_name "
+                "FROM model_outputs o LEFT JOIN output_identities oi ON oi.output_id=o.id LEFT JOIN identities i ON i.id=oi.identity_id "
+                "WHERE o.turn_id=? ORDER BY o.ordinal",
+                (turn_id,),
+            )]
         return {"turn": turn, "outputs": outputs}
 
     def models(self) -> list[dict[str, Any]]:

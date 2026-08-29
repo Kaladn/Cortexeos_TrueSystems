@@ -6,8 +6,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from .attachments import AttachmentChatChain
-from .core import ChatChainError
+from .core import ChatChain, ChatChainError
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -17,6 +16,18 @@ class Handler(BaseHTTPRequestHandler):
         body = json.dumps(value, ensure_ascii=False).encode()
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _asset(self, name: str, media_type: str) -> None:
+        path = Path(__file__).resolve().parents[2] / "ui" / name
+        if not path.is_file():
+            raise ChatChainError(404, "not_found", "surface asset not found")
+        body = path.read_bytes()
+        self.send_response(200)
+        self.send_header("Content-Type", media_type)
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
         self.end_headers()
@@ -32,20 +43,21 @@ class Handler(BaseHTTPRequestHandler):
             raise ChatChainError(400, "invalid_json", "request body must be a JSON object")
 
     @property
-    def app(self) -> AttachmentChatChain:
+    def app(self) -> ChatChain:
         return self.server.app  # type: ignore[attr-defined]
 
     def do_GET(self) -> None:
         try:
             parsed = urlparse(self.path); path = parsed.path.rstrip("/") or "/"
-            if path == "/health": result = {"status": "ok"}
+            if path == "/": return self._asset("index.html", "text/html; charset=utf-8")
+            elif path == "/app.css": return self._asset("app.css", "text/css; charset=utf-8")
+            elif path == "/app.js": return self._asset("app.js", "text/javascript; charset=utf-8")
+            elif path == "/health": result = {"status": "ok"}
             elif path == "/api/v1/models": result = self.app.models()
             elif path == "/api/v1/conversations": result = self.app.list_conversations()
+            elif path == "/api/v1/identities": result = self.app.identities()
+            elif path.startswith("/api/v1/days/"): result = self.app.get_or_create_day(path.split("/")[-1])
             elif path == "/api/v1/events": result = self.app.events(int(parse_qs(parsed.query).get("after", ["0"])[0]))
-            elif path.startswith("/api/v1/attachments/"): result = self.app.get_attachment(path.rsplit("/", 1)[1])
-            elif path.startswith("/api/v1/conversations/") and path.endswith("/attachments"):
-                conversation_id = path.split("/")[-2]
-                result = self.app.list_attachments(conversation_id, parse_qs(parsed.query).get("branch_id", [None])[0])
             elif path.startswith("/api/v1/conversations/"): result = self.app.get_conversation(path.rsplit("/", 1)[1])
             elif path.startswith("/api/v1/branches/"): result = self.app.get_branch(path.rsplit("/", 1)[1])
             elif path.startswith("/api/v1/turns/"): result = self.app.get_turn(path.rsplit("/", 1)[1])
@@ -57,9 +69,8 @@ class Handler(BaseHTTPRequestHandler):
     def do_POST(self) -> None:
         try:
             path, body = urlparse(self.path).path.rstrip("/"), self._body()
-            if path == "/api/v1/conversations": result, status = self.app.create_conversation(body.get("title")), 201
-            elif path.startswith("/api/v1/conversations/") and path.endswith("/attachments"):
-                result, status = self.app.create_attachment(path.split("/")[-2], body), 201
+            if path == "/api/v1/conversations": result, status = self.app.create_conversation(body.get("title"), body.get("calendar_day")), 201
+            elif path.startswith("/api/v1/days/"): result, status = self.app.get_or_create_day(path.split("/")[-1]), 200
             elif path.startswith("/api/v1/conversations/") and path.endswith("/turns"):
                 result, status = self.app.send_turn(path.split("/")[-2], body), 202
             elif path.startswith("/api/v1/outputs/") and path.endswith("/continue"):
@@ -79,7 +90,7 @@ class Handler(BaseHTTPRequestHandler):
 
 def serve(host: str, port: int, database: str) -> None:
     server = ThreadingHTTPServer((host, port), Handler)
-    server.app = AttachmentChatChain(database)  # type: ignore[attr-defined]
+    server.app = ChatChain(database)  # type: ignore[attr-defined]
     print(f"Clearbox Chat-Chain listening on http://{host}:{port}")
     server.serve_forever()
 

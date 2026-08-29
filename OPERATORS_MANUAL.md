@@ -140,6 +140,12 @@ It owns conversation, turn, continuation, branch, and recovery state. It does
 not contain TrueMem, TrueMachine, TrueVision, training, or a general tool system.
 Its systemd unit is deployment material, not UI.
 
+The locked daily-chat and machine-query design is defined in
+`docs/CHAT_LEXICON_BINARY_QUERY_CONTRACT.md`. One day is one logical chat;
+dataset symbols remain local; exact strings cross dataset boundaries. Automatic
+00:01 sealing and SQLite-to-TrueMem binary conversion are required but are not
+yet implemented, so operators must not claim that lifecycle is active.
+
 ## TrueCore
 
 TrueCore is a distinct localhost defensive runtime. Its current command map
