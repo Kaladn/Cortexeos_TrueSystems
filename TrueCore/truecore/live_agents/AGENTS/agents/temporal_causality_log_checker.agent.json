@@ -1,0 +1,40 @@
+{
+  "agent_id": "temporal_causality_log_checker",
+  "id": "temporal_causality_log_checker",
+  "catalog_id": "temporal_causality_log_checker",
+  "name": "Temporal Causality Log Checker",
+  "version": "1.0.0",
+  "description": "Read-only verifier for temporal coherence, causality, replay safety, hash-chain integrity, and breach/error lead-up paths in JSONL/Forge-style event logs.",
+  "runtime_language": "python",
+  "entrypoint": "AGENTS/temporal-causality/temporal_causality_log_checker.py",
+  "entrypoint_hash": "sha256:b0ffc7f72b4d2af97892d32f47b576708e81ea4f3392957761532052720b785a",
+  "allowed_reads": [
+    "AGENTS/temporal-causality",
+    "reports",
+    "runtime"
+  ],
+  "allowed_writes": [],
+  "requires_approval": false,
+  "approval_phrase": "",
+  "mutation_class": "read_only",
+  "dry_run_supported": true,
+  "log_stream": "agent_decision",
+  "test_command": [
+    "python",
+    "-m",
+    "unittest",
+    "truecore.live_agents.AGENTS.tests.test_truecore_agent_runner"
+  ],
+  "risk_tier": 1,
+  "prompt_only_allowed": false,
+  "required_params": [
+    "log_path"
+  ],
+  "default_out_dir": "AGENTS/temporal-causality/runtime",
+  "command": [
+    "python",
+    "AGENTS/temporal-causality/temporal_causality_log_checker.py",
+    "--log-path",
+    "{log_path}"
+  ]
+}

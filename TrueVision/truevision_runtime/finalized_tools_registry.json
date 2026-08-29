@@ -1,0 +1,30 @@
+{
+  "schema_version": "truevision_finalized_tools_registry_v1",
+  "policy": {
+    "finalized_tools_are_copy_only": true,
+    "direct_edits_allowed": false,
+    "promote_only_as_preset": true,
+    "promotion_requires_new_particulars": true
+  },
+  "tools": {
+    "cleveland_graffiti_state_proof": {
+      "tool_id": "cleveland_graffiti_state_proof",
+      "path": "scripts/render_cleveland_graffiti_state_proof.py",
+      "lifecycle": "finalized",
+      "edit_policy": "copy_only",
+      "copy_target_hint": "scripts/render_stem_art_state_transform_lab.py",
+      "normalized_sha256": "sha256:2753a6a8a385a522ad73a0e61af394c0ce9083a0207252123c5b6545cc6cab3c",
+      "promote_only_as_preset": true,
+      "accepts_new_particulars": [
+        "audio",
+        "stems",
+        "skyline",
+        "proof_a",
+        "proof_b",
+        "output_root",
+        "run_id",
+        "seconds"
+      ]
+    }
+  }
+}

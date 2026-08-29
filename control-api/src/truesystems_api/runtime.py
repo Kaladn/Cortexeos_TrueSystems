@@ -15,8 +15,12 @@ STATE_ROOT = Path(os.environ.get("TRUESYSTEMS_STATE_ROOT", Path.home() / ".local
 
 def install_component_paths() -> None:
     for relative in (
-        "AWRAG-AWEAR/src",
+        "TrueMem/src",
         "TrueMachine/src",
+        "TrueAudio",
+        "TrueSpeech",
+        "TrueVisionIntake",
+        "TrueVision",
         "LocalMemoryChat/src",
         "clearbox-chat-chain/src",
     ):
@@ -31,7 +35,7 @@ def system_status() -> dict[str, Any]:
         "scope": "local",
         "systems": {
             "control_api": {"ok": True, "mode": "local_python"},
-            "securecore": _http_status(os.environ.get("SECURECORE_URL", "http://127.0.0.1:5000/api/health")),
+            "truecore": _http_status(os.environ.get("TRUECORE_URL", "http://127.0.0.1:5000/api/health")),
             "chat_chain": _http_status(os.environ.get("CHAT_CHAIN_URL", "http://127.0.0.1:3219/health")),
             "truemachine": truemachine_verify(),
         },
@@ -65,9 +69,9 @@ def truemachine_pulse(body: dict[str, Any]) -> dict[str, Any]:
     return {"schema": "truesystems_truemachine_pulse@1", "state_dir": str(state_dir.resolve()), "pack": pack.to_dict()}
 
 
-def awrag_query(body: dict[str, Any]) -> dict[str, Any]:
+def truemem_query(body: dict[str, Any]) -> dict[str, Any]:
     install_component_paths()
-    from awrag.engine import query
+    from truemem.engine import query
 
     return query(
         _required(body, "runtime_root"),
@@ -77,9 +81,9 @@ def awrag_query(body: dict[str, Any]) -> dict[str, Any]:
     )
 
 
-def awrag_deeper_wider(body: dict[str, Any]) -> dict[str, Any]:
+def truemem_deeper_wider(body: dict[str, Any]) -> dict[str, Any]:
     install_component_paths()
-    from awrag.engine import deeper_wider_after_answer
+    from truemem.engine import deeper_wider_after_answer
 
     first = body.get("first_answer")
     if not isinstance(first, dict):
@@ -112,6 +116,8 @@ def chat_chain(body: dict[str, Any], operation: str) -> Any:
 
     database = Path(str(body.get("database") or Path.home() / ".local/state/clearbox-chat-chain/chat-chain.sqlite3")).expanduser()
     app = ChatChain(database)
+    from .help import chat_help
+    app.register_adapter("truesystems-help", chat_help)
     if operation == "list":
         return app.list_conversations()
     if operation == "create":

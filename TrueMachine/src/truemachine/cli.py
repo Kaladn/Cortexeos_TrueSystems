@@ -20,8 +20,8 @@ def parser() -> argparse.ArgumentParser:
     run.add_argument("--state-dir", type=Path, default=Path("state"))
     run.add_argument("--truevision-state", type=Path, action="append", default=[])
     run.add_argument("--trueaudio-state", type=Path, action="append", default=[])
-    run.add_argument("--awrag-state", type=Path, action="append", default=[])
-    run.add_argument("--awear-state", type=Path, action="append", default=[])
+    run.add_argument("--truemem-state", type=Path, action="append", default=[])
+    run.add_argument("--truemem-state", type=Path, action="append", default=[])
     verify = commands.add_parser("verify")
     verify.add_argument("--state-dir", type=Path, default=Path("state"))
     return root
@@ -38,8 +38,8 @@ def main() -> int:
     for system, paths in (
         ("truevision", args.truevision_state),
         ("trueaudio", args.trueaudio_state),
-        ("awrag", args.awrag_state),
-        ("awear", args.awear_state),
+        ("truemem", args.truemem_state),
+        ("truemem", args.truemem_state),
     ):
         collectors.extend(StateArtifactCollector(system, path) for path in paths)
     engine = TemporalEngine(

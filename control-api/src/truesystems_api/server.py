@@ -6,17 +6,19 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from typing import Any, Callable
 from urllib.parse import urlparse
 
-from .runtime import awrag_deeper_wider, awrag_query, chat_chain, memory_ask, system_status, truemachine_pulse
+from .runtime import truemem_deeper_wider, truemem_query, chat_chain, memory_ask, system_status, truemachine_pulse
+from .help import answer_help, list_topics
 
 
 OPERATIONS: dict[str, Callable[[dict[str, Any]], Any]] = {
     "/api/v1/truemachine/pulse": truemachine_pulse,
-    "/api/v1/awrag/query": awrag_query,
-    "/api/v1/awrag/deeper-wider": awrag_deeper_wider,
+    "/api/v1/truemem/query": truemem_query,
+    "/api/v1/truemem/deeper-wider": truemem_deeper_wider,
     "/api/v1/memory/ask": memory_ask,
     "/api/v1/chat/conversations": lambda body: chat_chain(body, "create"),
     "/api/v1/chat/turns": lambda body: chat_chain(body, "turn"),
     "/api/v1/chat/continue": lambda body: chat_chain(body, "continue"),
+    "/api/v1/help/query": lambda body: answer_help(str(body.get("question", "")), int(body.get("layer", 1))),
 }
 
 
@@ -28,6 +30,8 @@ class Handler(BaseHTTPRequestHandler):
         try:
             if path in {"/health", "/api/v1/systems"}:
                 self._json(200, system_status())
+            elif path == "/api/v1/help/topics":
+                self._json(200, list_topics())
             elif path == "/api/v1/chat/conversations":
                 self._json(200, chat_chain({}, "list"))
             else:

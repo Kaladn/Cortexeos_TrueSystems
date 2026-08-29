@@ -1,0 +1,43 @@
+{
+  "agent_id": "process_change",
+  "id": "process_change",
+  "catalog_id": "process_change",
+  "name": "Process Change Agent",
+  "version": "1.0.0",
+  "description": "Deterministically detects Linux process snapshot changes from authoritative TrueMachine Fusion Packs.",
+  "runtime_language": "python",
+  "entrypoint": "../agents/process_change.py",
+  "entrypoint_hash": "sha256:b6c7c44a3a07cdac057c81fd0d873134b4afd7c8c86f8831a8648cf805f88ddd",
+  "allowed_reads": [
+    "TrueMachine Fusion Pack",
+    "process_change state"
+  ],
+  "allowed_writes": [
+    "process_change state",
+    "agent_decision"
+  ],
+  "requires_approval": false,
+  "approval_phrase": "",
+  "mutation_class": "local_agent_state",
+  "dry_run_supported": true,
+  "log_stream": "agent_decision",
+  "test_command": [
+    "python",
+    "/home/lamercey/Documents/User System Test/repositories/TrueCore/tests/test_process_change_agent.py"
+  ],
+  "risk_tier": 1,
+  "prompt_only_allowed": false,
+  "required_params": [
+    "fusion_pack",
+    "state_path"
+  ],
+  "default_out_dir": "AGENTS/runtime/process_change",
+  "command": [
+    "python",
+    "../agents/process_change.py",
+    "--fusion-pack",
+    "{fusion_pack}",
+    "--state-path",
+    "{state_path}"
+  ]
+}

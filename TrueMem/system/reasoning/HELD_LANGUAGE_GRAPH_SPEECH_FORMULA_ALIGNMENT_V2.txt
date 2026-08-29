@@ -1,0 +1,513 @@
+HELD PSEUDOCODE - LANGUAGE GRAPH SPEECH FORMULA ALIGNMENT V2
+
+Status:
+  HOLD ONLY.
+  Do not implement until explicitly approved.
+  This is research/design text, not product code.
+  No runtime behavior is changed by this file.
+
+Source:
+  Condensed from the SYSTEM_ALIGNMENT_CHECK pasted note.
+
+Core Alignment:
+  STATUS = PARTIALLY_ALIGNED
+
+  Keep:
+    - input restricted to admitted TopK anchor packet
+    - checker before evidence is accepted
+    - verifier before speech is released
+    - missing support becomes explicit gap
+    - source spans and citations travel with evidence
+    - no legal conclusion generated
+
+  Replace:
+    - fixed slot priority
+    - greedy select_best
+    - pair-only rear_watch
+    - text-order modal conflict rules
+    - compensating weighted scores for hard mismatches
+    - speech emission during anchor selection
+    - continuing after same open gap repeats
+    - global mutable written buffer
+    - halting on first broken formation
+    - TopK order as implicit preference
+
+System Invariants:
+  SEARCH_LOCKED = true
+  RETRIEVAL_LOCKED = true
+  TOPK_LIMIT = 10
+
+  No new search.
+  No corpus scan.
+  No expected answer.
+  No gold passage seeding.
+  No global legal rules.
+  No final legal conclusion.
+  No condition or exception reasoning in v0.
+
+  Formula score does not authorize speech.
+  Checker and verifier authorize speech.
+  Verified diagnostic speech is allowed.
+  TopK rank is last tie-breaker only.
+  Modal surface text must be preserved.
+
+Every Spoken Claim Requires:
+  - one or more admitted anchor IDs, unless it is an explicit gap
+  - exact source span provenance
+  - a verified formation
+  - a support-ledger entry
+
+V0 Formation Schemas:
+
+  RULE_REQUIREMENT_FORMATION:
+    roles:
+      actor
+      modal
+      legal_action
+      requirement_element
+      source_span
+    bindings:
+      actor_binds_modal
+      modal_binds_action
+      action_binds_requirement_element
+      all_asserted_fields_have_source_span
+
+  SCENARIO_FACT_FORMATION:
+    roles:
+      hypothetical_fact
+      scenario_actor_or_relation
+      source_span
+    bindings:
+      fact_is_marked_hypothetical
+      scenario_relation_is_source_grounded
+
+  BRIDGE_DIAGNOSTIC_FORMATION:
+    roles:
+      rule_requirement_element
+      hypothetical_fact
+      mapping_status
+    allowed_mapping_status:
+      supported
+      possible
+      unresolved
+      unsupported
+    forbidden_output:
+      final_case_answer
+      legal_outcome
+
+  MODAL_ALIGNMENT_FORMATION:
+    roles:
+      rule_modal
+      claim_modal
+      actor_scope_binding
+      action_scope_binding
+    output:
+      aligned
+      mismatched
+      unresolved
+
+  OUT_OF_SCOPE_V0:
+    if_then_application
+    unless_application
+    exception_application
+    final_element_satisfaction_decision
+    legal_conclusion
+
+Data Types:
+
+  Anchor:
+    anchor_id
+    topk_rank
+    anchor_type
+    typed_roles
+    proposition_id
+    actor
+    modal_surface
+    modal_normalized
+    action
+    object
+    requirement_element
+    scenario_fact
+    mapping_status
+    source_span
+    citation
+    origin
+    source_span_strength
+    provenance_strength
+    checker_confidence
+    metadata
+
+  RequirementNeed:
+    need_id
+    formation_schema
+    required
+    weight
+    dependency_need_ids
+    claim_scope
+    closure_threshold
+
+  GraphEdge:
+    left_anchor_id
+    right_anchor_id
+    relation_type
+    relation_score
+    hard_valid
+    checker_receipt
+
+  Formation:
+    formation_id
+    schema
+    anchor_ids
+    role_assignments
+    required_edges
+    requirement_need_ids
+    strength
+    checker_receipt
+    status
+
+  FormationState:
+    selected_anchor_ids
+    remaining_anchor_ids
+    graph_edges
+    verified_formations
+    need_coverage
+    open_need_ids
+    unresolved_conflicts
+    diagnostics
+    score_vector
+    history
+    state_signature
+
+  SpeechMove:
+    move_id
+    move_type
+    formation_ids
+    support_anchor_ids
+    dependency_move_ids
+    normalized_claim
+    allowed_surface_fields
+    citations
+    gap_code
+
+  ClaimLedgerEntry:
+    claim_id
+    normalized_claim
+    rendered_text
+    modality_surface
+    modality_normalized
+    actor_scope
+    action_scope
+    support_anchor_ids
+    support_formation_ids
+    source_spans
+    citations
+
+  SpeechState:
+    emitted_move_ids
+    remaining_move_ids
+    fragments
+    claim_ledger
+    revision_count
+    diagnostics
+    score_vector
+    state_signature
+
+Weakest-Link Formulas:
+
+  CLAMP_01(value):
+    return max(0.0, min(1.0, value))
+
+  ANCHOR_GROUNDING(anchor):
+    return min(
+      CLAMP_01(anchor.source_span_strength),
+      CLAMP_01(anchor.provenance_strength),
+      CLAMP_01(anchor.checker_confidence)
+    )
+
+  ROLE_FIT(anchor, required_role):
+    typed_match = TYPED_ROLE_MATCHER.score(anchor.typed_roles, required_role)
+    scope_match = SCOPE_MATCHER.score(anchor, required_role)
+    return min(ANCHOR_GROUNDING(anchor), typed_match, scope_match)
+
+  EDGE_BINDING_SCORE(left_anchor, right_anchor, relation_type):
+    relation = LOCKED_PAIR_CHECKER.inspect(left_anchor, right_anchor, relation_type)
+    if relation.hard_valid == false:
+      return 0.0
+    return CLAMP_01(relation.binding_score)
+
+  FORMATION_ROLE_COVERAGE(formation):
+    For each required role, find the best ROLE_FIT among formation anchors.
+    Return the minimum required-role score.
+
+  FORMATION_BINDING_STRENGTH(formation):
+    For each required binding, find the best verified binding score.
+    Return the minimum binding score.
+
+  FORMATION_GROUNDING_STRENGTH(formation):
+    Return the minimum ANCHOR_GROUNDING score among formation anchors.
+
+  FORMATION_STRENGTH(formation):
+    return min(
+      FORMATION_ROLE_COVERAGE(formation),
+      FORMATION_BINDING_STRENGTH(formation),
+      FORMATION_GROUNDING_STRENGTH(formation)
+    )
+
+  NEED_COVERAGE(need, verified_formations):
+    Return the maximum formation strength covering this need.
+
+  NEED_IS_CLOSED(need, verified_formations):
+    return NEED_COVERAGE(need, verified_formations) >= need.closure_threshold
+
+  PRESSURE(need, state):
+    coverage_deficit = 1.0 - NEED_COVERAGE(need, state.verified_formations)
+    dependency_pressure = sum(weights of unmet dependency needs)
+    return need.weight * coverage_deficit * (1.0 + dependency_pressure)
+
+  PRESSURE_FRONTIER(requirements, state):
+    Return concurrently open needs whose dependencies are closed.
+    This is not a fixed actor -> modal -> action -> object sequence.
+
+State Score Vector:
+  Compare states lexicographically:
+
+    hard_valid
+    closed_required_count
+    required_coverage_ratio
+    bottleneck_required_coverage
+    -unresolved_conflict_count
+    -unresolved_gap_pressure
+    formation_coherence
+    -redundancy_cost
+    -selected_anchor_count
+    topk_rank_tiebreaker
+
+  Retrieval rank appears only in the final tie-breaker.
+
+Graph Construction:
+
+  BUILD_TYPED_LANGUAGE_GRAPH(admitted_topk_packet):
+    assert count(anchors) <= 10
+    assert search_locked == true
+    assert every anchor has anchor_id, citation, and source_span
+
+    nodes = normalized anchors without inference
+
+    For every unordered anchor pair, locked checker may add relations:
+      same_proposition
+      actor_binds_modal
+      modal_binds_action
+      action_binds_requirement_element
+      same_actor_scope
+      same_action_scope
+      supports_same_need
+      narrows
+      duplicates
+      conflicts_same_scope
+      independent
+
+Formation Enumeration:
+
+  ENUMERATE_FORMATIONS(selected_anchor_ids, requirements, graph):
+    For each requirement need:
+      choose relevant anchor subsets up to required role count
+      assign roles and required bindings
+      skip incomplete role or binding assignments
+      compute FORMATION_STRENGTH
+      run LOCKED_CHECKER.verify_formation
+      if pass, mark VERIFIED and attach need id
+    return deduplicated formations
+
+Formation Rear-Watch:
+
+  REAR_WATCH_FORMATION(projected_state, graph):
+    inspect the entire selected subgraph, not only the latest pair
+
+    Hard reject if any selected anchor lacks:
+      source_span
+      citation
+      positive grounding
+
+    For RULE_REQUIREMENT_FORMATION hard reject if missing:
+      actor_binds_modal
+      modal_binds_action
+      source span for asserted fields
+
+    Modal conflict is scope-based:
+      compare modality inside the same actor/action/scope
+      do not infer conflict from text order
+
+    Condition and exception reasoning remain out of scope in v0.
+
+Nonlinear Formation Walk:
+
+  SEARCH_FORMATION_GRAPH(admitted_topk_packet, requirements):
+    graph = BUILD_TYPED_LANGUAGE_GRAPH(admitted_topk_packet)
+    initial state has no selected anchors
+    open set is a priority queue ordered by STATE_SCORE_VECTOR
+    seen states store best score by state_signature
+
+    while open is not empty:
+      pop best state
+      enumerate pressure frontier
+      branch over every remaining anchor that can help any frontier need
+      project state with that anchor
+      enumerate verified formations for projected state
+      run REAR_WATCH_FORMATION over whole projected graph
+      reject hard-broken branches
+      keep unresolved gaps as diagnostics
+      push improved projected states
+
+    return ranked states
+
+Speech Moves:
+
+  COMPILE_SPEECH_MOVES(selected_state, requirements, graph):
+    Build speech moves from verified formations only.
+    Add explicit gap moves for unmet required needs.
+
+    Speech move types:
+      RULE_REQUIREMENT_STATEMENT
+      SCENARIO_FACT_STATEMENT
+      MODAL_ALIGNMENT_DIAGNOSTIC
+      BRIDGE_STATUS_DIAGNOSTIC
+      EXPLICIT_EVIDENCE_GAP
+
+    Speech moves depend on related formation moves where needed.
+
+Speech Rear-Watch:
+
+  REAR_WATCH_SPEECH(current_ledger, proposed_entry, selected_state, graph):
+    hard reject non-gap claims without anchor support
+    hard reject any field not present in allowed_surface_fields
+    hard reject unsupported modality strengthening
+    hard reject unsupported actor scope broadening
+    hard reject unsupported action scope broadening
+    soft reject duplicates
+    require revision if a new qualifier narrows a prior claim
+    run LOCKED_CHECKER.verify_projected_speech_claim
+
+Speech Score Vector:
+
+  Compare speech states lexicographically:
+
+    no_hard_speech_failures
+    dependency_completion
+    grounded_claim_count
+    citation_completeness
+    whole_ledger_consistency
+    -revision_count
+    -redundancy
+    -fragment_count
+
+Nonlinear Speech Walk:
+
+  SEARCH_SPEECH_GRAPH(selected_state, requirements, graph):
+    moves = COMPILE_SPEECH_MOVES(...)
+    initial speech state has no emitted moves or fragments
+    open set is a priority queue ordered by SPEECH_SCORE_VECTOR
+
+    while open is not empty:
+      pop best speech state
+      skip if state signature was already seen with equal or better score
+      if no remaining moves, store complete candidate
+
+      available moves are moves whose dependencies are already emitted
+
+      for each available move:
+        render with RESTRICTED_SPEECH_REALIZER
+        forbid new facts
+        forbid legal conclusion
+        build claim ledger entry
+        run REAR_WATCH_SPEECH
+        reject, revise, or branch the projected speech state
+
+    return complete candidates sorted by score vector
+
+Final Driver:
+
+  TrueMem_SPEAK_FROM_ADMITTED_TOPK(admitted_topk_packet, requirement_packet):
+    assert search_locked
+    assert retrieval_locked
+    assert count(anchors) <= 10
+    assert no expected_answer
+    assert no gold_passage
+
+    requirements = BUILD_REQUIREMENT_NEEDS(
+      allowed_schemas = V0_FORMATION_SCHEMAS,
+      condition_reasoning = false,
+      exception_reasoning = false
+    )
+
+    formation_result = SEARCH_FORMATION_GRAPH(admitted_topk_packet, requirements)
+
+    for selected_state in ranked formation states:
+      speech_candidates = SEARCH_SPEECH_GRAPH(selected_state, requirements, graph)
+
+      for speech_candidate in speech_candidates:
+        final_verification = LOCKED_VERIFIER.verify_complete_speech(
+          fragments,
+          claim_ledger,
+          selected_anchor_ids,
+          evidence_packet,
+          requirements_only = true,
+          allow_new_search = false,
+          allow_condition_reasoning = false,
+          allow_exception_reasoning = false,
+          allow_legal_conclusion = false
+        )
+
+        if final_verification passes:
+          return finalized diagnostic speech output with:
+            fragments
+            claim_ledger
+            selected_anchor_ids
+            rejected_branches
+            verified_formations
+            formation_score_vector
+            speech_score_vector
+            unresolved_gaps
+            evidence_formation_status
+            legal_conclusion = null
+            speech_rendered = true
+            search_performed = false
+
+    fallback = BUILD_VERIFIED_GAP_ONLY_SPEECH(...)
+    if fallback verification passes:
+      return gap-only diagnostic speech packet with:
+        speech_rendered = true
+        legal_conclusion = null
+        search_performed = false
+
+    return structured no-speech packet with:
+      speech_rendered = false
+      legal_conclusion = null
+      search_performed = false
+
+Final Assertions:
+  No call to search.
+  No call to retrieve.
+  No corpus scan.
+  No fixed slot priority.
+  No greedy single-path selection.
+  Every TopK anchor can be explored as a branch.
+  TopK rank appears only in final tie-breaker.
+  Rear-watch inspects whole formation graph.
+  Rear-watch inspects whole claim ledger.
+  Speech is emitted from verified formations.
+  Speech is not emitted from isolated anchors.
+  Modal conflict is scope-based, not text-order based.
+  Condition logic is not applied.
+  Exception logic is not applied.
+  Every fragment has support ledger.
+  Every non-gap fragment has source anchors.
+  Every normalized field has source provenance.
+  Formula score never overrides checker rejection.
+  Formula score never overrides verifier rejection.
+  Legal conclusion remains null.
+  Speech rendered may be true when verifier-approved.
+
+Interpretation Note:
+  "No answer generation" here means no free legal answer or benchmark answer.
+  Diagnostic speech may still be rendered from verified formations and explicit
+  gaps, because speech is an expression layer over admitted evidence.

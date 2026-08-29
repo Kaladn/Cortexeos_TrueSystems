@@ -16,7 +16,7 @@ class StateArtifactCollector:
 
     def __init__(self, system: str, path: str | Path) -> None:
         normalized = system.strip().lower()
-        if normalized not in {"truevision", "trueaudio", "awrag", "awear"}:
+        if normalized not in {"truevision", "trueaudio", "truemem", "truemem"}:
             raise ValueError(f"unsupported sibling system: {system}")
         self.path = Path(path).expanduser().resolve()
         if self.path.suffix.lower() in MEDIA_SUFFIXES:

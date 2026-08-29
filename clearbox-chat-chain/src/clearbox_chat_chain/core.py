@@ -337,8 +337,18 @@ class ChatChain:
         return {"turn": turn, "outputs": outputs}
 
     def models(self) -> list[dict[str, Any]]:
-        return [{"provider": "echo", "model": "echo", "description": "Built-in deterministic adapter"},
-                {"provider": "openai-compatible", "model": "runtime-defined", "description": "CLEARBOX_OPENAI_ENDPOINT"}]
+        models = [{"provider": "echo", "model": "echo", "description": "Built-in deterministic adapter"},
+                  {"provider": "openai-compatible", "model": "runtime-defined", "description": "CLEARBOX_OPENAI_ENDPOINT"}]
+        if "truesystems-help" in self.adapters:
+            models.extend(
+                {"provider": "truesystems-help", "model": model, "description": description}
+                for model, description in (
+                    ("quick", "Layer 1 concise code-grounded help"),
+                    ("operate", "Layer 2 operating instructions"),
+                    ("source", "Layer 3 exact source locations"),
+                )
+            )
+        return models
 
     def events(self, after: int = 0) -> list[dict[str, Any]]:
         with self.repo.connect() as db:

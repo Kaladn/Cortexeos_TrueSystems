@@ -4,7 +4,7 @@ This repository is a fresh Omarchy-native implementation of the bounded
 Clearbox Chat-Chain salvage: one chat surface with durable single-model and
 ordered-chain conversations, outputs, continuation, branching, and recovery.
 
-It is not a Clearbox 2.5 port and does not contain AWEAR/AWRAG, retrieval,
+It is not a Clearbox 2.5 port and does not contain TrueMem, retrieval,
 citations, CompuCog, TrueVision, 6-1-6, training, evidence systems, or a general
 tool framework.
 

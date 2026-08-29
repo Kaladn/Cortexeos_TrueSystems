@@ -351,7 +351,7 @@ The first implementation must prove:
 
 ## Product Boundary
 
-Local Memory Chat is not AWEAR.
+Local Memory Chat is not TrueMem.
 
 It borrows the same doctrine:
 

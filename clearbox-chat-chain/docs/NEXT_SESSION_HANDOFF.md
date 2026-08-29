@@ -7,7 +7,7 @@ scope. The next bounded implementation gap is the minimal chat surface that
 renders backend projections and submits the already-defined commands without
 owning conversation or chain state.
 
-Do not begin AWEAR/AWRAG integration, retrieval, citations, CompuCog,
+Do not begin TrueMem integration, retrieval, citations, CompuCog,
 TrueVision, 6-1-6, training, evidence systems, or a general tool framework.
 
 ## Repository

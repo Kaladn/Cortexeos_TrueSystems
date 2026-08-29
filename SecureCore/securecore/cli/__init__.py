@@ -1,1 +1,0 @@
-# securecore CLI command center

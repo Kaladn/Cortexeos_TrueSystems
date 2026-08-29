@@ -44,7 +44,7 @@
 
 ## Exclusions
 
-No Clearbox 2.5 bridge, AWEAR/AWRAG, retrieval, citations, CompuCog,
+No Clearbox 2.5 bridge, TrueMem, retrieval, citations, CompuCog,
 TrueVision, 6-1-6, training, evidence system, or general tool framework was
 admitted.
 

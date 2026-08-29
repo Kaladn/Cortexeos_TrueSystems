@@ -1,0 +1,718 @@
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import os
+import subprocess
+import sys
+from datetime import datetime, timezone
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+from typing import Any
+from urllib.parse import urlparse
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from truevision_runtime.av_tools.av_tool_registry import list_av_tools
+from truevision_runtime.av_tools.av_tool_runner import run_av_tool_call
+from truevision_runtime.studio.studio_tooling import list_render_presets, list_studio_tools
+from scripts.truevision_region_snip import build_recorder_command
+
+
+DEFAULT_STORAGE_ROOT = ROOT / "storage"
+STORAGE_ROOT_ENV = "TRUEVISION_STORAGE_ROOT"
+DEFAULT_HOST = "127.0.0.1"
+DEFAULT_PORT = 8765
+STORAGE_LANES = {
+    "inbox",
+    "outbox",
+    "events",
+    "state_chunks",
+    "artifacts",
+    "manifests",
+    "library",
+    "reports",
+    "receipts",
+    "presets",
+    "templates",
+    "tmp",
+}
+
+
+def resolve_storage_root(value: str | None = None) -> Path:
+    raw = value or os.environ.get(STORAGE_ROOT_ENV)
+    if not raw:
+        return DEFAULT_STORAGE_ROOT
+    path = Path(raw).expanduser()
+    if not path.is_absolute():
+        path = ROOT / path
+    return path.resolve()
+
+
+STORAGE_ROOT = resolve_storage_root()
+
+
+def core_runtime_status() -> dict[str, Any]:
+    return {
+        "ui_runtime": "not_installed",
+        "chat_runtime": "not_installed",
+        "memory_runtime": "not_installed",
+        "future_port": True,
+    }
+
+
+def utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
+
+
+def slug(value: str) -> str:
+    clean = "".join(char if char.isalnum() or char in {"-", "_"} else "_" for char in value.strip())
+    return clean.strip("_")[:80] or "artifact"
+
+
+def sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(chunk)
+    return "sha256:" + digest.hexdigest()
+
+
+def ensure_storage_layout(storage_root: Path = STORAGE_ROOT) -> None:
+    for lane in STORAGE_LANES:
+        path = storage_root / lane
+        path.mkdir(parents=True, exist_ok=True)
+        keep = path / ".gitkeep"
+        if not keep.exists():
+            keep.write_text("", encoding="utf-8")
+
+
+def write_json_artifact(
+    *,
+    storage_root: Path,
+    lane: str,
+    prefix: str,
+    payload: dict[str, Any],
+) -> dict[str, Any]:
+    if lane not in STORAGE_LANES:
+        raise ValueError(f"Unknown storage lane: {lane}")
+    ensure_storage_layout(storage_root)
+    now = utc_now()
+    filename = f"{now.replace(':', '').replace('.', '_')}_{slug(prefix)}.json"
+    path = storage_root / lane / filename
+    envelope = {
+        "written_at_utc": now,
+        "storage_lane": lane,
+        "payload": payload,
+    }
+    path.write_text(json.dumps(envelope, indent=2, allow_nan=False), encoding="utf-8")
+    return {
+        "name": path.name,
+        "path": str(path),
+        "lane": lane,
+        "kind": "json",
+        "size_bytes": path.stat().st_size,
+        "sha256": sha256_file(path),
+        "written_at_utc": now,
+    }
+
+
+def list_storage_files(storage_root: Path = STORAGE_ROOT) -> list[dict[str, Any]]:
+    ensure_storage_layout(storage_root)
+    files: list[dict[str, Any]] = []
+    for path in storage_root.rglob("*"):
+        if not path.is_file() or path.name == ".gitkeep":
+            continue
+        relative = path.relative_to(storage_root)
+        lane = relative.parts[0] if relative.parts else "storage"
+        files.append(
+            {
+                "name": path.name,
+                "path": str(path),
+                "relative_path": str(relative),
+                "lane": lane,
+                "kind": path.suffix.lstrip(".") or "file",
+                "size_bytes": path.stat().st_size,
+                "modified_at_utc": datetime.fromtimestamp(path.stat().st_mtime, timezone.utc)
+                .isoformat(timespec="milliseconds")
+                .replace("+00:00", "Z"),
+            }
+        )
+    return sorted(files, key=lambda item: item["modified_at_utc"], reverse=True)
+
+
+def _template_path(storage_root: Path, name: str) -> Path:
+    filename = Path(name).name
+    if not filename.endswith(".json"):
+        filename = f"{filename}.json"
+    if filename in {"", ".json"} or filename != slug(filename.removesuffix(".json")) + ".json":
+        raise ValueError("template name must be a flat safe JSON filename")
+    return storage_root / "templates" / filename
+
+
+def save_template(
+    *,
+    storage_root: Path,
+    template: dict[str, Any],
+    name: str | None = None,
+) -> dict[str, Any]:
+    ensure_storage_layout(storage_root)
+    now = utc_now()
+    template_name = str(template.get("name") or name or "truevision_template")
+    filename = name or f"{now.replace(':', '').replace('.', '_')}_{slug(template_name)}.json"
+    path = _template_path(storage_root, filename)
+    payload = {
+        "template_id": path.stem,
+        "created_at_utc": str(template.get("created_at_utc") or now),
+        "updated_at_utc": now,
+        **template,
+    }
+    path.write_text(json.dumps(payload, indent=2, allow_nan=False), encoding="utf-8")
+    return {
+        "name": path.name,
+        "path": str(path),
+        "lane": "templates",
+        "kind": "json",
+        "size_bytes": path.stat().st_size,
+        "sha256": sha256_file(path),
+        "template": payload,
+    }
+
+
+def list_templates(storage_root: Path = STORAGE_ROOT) -> list[dict[str, Any]]:
+    ensure_storage_layout(storage_root)
+    templates: list[dict[str, Any]] = []
+    for path in sorted((storage_root / "templates").glob("*.json"), key=lambda item: item.stat().st_mtime, reverse=True):
+        try:
+            template = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            template = {"name": path.stem, "read_error": "invalid_json"}
+        templates.append(
+            {
+                "name": path.name,
+                "path": str(path),
+                "lane": "templates",
+                "kind": "json",
+                "size_bytes": path.stat().st_size,
+                "modified_at_utc": datetime.fromtimestamp(path.stat().st_mtime, timezone.utc)
+                .isoformat(timespec="milliseconds")
+                .replace("+00:00", "Z"),
+                "template": template,
+            }
+        )
+    return templates
+
+
+def delete_template(*, storage_root: Path, name: str) -> dict[str, Any]:
+    ensure_storage_layout(storage_root)
+    path = _template_path(storage_root, name)
+    existed = path.exists()
+    if existed:
+        path.unlink()
+    return {
+        "name": path.name,
+        "path": str(path),
+        "lane": "templates",
+        "deleted": existed,
+    }
+
+
+def probe_media_duration(path: str) -> float | None:
+    if not path:
+        return None
+    media_path = Path(path)
+    if not media_path.exists():
+        return None
+    try:
+        result = subprocess.run(
+            [
+                "ffprobe",
+                "-v",
+                "error",
+                "-show_entries",
+                "format=duration",
+                "-of",
+                "default=noprint_wrappers=1:nokey=1",
+                str(media_path),
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        return round(float(result.stdout.strip()), 6)
+    except (subprocess.SubprocessError, ValueError):
+        return None
+
+
+def build_generation_template_from_request(request: dict[str, Any]) -> dict[str, Any]:
+    media = request.get("media") if isinstance(request.get("media"), dict) else {}
+    capture = request.get("capture_shape") if isinstance(request.get("capture_shape"), dict) else {}
+    renderer_payload = request.get("renderer") if isinstance(request.get("renderer"), dict) else {}
+    fps = int(capture.get("fps") or request.get("fps") or 30)
+    audio_path = str(media.get("audio_path") or "")
+    sync_to_audio = bool(media.get("sync_to_audio", True))
+    audio_duration = media.get("audio_duration_seconds")
+    duration_source = "manual_duration"
+    if sync_to_audio and audio_duration not in {None, ""}:
+        duration_seconds = float(audio_duration)
+        duration_source = "audio_duration"
+    elif sync_to_audio and audio_path:
+        probed = probe_media_duration(audio_path)
+        if probed:
+            duration_seconds = float(probed)
+            duration_source = "audio_probe"
+        else:
+            duration_seconds = float(capture.get("duration_seconds") or 60)
+    else:
+        duration_seconds = float(capture.get("duration_seconds") or float(capture.get("duration_minutes", 1)) * 60)
+    frame_count = max(1, int(round(duration_seconds * fps)))
+    renderer = str(renderer_payload.get("name") or request.get("renderer_name") or "state_formula")
+    return {
+        "schema_version": 1,
+        "name": str(request.get("template_name") or request.get("prompt") or "TrueVision template")[:120],
+        "renderer": renderer,
+        "prompt": str(request.get("prompt") or ""),
+        "media": {
+            "audio_path": audio_path,
+            "audio_duration_seconds": duration_seconds if duration_source.startswith("audio") else audio_duration,
+            "sync_to_audio": sync_to_audio,
+        },
+        "timeline": {
+            "duration_seconds": round(duration_seconds, 6),
+            "fps": fps,
+            "frame_count": frame_count,
+            "start_seconds": 0,
+            "end_seconds": round(duration_seconds, 6),
+        },
+        "time_distance": {
+            "source": duration_source,
+            "seconds_per_frame": round(1 / fps, 9),
+            "frames_per_second": fps,
+            "total_frames": frame_count,
+        },
+        "visual_parameters": {
+            "geometry": request.get("geometry", {}),
+            "trigonometry": request.get("trigonometry", {}),
+            "linear_algebra": request.get("linear_algebra", {}),
+            "physics": request.get("physics", {}),
+            "electronics": request.get("electronics", {}),
+            "path_tracing": request.get("path_tracing", {}),
+            "computer_vision": request.get("computer_vision", {}),
+        },
+        "state_plan": request.get("state_plan") or {},
+        "boundary": {
+            "synthetic_state_media": True,
+            "evidence": False,
+            "renderer_executes_validated_state": True,
+        },
+    }
+
+
+def build_recording_command_from_request(
+    request: dict[str, Any],
+    *,
+    storage_root: Path = STORAGE_ROOT,
+) -> dict[str, Any]:
+    capture = request.get("capture_shape", {})
+    record_zone = request.get("record_start_zone", {})
+    duration_seconds = int(round(float(capture.get("duration_minutes", 1)) * 60))
+    fps = int(capture.get("fps", 9))
+    resolution = [
+        int(capture.get("resolution_width", 960)),
+        int(capture.get("resolution_height", 540)),
+    ]
+    grid = [
+        int(capture.get("grid_width", 160)),
+        int(capture.get("grid_height", 90)),
+    ]
+    snapped_region = record_zone.get("snapped_region") or [0, 0, resolution[0], resolution[1]]
+    selected_region = record_zone.get("selected_region") or snapped_region
+    preset = {
+        "preset_id": request.get("run_id", "studio_region"),
+        "selected_region": [int(value) for value in selected_region],
+        "snapped_region": [int(value) for value in snapped_region],
+        "capture_resolution": resolution,
+        "grid": grid,
+        "blocks": [16, 9],
+        "monitor": int(record_zone.get("monitor", 0)),
+    }
+    run_id = slug(str(request.get("run_id") or f"studio_{utc_now()}"))
+    command = build_recorder_command(
+        preset,
+        duration=duration_seconds,
+        fps=fps,
+        output_root=storage_root / "artifacts",
+        run_id=run_id,
+        python_exe=sys.executable,
+    )
+    start_delay_seconds = int(round(float(record_zone.get("start_delay_minutes", 0)) * 60))
+    countdown_seconds = int(record_zone.get("countdown_seconds", 0))
+    return {
+        "run_id": run_id,
+        "duration_seconds": duration_seconds,
+        "fps": fps,
+        "start_delay_seconds": start_delay_seconds,
+        "countdown_seconds": countdown_seconds,
+        "preset": preset,
+        "command": command,
+        "command_text": " ".join(f'"{part}"' if " " in part else part for part in command),
+    }
+
+
+def _append_action(actions: list[str], action: str) -> None:
+    if action not in actions:
+        actions.append(action)
+
+
+def resolve_assistant_actions(message: str, request: dict[str, Any]) -> list[str]:
+    text = message.lower()
+    actions: list[str] = []
+
+    wants_files = any(word in text for word in ["files", "list", "refresh", "show artifacts", "what exists"])
+    wants_save = any(word in text for word in ["save", "persist", "write", "store"])
+    wants_record = any(word in text for word in ["prepare", "record", "capture", "recorder", "command"])
+    looks_like_visual_prompt = any(
+        word in text
+        for word in [
+            "animate",
+            "camera",
+            "clip",
+            "field",
+            "frame",
+            "generate",
+            "image",
+            "lighting",
+            "motion",
+            "person",
+            "photo",
+            "render",
+            "scene",
+            "shot",
+            "sunset",
+            "video",
+            "visual",
+            "walk",
+        ]
+    )
+    wants_compile = any(word in text for word in ["compile", "generate", "draft", "state", "catbot", "do it"])
+    wants_compile = wants_compile or looks_like_visual_prompt
+
+    if wants_files:
+        _append_action(actions, "refresh_files")
+    if wants_save or wants_record or wants_compile:
+        _append_action(actions, "save_request")
+    if wants_record:
+        _append_action(actions, "prepare_record")
+
+    if not actions:
+        _append_action(actions, "save_request")
+
+    return actions
+
+
+def handle_assistant_message(
+    payload: dict[str, Any],
+    *,
+    storage_root: Path = STORAGE_ROOT,
+) -> dict[str, Any]:
+    message = str(payload.get("message") or "").strip()
+    request = payload.get("request")
+    if not isinstance(request, dict):
+        raise ValueError("request must be an object")
+    actions = resolve_assistant_actions(message, request)
+    results: dict[str, Any] = {}
+
+    if "save_request" in actions:
+        results["request"] = write_json_artifact(
+            storage_root=storage_root,
+            lane="outbox",
+            prefix="assistant_state_request",
+            payload=request,
+        )
+    if "prepare_record" in actions:
+        recording = build_recording_command_from_request(request, storage_root=storage_root)
+        results["recording"] = recording
+        results["recording_artifact"] = write_json_artifact(
+            storage_root=storage_root,
+            lane="manifests",
+            prefix="assistant_record_command",
+            payload=recording,
+        )
+    files = list_storage_files(storage_root)
+
+    parts = []
+    if actions:
+        parts.append("ran " + ", ".join(actions))
+    if not parts:
+        parts.append("no action")
+
+    return {
+        "ok": True,
+        "assistant": "Catbot " + "; ".join(parts) + ".",
+        "actions": actions,
+        "results": results,
+        "files": files,
+    }
+
+class StudioHandler(BaseHTTPRequestHandler):
+    server_version = "TrueVisionStudio/0.1"
+
+    def end_headers(self) -> None:
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+        super().end_headers()
+
+    def do_OPTIONS(self) -> None:
+        self.send_response(204)
+        self.end_headers()
+
+    def do_GET(self) -> None:
+        parsed = urlparse(self.path)
+        if parsed.path in {"/", "/index.html"}:
+            self._send_json(
+                {
+                    "ok": True,
+                    "service": "truevision_studio_server",
+                    "ui_runtime": "not_installed",
+                    "chat_runtime": "not_installed",
+                    "memory_runtime": "not_installed",
+                    "future_port": True,
+                },
+                410,
+            )
+            return
+        if parsed.path == "/api/health":
+            self._send_json(
+                {
+                    "ok": True,
+                    "service": "truevision_studio_server",
+                    "ui_runtime": "not_installed",
+                    "chat_runtime": "not_installed",
+                    "memory_runtime": "not_installed",
+                    "future_port": True,
+                }
+            )
+            return
+        if parsed.path == "/api/files":
+            self._send_json({"ok": True, "files": list_storage_files(STORAGE_ROOT)})
+            return
+        if parsed.path == "/api/templates":
+            self._send_json({"ok": True, "templates": list_templates(STORAGE_ROOT)})
+            return
+        if parsed.path == "/api/av-tools":
+            self._send_json({"ok": True, "tools": list_av_tools()})
+            return
+        if parsed.path == "/api/studio/tools":
+            self._send_json({"ok": True, "tools": list_studio_tools()})
+            return
+        if parsed.path == "/api/render-presets":
+            self._send_json({"ok": True, "presets": list_render_presets(STORAGE_ROOT)})
+            return
+        self.send_error(404, "Not found")
+
+    def do_POST(self) -> None:
+        parsed = urlparse(self.path)
+        if parsed.path == "/api/state/request":
+            self._handle_state_request()
+            return
+        if parsed.path == "/api/state/plan":
+            self._handle_state_plan()
+            return
+        if parsed.path == "/api/record/prepare":
+            self._handle_record_prepare()
+            return
+        if parsed.path == "/api/assistant/message":
+            self._handle_assistant_message()
+            return
+        if parsed.path == "/api/templates/save":
+            self._handle_template_save()
+            return
+        if parsed.path == "/api/templates/delete":
+            self._handle_template_delete()
+            return
+        if parsed.path == "/api/media/probe":
+            self._handle_media_probe()
+            return
+        if parsed.path == "/api/av-tools/call":
+            self._handle_av_tool_call()
+            return
+        self.send_error(404, "Not found")
+
+    def _handle_state_request(self) -> None:
+        try:
+            payload = self._read_json()
+            request = payload.get("request", payload)
+            if not isinstance(request, dict):
+                raise ValueError("request must be an object")
+            artifact = write_json_artifact(
+                storage_root=STORAGE_ROOT,
+                lane="outbox",
+                prefix="state_request",
+                payload=request,
+            )
+            event = write_json_artifact(
+                storage_root=STORAGE_ROOT,
+                lane="events",
+                prefix="state_request_saved",
+                payload={"event": "state_request_saved", "artifact": artifact},
+            )
+            self._send_json({"ok": True, "artifact": artifact, "event": event, "files": list_storage_files(STORAGE_ROOT)})
+        except (ValueError, json.JSONDecodeError) as exc:
+            self._send_json({"ok": False, "error": str(exc)}, 400)
+
+    def _handle_state_plan(self) -> None:
+        try:
+            payload = self._read_json()
+            plan = payload.get("plan", payload)
+            if not isinstance(plan, dict):
+                raise ValueError("plan must be an object")
+            artifact = write_json_artifact(
+                storage_root=STORAGE_ROOT,
+                lane="manifests",
+                prefix="state_plan",
+                payload=plan,
+            )
+            self._send_json({"ok": True, "artifact": artifact, "files": list_storage_files(STORAGE_ROOT)})
+        except (ValueError, json.JSONDecodeError) as exc:
+            self._send_json({"ok": False, "error": str(exc)}, 400)
+
+    def _handle_record_prepare(self) -> None:
+        try:
+            payload = self._read_json()
+            request = payload.get("request", payload)
+            if not isinstance(request, dict):
+                raise ValueError("request must be an object")
+            prepared = build_recording_command_from_request(request, storage_root=STORAGE_ROOT)
+            artifact = write_json_artifact(
+                storage_root=STORAGE_ROOT,
+                lane="manifests",
+                prefix="record_command",
+                payload=prepared,
+            )
+            self._send_json(
+                {
+                    "ok": True,
+                    "recording": prepared,
+                    "artifact": artifact,
+                    "files": list_storage_files(STORAGE_ROOT),
+                }
+            )
+        except (ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
+            self._send_json({"ok": False, "error": str(exc)}, 400)
+
+    def _handle_assistant_message(self) -> None:
+        try:
+            payload = self._read_json()
+            result = handle_assistant_message(payload, storage_root=STORAGE_ROOT)
+            self._send_json(result)
+        except (ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
+            self._send_json({"ok": False, "error": str(exc)}, 400)
+
+    def _handle_template_save(self) -> None:
+        try:
+            payload = self._read_json()
+            request = payload.get("request")
+            template = payload.get("template")
+            if isinstance(request, dict):
+                template = build_generation_template_from_request(request)
+            if not isinstance(template, dict):
+                raise ValueError("template or request must be an object")
+            artifact = save_template(
+                storage_root=STORAGE_ROOT,
+                template=template,
+                name=str(payload.get("name")) if payload.get("name") else None,
+            )
+            self._send_json(
+                {
+                    "ok": True,
+                    "artifact": artifact,
+                    "templates": list_templates(STORAGE_ROOT),
+                    "files": list_storage_files(STORAGE_ROOT),
+                }
+            )
+        except (ValueError, TypeError, json.JSONDecodeError) as exc:
+            self._send_json({"ok": False, "error": str(exc)}, 400)
+
+    def _handle_template_delete(self) -> None:
+        try:
+            payload = self._read_json()
+            name = str(payload.get("name") or "")
+            if not name:
+                raise ValueError("name is required")
+            result = delete_template(storage_root=STORAGE_ROOT, name=name)
+            self._send_json({"ok": True, "result": result, "templates": list_templates(STORAGE_ROOT)})
+        except (ValueError, TypeError, json.JSONDecodeError) as exc:
+            self._send_json({"ok": False, "error": str(exc)}, 400)
+
+    def _handle_media_probe(self) -> None:
+        try:
+            payload = self._read_json()
+            path = str(payload.get("path") or "")
+            duration = probe_media_duration(path)
+            self._send_json({"ok": True, "path": path, "duration_seconds": duration})
+        except (ValueError, TypeError, json.JSONDecodeError) as exc:
+            self._send_json({"ok": False, "error": str(exc)}, 400)
+
+    def _handle_av_tool_call(self) -> None:
+        try:
+            payload = self._read_json()
+            call = payload.get("call", payload)
+            if not isinstance(call, dict):
+                raise ValueError("call must be an object")
+            result = run_av_tool_call(call, storage_root=STORAGE_ROOT)
+            status = 200 if result.get("ok") else 400
+            self._send_json(result, status)
+        except (ValueError, TypeError, json.JSONDecodeError) as exc:
+            self._send_json({"ok": False, "error": str(exc)}, 400)
+
+    def _read_json(self) -> dict[str, Any]:
+        length = int(self.headers.get("Content-Length", "0"))
+        body = self.rfile.read(length).decode("utf-8")
+        payload = json.loads(body or "{}")
+        if not isinstance(payload, dict):
+            raise ValueError("JSON body must be an object")
+        return payload
+
+    def _send_json(self, payload: dict[str, Any], status: int = 200) -> None:
+        data = json.dumps(payload, indent=2).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
+    def log_message(self, fmt: str, *args: Any) -> None:
+        print(f"[studio] {self.address_string()} - {fmt % args}")
+
+
+def run(host: str = DEFAULT_HOST, port: int = DEFAULT_PORT, storage_root: str | None = None) -> None:
+    global STORAGE_ROOT
+    if storage_root:
+        STORAGE_ROOT = resolve_storage_root(storage_root)
+    ensure_storage_layout(STORAGE_ROOT)
+    server = ThreadingHTTPServer((host, port), StudioHandler)
+    print(f"TrueVision Studio: http://{host}:{port}/")
+    print(f"TrueVision storage root: {STORAGE_ROOT}")
+    server.serve_forever()
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Serve TrueVision Studio storage, template, and AV tool routes.")
+    parser.add_argument("--host", default=DEFAULT_HOST)
+    parser.add_argument("--port", type=int, default=DEFAULT_PORT)
+    parser.add_argument(
+        "--storage-root",
+        default=None,
+        help=f"Runtime storage root for templates/receipts/artifacts. Overrides {STORAGE_ROOT_ENV}.",
+    )
+    args = parser.parse_args()
+    run(args.host, args.port, args.storage_root)
+
+
+if __name__ == "__main__":
+    main()

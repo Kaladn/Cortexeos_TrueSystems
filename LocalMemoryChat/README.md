@@ -53,11 +53,10 @@ Packets join them.
 
 Renderers speak only from packets.
 
-## First Boundaries
+## Runtime boundaries
 
-This repo starts with rules and synthetic demo data before code.
-
-It ships with:
+This repository contains an implemented local CLI plus rules and synthetic demo
+data. It ships with:
 
 ```text
 docs/LOCAL_MEMORY_CHAT_V0_CONTRACT.md
@@ -75,7 +74,7 @@ API keys
 machine-specific paths
 ```
 
-## Planned v0 Slices
+## Implemented v0 slices
 
 ```text
 1. Live-intake synthetic chat turns.
@@ -96,11 +95,11 @@ machine-specific paths
 
 From the repo root:
 
-```powershell
-python -m local_memory_chat.cli init --profile demo
-python -m local_memory_chat.cli import-demo --profile demo
-python -m local_memory_chat.cli add-file data/demo/project_note.md --profile demo --label project-note
-python -m local_memory_chat.cli ask "what did we decide about render providers?" --profile demo
+```bash
+PYTHONPATH=src python -m local_memory_chat.cli init --profile demo
+PYTHONPATH=src python -m local_memory_chat.cli import-demo --profile demo
+PYTHONPATH=src python -m local_memory_chat.cli add-file data/demo/project_note.md --profile demo --label project-note
+PYTHONPATH=src python -m local_memory_chat.cli ask "what did we decide about render providers?" --profile demo
 ```
 
 This writes ignored runtime files under:
@@ -124,13 +123,13 @@ git status stays clean except for tracked source changes
 
 Attach first, index second:
 
-```powershell
-python -m local_memory_chat.cli attach-source --profile demo --path data/demo/project_note.md --source-type file --label project-note
-python -m local_memory_chat.cli sources --profile demo
-python -m local_memory_chat.cli index-source --profile demo --source-id <SRC-id> --hot
-python -m local_memory_chat.cli ask "what do packets join?" --profile demo
-python -m local_memory_chat.cli inspect-binary --profile demo --source-id <SRC-id>
-python -m local_memory_chat.cli sqlite-support --profile demo --source-id <SQLITE-SRC-id>
+```bash
+PYTHONPATH=src python -m local_memory_chat.cli attach-source --profile demo --path data/demo/project_note.md --source-type file --label project-note
+PYTHONPATH=src python -m local_memory_chat.cli sources --profile demo
+PYTHONPATH=src python -m local_memory_chat.cli index-source --profile demo --source-id <SRC-id> --hot
+PYTHONPATH=src python -m local_memory_chat.cli ask "what do packets join?" --profile demo
+PYTHONPATH=src python -m local_memory_chat.cli inspect-binary --profile demo --source-id <SRC-id>
+PYTHONPATH=src python -m local_memory_chat.cli sqlite-support --profile demo --source-id <SQLITE-SRC-id>
 ```
 
 Source types:

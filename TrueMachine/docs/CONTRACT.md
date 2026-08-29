@@ -40,7 +40,7 @@ The WAL envelope carries the SHA-256 of the exact canonical pack bytes.
 Verification recalculates every hash and checks run sequence continuity.
 
 Every observation also carries its source-owned schema, stable content hash,
-and source coordinates. TrueVision, TrueAudio, AWRAG, and AWEAR state artifacts
+and source coordinates. TrueVision, TrueAudio, TrueMem, and TrueMem state artifacts
 remain owned by those systems; TrueMachine admits their hashes and coordinates
 without rewriting their facts. Canonical JSON uses sorted keys and compact
 separators so identical admitted state produces identical hashes.
@@ -53,8 +53,8 @@ native state artifacts, never raw pixels, images, or video.
 
 The system order is locked:
 
-`TrueVision + TrueAudio + Linux state -> TrueMachine/CompuCog -> SecureCore`
+`TrueVision + TrueAudio + Linux state -> TrueMachine/CompuCog -> TrueCore`
 
-TrueMachine is the cognition and Fusion Pack authority. SecureCore is a
-downstream security consumer. SecureCore cannot own or rewrite capture,
+TrueMachine is the cognition and Fusion Pack authority. TrueCore is a
+downstream security consumer. TrueCore cannot own or rewrite capture,
 timestamps, admitted state, fusion, or cognition.
