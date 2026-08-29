@@ -5,6 +5,12 @@ and for human or model callers. It teaches selection and handoff, not prose
 generation. The model chooses a real operation, supplies its exact inputs, and
 returns the operation's result and citations to the calling model.
 
+The operator-model learning boundary is defined in
+`docs/OPERATOR_MODEL_TRAINING_CONTRACT.md`. TrueMem map training and operator
+model training are separate processes. The operator may call, inspect, verify,
+continue, and explain; it never becomes evidence, memory, relationship, or
+action authority.
+
 ## Whole-system map
 
 ```text

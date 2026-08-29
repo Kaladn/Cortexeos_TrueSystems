@@ -15,3 +15,13 @@
 The assembly began from those source trees, then applied the recorded TrueCore,
 TrueMem, Linux, and unnesting changes in this repository. It did not copy nested
 repository metadata or runtime/generated state.
+
+## External model retained in place
+
+The existing tiny map-prediction experiment remains outside this repository at
+`/run/media/lamercey/AWRAG/new model idea/AWRAG_Location_Model`. Its committed
+controlled-v1 architecture learns causal next-symbol continuation over admitted
+paths with deterministic positional/relationship inputs. It is not the
+TrueSystems operator model described in
+`docs/OPERATOR_MODEL_TRAINING_CONTRACT.md`, and it was not copied or modified
+during the combined-repository assembly.
