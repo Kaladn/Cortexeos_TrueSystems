@@ -105,3 +105,9 @@ implement per-day SQLite rotation, 00:01 sealing, immutable historical-day
 enforcement, automatic DocuFilm/TrueMem conversion, or the binary-to-SQLite
 address verifier. Those items remain required work and must not be claimed as
 implemented until their executable path and acceptance tests exist.
+
+The dataset-local symbol law above specifies the unimplemented chat-conversion
+shape. It does not describe the active general `docufilm-intake` storage format,
+which currently allocates non-overlapping six-byte dataset ranges from one
+workspace-monotonic symbolizer. That distinction and its migration boundary are
+recorded in `TRUEMEM_RELATIONSHIP_TRAINING_SHAPE.md`.

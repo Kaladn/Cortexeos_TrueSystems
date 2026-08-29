@@ -28,7 +28,7 @@ passed explicitly where a component exposes a path argument.
 | Observe Linux machine state over time | TrueMachine | `python -m truemachine run` | Fusion Pack plus WAL/index state |
 | Verify a TrueMachine state directory | TrueMachine | `python -m truemachine verify` | JSON verification result |
 | Read document/glyph state | TrueVision Intake / DocuFilm | `truevision_intake.document_state` | document read plus stable glyph-state records |
-| Admit a document and build its deterministic map | TrueVision Intake / DocuFilm + TrueMem | `python -m truemem.cli docufilm-intake` | parent/contained anchors, dataset-local symbols, counts, coordinates, relationships, citations |
+| Admit a document and build its deterministic map | TrueVision Intake / DocuFilm + TrueMem | `python -m truemem.cli docufilm-intake` | parent/contained anchors, a dataset-scoped range from the active workspace symbolizer, counts, coordinates, relationships, citations |
 | Record or replay derived audio state | TrueAudio | `TrueAudio/scripts/trueaudio_*.py` | audio-state artifacts, manifests, and receipts |
 | Detect bounded speech regions | TrueSpeech | `TrueSpeech/scripts/truespeech_detect_segments.py` | speech/background candidates without transcript claims |
 | Retrieve a cited answer packet | TrueMem | `python -m truemem.cli query` | cited local packet; `model_used` is `none` |
@@ -84,6 +84,12 @@ Relationship mechanics are specified in
 `TrueMem/system/contracts/RELATIONSHIP_GRAPH_616.md`. The predictor exposes all
 relationship measurements and uses deterministic lexicographic branch ordering;
 it does not use a weighted magic score.
+
+The exact implemented training/storage path, active six-byte record formats,
+dormant four-byte alternative, and safe boundary for adding relationship
+measurements are recorded in
+`docs/TRUEMEM_RELATIONSHIP_TRAINING_SHAPE.md`. Do not describe the dormant
+four-byte writer as active intake.
 
 Other coded CLI families include dataset metrics, Q/A ledger inspection,
 packet/evidence speech diagnostics, pressure and Top-K diagnostics, batch,

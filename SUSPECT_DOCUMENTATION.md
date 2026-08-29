@@ -45,3 +45,8 @@ a backlog and does not authorize implementation.
 - Files under `TrueMem/research_reference_not_runtime/` contain many copied
   executables and Windows strings. The directory name is the runtime boundary;
   none are taught as active commands.
+- Earlier umbrella documentation used `dataset-local` loosely for the active
+  TrueMem symbol values. The live DocuFilm path uses workspace-monotonic
+  non-overlapping six-byte ranges under one runtime root. The truly
+  dataset-local four-byte writer in `dataset_local_v2.py` is dormant. The
+  distinction is locked in `docs/TRUEMEM_RELATIONSHIP_TRAINING_SHAPE.md`.

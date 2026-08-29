@@ -6,7 +6,7 @@
 | TrueVision Intake / DocuFilm | `TrueVisionIntake/truevision_intake/document_state/` | document page state and glyph-state records | authoritative document-state reads and parent/contained intake records |
 | TrueAudio | `TrueAudio/trueaudio_runtime/` | decoded file audio or Linux PipeWire default-output monitor | deterministic derived audio state, replayable state, manifests, receipts |
 | TrueSpeech | `TrueSpeech/truespeech_runtime/` | replayable TrueAudio state and optional caller-supplied lyrics | speech-region and lyric-alignment candidates without transcript claims |
-| TrueMem | `TrueMem/src/truemem/cli.py` | DocuFilm-admitted strings and dataset-local mapped artifacts | dataset-native symbols, counts, positions, relationships, citations, query and deeper/wider packets |
+| TrueMem | `TrueMem/src/truemem/cli.py` | DocuFilm-admitted strings and mapped artifacts under one runtime root | opaque symbols, counts, positions, relationships, citations, query and deeper/wider packets; active storage uses workspace-monotonic six-byte symbol ranges |
 | LocalMemoryChat | `LocalMemoryChat/src/local_memory_chat/cli.py` | explicit local files, attachments, profile state | cited memory packet and receipts |
 | TrueCore | `TrueCore/truecore/cli/main.py` | substrates, Forge, registered runtime state | inspection output; gated decisions/actions through its own runtime |
 | Chat-Chain | `clearbox-chat-chain/src/clearbox_chat_chain/server.py` | HTTP chat commands and configured provider results | SQLite WAL conversation state and HTTP results |
