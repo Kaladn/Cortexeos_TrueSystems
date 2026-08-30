@@ -171,3 +171,18 @@ python training/build_training_coverage_matrix.py \
   --syl-manifest /path/to/syl/manifest.json \
   --output /external/test/library/output/coverage-release
 ```
+
+`build_assigned_training_coverage.py` verifies manually authored concept
+assignments against exact frozen release records. It also counts sealed
+steering reservations without opening their payloads. External-topic matches
+from local code are reported only as local seeds; they do not close external
+foundation gaps. The resulting acquisition ledger is a gate, not permission to
+download an unreviewed corpus.
+
+```bash
+python training/build_assigned_training_coverage.py \
+  --release-root /path/to/training-release \
+  --assignments training/coverage_assignments.json \
+  --steering-root /path/to/steering-prerequisites \
+  --output /external/test/library/output/assigned-coverage
+```
