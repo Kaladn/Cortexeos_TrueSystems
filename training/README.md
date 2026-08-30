@@ -220,3 +220,17 @@ python training/build_symbolic_foundations_adapter.py \
   --workers 24 \
   --local-to-external 13
 ```
+
+`build_symbolic_foundations_representation.py` creates separate supplied-
+candidate representations for local signed 6-1-6 windows and external
+NetworkX AST call sequences. Splits are assigned by indivisible source groups;
+evaluation payloads are sealed behind hash-only reservations. The 13:1
+presentation schedule applies to training only. Validation and evaluation keep
+their natural, separately reported domain counts.
+
+```bash
+python training/build_symbolic_foundations_representation.py \
+  --adapter-root /external/replacement-adapter-release \
+  --output /external/representation-release \
+  --local-to-external 13
+```
