@@ -81,3 +81,26 @@ python training/build_external_source_intake.py \
 Run the same fixed source with `--workers 1` and `--workers 24`. All semantic
 artifacts must be byte-identical; `performance-receipt.json` is measurement-only
 and is excluded from equivalence.
+
+## Read-only local bridge resolution
+
+`evaluate_language_to_local_bridges.py` evaluates natural-language location
+requests against one verified `LANGUAGE_TO_LOCAL_BRIDGES` release. That release
+is the resolver's complete local binding authority. Exact full-word anchors,
+frozen file locations, relation labels, and already-stored relationship paths
+form the candidate evidence. Source text is never case-folded or rewritten.
+
+The resolver returns a target only when one frozen bridge has unique sufficient
+evidence. Other requests return `ambiguous`, `unsupported`, `stale`, or
+`missing`. Results retain the frozen target and selection hashes, relationship
+path, repository identity, coordinates, and evidence receipt. Evaluation does
+not execute operations, create bridges, consult generic data as local truth,
+modify local records, or train a model.
+
+```bash
+python training/evaluate_language_to_local_bridges.py \
+  --bridge-release "/path/to/LANGUAGE_TO_LOCAL_BRIDGES" \
+  --cases "/path/to/evaluation-cases.jsonl" \
+  --output-root "/path/to/output" \
+  --workers 24
+```
