@@ -234,3 +234,17 @@ python training/build_symbolic_foundations_representation.py \
   --output /external/representation-release \
   --local-to-external 13
 ```
+
+`build_symbolic_foundations_preflight.py` freezes the two scorer identities,
+their supplied-candidate objectives, the no-score-fusion weave, XPU-only device
+law, optimizer settings, 13-epoch stopping rule, and independent checkpoint
+selection. It verifies every representation artifact without reading sealed
+evaluation payloads. Training remains forbidden until both exact scorers are
+implemented and deterministic XPU equivalence is proven.
+
+```bash
+python training/build_symbolic_foundations_preflight.py \
+  --representation-root /external/representation-release \
+  --model-source /read-only/retained-model-source \
+  --output /external/preflight-release
+```
