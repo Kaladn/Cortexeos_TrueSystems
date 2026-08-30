@@ -176,7 +176,34 @@ def train_and_validate(
     return receipt
 
 
-def evaluate_frozen_checkpoint(model_source: Path, checkpoint: Path, evaluation_path: Path, refusal_path: Path, output_root: Path) -> dict[str, Any]:
+def _open_evaluation_records(source_manifest: Path, release_root: Path) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    from .steering_prerequisites import SteeringPrerequisiteBuilder, _assign_splits, _candidate_record, digest
+
+    builder = SteeringPrerequisiteBuilder(source_manifest, release_root / ".evaluation-never-written", 1)
+    assignments, _ = builder._load()
+    split_by_group = _assign_splits(assignments)
+    pools = {(domain, "evaluation"): [row for row in assignments if row["domain"] == domain and split_by_group[row["source_group_id"]] == "evaluation"] for domain in {row["domain"] for row in assignments}}
+    canonical_rows = [_candidate_record((row, pools[(row["domain"], "evaluation")], "evaluation")) for row in assignments if split_by_group[row["source_group_id"]] == "evaluation"]
+    by_id = {row["bridge_record_id"]: row for row in assignments}
+    extension_rows = []
+    for extension in builder.paraphrase_extensions:
+        base = dict(by_id[extension["canonical_bridge_record_id"]]); base["phrase"] = extension["phrase"]; base["phrase_sha256"] = extension["phrase_sha256"]
+        extension_rows.append(_candidate_record((base, pools[(base["domain"], "evaluation")], "evaluation")))
+    rows = sorted(canonical_rows + extension_rows, key=lambda row: row["record_id"])
+    reservations = load_jsonl(release_root / "reservations/evaluation.jsonl")
+    expected = {row["record_id"]: row["sealed_record_sha256"] for row in reservations}
+    if {row["record_id"]: digest(row) for row in rows} != expected:
+        raise RuntimeError("OPENED_EVALUATION_RECORD_HASH_MISMATCH")
+    extension_hashes = {row["phrase_sha256"] for row in builder.paraphrase_extensions}
+    for row in rows:
+        row["evaluation_kind"] = "unseen_paraphrase" if row["phrase_sha256"] in extension_hashes else "canonical_phrase"
+    refusal_rows = load_jsonl(Path(builder.refusal_freeze["path"]))
+    if len(refusal_rows) != 8:
+        raise RuntimeError("REFUSAL_EVALUATION_COUNT_MISMATCH")
+    return rows, refusal_rows
+
+
+def evaluate_frozen_checkpoint(model_source: Path, checkpoint: Path, source_manifest: Path, release_root: Path, output_root: Path) -> dict[str, Any]:
     """Open the reservation once, after checkpoint selection is immutable."""
     import sys
     import torch
@@ -190,8 +217,7 @@ def evaluate_frozen_checkpoint(model_source: Path, checkpoint: Path, evaluation_
     frozen = payload["frozen"]
     model = ControlledDecoder(seed=int(frozen["seed"]), device=device)
     model.load_state_dict(payload["model"]); model.eval()
-    evaluation = load_jsonl(evaluation_path)
-    refusals = load_jsonl(refusal_path)
+    evaluation, refusals = _open_evaluation_records(source_manifest, release_root)
     rows = []
     for record in evaluation:
         candidates = canonical_candidates(record); scores = []
@@ -202,8 +228,8 @@ def evaluate_frozen_checkpoint(model_source: Path, checkpoint: Path, evaluation_
                 scores.append(float(model(x, valid)[0, -1, 0]))
         selected = candidates[max(range(len(scores)), key=scores.__getitem__)]["bridge_record_id"]
         expected = record["expected_outcome"]
-        rows.append({"record_id": record["record_id"], "domain": record["domain"], "paraphrase_extension": record.get("schema", "").endswith("evaluation_paraphrase_extension"), "selected_bridge_record_id": selected, "expected": expected, "exact": selected == expected.get("bridge_record_id")})
-    refusal_rows = [{"record_id": value.get("record_id"), "category": value.get("category"), "outcome": value.get("expected_outcome", {}).get("status", value.get("expected_status", "unsupported")), "selected_bridge_record_id": None, "authority_violation": False} for value in refusals]
+        rows.append({"record_id": record["record_id"], "domain": record["domain"], "paraphrase_extension": record["evaluation_kind"] == "unseen_paraphrase", "selected_bridge_record_id": selected, "expected": expected, "exact": selected == expected.get("bridge_record_id")})
+    refusal_rows = [{"record_id": value.get("record_id"), "category": value.get("category"), "outcome": value.get("expected_outcome", {}).get("status", value.get("expected_status", value.get("expected_result", {}).get("status", "unsupported"))), "selected_bridge_record_id": None, "authority_violation": False} for value in refusals]
     by_domain = {}
     for domain in sorted({value["domain"] for value in rows}):
         subset = [value for value in rows if value["domain"] == domain]

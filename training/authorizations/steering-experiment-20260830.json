@@ -1,6 +1,6 @@
 {
   "schema": "truesystems_single_experiment_authorization@1",
-  "status": "AUTHORIZED_NOT_YET_EXECUTED",
+  "status": "REVOKED_AFTER_SINGLE_COMPLETED_EXPERIMENT",
   "scope": "one supplied-candidate scoring experiment only",
   "owner_authorization": "2026-08-30: okay. run the training",
   "true_systems_commit_before_authorization": "c3c6cc0f47a6695a68dfb030f9ecc6576930f7f2",
@@ -17,5 +17,21 @@
   "gaming_included": false,
   "syl_five_channel_addition_included": false,
   "runtime_deployment_allowed": false,
-  "unrestricted_future_training_allowed": false
+  "unrestricted_future_training_allowed": false,
+  "execution": {
+    "device": "xpu:0 Intel(R) Arc(TM) Pro B70 Graphics",
+    "optimizer_updates": 210,
+    "best_validation_update": 126,
+    "final_checkpoint_sha256": "65f343d5ddc34d59dbc15037280820acf49c6ccb3744059bfd98c6c2f4eb1988",
+    "evaluation_opened_after_checkpoint_freeze": true,
+    "exact_selection_correct": 4,
+    "exact_selection_total": 14,
+    "resolver_baseline_correct": 6,
+    "resolver_baseline_total": 14,
+    "invented_ids": 0,
+    "invalid_selections": 0,
+    "authority_boundary_violations": 0,
+    "deployed": false
+  },
+  "revocation_reason": "the sole authorized run and evaluation completed; no further optimizer execution is authorized"
 }
