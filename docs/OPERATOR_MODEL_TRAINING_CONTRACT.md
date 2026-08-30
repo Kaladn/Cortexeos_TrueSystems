@@ -214,8 +214,14 @@ with explicit before/after evidence.
 
 ## Implementation status
 
-This contract is now canonical documentation. The combined repository does not
-yet contain an operator-model dataset builder, trainer, checkpoint, or runtime.
-No such implementation may be claimed until its executable path and external
-acceptance tests exist. The current location-model experiment remains separate
-and unchanged.
+This contract is now canonical documentation. The combined repository contains
+`training/build_partial_system_usage_training.py`, a deterministic source miner
+that emits separated, partial operator-training examples, and
+`training/build_training_releases.py`, which assigns explicit training roles,
+gates research, records exact duplicates and contamination eligibility, and
+publishes deterministic curriculum-bound releases. These are dataset builders
+only: they do not verify public callability, execute operations, admit data
+through DocuFilm, train weights, create checkpoints, or provide an operator
+runtime. Both provide a measured 24-worker process path and an exact
+single-worker reference mode. The current location-model experiment remains
+separate and unchanged.
