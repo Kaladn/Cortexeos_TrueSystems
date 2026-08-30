@@ -186,3 +186,20 @@ python training/build_assigned_training_coverage.py \
   --steering-root /path/to/steering-prerequisites \
   --output /external/test/library/output/assigned-coverage
 ```
+
+## Symbolic-foundations source curation
+
+`build_symbolic_foundations_curation.py` verifies every byte in the frozen
+three-family source pilot and publishes accepted, quarantined, and rejected
+ledgers. NetworkX implementation and test sources are accepted for a later
+exact-AST fixture adapter. Mathlib Lean sources and DESPITE state/planning
+fixtures remain quarantined until their dedicated adapters can prove exact
+declaration or cross-file trace boundaries. Curation never creates training
+records, local truth, TrueMem 6-1-6 geometry, or model authority.
+
+```bash
+python training/build_symbolic_foundations_curation.py \
+  --source-root /external/test/library/output/symbolic-foundations-source \
+  --output /external/test/library/output/symbolic-foundations-curation \
+  --workers 24
+```
