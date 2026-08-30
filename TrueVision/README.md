@@ -57,6 +57,32 @@ reads the authorized PipeWire node directly. Outputs are limited to:
 cell_state_native/<run-id>_cells_*.tvcells
 ```
 
+## Read-only visual identity experiment
+
+`scripts/truevision_visual_identity_intake.py` reads an already captured native
+manifest, frame records, and `.tvcells` chunk. It does not capture, replay,
+render, recognize, or train anything.
+
+Each visual unit is only an existing cell-state address:
+
+```text
+artifact hash + frame order + timestamp + grid/pixel coordinates
++ exact native state bytes
+```
+
+Exact state bytes at the same coordinate in consecutive frames support
+`persists_to` and `stable_identity`. Different bytes at the same coordinate
+support only `changes_to` and `candidate_continuity`. Repeated state bytes at
+multiple locations remain ambiguous. Object names, classes, meanings, and
+appearance-derived identities are forbidden.
+
+```bash
+python scripts/truevision_visual_identity_intake.py \
+  --experiment-manifest /path/to/experiment-manifest.json \
+  --output-root /path/to/output \
+  --workers 24
+```
+
 ## TrueFrameGen
 
 The compiled generation binaries live in the same Rust crate. They consume
