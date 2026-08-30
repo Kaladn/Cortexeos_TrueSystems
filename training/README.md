@@ -299,3 +299,10 @@ batch-1 forward/backward/clip probe with zero optimizer updates. Candidate
 scorers, GRUs, and their checkpoints are historical evidence only and forbidden
 from reuse. `run_historical_method_linux.py` must not be invoked without a new
 bounded authorization tied to the published preflight.
+
+`analyze_historical_proof_of_use.py` performs read-only top-k, per-source,
+per-domain, signed-lane-support, and fixed-position Codex-use analysis after the
+historical trainer has sealed its selected checkpoint and opened held-out data.
+It does not alter the trainer, model, checkpoint, maps, or evidence. Codex may
+accept only model suggestions already supported by the admitted deterministic
+`+1` relationship map; otherwise the deterministic baseline remains controlling.
