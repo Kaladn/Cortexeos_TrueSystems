@@ -281,3 +281,10 @@ PYTHONPATH=TrueCore python training/build_symbolic_foundations_replacement.py \
   --failed-experiment /external/failed-experiment \
   --output /external/replacement-reservation
 ```
+
+`run_symbolic_foundations_replacement_experiment.py` is the one-use bounded
+runner for an explicitly authorized replacement preflight. It trains the local
+and external scorers independently, selects each checkpoint using validation
+loss only, then opens the sealed evaluation once. Known external identities and
+`UNSEEN_EXTERNAL_CALL` are reported separately. Authorization is always
+consumed and revoked; weights remain external and are never deployed.
