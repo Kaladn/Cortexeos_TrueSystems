@@ -248,3 +248,19 @@ python training/build_symbolic_foundations_preflight.py \
   --model-source /read-only/retained-model-source \
   --output /external/preflight-release
 ```
+
+`build_symbolic_foundations_scorers.py` implements both frozen supplied-
+candidate scorers without training. It loads the retained decoder only from an
+isolated clean source copy, enforces that selected identities come from each
+record's supplied field, and runs train/validation-only forward and loss smoke
+checks. CPU repeatability and bounded XPU equivalence are recorded while all
+1,098 evaluation records remain sealed. No optimizer step or checkpoint is
+created.
+
+```bash
+PYTHONPATH=TrueCore python training/build_symbolic_foundations_scorers.py \
+  --representation /external/representation-release \
+  --adapter /external/replacement-adapter-release \
+  --clean-model-source /external/isolated-model-source \
+  --output /external/scorer-readiness-release
+```
