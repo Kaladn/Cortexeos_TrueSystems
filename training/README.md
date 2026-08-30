@@ -60,9 +60,12 @@ manifest and fixed raw JSONL slice. It publishes three isolated namespaces:
 
 Every external release remains `NOT_LOCAL_TRUTH`. Empty reserved releases are
 published explicitly, local records are never mixed into them, and the builder
-performs no model training. The current adapter accepts source-supplied language
-relations. Code and local-bridge adapters remain reserved until implemented
-against their own explicit contracts.
+performs no model training. The language adapter accepts source-supplied
+relations. The Python code adapter preserves exact source and source-supplied
+tests, extracts syntax-backed relations, and leaves every record
+`EXTERNAL_GENERIC_UNBOUND`; it neither executes code nor claims correctness.
+Local bridges remain reserved until implemented against their own explicit
+contract.
 
 ```bash
 python training/build_external_source_intake.py \

@@ -8,6 +8,7 @@ training and creates no local operation, capability, behavior, or authority.
 
 from __future__ import annotations
 
+import ast
 from concurrent.futures import ProcessPoolExecutor
 import hashlib
 import json
@@ -18,6 +19,7 @@ import re
 import resource
 import time
 from typing import Any, Iterable
+import warnings
 
 
 SCHEMA = "truesystems_external_source_intake@1"
@@ -157,6 +159,104 @@ def _language_row(task: tuple[bytes, int, dict[str, Any], str]) -> tuple[str, di
     return "accepted", record
 
 
+def _expression_name(node: ast.AST) -> str:
+    if isinstance(node, ast.Name):
+        return node.id
+    if isinstance(node, ast.Attribute):
+        parent = _expression_name(node.value)
+        return f"{parent}.{node.attr}" if parent else node.attr
+    return type(node).__name__
+
+
+def _code_row(task: tuple[bytes, int, dict[str, Any], str]) -> tuple[str, dict[str, Any]]:
+    raw_line, line_number, source, source_manifest_sha256 = task
+    raw_hash = digest(raw_line)
+    coordinate = source["row_coordinates"]["start"] + line_number - 1
+    provenance = {
+        "dataset_id": source["dataset_id"], "revision": source["revision"],
+        "configuration": source["configuration"], "split": source["split"],
+        "row_coordinate": coordinate, "raw_record_sha256": raw_hash,
+        "raw_slice_line": line_number, "source_manifest_sha256": source_manifest_sha256,
+    }
+    try:
+        row = json.loads(raw_line)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "invalid_json", "detail": type(error).__name__}
+    if not isinstance(row, dict):
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "record_not_object"}
+    if row.get("row_index") != coordinate:
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "row_coordinate_mismatch", "observed": row.get("row_index")}
+    original = row.get("record")
+    if not isinstance(original, dict):
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "missing_original_record"}
+    prompt = original.get("text")
+    code = original.get("code")
+    tests = original.get("test_list")
+    if not isinstance(prompt, str) or not isinstance(code, str) or not isinstance(tests, list) or not all(isinstance(test, str) for test in tests):
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "unsupported_code_record_shape", "original_record": original}
+    if not prompt or not code:
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "empty_prompt_or_code", "original_record": original}
+    try:
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore", SyntaxWarning)
+            tree = ast.parse(code)
+    except (SyntaxError, ValueError, TypeError, MemoryError) as error:
+        return "quarantined", {
+            "schema": f"{SCHEMA}:quarantined", "provenance": provenance,
+            "reason": "python_parser_failure", "detail": type(error).__name__,
+            "original_record": original,
+        }
+    definitions = []
+    calls = []
+    raises = []
+    assertions = []
+    state_reads = []
+    state_writes = []
+    for node in ast.walk(tree):
+        location = {"line": getattr(node, "lineno", None), "column": getattr(node, "col_offset", None)}
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            definitions.append({
+                "name": node.name, "kind": type(node).__name__,
+                "line_start": node.lineno, "line_end": getattr(node, "end_lineno", node.lineno),
+                "column_start": node.col_offset, "column_end": getattr(node, "end_col_offset", None),
+                "source": ast.get_source_segment(code, node),
+            })
+        elif isinstance(node, ast.Call):
+            calls.append({"observed_callee": _expression_name(node.func), **location})
+        elif isinstance(node, ast.Raise):
+            raises.append({"exception": _expression_name(node.exc) if node.exc else None, **location})
+        elif isinstance(node, ast.Assert):
+            assertions.append({"source": ast.get_source_segment(code, node), **location})
+        elif isinstance(node, ast.Name):
+            target = state_writes if isinstance(node.ctx, (ast.Store, ast.Del)) else state_reads
+            target.append({"name": node.id, **location})
+    for values in (definitions, calls, raises, assertions, state_reads, state_writes):
+        values.sort(key=canonical)
+    record = {
+        "schema": f"{SCHEMA}:code_unit", "namespace": CODE_RELEASE,
+        "truth_status": "NOT_LOCAL_TRUTH", "local_authority": False,
+        "resolution": "EXTERNAL_GENERIC_UNBOUND", "local_capability": False,
+        "source_provenance": provenance,
+        "source_properties": {"license": source["license"], "language": source["language"], "upstream_lineage": source.get("upstream_lineage", [])},
+        "location": {"field": "code", "span": [0, len(code)], "external_task_id": original.get("task_id")},
+        "source_payload": code, "source_payload_sha256": digest(code.encode("utf-8")),
+        "prompt": {"text": prompt, "span": [0, len(prompt)], "evidence": "source_supplied_field"},
+        "relations": {
+            "definitions": definitions, "calls": calls, "raises": raises,
+            "assertions": assertions, "state_read": state_reads, "state_written": state_writes,
+        },
+        "supplied_behavior": {
+            "tests": tests, "test_setup_code": original.get("test_setup_code"),
+            "challenge_tests": original.get("challenge_test_list", []),
+            "evidence": "source_supplied_not_executed",
+        },
+        "original_record": original,
+        "unsupported_claims": ["runtime_order", "correctness", "local_operation", "local_capability", "local_behavior", "local_authority"],
+    }
+    record["record_id"] = digest(record)
+    return "accepted", record
+
+
 class ExternalSourceIntakeBuilder:
     def __init__(self, source_manifest: Path, output_root: Path, workers: int = 24):
         self.source_manifest_path = source_manifest.resolve()
@@ -177,14 +277,13 @@ class ExternalSourceIntakeBuilder:
             raise ValueError("raw slice line count does not match frozen source manifest")
         manifest_hash = digest(self.source_manifest_bytes)
         tasks = [(line, index, self.source, manifest_hash) for index, line in enumerate(lines, 1)]
-        if self.source["namespace"] != LANGUAGE_RELEASE:
-            raise NotImplementedError("HF_CODE_GENERIC adapter is reserved but not implemented")
+        transformer = _language_row if self.source["namespace"] == LANGUAGE_RELEASE else _code_row
         if self.workers == 1:
-            results = map(_language_row, tasks)
+            results = map(transformer, tasks)
         else:
             context = multiprocessing.get_context("fork")
             with ProcessPoolExecutor(max_workers=self.workers, mp_context=context) as executor:
-                results = executor.map(_language_row, tasks, chunksize=max(1, len(tasks) // (self.workers * 4)))
+                results = executor.map(transformer, tasks, chunksize=max(1, len(tasks) // (self.workers * 4)))
         ledgers: dict[str, list[dict]] = {"accepted": [], "quarantined": [], "rejected": []}
         for status, row in results:
             ledgers[status].append(row)
