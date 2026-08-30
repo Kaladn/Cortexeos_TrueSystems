@@ -14,6 +14,7 @@ import torch.nn.functional as F
 
 SCHEMA = "truesystems_symbolic_foundations_scorers@1"
 SEED = 61613
+UNSEEN_EXTERNAL_CALL = "UNSEEN_EXTERNAL_CALL"
 
 
 def canonical(value: Any) -> bytes:
@@ -103,7 +104,7 @@ def _artifact(path: Path) -> dict:
 def _verify_representation(root: Path) -> dict:
     manifest_path = root / "manifest.json"
     manifest = json.loads(manifest_path.read_bytes())
-    if manifest.get("schema") != "truesystems_symbolic_foundations_representation@1":
+    if manifest.get("schema") not in ("truesystems_symbolic_foundations_representation@1", "truesystems_symbolic_foundations_replacement@1"):
         raise ValueError("unsupported representation")
     for item in manifest["artifacts"].values():
         path = root / item["path"]
@@ -124,6 +125,7 @@ def _identity_maps(adapter_root: Path, representation_manifest: dict, representa
         for record in rows(representation_root / f"splits/external-{split}.jsonl"):
             external_values.add(record["center_call"]["name"])
             external_values.update(record["supplied_candidates"])
+    external_values.add(UNSEEN_EXTERNAL_CALL)
     return symbol_by_anchor, {value: index for index, value in enumerate(sorted(external_values))}
 
 
@@ -155,7 +157,7 @@ def _external_case(record: dict, identities: dict[str, int], device: torch.devic
     center = torch.tensor([[identities[record["center_call"]["name"]]]], dtype=torch.long, device=device)
     arguments = torch.tensor([kind_ids[x] for x in _argument_kinds(record)], dtype=torch.long, device=device)
     candidates = torch.tensor([identities[x] for x in record["supplied_candidates"]], dtype=torch.long, device=device)
-    target_value = record["expected_outcome"]["call_name"]
+    target_value = record["expected_outcome"].get("call_identity", record["expected_outcome"].get("call_name"))
     target = record["supplied_candidates"].index(target_value)
     _assert_candidate_boundary(record, target_value)
     return model, model(center, arguments, candidates), target
@@ -182,8 +184,9 @@ def build_scorer_readiness(representation_root: Path, adapter_root: Path, clean_
         raise FileExistsError(output)
     representation_root, adapter_root, clean_model_source = (x.resolve() for x in (representation_root, adapter_root, clean_model_source))
     manifest = _verify_representation(representation_root)
-    if manifest["evaluation_records_reserved"] != 1098:
-        raise ValueError("evaluation reservation changed")
+    reserved = manifest["evaluation_records_reserved"]
+    if reserved <= 0:
+        raise ValueError("evaluation reservation missing")
     symbols, external_ids = _identity_maps(adapter_root, manifest, representation_root)
     local_records = rows(representation_root / "splits/local-train.jsonl") + rows(representation_root / "splits/local-validation.jsonl")
     external_records = rows(representation_root / "splits/external-train.jsonl") + rows(representation_root / "splits/external-validation.jsonl")
@@ -192,13 +195,28 @@ def build_scorer_readiness(representation_root: Path, adapter_root: Path, clean_
         _assert_candidate_boundary(record, expected)
         if any(value not in symbols for value in [record["center_anchor"], *record["history"], *record["supplied_candidates"]]):
             raise ValueError("local identity absent from frozen six-byte lexicon")
+        if UNSEEN_EXTERNAL_CALL in record["supplied_candidates"]:
+            raise ValueError("external sentinel entered local candidate field")
     for record in external_records:
-        expected = record["expected_outcome"]["call_name"]
+        expected = record["expected_outcome"].get("call_identity", record["expected_outcome"].get("call_name"))
         _assert_candidate_boundary(record, expected)
         if any(value not in external_ids for value in [record["center_call"]["name"], *record["supplied_candidates"]]):
             raise ValueError("external identity absent from train/validation identity field")
     local_record = min(local_records, key=lambda x: x["record_id"])
-    external_record = min(external_records, key=lambda x: x["record_id"])
+    external_record = min((x for x in external_records if len(x["supplied_candidates"]) > 1), key=lambda x: x["record_id"])
+    known = next(value for value in sorted(external_ids) if value != UNSEEN_EXTERNAL_CALL)
+    synthetic = {
+        "center_call": {"name": known, "arguments": [], "keywords": []},
+        "supplied_candidates": [known, UNSEEN_EXTERNAL_CALL],
+    }
+    synthetic_checks = []
+    for expected in (known, UNSEEN_EXTERNAL_CALL):
+        fixture = {**synthetic, "expected_outcome": {"call_identity": expected}}
+        _seed(); _, logits, target = _external_case(fixture, external_ids, torch.device("cpu"))
+        loss = F.cross_entropy(logits.unsqueeze(0), torch.tensor([target]))
+        synthetic_checks.append({"expected": expected, "target_index": target, "finite_loss": bool(torch.isfinite(loss)), "candidate_ids_distinct": external_ids[known] != external_ids[UNSEEN_EXTERNAL_CALL]})
+    if not all(x["finite_loss"] and x["candidate_ids_distinct"] for x in synthetic_checks):
+        raise ValueError("sentinel synthetic fixture failed")
     retained = _load_retained_decoder(clean_model_source)
     cpu_a = _run_once(local_record, external_record, symbols, external_ids, "cpu")
     cpu_b = _run_once(local_record, external_record, symbols, external_ids, "cpu")
@@ -220,9 +238,11 @@ def build_scorer_readiness(representation_root: Path, adapter_root: Path, clean_
     result = {
         "schema": SCHEMA, "classification": "UNTRAINED_SCORERS_VERIFIED_NO_OPTIMIZER",
         "representation": _artifact(representation_root / "manifest.json"), "representation_release_id": manifest["release_id"],
-        "evaluation": {"reserved_records": 1098, "payloads_opened": False},
+        "evaluation": {"reserved_records": reserved, "payloads_opened": False},
         "retained_model": {**retained, "clean_source": str(clean_model_source), "expected_commit": "170ad86c", "weights_transferred": False},
         "candidate_contract": {"source": "record.supplied_candidates only", "generated_identity": False, "checked_records": len(local_records)+len(external_records)},
+        "sentinel_contract": {"identity": UNSEEN_EXTERNAL_CALL, "external_only": True, "meaning": "identity unseen by this scorer", "equivalence": False, "operation": False, "authority": False, "generated_resolution": False},
+        "sentinel_synthetic_checks": synthetic_checks,
         "smoke_records": {"local": local_record["record_id"], "external": external_record["record_id"], "splits_used": ["train", "validation"]},
         "cpu": {"repeat_exact": cpu_exact, **cpu_a}, "xpu": xpu,
         "future_training_device": "XPU" if xpu["selected_for_future_training"] else "CPU",

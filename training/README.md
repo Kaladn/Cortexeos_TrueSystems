@@ -264,3 +264,20 @@ PYTHONPATH=TrueCore python training/build_symbolic_foundations_scorers.py \
   --clean-model-source /external/isolated-model-source \
   --output /external/scorer-readiness-release
 ```
+
+After a consumed evaluation exposes an identity outside the frozen external
+field, `build_symbolic_foundations_replacement.py` creates a fresh reservation
+that permanently excludes the consumed source groups and checkpoints. Its only
+fallback identity is `UNSEEN_EXTERNAL_CALL`. The sentinel means solely that the
+exact external call identity was unseen by this scorer; original strings,
+source hashes, AST-unit identities, and coordinates remain in evidence. It is
+forbidden from local candidates, equivalence, operation authority, and
+generated resolution. The replacement release is not training authorization.
+
+```bash
+PYTHONPATH=TrueCore python training/build_symbolic_foundations_replacement.py \
+  --adapter /external/replacement-adapter-release \
+  --consumed-representation /external/consumed-representation \
+  --failed-experiment /external/failed-experiment \
+  --output /external/replacement-reservation
+```
