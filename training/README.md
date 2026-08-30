@@ -288,3 +288,14 @@ and external scorers independently, selects each checkpoint using validation
 loss only, then opens the sealed evaluation once. Known external identities and
 `UNSEEN_EXTERNAL_CALL` are reported separately. Authorization is always
 consumed and revoked; weights remain external and are never deployed.
+
+The authoritative continuation method is the Windows-origin
+`provisional-chat-v1` implementation at retained commit `170ad86c`.
+`build_historical_method_preparation.py` imports that source byte-for-byte and
+changes only the admitted source package and its derived maps. The Linux-only
+runtime change is injection of a `Path` for the historical hard-coded Windows
+`CORPUS` location. `build_historical_method_preflight.py` performs the original
+batch-1 forward/backward/clip probe with zero optimizer updates. Candidate
+scorers, GRUs, and their checkpoints are historical evidence only and forbidden
+from reuse. `run_historical_method_linux.py` must not be invoked without a new
+bounded authorization tied to the published preflight.

@@ -1,0 +1,19 @@
+"""No-optimizer-update XPU preflight for the exact historical training method."""
+from __future__ import annotations
+import json,sys
+from pathlib import Path
+import torch
+import torch.nn.functional as F
+from .historical_method_equivalence import _load_authority,canonical,sha,write
+
+def build_historical_preflight(preparation:Path,clean_method:Path,output:Path)->dict:
+ if output.exists():raise FileExistsError(output)
+ manifest=json.loads((preparation/"manifest.json").read_bytes());audit=json.loads((preparation/"method-equivalence.json").read_bytes());freeze=json.loads((preparation/"prepared/pretraining-freeze-receipt.json").read_bytes())
+ if not audit.get("method_equivalent") or manifest.get("optimizer_updates")!=0:raise ValueError("method audit failed")
+ method,authority=_load_authority(clean_method);method.CORPUS=preparation/"source-package";prepared=preparation/"prepared"
+ mapping=json.loads((prepared/"symbol-index-mapping.json").read_bytes());perm_to_dense={x["permanent_value"]:x["dense_model_index"] for x in mapping["entries"]};train=method.windows(method.read_paths(prepared/"train-paths.bin"),perm_to_dense);validation=method.windows(method.read_paths(prepared/"validation-paths.bin"),perm_to_dense)
+ if not torch.xpu.is_available() or torch.xpu.get_device_name(0)!="Intel(R) Arc(TM) Pro B70 Graphics":raise ValueError("historical XPU identity unavailable")
+ device=torch.device("xpu:0");torch.xpu.reset_peak_memory_stats();model=method.ChatDecoder(len(mapping["entries"]),device);field=method.ChatLocationField(prepared/"M002.jsonl.gz",perm_to_dense,device);inputs=method.ChatLocationInput(model.embedding,field);parameter_count=sum(p.numel() for p in model.parameters())
+ if parameter_count!=freeze["parameter_count"]:raise ValueError("parameter count mismatch")
+ x,y,valid=method.batch(train,[0],device);logits=model.decode(inputs(x),valid);loss=F.cross_entropy(logits.view(-1,logits.shape[-1]),y.view(-1),ignore_index=-100);loss.backward();torch.nn.utils.clip_grad_norm_(model.parameters(),1.0);torch.xpu.synchronize();peak_allocated=int(torch.xpu.max_memory_allocated());peak_reserved=int(torch.xpu.max_memory_reserved());model.zero_grad(set_to_none=True)
+ result={"schema":"truesystems_historical_method_preflight@1","classification":"METHOD_EQUIVALENT_NO_OPTIMIZER_UPDATES","preparation_release_id":manifest["release_id"],"authority":authority,"method_audit_sha256":sha((preparation/"method-equivalence.json").read_bytes()),"model":{"parameter_count":parameter_count,"vocabulary_size":len(mapping["entries"]),"architecture":freeze["architecture"]},"records":{"training_sessions":freeze["source_counts"]["train"],"training_windows":len(train),"training_positions":freeze["split_statistics"]["train"]["positions"],"validation_sessions":freeze["source_counts"]["validation"],"validation_windows":len(validation),"validation_positions":freeze["split_statistics"]["validation"]["positions"]},"execution":{"device":torch.xpu.get_device_name(0),"batch_size":1,"seed":1729,"optimizer_update_ceiling":5000,"early_stop_minimum_possible_update":2000,"expected_optimizer_updates":"UP_TO_5000; exact count is data-dependent under unchanged eight-check early stopping","no_update_probe":{"loss":float(loss.detach().cpu()),"gradient_clip_applied":1.0,"peak_allocated_bytes":peak_allocated,"peak_reserved_bytes":peak_reserved},"historical_observed_batch1_reserved_bytes":16112418816},"remaining_method_deviations":[],"runtime_equivalent_changes":["Windows absolute CORPUS path replaced by injected external Linux source-package Path"],"evaluation":{"test_sessions":manifest["source_counts"]["test"],"payload_opened":False},"training_execution_allowed":False,"optimizer_updates":0,"checkpoints_created":0,"model_training_performed":False,"authority_created":False};result["preflight_id"]=sha(canonical(result));write(output/"preflight.json",result);return result
