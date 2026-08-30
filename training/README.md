@@ -156,3 +156,18 @@ python training/build_syl_evidence.py \
   --output /path/to/output \
   --workers 24
 ```
+
+## Training coverage matrix
+
+`build_training_coverage_matrix.py` inventories frozen local operational and
+SYL releases against an explicit curriculum. It deliberately reports every
+concept as `UNTAGGED_NOT_MEASURED` until examples receive an auditable concept
+assignment. Raw source volume is never treated as proof of training coverage.
+The builder performs no intake, selection, model training, or authority change.
+
+```bash
+python training/build_training_coverage_matrix.py \
+  --release-manifest /path/to/release-set-manifest.json \
+  --syl-manifest /path/to/syl/manifest.json \
+  --output /external/test/library/output/coverage-release
+```
