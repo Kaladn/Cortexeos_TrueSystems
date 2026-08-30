@@ -1,0 +1,21 @@
+{
+  "schema": "truesystems_single_experiment_authorization@1",
+  "status": "AUTHORIZED_NOT_YET_EXECUTED",
+  "scope": "one supplied-candidate scoring experiment only",
+  "owner_authorization": "2026-08-30: okay. run the training",
+  "true_systems_commit_before_authorization": "c3c6cc0f47a6695a68dfb030f9ecc6576930f7f2",
+  "retained_model_commit": "170ad86c44a87cbbaa273719ac6231b2872d6f68",
+  "prerequisite_manifest_sha256": "232acb2f933f3c718f265177fcf34939cc9ac485c0e708b3bfbb3514a5ce4fe4",
+  "assignment_manifest_sha256": "88272e5b3706207976c4380ec03337da6d359d2dc3df697b1c6f43dc590ee04b",
+  "split_manifest_sha256": "1e9be86440ac083b8e91d6fb20054dbe2752c984658f71ea3d29f3f31689088e",
+  "representation_contract_sha256": "08815455ce9864af0a221c9cc4136d329565102cc87d450887744dde14cc97e0",
+  "training_records": 21,
+  "validation_records": 6,
+  "device": "xpu:0 Intel(R) Arc(TM) Pro B70 Graphics",
+  "cpu_optimizer_execution_allowed": false,
+  "evaluation_records_must_remain_sealed_until_checkpoint_selection": true,
+  "gaming_included": false,
+  "syl_five_channel_addition_included": false,
+  "runtime_deployment_allowed": false,
+  "unrestricted_future_training_allowed": false
+}
