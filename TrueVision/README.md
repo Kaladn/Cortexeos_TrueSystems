@@ -83,6 +83,23 @@ python scripts/truevision_visual_identity_intake.py \
   --workers 24
 ```
 
+## Language-to-visual-identity bridges
+
+`scripts/truevision_language_visual_identity_bridges.py` binds exact natural-
+language phrases to units or relationships already present in a frozen visual-
+identity release. It verifies the frozen manifest and accepted-ledger hashes,
+returns a target only for a unique explicit binding, and preserves native
+coordinates, timestamps, citations, and relationship IDs. Ambiguity is
+quarantined. Missing, stale, invalid, and appearance-semantic requests are
+rejected. It creates no visual relationship and executes no TrueVision action.
+
+```bash
+python scripts/truevision_language_visual_identity_bridges.py \
+  --source-manifest /path/to/bridge-source-manifest.json \
+  --output-root /path/to/output \
+  --workers 24
+```
+
 ## TrueFrameGen
 
 The compiled generation binaries live in the same Rust crate. They consume
