@@ -125,6 +125,14 @@ meaning cases.
 This builder does not contain a model, optimizer, training loop, checkpoint, or
 authorization change.
 
+A versioned source manifest may provide an explicit
+`evaluation_paraphrase_extensions` artifact. Each extension must name an
+existing evaluation-reserved bridge, retain its source group, paraphrase
+family, target, candidates, and expected outcome, and provide a distinct exact
+phrase with explicit user-authorized assignment evidence. Extensions cannot
+enter training or validation. The original source manifest remains byte-
+reproducible when no extension is supplied.
+
 ```bash
 python training/build_steering_prerequisites.py \
   --source-manifest /path/to/frozen-source-manifest.json \

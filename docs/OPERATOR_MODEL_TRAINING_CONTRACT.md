@@ -235,3 +235,9 @@ identity-only reservations during prerequisite checks. This layer contains no
 model-side scoring objective, optimizer, checkpoint, operation execution,
 authority, or training authorization. The retained model repository remains
 external and is not modified by these builders.
+
+Evaluation-only paraphrase extensions are allowed only as a new versioned
+prerequisite source. They must remain in the same evaluation-reserved family as
+their canonical bridge record, preserve the frozen target and candidate set,
+and leave training and validation bytes unchanged. They do not authorize
+training or open evaluation.

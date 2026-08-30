@@ -171,6 +171,13 @@ class SteeringPrerequisiteBuilder:
         if not isinstance(category_index, dict) or set(category_index) != required_categories or any(not isinstance(value, str) or len(value) != 64 for value in category_index.values()):
             raise ValueError("sealed refusal evaluation requires all fixed category identities")
         self.refusal_freeze = {"path": str(refusal_path), "sha256": digest(refusal_raw), "bytes": len(refusal_raw), "category_index": category_index}
+        extension = self.source.get("evaluation_paraphrase_extensions")
+        self.paraphrase_extensions: list[dict[str, Any]] = []
+        self.paraphrase_extension_freeze = None
+        if extension is not None:
+            extension_path, extension_raw = _artifact(extension)
+            self.paraphrase_extensions = [json.loads(line) for line in extension_raw.splitlines() if line]
+            self.paraphrase_extension_freeze = {"path": str(extension_path), "sha256": digest(extension_raw), "bytes": len(extension_raw), "records": len(self.paraphrase_extensions)}
         local_id = local_manifest["release_id"]; visual_id = digest(visual_manifest_raw)
         assignments = [_local_assignment(row, local_id, digest(local_manifest_raw)) for row in local_rows]
         assignments += [_visual_assignment(row, visual_id, digest(visual_manifest_raw)) for row in visual_rows]
@@ -201,9 +208,32 @@ class SteeringPrerequisiteBuilder:
             with ProcessPoolExecutor(max_workers=self.workers, mp_context=multiprocessing.get_context("fork")) as executor:
                 records = list(executor.map(_candidate_record, tasks, chunksize=max(1, len(tasks)//(self.workers*4))))
         records.sort(key=lambda row: row["record_id"])
+        assignment_by_id = {row["bridge_record_id"]: row for row in assignments}
+        extension_assignments = []
+        seen_extension_phrases = set()
+        for extension in self.paraphrase_extensions:
+            if extension.get("schema") != f"{SCHEMA}:evaluation_paraphrase_extension": raise ValueError("unsupported evaluation paraphrase extension")
+            bridge_id = extension.get("canonical_bridge_record_id"); base = assignment_by_id.get(bridge_id)
+            if base is None: raise ValueError("paraphrase extension bridge is not frozen authority")
+            if split_by_group[base["source_group_id"]] != "evaluation": raise ValueError("paraphrase extension may bind only an evaluation-reserved family")
+            if extension.get("source_group_id") != base["source_group_id"] or extension.get("paraphrase_family_id") != base["paraphrase_family_id"] or extension.get("domain") != base["domain"]:
+                raise ValueError("paraphrase extension membership differs from canonical evaluation record")
+            phrase = extension.get("phrase")
+            if not isinstance(phrase, str) or not phrase or phrase == base["phrase"] or extension.get("phrase_sha256") != digest(phrase.encode()):
+                raise ValueError("paraphrase extension must preserve a distinct exact phrase identity")
+            if extension.get("assignment_evidence") != "explicit_user_authorized_evaluation_only_paraphrase": raise ValueError("paraphrase extension lacks explicit assignment evidence")
+            if phrase in seen_extension_phrases or any(row["phrase"] == phrase for row in assignments): raise ValueError("duplicate paraphrase extension phrase")
+            seen_extension_phrases.add(phrase); derived = dict(base); derived["phrase"] = phrase; derived["phrase_sha256"] = extension["phrase_sha256"]
+            derived["extension_identity"] = digest(extension); extension_assignments.append(derived)
+        extension_tasks = [(row, pools[(row["domain"], "evaluation")], "evaluation") for row in extension_assignments]
+        if self.workers == 1: extension_records = list(map(_candidate_record, extension_tasks))
+        else:
+            with ProcessPoolExecutor(max_workers=self.workers, mp_context=multiprocessing.get_context("fork")) as executor:
+                extension_records = list(executor.map(_candidate_record, extension_tasks, chunksize=max(1, len(extension_tasks)//(self.workers*4))))
+        extension_records.sort(key=lambda row: row["record_id"])
         # Evaluation content stays sealed: checks receive identities and hashes only.
         published = {split: [row for row in records if row["split"] == split] for split in ("train", "validation")}
-        evaluation = [row for row in records if row["split"] == "evaluation"]
+        evaluation = sorted([row for row in records if row["split"] == "evaluation"] + extension_records, key=lambda row: row["record_id"])
         evaluation_reservations = [{"record_id": row["record_id"], "domain": row["domain"], "source_group_id": row["source_group_id"],
             "paraphrase_family_id": row["paraphrase_family_id"], "phrase_sha256": row["phrase_sha256"],
             "target_identity": next(item["target_identity"] for item in assignments if item["bridge_record_id"] == row["expected_outcome"]["bridge_record_id"]),
@@ -213,9 +243,14 @@ class SteeringPrerequisiteBuilder:
             "eligibility": "EVALUATION_RESERVED", "payload_status": "SEALED_NOT_OPENED_BY_PREREQUISITE_CHECKS"} for category, record_hash in sorted(self.refusal_freeze["category_index"].items())]
         assignment_manifest = {"schema": f"{SCHEMA}:assignment_manifest", "law": "explicit documented provenance and target meaning; no string-similarity assignment",
             "assignments": sorted([{key: row[key] for key in ("domain", "bridge_record_id", "phrase", "phrase_sha256", "target_identity", "relation_path_hash", "source_group_id", "paraphrase_family_id", "assignment_evidence")} for row in assignments], key=canonical)}
+        if extension_assignments:
+            assignment_manifest["evaluation_paraphrase_extensions"] = sorted([{key: row[key] for key in ("domain", "bridge_record_id", "phrase", "phrase_sha256", "target_identity", "relation_path_hash", "source_group_id", "paraphrase_family_id", "extension_identity")} for row in extension_assignments], key=canonical)
         split_manifest = {"schema": f"{SCHEMA}:split_manifest", "law": "source groups, families, exact phrases, targets, and relation paths never cross splits",
             "source_group_splits": dict(sorted(split_by_group.items())), "paraphrase_family_splits": dict(sorted(split_by_family.items())),
-            "evaluation_content_opened": False, "domain_counts": {domain: {split: sum(row["domain"] == domain and split_by_group[row["source_group_id"]] == split for row in assignments) for split in SPLITS} for domain in sorted({row["domain"] for row in assignments})}}
+            "evaluation_content_opened": False, "domain_counts": {domain: {split: sum(row["domain"] == domain and split_by_group[row["source_group_id"]] == split for row in assignments) + (sum(row["domain"] == domain for row in extension_assignments) if split == "evaluation" else 0) for split in SPLITS} for domain in sorted({row["domain"] for row in assignments})}}
+        if extension_assignments:
+            split_manifest["evaluation_paraphrase_extension_count"] = len(extension_assignments)
+            split_manifest["evaluation_paraphrase_family_pairs"] = {family: 1 + sum(row["paraphrase_family_id"] == family for row in extension_assignments) for family, split in sorted(split_by_family.items()) if split == "evaluation"}
         artifacts = {"assignments": _write_json(self.output/"assignment-manifest.json", assignment_manifest),
             "split_manifest": _write_json(self.output/"split-manifest.json", split_manifest),
             "train": _write_jsonl(self.output/"splits/train.jsonl", published["train"]),
@@ -230,9 +265,14 @@ class SteeringPrerequisiteBuilder:
             "resolver_verification_required": True}
         artifacts["representation"] = _write_json(self.output/"representation-contract.json", representation)
         manifest = {"schema": SCHEMA, "classification": "PREREQUISITES_ONLY_NOT_TRAINED", "source_manifest_sha256": digest(self.source_bytes),
-            "authorities": authorities, "sealed_refusal_evaluation": {key: self.refusal_freeze[key] for key in ("path", "sha256", "bytes")}, "records": len(records), "evaluation_records_opened": False,
+            "authorities": authorities, "sealed_refusal_evaluation": {key: self.refusal_freeze[key] for key in ("path", "sha256", "bytes")},
+            "records": len(records) + len(extension_records), "evaluation_records_opened": False,
             "training_performed": False, "optimizer_updates": 0, "checkpoints_created": 0, "training_execution_allowed_changed": False,
             "generic_hf_mixed": False, "artifacts": artifacts}
+        if extension_assignments:
+            manifest["evaluation_paraphrase_extensions"] = self.paraphrase_extension_freeze
+            manifest["base_bridge_records"] = len(records)
+            manifest["evaluation_paraphrase_records"] = len(extension_records)
         _write_json(self.output/"manifest.json", manifest)
         wall = time.perf_counter()-wall_start; self_end=resource.getrusage(resource.RUSAGE_SELF); child_end=resource.getrusage(resource.RUSAGE_CHILDREN)
         _write_json(self.output/"performance-receipt.json", {"schema": f"{SCHEMA}:performance_receipt", "workers": self.workers, "logical_cpus": os.cpu_count(), "elapsed_wall_seconds": wall,
