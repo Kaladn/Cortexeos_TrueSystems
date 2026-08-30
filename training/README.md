@@ -203,3 +203,20 @@ python training/build_symbolic_foundations_curation.py \
   --output /external/test/library/output/symbolic-foundations-curation \
   --workers 24
 ```
+## Symbolic-foundations preparation
+
+`build_symbolic_foundations_adapter.py` retains accepted NetworkX sources as
+exact external flat files and records Python AST observations without assigning
+graph meaning. Separately, it maps four local TrueSystems contracts into an
+isolated deterministic six-byte, signed 6-1-6 curriculum namespace. Its 13:1
+schedule changes presentation frequency only; observed source counts remain
+unchanged. Mathlib and DESPITE remain quarantined, and no training occurs.
+
+```bash
+python training/build_symbolic_foundations_adapter.py \
+  --curation-root /external/curation-release \
+  --source-root /external/frozen-source \
+  --output /external/preparation-release \
+  --workers 24 \
+  --local-to-external 13
+```
