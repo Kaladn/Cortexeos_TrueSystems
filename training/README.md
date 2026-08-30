@@ -104,3 +104,30 @@ python training/evaluate_language_to_local_bridges.py \
   --output-root "/path/to/output" \
   --workers 24
 ```
+
+## Steering-training prerequisites
+
+`build_steering_prerequisites.py` freezes a phrase with a finite supplied set
+of existing local or visual bridge records. Candidate-set identity hashes the
+sorted bridge IDs, so input ordering cannot alter candidate identity or the
+expected existing target. The representation permits a future model to score
+only supplied candidates; it cannot generate identifiers, relationships,
+operations, evidence, or authority.
+
+Memberships are assigned from documented source provenance and explicit target
+meaning, never string similarity. Source groups, paraphrase families, exact
+phrases, targets, and relationship paths cannot cross splits. Training and
+validation records are published separately. Evaluation content remains sealed
+behind identity-only `EVALUATION_RESERVED` manifests, including ambiguity,
+negation, stale, missing, unsupported, wrong-system, wrong-symbol, and visual-
+meaning cases.
+
+This builder does not contain a model, optimizer, training loop, checkpoint, or
+authorization change.
+
+```bash
+python training/build_steering_prerequisites.py \
+  --source-manifest /path/to/frozen-source-manifest.json \
+  --output-root /path/to/output \
+  --workers 24
+```

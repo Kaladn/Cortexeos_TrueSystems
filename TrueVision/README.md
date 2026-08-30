@@ -100,6 +100,22 @@ python scripts/truevision_language_visual_identity_bridges.py \
   --workers 24
 ```
 
+`scripts/evaluate_visual_identity_bridges.py` resolves phrases against that
+frozen bridge release without running TrueVision. It uses explicit frame/grid
+coordinates, relation terms, timestamps, citations, and already-stored paths.
+It returns a target only for unique evidence; ambiguity, missing or stale
+authority, invalid coordinates, negation, and appearance meanings remain
+non-target outcomes. Acceptance cases are explicitly separate from sealed
+future model-evaluation reservations.
+
+```bash
+python scripts/evaluate_visual_identity_bridges.py \
+  --bridge-release /path/to/frozen/visual-bridge-release \
+  --cases /path/to/prerequisite-acceptance-cases.jsonl \
+  --output-root /path/to/output \
+  --workers 24
+```
+
 ## TrueFrameGen
 
 The compiled generation binaries live in the same Rust crate. They consume

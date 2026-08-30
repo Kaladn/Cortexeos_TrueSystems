@@ -225,3 +225,13 @@ through DocuFilm, train weights, create checkpoints, or provide an operator
 runtime. Both provide a measured 24-worker process path and an exact
 single-worker reference mode. The current location-model experiment remains
 separate and unchanged.
+
+The first steering-training prerequisite layer is also implemented without
+changing that boundary. It defines order-independent supplied-candidate records
+over frozen local and visual bridge releases, provenance/meaning-based source
+groups and paraphrase families, contamination-safe split reservations, and a
+read-only visual bridge resolver. Evaluation payloads remain sealed behind
+identity-only reservations during prerequisite checks. This layer contains no
+model-side scoring objective, optimizer, checkpoint, operation execution,
+authority, or training authorization. The retained model repository remains
+external and is not modified by these builders.
