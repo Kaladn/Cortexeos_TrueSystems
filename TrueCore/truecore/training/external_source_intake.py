@@ -65,8 +65,8 @@ def _require_string(payload: dict[str, Any], field: str) -> str:
 def _verify_source_manifest(manifest: dict[str, Any], manifest_root: Path) -> dict[str, Any]:
     if manifest.get("schema") != f"{SCHEMA}:source_manifest":
         raise ValueError("unsupported source manifest schema")
-    if manifest.get("namespace") not in {LANGUAGE_RELEASE, CODE_RELEASE}:
-        raise ValueError("external source namespace must be a generic HF release")
+    if manifest.get("namespace") not in {LANGUAGE_RELEASE, CODE_RELEASE, BRIDGE_RELEASE}:
+        raise ValueError("external source namespace must be a declared external release")
     _require_string(manifest, "dataset_id")
     revision = _require_string(manifest, "revision")
     if not IMMUTABLE_REVISION_RE.fullmatch(revision):
@@ -107,7 +107,39 @@ def _verify_source_manifest(manifest: dict[str, Any], manifest_root: Path) -> di
     adapter = manifest.get("adapter")
     if not isinstance(adapter, dict) or not adapter.get("name") or not adapter.get("version"):
         raise ValueError("source manifest requires a named, versioned adapter")
-    return {"verified_artifacts": verified_artifacts, "slice_start": start, "slice_count": count}
+    local_release_freeze = None
+    if manifest["namespace"] == BRIDGE_RELEASE:
+        frozen = manifest.get("local_release_freeze")
+        if not isinstance(frozen, dict):
+            raise ValueError("bridge intake requires local_release_freeze")
+        release_set = frozen.get("release_set_manifest")
+        releases = frozen.get("releases")
+        if not isinstance(release_set, dict) or not isinstance(releases, list) or not releases:
+            raise ValueError("bridge freeze requires release-set and release artifacts")
+        frozen_artifacts = []
+        frozen_parts = [("release_set_manifest", release_set)]
+        for item in releases:
+            frozen_parts.extend((f"{item.get('release_name')}:{kind}", item.get(kind)) for kind in ("manifest", "records"))
+        for name, artifact in frozen_parts:
+            if not isinstance(artifact, dict):
+                raise ValueError("bridge freeze artifact is missing")
+            path = Path(_require_string(artifact, "path")).resolve()
+            expected = _require_string(artifact, "sha256")
+            raw = path.read_bytes()
+            if digest(raw) != expected or artifact.get("bytes") != len(raw):
+                raise ValueError(f"frozen local release artifact mismatch: {path}")
+            frozen_artifacts.append({"name": name, "path": str(path), "sha256": expected, "bytes": len(raw)})
+        declared = {item.get("release_name"): item for item in releases}
+        if set(declared) != {"LEVEL_1_CODE_LITERACY", "LEVEL_2_SYSTEM_RELATIONSHIPS"}:
+            raise ValueError("bridge freeze must name exactly Level 1 and Level 2")
+        for name, item in declared.items():
+            release_manifest = json.loads(Path(item["manifest"]["path"]).read_bytes())
+            if release_manifest.get("release_name") != name or release_manifest.get("release_id") != item.get("release_id"):
+                raise ValueError(f"frozen {name} identity mismatch")
+            if release_manifest.get("artifact", {}).get("sha256") != item["records"]["sha256"]:
+                raise ValueError(f"frozen {name} records hash is not manifest-bound")
+        local_release_freeze = {"verified_artifacts": frozen_artifacts, "releases": releases}
+    return {"verified_artifacts": verified_artifacts, "slice_start": start, "slice_count": count, "local_release_freeze": local_release_freeze}
 
 
 def _language_row(task: tuple[bytes, int, dict[str, Any], str]) -> tuple[str, dict[str, Any]]:
@@ -257,6 +289,90 @@ def _code_row(task: tuple[bytes, int, dict[str, Any], str]) -> tuple[str, dict[s
     return "accepted", record
 
 
+def _bridge_row(task: tuple[bytes, int, dict[str, Any], str, dict[str, dict[str, Any]]]) -> tuple[str, dict[str, Any]]:
+    raw_line, line_number, source, source_manifest_sha256, local_records = task
+    coordinate = source["row_coordinates"]["start"] + line_number - 1
+    provenance = {
+        "dataset_id": source["dataset_id"], "revision": source["revision"],
+        "configuration": source["configuration"], "split": source["split"],
+        "row_coordinate": coordinate, "raw_record_sha256": digest(raw_line),
+        "raw_slice_line": line_number, "source_manifest_sha256": source_manifest_sha256,
+    }
+    try:
+        row = json.loads(raw_line)
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "invalid_json", "detail": type(error).__name__}
+    if not isinstance(row, dict) or row.get("row_index") != coordinate:
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "row_coordinate_mismatch_or_non_object"}
+    phrase = row.get("phrase")
+    span = row.get("phrase_span")
+    relation = row.get("relation")
+    if not isinstance(phrase, str) or not phrase or not isinstance(span, list) or len(span) != 2 or not all(isinstance(value, int) for value in span):
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "invalid_phrase_or_span"}
+    if span[0] < 0 or span[1] > len(phrase) or span[0] >= span[1]:
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "phrase_span_out_of_bounds"}
+    candidates = row.get("candidate_target_record_hashes", [])
+    if candidates:
+        if not isinstance(candidates, list) or len(candidates) < 2 or not all(isinstance(value, str) and value in local_records for value in candidates):
+            return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "ambiguous_candidate_set_does_not_verify"}
+        return "quarantined", {
+            "schema": f"{SCHEMA}:quarantined", "provenance": provenance,
+            "reason": "multiple_plausible_local_targets", "phrase": phrase,
+            "phrase_span": span, "candidate_target_record_hashes": sorted(candidates),
+        }
+    target_hash = row.get("target_record_hash")
+    target = local_records.get(target_hash)
+    if target is None:
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "target_hash_not_in_frozen_local_release", "target_record_hash": target_hash}
+    if row.get("target_selection_record_hash") != target.get("selection_record_hash"):
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "target_selection_hash_mismatch", "target_record_hash": target_hash}
+    role_relation = {"call_edge": "calls", "import_edge": "imports", "state_read": "state_read", "state_written": "state_written"}.get(target.get("original_role"))
+    if relation not in {"refers_to", role_relation}:
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "relation_not_proven_by_target_role", "relation": relation}
+    path = row.get("local_relationship_path")
+    if not isinstance(path, list) or not path:
+        return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "missing_local_relationship_path"}
+    current_hash = target_hash
+    verified_path = []
+    for step in path:
+        if not isinstance(step, dict) or step.get("from_record_hash") != current_hash:
+            return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "relationship_path_discontinuity"}
+        current = local_records.get(current_hash)
+        next_hash = step.get("to_record_hash")
+        next_record = local_records.get(next_hash)
+        expected = {item.get("record_hash"): item.get("relationship") for item in current.get("parent_source_relationships", [])}
+        if next_record is None or expected.get(next_hash) != step.get("relationship"):
+            return "rejected", {"schema": f"{SCHEMA}:rejected", "provenance": provenance, "reason": "relationship_path_not_in_frozen_records"}
+        verified_path.append({
+            "from_record_hash": current_hash, "relationship": step["relationship"],
+            "to_record_hash": next_hash, "to_coordinates": next_record.get("file_coordinates"),
+        })
+        current_hash = next_hash
+    relation_line = None
+    if target.get("original_role") == "call_edge":
+        relation_line = target["original_record"].get("call_line")
+    elif target.get("original_role") == "import_edge":
+        relation_line = target["original_record"].get("target", {}).get("line")
+    record = {
+        "schema": f"{SCHEMA}:language_to_local_bridge", "namespace": BRIDGE_RELEASE,
+        "truth_status": "BRIDGE_DERIVED_LOCAL_TARGET_UNCHANGED", "local_authority": False,
+        "source_provenance": provenance,
+        "phrase_unit": {"text": phrase[span[0]:span[1]], "full_text": phrase, "span": span},
+        "relation": relation,
+        "local_target": {
+            "record_hash": target_hash, "selection_record_hash": target["selection_record_hash"],
+            "release_name": target["_frozen_release_name"], "source_system": target["source_system"],
+            "repository_identity": target["repository_identity"], "source_identity": target["source_identity"],
+            "file_coordinates": target.get("file_coordinates"), "relation_line": relation_line,
+        },
+        "local_relationship_path": verified_path,
+        "binding_evidence": "explicit_curated_frozen_record_hash_and_verified_path",
+        "forbidden_inferences": ["new_operation", "runtime_success", "local_truth_mutation", "name_similarity_binding"],
+    }
+    record["record_id"] = digest(record)
+    return "accepted", record
+
+
 class ExternalSourceIntakeBuilder:
     def __init__(self, source_manifest: Path, output_root: Path, workers: int = 24):
         self.source_manifest_path = source_manifest.resolve()
@@ -270,14 +386,51 @@ class ExternalSourceIntakeBuilder:
         self.source = json.loads(self.source_manifest_bytes)
         self.verification = _verify_source_manifest(self.source, self.source_manifest_path.parent)
 
+    def _load_bridge_local_records(self) -> dict[str, dict[str, Any]]:
+        selected_path = self.source_manifest_path.parent / self.source["source_artifact"]["path"]
+        selected = [json.loads(line) for line in selected_path.read_bytes().splitlines() if line]
+        selected_by_hash: dict[str, dict[str, Any]] = {}
+        for row in selected:
+            record_hash = row.get("record_hash")
+            if digest(row.get("original_record")) != record_hash:
+                raise ValueError("frozen local record original hash mismatch")
+            without_selection_hash = {key: value for key, value in row.items() if key not in {"selection_record_hash", "_frozen_release_name"}}
+            if digest(without_selection_hash) != row.get("selection_record_hash"):
+                raise ValueError("frozen local selection record hash mismatch")
+            if record_hash in selected_by_hash:
+                raise ValueError("duplicate local record hash in bridge freeze")
+            selected_by_hash[record_hash] = row
+        found: dict[str, dict[str, Any]] = {}
+        for release in self.verification["local_release_freeze"]["releases"]:
+            release_name = release["release_name"]
+            records_path = Path(release["records"]["path"])
+            with records_path.open("rb") as handle:
+                for raw_line in handle:
+                    candidate = json.loads(raw_line)
+                    record_hash = candidate.get("record_hash")
+                    if record_hash in selected_by_hash:
+                        frozen = {key: value for key, value in selected_by_hash[record_hash].items() if key != "_frozen_release_name"}
+                        if canonical(candidate) != canonical(frozen):
+                            raise ValueError("selected local record differs from frozen release")
+                        candidate["_frozen_release_name"] = release_name
+                        found[record_hash] = candidate
+        if set(found) != set(selected_by_hash):
+            raise ValueError("selected bridge record is absent from frozen local releases")
+        return found
+
     def _transform(self) -> tuple[list[dict], list[dict], list[dict]]:
         slice_path = self.source_manifest_path.parent / self.source["raw_slice"]["path"]
         lines = [line for line in slice_path.read_bytes().splitlines() if line]
         if len(lines) != self.verification["slice_count"]:
             raise ValueError("raw slice line count does not match frozen source manifest")
         manifest_hash = digest(self.source_manifest_bytes)
-        tasks = [(line, index, self.source, manifest_hash) for index, line in enumerate(lines, 1)]
-        transformer = _language_row if self.source["namespace"] == LANGUAGE_RELEASE else _code_row
+        tasks: list[tuple] = [(line, index, self.source, manifest_hash) for index, line in enumerate(lines, 1)]
+        if self.source["namespace"] == BRIDGE_RELEASE:
+            local_records = self._load_bridge_local_records()
+            tasks = [(*task, local_records) for task in tasks]
+            transformer = _bridge_row
+        else:
+            transformer = _language_row if self.source["namespace"] == LANGUAGE_RELEASE else _code_row
         if self.workers == 1:
             results = map(transformer, tasks)
         else:
@@ -320,6 +473,8 @@ class ExternalSourceIntakeBuilder:
             "quarantined": len(quarantined), "rejected": len(rejected),
             "source_text_normalization": "none", "truth_status": "NOT_LOCAL_TRUTH",
         }
+        if self.verification["local_release_freeze"] is not None:
+            receipt["frozen_local_release_artifacts"] = self.verification["local_release_freeze"]["verified_artifacts"]
         receipt_artifact = _write_json(self.output_root / "adapter-receipt.json", receipt)
         manifest = {
             "schema": SCHEMA, "classification": "EXTERNAL_GENERIC_NOT_LOCAL_TRUTH_NOT_TRAINED",

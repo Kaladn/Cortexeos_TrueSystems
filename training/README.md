@@ -64,8 +64,12 @@ performs no model training. The language adapter accepts source-supplied
 relations. The Python code adapter preserves exact source and source-supplied
 tests, extracts syntax-backed relations, and leaves every record
 `EXTERNAL_GENERIC_UNBOUND`; it neither executes code nor claims correctness.
-Local bridges remain reserved until implemented against their own explicit
-contract.
+The bridge adapter accepts only explicitly curated phrase spans bound to frozen
+Level 1 or Level 2 record hashes. It re-verifies the complete frozen release
+artifacts, target selection hashes, coordinates, and each stored parent edge.
+Multiple plausible targets are quarantined and stale hashes are rejected. A
+bridge can select existing machinery but cannot create an operation, assert
+runtime success, mutate local truth, or bind through name similarity alone.
 
 ```bash
 python training/build_external_source_intake.py \
