@@ -22,9 +22,11 @@ compare five independently preserved evidence channels:
 5. **Grouped symbol pattern** — a versioned deterministic grouping of observed
    fragments/paths, retaining every member identity and grouping receipt.
 
-No channel is semantics by itself. Channels four and five do not yet have an
-implemented canonical builder and must remain absent—not guessed—until one is
-frozen and accepted.
+No channel is semantics by itself. The canonical builder now derives channel
+four as exact contiguous two- and three-anchor subsequences of the admitted
+stream. Channel five contains only identical fragments observed at least
+twice. Neither derivation assigns meaning. Both retain members, occurrence
+coordinates, support, and receipts.
 
 ## Canonical candidate packet
 
@@ -37,8 +39,8 @@ frozen and accepted.
     "source_object": {"status": "observed", "evidence": []},
     "stable_anchor": {"status": "observed", "evidence": []},
     "anchor_sequence": {"status": "observed", "signed_lanes": {}, "paths": []},
-    "derived_symbol_fragment": {"status": "unavailable", "evidence": []},
-    "grouped_symbol_pattern": {"status": "unavailable", "evidence": []}
+    "derived_symbol_fragment": {"status": "observed", "fragments": []},
+    "grouped_symbol_pattern": {"status": "observed", "patterns": []}
   },
   "existing_relationship_vector": {
     "Local": null,
@@ -90,11 +92,14 @@ Before its first optimizer update:
    frozen; and
 8. train outside every source repository, then revoke the single authorization.
 
-The next experiment answers one narrow question: whether independently exposed
-source-object, stable-anchor, and anchor-sequence evidence improves selection
-among supplied candidates without authority violations. It cannot establish the
-value of derived fragments or grouped patterns until their deterministic
-builders exist.
+The deterministic construction is implemented by
+`TrueCore/truecore/training/syl_evidence.py`. It admits each exact frozen bridge
+phrase through DocuFilm, assigns dataset-local TrueMem symbols, derives all five
+channels, and runs non-learned lexicographic ablations. Its first fixed release
+did not beat the unchanged resolver: the strongest channel combination reached
+5/14 versus the 6/14 resolver baseline. Identical visual phrases bound to
+different frozen targets remain structurally ambiguous. No further training is
+authorized by this result.
 
 ## Later experimental matrix
 

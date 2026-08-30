@@ -139,3 +139,20 @@ python training/build_steering_prerequisites.py \
   --output-root /path/to/output \
   --workers 24
 ```
+
+## SYL evidence construction
+
+`build_syl_evidence.py` builds the deterministic five-channel SYL release over
+the frozen steering bridges. Each exact bridge phrase enters through DocuFilm.
+The release retains source-object provenance, dataset-local stable anchors,
+signed 6-1-6 lanes, exact two/three-anchor fragments, and recurring identical
+fragment patterns as separate fields. It performs no model training and does
+not authorize another optimizer run.
+
+```bash
+python training/build_syl_evidence.py \
+  --source-manifest /path/to/steering-source-manifest.json \
+  --prerequisite-release /path/to/steering-prerequisite-release \
+  --output /path/to/output \
+  --workers 24
+```
