@@ -137,17 +137,10 @@ def build_evidence_speech_sessions(
 
 
 def relationship_demands(question: str) -> list[dict[str, Any]]:
-    """Return exact signed query relationships without deleting glue positions."""
-    from truemem.engine.anchors import anchor_kind, anchorize
-    anchors = anchorize(question)
-    endpoints = {index for index, anchor in enumerate(anchors) if anchor_kind(anchor) in {"content", "relation"}}
-    result = []
-    for left in sorted(endpoints):
-        for right in sorted(endpoints):
-            distance = right - left
-            if left != right and -6 <= distance <= 6:
-                result.append({"center": anchors[left], "neighbor": anchors[right], "signed_distance": distance, "query_positions": [left, right]})
-    return result
+    """Compatibility route to the dataset-independent TrueMem law."""
+    from truemem.engine.query_ruling import relationship_demands as native_relationship_demands
+
+    return native_relationship_demands(question)
 
 
 def qualify_block_relationships(question: str, block: dict[str, Any], index: dict[str, Any]) -> dict[str, Any]:
