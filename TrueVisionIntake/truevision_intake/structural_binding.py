@@ -65,8 +65,12 @@ def stable_hash(value: object) -> str:
     return hashlib.sha256(canonical_bytes(value)).hexdigest()
 
 
-def structure_key(kind: str, exact_text: str) -> str:
-    identity = stable_hash({"kind": str(kind), "exact_text": str(exact_text)})
+def structure_key(kind: str, exact_text: str, *, identity_anchors: list[str] | None = None) -> str:
+    identity = stable_hash({
+        "kind": str(kind),
+        "identity_anchors": list(identity_anchors) if identity_anchors is not None else None,
+        "exact_text": None if identity_anchors is not None else str(exact_text),
+    })
     return f"object:structure:{str(kind).casefold()}:{identity}"
 
 
@@ -102,7 +106,8 @@ def compile_text_structures(
         if not anchor_children:
             continue
         kind = str(candidate["kind"])
-        key = structure_key(kind, exact)
+        identity_anchors = [str(row["anchor"]) for row in anchor_children if not str(row["anchor"]).startswith("boundary:")]
+        key = structure_key(kind, exact, identity_anchors=identity_anchors)
         byte_start = len(source[:start].encode("utf-8"))
         byte_end = len(source[:end].encode("utf-8"))
         basis = {
@@ -294,7 +299,9 @@ def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences
             continue
         rel_start = char_left + len(phrase) - len(phrase.lstrip())
         rel_end = char_right - len(phrase) + len(phrase.rstrip())
-        rel_key = structure_key("RELATION_PHRASE", exact_phrase)
+        phrase_children = [row for row in occurrences if int(row["char_start"]) >= rel_start and int(row["char_end"]) <= rel_end]
+        relation_identity = [str(row["anchor"]) for row in phrase_children if not str(row["anchor"]).startswith("boundary:")]
+        rel_key = structure_key("RELATION_PHRASE", exact_phrase, identity_anchors=relation_identity)
         pair = (str(left["occurrence_id"]), str(right["occurrence_id"]))
         if pair in seen:
             continue
@@ -311,7 +318,6 @@ def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences
             "status": "VERIFIED_STRUCTURE",
         }
         relation_occurrence_id = stable_hash(relation_basis)
-        phrase_children = [row for row in occurrences if int(row["char_start"]) >= rel_start and int(row["char_end"]) <= rel_end]
         relation_structures.append({
             "schema": f"{SCHEMA}:structure",
             **relation_basis,
