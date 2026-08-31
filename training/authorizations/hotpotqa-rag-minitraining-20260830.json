@@ -1,0 +1,20 @@
+{
+  "schema": "truesystems_single_experiment_authorization@1",
+  "scope": "ONE_HOTPOTQA_RAG_MINITRAINING_EXPERIMENT",
+  "owner_authorization": "2026-08-30: yes. intake all the way to binary then put the data into a minitraining so it lives near the model",
+  "preflight_id": "db4b9fbc15e5e4f03ab9b217337295af956b813113bf9ae5d81cb0ef4853b2e5",
+  "preparation_id": "b91077147a41e32ca552961b2e99a86fde631d10472d0519881cc6b845a27e83",
+  "benchmark_release_id": "5faf27503aff0388d53d5bce7a2ca51a3546bd56d1d8b5f2b8d2e7a5e7d3a949",
+  "historical_method_commit": "170ad86c44a87cbbaa273719ac6231b2872d6f68",
+  "historical_method_sha256": "823299a010d76ab6bbba02c1782e6d1f2241e5d42dfdb9ef82021aac8d8075ec",
+  "device": "Intel(R) Arc(TM) Pro B70 Graphics",
+  "method_changes_allowed": false,
+  "runtime_deployment_allowed": false,
+  "local_authority_creation_allowed": false,
+  "authorized": true,
+  "consumed": true,
+  "revoked": true,
+  "completed_checkpoint_sha256": "c128d527566f6840274bc6655e24592c9bd357c058b3e70bf4c1e72d6cae7103",
+  "completed_optimizer_updates": 5000,
+  "sealed_evaluation_id": "9cee6cf7dd432aace741a2cd76b67c1d4175a099ca1826d94ff8beb50864bd2a"
+}
