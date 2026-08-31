@@ -37,12 +37,14 @@ class XpuStructuralGraph:
         edge_sources = [int(row["subject_symbol"][2:], 16) for row in self.relations]
         edge_relations = [int(row["relation_symbol"][2:], 16) for row in self.relations]
         edge_targets = [int(row["object_symbol"][2:], 16) for row in self.relations]
+        edge_blocks = [int(row["block_ordinal"]) for row in self.relations]
         self.structure_symbols = torch.tensor(structure_symbols, dtype=torch.long, device=self.device)
         self.structure_blocks = torch.tensor(structure_blocks, dtype=torch.long, device=self.device)
         self.edge_sources = torch.tensor(edge_sources, dtype=torch.long, device=self.device)
         self.edge_relations = torch.tensor(edge_relations, dtype=torch.long, device=self.device)
         self.edge_targets = torch.tensor(edge_targets, dtype=torch.long, device=self.device)
-        _assert_xpu(self.structure_symbols, self.structure_blocks, self.edge_sources, self.edge_relations, self.edge_targets)
+        self.edge_blocks = torch.tensor(edge_blocks, dtype=torch.long, device=self.device)
+        _assert_xpu(self.structure_symbols, self.structure_blocks, self.edge_sources, self.edge_relations, self.edge_targets, self.edge_blocks)
         torch.xpu.synchronize()
         self.load_receipt = {
             "schema": "truemem_xpu_structural_projection@1",
@@ -72,15 +74,20 @@ class XpuStructuralGraph:
             "silent_device_fallback": False,
         }
 
-    def walk(self, structure_keys: list[str], *, maximum_hops: int = 6) -> dict[str, Any]:
+    def walk(self, structure_keys: list[str], *, maximum_hops: int = 6, start_block_ids: list[int] | None = None) -> dict[str, Any]:
         starts = sorted({self.key_to_symbol[key] for key in structure_keys if key in self.key_to_symbol})
         if not starts:
             return {"status": "NO_VALID_FRONTIER", "paths": [], "device": self.device_name}
         frontier = torch.tensor(starts, dtype=torch.long, device=self.device)
+        if start_block_ids:
+            frontier_blocks = torch.tensor(sorted(set(start_block_ids)), dtype=torch.long, device=self.device)
+        else:
+            frontier_blocks = torch.unique(self.structure_blocks[torch.isin(self.structure_symbols, frontier)], sorted=True)
         visited = torch.unique(frontier, sorted=True)
+        visited_blocks = torch.unique(frontier_blocks, sorted=True)
         steps = []
         for hop in range(maximum_hops):
-            edge_mask = torch.isin(self.edge_sources, frontier)
+            edge_mask = torch.isin(self.edge_sources, frontier) & torch.isin(self.edge_blocks, frontier_blocks)
             edge_ids = torch.nonzero(edge_mask, as_tuple=False).flatten()
             if not edge_ids.numel():
                 break
@@ -96,16 +103,19 @@ class XpuStructuralGraph:
             if not frontier.numel():
                 break
             visited = torch.unique(torch.cat((visited, frontier)), sorted=True)
-            _assert_xpu(edge_mask, edge_ids, targets, chosen, frontier, visited)
+            posting_mask = torch.isin(self.structure_symbols, frontier)
+            frontier_blocks = torch.unique(self.structure_blocks[posting_mask], sorted=True)
+            visited_blocks = torch.unique(torch.cat((visited_blocks, frontier_blocks)), sorted=True)
+            _assert_xpu(edge_mask, edge_ids, targets, chosen, frontier, visited, posting_mask, frontier_blocks, visited_blocks)
             chosen_cpu = [int(value) for value in chosen.cpu().tolist()]
             steps.append({
                 "hop": hop + 1,
                 "edges": [self.relations[index] for index in chosen_cpu],
                 "frontier_symbols": [int(value) for value in frontier.cpu().tolist()],
+                "frontier_block_count": int(frontier_blocks.numel()),
             })
-        block_mask = torch.isin(self.structure_symbols, visited)
-        blocks = torch.unique(self.structure_blocks[block_mask], sorted=True)
-        _assert_xpu(block_mask, blocks)
+        blocks = visited_blocks
+        _assert_xpu(blocks)
         torch.xpu.synchronize()
         return {
             "status": "NO_VALID_FRONTIER" if not steps else "FRONTIER_EXHAUSTED",

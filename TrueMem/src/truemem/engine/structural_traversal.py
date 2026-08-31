@@ -29,10 +29,14 @@ def traverse_structural_evidence(
     question: str,
     *,
     selected_question_structure_keys: list[str] | None = None,
+    admitted_start_block_ids: list[int] | None = None,
     required_structure_kinds: list[str] | None = None,
     maximum_hops: int = 6,
+    loaded_graph: XpuStructuralGraph | None = None,
+    decoded_graph: dict[str, list[dict[str, Any]]] | None = None,
+    verified_receipt: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    verification = verify_structural_graph(paths)
+    verification = verified_receipt or verify_structural_graph(paths)
     if verification["status"] != "PASS":
         return {"status": "STALE_PROVENANCE", "verification": verification, "operation_executed": False}
     overlay = _question_compile(question)
@@ -40,9 +44,24 @@ def traverse_structural_evidence(
     selected = list(selected_question_structure_keys or sorted(verified_overlay_keys))
     if any(key not in verified_overlay_keys for key in selected):
         return {"status": "INVALID_STRUCTURE_PATH", "operation_executed": False, "invented_structure_rejected": True}
-    graph = XpuStructuralGraph(paths.root)
-    walk = graph.walk(selected, maximum_hops=maximum_hops)
-    stored = read_structural_graph(paths.state / "structure_graph.awbin")
+    stored = decoded_graph or read_structural_graph(paths.state / "structure_graph.awbin")
+    admitted_blocks = {int(value) for value in (admitted_start_block_ids or [])}
+    admitted_keys: set[str] = set()
+    # Physical records intentionally retain symbols rather than duplicate keys.
+    # Resolve admitted source-block structures through the dataset lexicon.
+    lexicon = json.loads(paths.lexicon_path.read_text(encoding="utf-8"))
+    symbol_to_key = {str(row["symbol"]): str(row["anchor"]) for row in lexicon["anchors"]}
+    for row in stored["structures"]:
+        if int(row["block_ordinal"]) in admitted_blocks:
+            key = symbol_to_key.get(str(row["symbol"]))
+            if key:
+                admitted_keys.add(key)
+    if admitted_blocks:
+        selected = sorted(set(selected) & admitted_keys)
+    else:
+        selected = sorted(set(selected))
+    graph = loaded_graph or XpuStructuralGraph(paths.root)
+    walk = graph.walk(selected, maximum_hops=maximum_hops, start_block_ids=sorted(admitted_blocks))
     visited = set(walk.get("visited_symbols") or [])
     reached = [row for row in stored["structures"] if int(row["symbol"][2:], 16) in visited]
     required = sorted(set(required_structure_kinds or []))
@@ -71,6 +90,7 @@ def traverse_structural_evidence(
         "question_sha256": hashlib.sha256(question.encode("utf-8")).hexdigest(),
         "question_overlay_id": overlay["compilation_id"],
         "selected_verified_structure_keys": selected,
+        "admitted_start_block_ids": sorted(admitted_blocks),
         "required_structure_kinds": required,
         "found_structure_kinds": found_kinds,
         "missing_structure_kinds": missing,
