@@ -28,11 +28,12 @@ def predict_anchor_path(
     top_k: int = 6,
     beam_width: int = 6,
     cloud_depth: int = 3,
+    allowed_anchors: set[str] | None = None,
 ) -> dict[str, Any]:
     if not resolved_history:
         raise ValueError("resolved_history must contain a current anchor")
-    if int(top_k) != 6:
-        raise ValueError("TrueMem prediction TopK is fixed at six")
+    if int(top_k) not in {3, 6}:
+        raise ValueError("TrueMem prediction TopK must be three or six")
     if max_new_anchors < 0 or beam_width < 1 or cloud_depth < 1:
         raise ValueError("invalid prediction bounds")
 
@@ -54,7 +55,16 @@ def predict_anchor_path(
         expanded: list[dict[str, Any]] = []
         for branch in beam:
             current = branch["path"][-1]
-            candidates = _candidate_field(current, next_counts, graph, branch["path"], query_demand, cloud_depth)
+            candidates = _candidate_field(
+                current,
+                next_counts,
+                graph,
+                branch["path"],
+                query_demand,
+                cloud_depth,
+                top_k=int(top_k),
+                allowed_anchors=allowed_anchors,
+            )
             if not candidates:
                 completed.append({**branch, "stop_reason": "evidence_dead_end"})
                 continue
@@ -96,7 +106,7 @@ def predict_anchor_path(
         "schema": "truemem_anchor_prediction_walk@2",
         "method": "moving_6_1_6_relationship_vector_prediction",
         "selection_method": "deterministic_lexicographic_vector_no_weighted_score",
-        "top_k": 6,
+        "top_k": int(top_k),
         "beam_width": int(beam_width),
         "resolved_history": list(resolved_history),
         "query_demand_anchors": query_demand,
@@ -122,6 +132,7 @@ def predict_anchor_path(
             "anchor_frequency_source": "native_dataset_anchor_counts" if anchor_frequencies else "relation_count_fallback",
             "measurements_collapsed": False,
             "random_sampling": False,
+            "candidate_workspace_filter": "explicit_allowed_anchor_set" if allowed_anchors is not None else "none",
         },
     }
 
@@ -213,8 +224,24 @@ def citation_coordinates_for_path(path: list[str], *, blocks: Iterable[dict[str,
     return out
 
 
-def _candidate_field(current: str, next_counts: dict[str, Counter[str]], graph: RelationshipGraph, history: list[str], query_demand: list[str], cloud_depth: int) -> list[dict[str, Any]]:
-    ranked = sorted(next_counts.get(current, {}).items(), key=lambda item: (-item[1], item[0]))[:6]
+def _candidate_field(
+    current: str,
+    next_counts: dict[str, Counter[str]],
+    graph: RelationshipGraph,
+    history: list[str],
+    query_demand: list[str],
+    cloud_depth: int,
+    *,
+    top_k: int,
+    allowed_anchors: set[str] | None,
+) -> list[dict[str, Any]]:
+    ranked = sorted(
+        (
+            item for item in next_counts.get(current, {}).items()
+            if allowed_anchors is None or item[0] in allowed_anchors
+        ),
+        key=lambda item: (-item[1], item[0]),
+    )[:top_k]
     total = sum(count for _anchor, count in ranked)
     field = []
     for rank, (anchor, count) in enumerate(ranked, start=1):
@@ -229,10 +256,16 @@ def _candidate_field(current: str, next_counts: dict[str, Counter[str]], graph: 
             }
             for distance, previous in enumerate(reversed(history[-6:]), start=1)
         ]
-        cloud_paths = graph.strongest_paths(query_demand, anchor, max_depth=cloud_depth, max_paths=6)
+        cloud_paths = graph.strongest_paths(query_demand, anchor, max_depth=cloud_depth, max_paths=top_k)
         forward = [
             {"anchor": future, "lane": graph.lane(anchor, future, 1), "edge": graph.edge(anchor, future)}
-            for future, _future_count in sorted(next_counts.get(anchor, {}).items(), key=lambda item: (-item[1], item[0]))[:6]
+            for future, _future_count in sorted(
+                (
+                    item for item in next_counts.get(anchor, {}).items()
+                    if allowed_anchors is None or item[0] in allowed_anchors
+                ),
+                key=lambda item: (-item[1], item[0]),
+            )[:top_k]
         ]
         vector = {
             "Local": local_lane,
