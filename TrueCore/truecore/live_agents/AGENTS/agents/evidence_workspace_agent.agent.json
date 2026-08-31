@@ -1,0 +1,40 @@
+{
+  "agent_id": "evidence_workspace_agent",
+  "id": "evidence_workspace_agent",
+  "catalog_id": "evidence_workspace_agent",
+  "name": "Evidence Workspace Agent",
+  "version": "1.0.0",
+  "description": "Coordinates a bounded evidence work order across explicitly supplied read-only TrueSystems services and returns a source-bound evidence workspace.",
+  "runtime_language": "python",
+  "entrypoint": "truecore/agents/evidence_workspace.py",
+  "entrypoint_hash": "sha256:3dd4f4bc9562f8652dd875a7a79e83d9e7540645cc5cc5cc056bfddd7b13c0f8",
+  "allowed_reads": [
+    "declared_truesystems_evidence_services",
+    "service_receipts",
+    "frozen_work_order"
+  ],
+  "allowed_writes": [],
+  "requires_approval": false,
+  "approval_phrase": "",
+  "mutation_class": "read_only",
+  "dry_run_supported": true,
+  "log_stream": "agent_decision",
+  "test_command": [
+    "python",
+    "-m",
+    "py_compile",
+    "truecore/agents/evidence_workspace.py"
+  ],
+  "risk_tier": 1,
+  "prompt_only_allowed": false,
+  "required_params": [
+    "work_order",
+    "service_registry"
+  ],
+  "task_class": "bounded_evidence_workspace",
+  "output_schema": "truecore_evidence_workspace_agent@1",
+  "activation_status": "IMPLEMENTED_NOT_REGISTERED",
+  "model_authority": false,
+  "evidence_authority": false,
+  "operation_authority": false
+}
