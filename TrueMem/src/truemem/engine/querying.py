@@ -106,21 +106,6 @@ def query(
     if not direction_anchors:
         raise ValueError("question produced no answer-direction anchors")
     q_counter = Counter(direction_anchors)
-    cloud_gate = dataset_cloud_gate(paths, question, q_counter)
-    if not cloud_gate["approved"]:
-        output = _cloud_mismatch_result(
-            paths=paths,
-            dataset_id=dataset_id,
-            question=question,
-            q_counter=q_counter,
-            readiness=readiness,
-            cloud_gate=cloud_gate,
-        )
-        qa_record = append_query_record(paths, output)
-        output["qa_record"] = qa_record
-        write_json(Path(str(output["output_path"])), output)
-        return with_protected_notice(output)
-
     blocks = read_blocks(paths)
     block_anchor_rows = read_block_anchor_rows(paths)
     metadata_filter = build_metadata_filter(created_after=created_after, created_before=created_before, speaker=speaker)
@@ -129,6 +114,22 @@ def query(
     anchor_focus = build_anchor_focus(
         paths, question, block_anchor_rows=block_anchor_rows, blocks=blocks,
     )
+    cloud_gate = dataset_cloud_gate(paths, question, q_counter, anchor_focus=anchor_focus)
+    if not cloud_gate["approved"]:
+        output = _cloud_mismatch_result(
+            paths=paths,
+            dataset_id=dataset_id,
+            question=question,
+            q_counter=q_counter,
+            readiness=readiness,
+            cloud_gate=cloud_gate,
+            anchor_focus=anchor_focus,
+        )
+        qa_record = append_query_record(paths, output)
+        output["qa_record"] = qa_record
+        write_json(Path(str(output["output_path"])), output)
+        return with_protected_notice(output)
+
     relation_neighbors = top_relation_neighbors(paths, q_counter, limit=16)
     raw_candidate_blocks = score_blocks(paths, blocks, block_anchor_rows, q_counter, relation_neighbors, top_k=max(top_k * 5, 25))
     qualified = qualify_evidence(question, Counter(anchorize(question)), raw_candidate_blocks, top_k=top_k)
@@ -137,6 +138,7 @@ def query(
     structural_evidence = _structural_evidence_sidecar(
         paths, question, qualified["locations"], anchor_focus["seed_block_ordinals"],
     )
+    focus_locations = _focus_locations(anchor_focus, blocks)
 
     answer_packet = {
         "instruction": "Use cited local evidence coordinates only. This packet is a facsimile output, not source evidence.",
@@ -145,6 +147,7 @@ def query(
         "qualification_receipts": qualified["receipts"],
         "locations": qualified["locations"],
         "rejected_locations": qualified["rejected"],
+        "focus_locations": focus_locations,
         "anchor_prediction_answer": anchor_prediction_answer,
         "structural_evidence": structural_evidence,
     }
@@ -191,7 +194,43 @@ def query(
     return with_protected_notice(output)
 
 
-def dataset_cloud_gate(paths: DatasetPaths, question: str, q_counter: Counter[str]) -> dict[str, Any]:
+def _focus_locations(anchor_focus: dict[str, Any], blocks: dict[int, dict[str, Any]]) -> list[dict[str, Any]]:
+    """Bind generic focus seeds to exact source coordinates without reranking."""
+    reasons_by_block: dict[int, set[str]] = {}
+    anchors_by_block: dict[int, set[str]] = {}
+    for area in anchor_focus.get("occurrence_focus_areas") or []:
+        block = int(area["block_ordinal"])
+        reasons_by_block.setdefault(block, set()).update(str(value) for value in area.get("reasons") or [])
+        anchors_by_block.setdefault(block, set()).update(str(value) for value in area.get("matched_anchors") or [])
+    for group in anchor_focus.get("focus_groups") or []:
+        for value in group.get("parent_identity_block_ordinals") or []:
+            block = int(value)
+            reasons_by_block.setdefault(block, set()).add("exact_parent_identity")
+            anchors_by_block.setdefault(block, set()).update(str(anchor) for anchor in group.get("anchors") or [])
+    out = []
+    for block in anchor_focus.get("seed_block_ordinals") or []:
+        source = blocks.get(int(block))
+        if source is None:
+            continue
+        out.append({
+            "schema": "truemem_anchor_focus_location@1",
+            "block_ordinal": int(block),
+            "block_id": source.get("block_id"),
+            "citation": source.get("marker"),
+            "citation_id": source.get("citation_id"),
+            "file_path": source.get("file_path"),
+            "line_start": source.get("line_start"),
+            "line_end": source.get("line_end"),
+            "text_hash": source.get("text_hash"),
+            "matched_anchors": sorted(anchors_by_block.get(int(block), set())),
+            "focus_reasons": sorted(reasons_by_block.get(int(block), set())),
+            "native_rank_claimed": False,
+            "authority": "admitted_source_coordinates",
+        })
+    return out
+
+
+def dataset_cloud_gate(paths: DatasetPaths, question: str, q_counter: Counter[str], *, anchor_focus: dict[str, Any] | None = None) -> dict[str, Any]:
     question_terms = significant_question_terms(answer_direction_anchors(list(q_counter)))
     anchor_counts = _anchor_observation_counts(paths)
     present = [anchor for anchor in question_terms if int(anchor_counts.get(anchor, 0)) > 0]
@@ -214,10 +253,18 @@ def dataset_cloud_gate(paths: DatasetPaths, question: str, q_counter: Counter[st
     else:
         approved = True
         reject_reason = None
+    native_approved = approved
+    focus_seeds = list((anchor_focus or {}).get("seed_block_ordinals") or [])
+    if not approved and focus_seeds:
+        approved = True
+        reject_reason = None
     return {
         "schema": "truemem_dataset_cloud_gate@1",
         "question": question,
         "approved": approved,
+        "native_approved": native_approved,
+        "focus_override": bool(approved and not native_approved),
+        "focus_seed_block_ordinals": focus_seeds,
         "threshold": 0.60,
         "coverage": round(float(coverage), 4),
         "significant_question_anchors": question_terms,
@@ -239,6 +286,7 @@ def _cloud_mismatch_result(
     q_counter: Counter[str],
     readiness: dict[str, Any],
     cloud_gate: dict[str, Any],
+    anchor_focus: dict[str, Any],
 ) -> dict[str, Any]:
     answer_packet = {
         "instruction": "Dataset cloud gate refused before TopK. No retrieval or answer generation ran.",
@@ -276,6 +324,7 @@ def _cloud_mismatch_result(
         "scope": "dataset_local",
         "question": question,
         "question_anchors": anchorize(question),
+        "lexicon_anchor_focus": anchor_focus,
         "answer_direction_anchors": list(q_counter),
         "relation_neighbors": [],
         "count_backend": COUNT_BACKEND,
