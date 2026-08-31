@@ -101,6 +101,7 @@ from .query_ruling import (
     relationship_demands,
     validate_ruling_anchor_groups,
 )
+from .query_pressure_plan import compile_query_pressure_plan
 from .operator_skills import available_operator_skills, execute_operator_skill
 from .evidence_operands import (
     bind_operator_operands,

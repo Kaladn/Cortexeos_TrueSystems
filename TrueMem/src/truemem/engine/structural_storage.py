@@ -64,6 +64,7 @@ def write_structural_graph(paths: Any, compilations: list[dict[str, Any]], symbo
                 "direction": row["direction"],
                 "status": row["status"],
                 "subject_binding_kind": row.get("subject_binding_kind", "EXACT_OCCURRENCE"),
+                "explicit_alias": bool(row.get("explicit_alias", False)),
                 "relation_id": row["relation_id"],
             })
     structures.sort(key=lambda row: (row["symbol"], row["block_ordinal"], row["byte_start"], row["occurrence_id"]))

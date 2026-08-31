@@ -13,6 +13,7 @@ KINDS = frozenset({
     "EXACT_RELATION_FIELD",
     "EXACT_CONTEXT_ANCHORS",
     "EXACT_PARENT_TRANSITION",
+    "EXPLICIT_ALIAS",
 })
 
 
@@ -49,6 +50,9 @@ def validate_pressure_points(
         mention_structures = tuple(sorted(set(map(str, row.get("mention_structure_keys") or []))))
         target_structures = tuple(sorted(set(map(str, row.get("target_structure_keys") or []))))
         transition_context = tuple(map(str, row.get("transition_context_anchor_keys") or []))
+        transition_context_mode = str(row.get("transition_context_mode") or "ALL")
+        if transition_context_mode not in {"ALL", "ANY"}:
+            raise ValueError("INVALID_TRANSITION_CONTEXT_MODE")
         if any(value not in admitted_keys for value in exact_structures + mention_structures + target_structures):
             raise ValueError("UNADMITTED_PRESSURE_STRUCTURE")
         if any(value not in admitted_keys for value in relation_fields + context_anchors + transition_context):
@@ -72,6 +76,7 @@ def validate_pressure_points(
             "mention_structure_keys": list(mention_structures),
             "target_structure_keys": list(target_structures),
             "transition_context_anchor_keys": list(transition_context),
+            "transition_context_mode": transition_context_mode,
         }
         normalized["pressure_hash"] = hashlib.sha256(canonical_bytes(normalized)).hexdigest()
         rows.append(normalized)

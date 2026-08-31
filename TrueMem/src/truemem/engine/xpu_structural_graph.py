@@ -96,6 +96,17 @@ class XpuStructuralGraph:
         }
         for name, values in tensors.items():
             setattr(self, name, torch.tensor(values, dtype=torch.long, device=self.device))
+        self.edge_explicit_alias = torch.tensor(
+            [bool(row.get("explicit_alias")) for row in self.relations],
+            dtype=torch.bool, device=self.device,
+        )
+        self.alias_cue_symbols = {
+            anchor: torch.tensor(
+                sorted(symbol for symbol, text in self.symbol_to_anchor.items() if text.casefold() == anchor),
+                dtype=torch.long, device=self.device,
+            )
+            for anchor in ("alias", "also", "as", "called", "formerly", "known")
+        }
         occurrence_order = torch.argsort(self.occurrence_symbols, stable=True)
         self.form_symbols, form_counts = torch.unique_consecutive(
             self.occurrence_symbols[occurrence_order], return_counts=True,
@@ -248,6 +259,32 @@ class XpuStructuralGraph:
         _assert_xpu(qualified)
         return qualified
 
+    def _bounded_context_any_qualification(
+        self,
+        occurrences: torch.Tensor,
+        required_symbols: list[int],
+        *,
+        maximum_local_hops: int = 6,
+    ) -> torch.Tensor:
+        """Prove at least one question-derived anchor in a bounded local cloud."""
+        owners, cloud_symbols, _, _ = self._occurrence_anchor_cloud(
+            occurrences, maximum_local_hops=maximum_local_hops,
+        )
+        if not required_symbols:
+            return torch.zeros(occurrences.numel(), dtype=torch.bool, device=self.device)
+        matched = torch.isin(cloud_symbols, torch.tensor(
+            sorted(set(required_symbols)), dtype=torch.long, device=self.device,
+        ))
+        found = torch.zeros(occurrences.numel(), dtype=torch.long, device=self.device)
+        if bool(matched.any().item()):
+            found.scatter_add_(
+                0, owners[matched],
+                torch.ones(int(matched.sum().item()), dtype=torch.long, device=self.device),
+            )
+        qualified = found > 0
+        _assert_xpu(qualified)
+        return qualified
+
     def _context_witness_records(
         self,
         occurrence_index: int,
@@ -281,6 +318,31 @@ class XpuStructuralGraph:
                 "anchor": self.symbol_to_anchor[required],
             })
         return records
+
+    def _explicit_alias_relation_mask(self, relation_edges: torch.Tensor) -> torch.Tensor:
+        """Recognize exact admitted alias cues inside relation occurrences."""
+        if not relation_edges.numel():
+            return torch.empty(0, dtype=torch.bool, device=self.device)
+        stored = self.edge_explicit_alias[relation_edges]
+        relation_occurrences = self.edge_relation_occurrences[relation_edges]
+        owners, symbols = self._expand_csr(
+            self.occurrence_child_offsets, self.occurrence_child_symbols, relation_occurrences,
+        )
+
+        def has(anchor: str) -> torch.Tensor:
+            values = self.alias_cue_symbols[anchor]
+            result = torch.zeros(relation_edges.numel(), dtype=torch.long, device=self.device)
+            if not values.numel():
+                return result > 0
+            matched = torch.isin(symbols, values)
+            if bool(matched.any().item()):
+                result.scatter_add_(0, owners[matched], torch.ones(int(matched.sum().item()), dtype=torch.long, device=self.device))
+            return result > 0
+
+        derived = (has("known") & has("as")) | (has("called") & (has("also") | has("formerly"))) | has("alias")
+        result = stored | derived
+        _assert_xpu(result)
+        return result
 
     def _make_csr(self, row_count: int, pairs: list[tuple[int, int]]) -> tuple[torch.Tensor, torch.Tensor]:
         ordered = sorted(pairs, key=lambda row: (row[0], row[1]))
@@ -466,6 +528,20 @@ class XpuStructuralGraph:
                             "relation_occurrence": self.structures[self.occurrence_to_index[edge["relation_occurrence_id"]]],
                             "object_occurrence": self.structures[self.occurrence_to_index[edge["object_occurrence_id"]]],
                         })
+                elif spec["kind"] == "EXPLICIT_ALIAS":
+                    alias_match = self._explicit_alias_relation_mask(relation_edges)
+                    evidence_match = branch_any(relation_owner, alias_match, branch_count)
+                    for position in torch.nonzero(alias_match, as_tuple=False).flatten().cpu().tolist():
+                        branch = int(relation_owner[position].item())
+                        edge_index = int(relation_edges[position].item())
+                        edge = self.relations[edge_index]
+                        evidence.setdefault(branch, []).append({
+                            "record_kind": "EXPLICIT_ALIAS_RELATION",
+                            "relation": edge,
+                            "subject_occurrence": self.structures[self.occurrence_to_index[edge["subject_occurrence_id"]]],
+                            "relation_occurrence": self.structures[self.occurrence_to_index[edge["relation_occurrence_id"]]],
+                            "object_occurrence": self.structures[self.occurrence_to_index[edge["object_occurrence_id"]]],
+                        })
                 evidence_by_pressure.append(evidence)
                 if spec["kind"] != "EXACT_PARENT_TRANSITION":
                     masks[:, pressure_index] |= ruling_seen[:, pressure_index] & evidence_match
@@ -512,13 +588,45 @@ class XpuStructuralGraph:
             valid = incomplete[source_branches] if source_branches.numel() else torch.empty(0, dtype=torch.bool, device=self.device)
             transition_eligible = torch.zeros_like(valid)
             if mentions.numel():
+                # A caller may provide exact context witnesses, but production
+                # query planning does not.  In that path, a mention may cross
+                # parents only when it is an endpoint of an exact relation in
+                # the bounded current-parent cloud.
+                occurrence_base = max(1, len(self.structures))
+                mention_keys = source_branches * occurrence_base + mentions
                 for pressure_index, spec in enumerate(pressure_specs):
                     required_context = spec["transition_context_symbols"]
                     if not required_context:
-                        continue
-                    context_match = self._bounded_context_qualification(
-                        mentions, required_context, maximum_local_hops=6,
-                    )
+                        if relation_edges.numel():
+                            sources = self.edge_sources[relation_edges]
+                            targets = self.edge_targets[relation_edges]
+                            source_symbols = self.occurrence_symbols[sources]
+                            target_symbols = self.occurrence_symbols[targets]
+                            ruling_symbols = tensor(spec["ruling_symbols"])
+                            source_is_ruling = torch.isin(source_symbols, ruling_symbols)
+                            target_is_ruling = torch.isin(target_symbols, ruling_symbols)
+                            linked_endpoints = torch.cat((targets[source_is_ruling], sources[target_is_ruling]))
+                            linked_owners = torch.cat((relation_owner[source_is_ruling], relation_owner[target_is_ruling]))
+                            linked_keys = linked_owners * occurrence_base + linked_endpoints
+                            context_match = torch.isin(mention_keys, linked_keys)
+                        else:
+                            context_match = torch.zeros_like(transition_eligible)
+                    else:
+                        if round_index == 0 and spec.get("transition_context_mode") == "ANY":
+                            # The admitted starting parent is already selected
+                            # by an exact ruling occurrence.  Its verified
+                            # reference bindings are the first bounded context
+                            # cloud and remain independent candidate paths.
+                            # Later rounds require renewed question pressure.
+                            context_match = torch.ones_like(transition_eligible)
+                        elif spec.get("transition_context_mode") == "ANY":
+                            context_match = self._bounded_context_any_qualification(
+                                mentions, required_context, maximum_local_hops=6,
+                            )
+                        else:
+                            context_match = self._bounded_context_qualification(
+                                mentions, required_context, maximum_local_hops=6,
+                            )
                     transition_eligible |= (
                         ruling_seen[source_branches, pressure_index]
                         & ~masks[source_branches, pressure_index]

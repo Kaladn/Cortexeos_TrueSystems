@@ -11,6 +11,7 @@ from typing import Any
 from .structural_storage import read_structural_graph, verify_structural_graph
 from .xpu_structural_graph import XpuStructuralGraph
 from .pressure_contract import validate_pressure_points
+from .query_pressure_plan import compile_query_pressure_plan
 
 
 def _question_compile(question: str) -> dict[str, Any]:
@@ -233,3 +234,43 @@ def traverse_pressure_evidence(
         (json.dumps(workspace, ensure_ascii=True, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
     ).hexdigest()
     return workspace
+
+
+def traverse_compiled_question_evidence(
+    paths: Any,
+    question: str,
+    *,
+    admitted_start_block_ids: list[int],
+    maximum_rounds: int = 6,
+    maximum_branches: int = 4096,
+    loaded_graph: XpuStructuralGraph | None = None,
+    decoded_graph: dict[str, list[dict[str, Any]]] | None = None,
+    verified_receipt: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Compile and execute an oracle-free pressure request."""
+    overlay = _question_compile(question)
+    lexicon = json.loads(paths.lexicon_path.read_text(encoding="utf-8"))
+    admitted_keys = {str(row["anchor"]) for row in lexicon["anchors"]}
+    plan = compile_query_pressure_plan(
+        question, question_overlay=overlay, admitted_keys=admitted_keys,
+    )
+    if plan["status"] != "READY":
+        return {
+            "schema": "truemem_pressure_evidence_workspace@1",
+            "status": plan["status"], "query_plan": plan,
+            "textual_answer_formed": False, "handoff_only": True,
+            "operation_executed": False, "model_used": False,
+            "training_performed": False, "ranking_modified": False,
+        }
+    result = traverse_pressure_evidence(
+        paths, question,
+        selected_question_structure_keys=plan["selected_question_structure_keys"],
+        admitted_start_block_ids=admitted_start_block_ids,
+        pressure_points=plan["pressure_points"],
+        maximum_rounds=maximum_rounds, maximum_branches=maximum_branches,
+        loaded_graph=loaded_graph, decoded_graph=decoded_graph,
+        verified_receipt=verified_receipt,
+    )
+    result["query_plan"] = plan
+    result["oracle_free_request"] = True
+    return result

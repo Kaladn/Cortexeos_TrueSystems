@@ -6,6 +6,7 @@ from collections import Counter
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 from time import perf_counter
+from threading import Lock
 from typing import Any, Iterable
 
 from ..nlp_resolver import resolve_answer
@@ -21,6 +22,27 @@ from .prediction_walk import (
     deeper_wider_relationship_search,
     predict_anchor_path,
 )
+
+_STRUCTURAL_RUNTIME_CACHE: dict[tuple[str, int, int], tuple[Any, dict[str, Any]]] = {}
+_STRUCTURAL_RUNTIME_CACHE_LOCK = Lock()
+
+
+def _resident_structural_runtime(paths: DatasetPaths) -> tuple[Any, dict[str, Any]]:
+    """Keep one immutable structural graph resident per exact artifact state."""
+    graph_path = paths.state / "structure_graph.awbin"
+    stat = graph_path.stat()
+    key = (str(paths.root), int(stat.st_size), int(stat.st_mtime_ns))
+    with _STRUCTURAL_RUNTIME_CACHE_LOCK:
+        cached = _STRUCTURAL_RUNTIME_CACHE.get(key)
+        if cached is not None:
+            return cached
+        from .structural_storage import verify_structural_graph
+        from .xpu_structural_graph import XpuStructuralGraph
+
+        loaded = (XpuStructuralGraph(paths.root), verify_structural_graph(paths))
+        _STRUCTURAL_RUNTIME_CACHE.clear()
+        _STRUCTURAL_RUNTIME_CACHE[key] = loaded
+        return loaded
 from .pipeline import numbered_sentences
 from .qa_ledger import append_query_record
 from .storage import (
@@ -35,6 +57,30 @@ from .storage import (
     read_blocks,
     read_symbol_to_anchor,
 )
+
+
+def _structural_evidence_sidecar(paths: DatasetPaths, question: str, locations: list[dict[str, Any]]) -> dict[str, Any]:
+    """Run generic structural traversal when the admitted graph exists."""
+    graph_path = paths.state / "structure_graph.awbin"
+    manifest_path = paths.state / "structure_manifest.json"
+    if not graph_path.is_file() or not manifest_path.is_file():
+        return {
+            "schema": "truemem_pressure_evidence_workspace@1",
+            "status": "STRUCTURAL_GRAPH_NOT_ADMITTED",
+            "operation_executed": False, "textual_answer_formed": False,
+            "handoff_only": True, "model_used": False,
+        }
+    from .structural_traversal import traverse_compiled_question_evidence
+
+    start_blocks = sorted({
+        int(row["block_ordinal"]) for row in locations
+        if row.get("block_ordinal") is not None
+    })
+    graph, verification = _resident_structural_runtime(paths)
+    return traverse_compiled_question_evidence(
+        paths, question, admitted_start_block_ids=start_blocks,
+        loaded_graph=graph, verified_receipt=verification,
+    )
 
 
 def query(
@@ -84,6 +130,7 @@ def query(
     qualified = qualify_evidence(question, Counter(anchorize(question)), raw_candidate_blocks, top_k=top_k)
     cloud_gate = {**cloud_gate, "retrieval_ran": True, "topk_ran": True}
     anchor_prediction_answer = _anchor_prediction_answer(paths, direction_anchors, qualified["locations"], blocks)
+    structural_evidence = _structural_evidence_sidecar(paths, question, qualified["locations"])
 
     answer_packet = {
         "instruction": "Use cited local evidence coordinates only. This packet is a facsimile output, not source evidence.",
@@ -93,6 +140,7 @@ def query(
         "locations": qualified["locations"],
         "rejected_locations": qualified["rejected"],
         "anchor_prediction_answer": anchor_prediction_answer,
+        "structural_evidence": structural_evidence,
     }
     final_answer = resolve_answer(question, answer_packet)
     forensic_receipt = build_forensic_support_receipt(question, answer_packet, final_answer)
@@ -124,6 +172,7 @@ def query(
         "answer_packet": answer_packet,
         "final_answer": final_answer,
         "anchor_prediction_answer": anchor_prediction_answer,
+        "structural_evidence": structural_evidence,
         "forensic_support_receipt": forensic_receipt,
     }
     output_path = paths.outputs / f"query_{unique_stamp()}_{sha1_text(question)[:8]}.json"
