@@ -92,3 +92,46 @@ def read_structural_graph(path: str | Path) -> dict[str, list[dict[str, Any]]]:
     if cursor != len(raw):
         raise ValueError("INVALID_STRUCTURAL_GRAPH_TRAILING_BYTES")
     return {"structures": records[:structure_count], "relations": records[structure_count:]}
+
+
+def verify_structural_graph(paths: Any) -> dict[str, Any]:
+    graph_path = paths.state / "structure_graph.awbin"
+    manifest_path = paths.state / "structure_manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    raw = graph_path.read_bytes()
+    graph = read_structural_graph(graph_path)
+    blocks = {}
+    for line in paths.blocks_path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            row = json.loads(line)
+            blocks[int(row["block_ordinal"])] = row
+    lexicon = json.loads(paths.lexicon_path.read_text(encoding="utf-8"))
+    symbols = {str(row["symbol"]) for row in lexicon["anchors"]}
+    failures = []
+    for row in graph["structures"]:
+        block = blocks.get(int(row["block_ordinal"]))
+        if block is None:
+            failures.append("MISSING_BLOCK")
+            continue
+        source = str(block["text"]).encode("utf-8")
+        exact = source[int(row["byte_start"]):int(row["byte_end"])]
+        if hashlib.sha256(exact).hexdigest() != row["exact_text_sha256"]:
+            failures.append("SOURCE_SPAN_HASH_MISMATCH")
+        if row["symbol"] not in symbols or any(value not in symbols for value in row["child_symbols"]):
+            failures.append("UNRESOLVED_SYMBOL")
+    structure_symbols = {row["symbol"] for row in graph["structures"]}
+    for row in graph["relations"]:
+        if any(row[key] not in structure_symbols for key in ("subject_symbol", "relation_symbol", "object_symbol")):
+            failures.append("UNRESOLVED_RELATION_ENDPOINT")
+    if hashlib.sha256(raw).hexdigest() != manifest["artifact_sha256"]:
+        failures.append("ARTIFACT_HASH_MISMATCH")
+    return {
+        "schema": "truemem_structural_graph_verification@1",
+        "status": "PASS" if not failures else "FAIL",
+        "structure_records": len(graph["structures"]),
+        "relation_records": len(graph["relations"]),
+        "failures": sorted(set(failures)),
+        "all_source_spans_reconstructed": "SOURCE_SPAN_HASH_MISMATCH" not in failures,
+        "all_symbols_resolved": not any("UNRESOLVED" in value for value in failures),
+        "artifact_sha256": hashlib.sha256(raw).hexdigest(),
+    }

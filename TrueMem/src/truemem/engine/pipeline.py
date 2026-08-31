@@ -119,6 +119,10 @@ def docufilm_intake(
     write_lexicon(paths, allocation_observations, symbol_map=symbol_map, symbol_allocation=symbol_allocation)
     from .structural_storage import write_structural_graph
     structural_manifest = write_structural_graph(paths, structural_compilations, symbol_map)
+    from .structural_storage import verify_structural_graph
+    structural_verification = verify_structural_graph(paths)
+    if structural_verification["status"] != "PASS":
+        raise RuntimeError(f"STRUCTURAL_GRAPH_VERIFICATION_FAILED: {structural_verification['failures']}")
     update_dataset_manifest_symbol_allocation(paths, symbol_allocation)
     write_citation_jsonl(paths, block_rows)
     write_coordinate_index(paths, block_rows)
@@ -138,6 +142,7 @@ def docufilm_intake(
         "unique_anchor_count": len(anchor_observations),
         "structural_symbol_count": len(structural_keys),
         "structural_graph": structural_manifest,
+        "structural_graph_verification": structural_verification,
         "symbol_start": symbol_allocation["symbol_start"],
         "symbol_end": symbol_allocation["symbol_end"],
         "symbol_count": symbol_allocation["symbol_count"],
