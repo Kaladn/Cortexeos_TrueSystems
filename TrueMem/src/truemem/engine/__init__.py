@@ -101,6 +101,7 @@ from .special_search import special_search
 from .system_metrics import system_metrics
 from .symbolizer import allocate_dataset_symbols, scan_active_symbol_ranges, symbol_hex_from_int
 from .topk_diagnostic import build_rank_layer_walk, build_topk_diagnostic_packet, run_topk_diagnostic, write_topk_ladder_outputs
+from .wide_deep_reasoning import build_wide_deep_verification, run_wide_deep_verification
 from .storage import (
     ANCHOR_RECORD,
     BLOCK_ANCHOR_RECORD,
