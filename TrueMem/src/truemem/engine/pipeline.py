@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import re
+import sys
 from collections import Counter
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
@@ -53,6 +54,8 @@ def docufilm_intake(
     block_rows: list[dict[str, Any]] = []
     chat_metadata_rows: list[dict[str, Any]] = []
     source_receipts: list[dict[str, Any]] = []
+    structural_compilations: list[dict[str, Any]] = []
+    structural_keys: set[str] = set()
     resource_plan = _build_intake_resource_plan(
         files=files,
         requested_workers=workers,
@@ -94,14 +97,28 @@ def docufilm_intake(
                     "line_end": block["line_end"],
                     **chat_metadata,
                 })
+        for compilation in result.get("structural_compilations") or []:
+            local_ordinal = int(compilation["block_ordinal"])
+            compilation["block_ordinal"] = local_to_global[local_ordinal]
+            for structure in compilation["structures"]:
+                structure["block_ordinal"] = local_to_global[local_ordinal]
+                structural_keys.add(str(structure["structure_key"]))
+            for relation in compilation["relations"]:
+                relation["block_ordinal"] = local_to_global[local_ordinal]
+            structural_compilations.append(compilation)
         for anchor, local_block_ordinal, position in result["block_anchor_rows"]:
             block_anchor_rows.append((anchor, local_to_global[int(local_block_ordinal)], int(position)))
 
-    symbol_allocation = allocate_dataset_symbols(runtime_root, dataset_id, anchor_observations)
+    allocation_observations = anchor_observations.copy()
+    for structure_key_value in structural_keys:
+        allocation_observations.setdefault(structure_key_value, 0)
+    symbol_allocation = allocate_dataset_symbols(runtime_root, dataset_id, allocation_observations)
     symbol_map = symbol_allocation["symbol_map"]
     write_binary_counts(paths, anchor_observations, relation_observations, block_anchor_rows, symbol_map=symbol_map)
     write_blocks_jsonl(paths, block_rows)
-    write_lexicon(paths, anchor_observations, symbol_map=symbol_map, symbol_allocation=symbol_allocation)
+    write_lexicon(paths, allocation_observations, symbol_map=symbol_map, symbol_allocation=symbol_allocation)
+    from .structural_storage import write_structural_graph
+    structural_manifest = write_structural_graph(paths, structural_compilations, symbol_map)
     update_dataset_manifest_symbol_allocation(paths, symbol_allocation)
     write_citation_jsonl(paths, block_rows)
     write_coordinate_index(paths, block_rows)
@@ -119,6 +136,8 @@ def docufilm_intake(
         "citation_count": len(block_rows),
         "chat_metadata_row_count": len(chat_metadata_rows),
         "unique_anchor_count": len(anchor_observations),
+        "structural_symbol_count": len(structural_keys),
+        "structural_graph": structural_manifest,
         "symbol_start": symbol_allocation["symbol_start"],
         "symbol_end": symbol_allocation["symbol_end"],
         "symbol_count": symbol_allocation["symbol_count"],
@@ -174,6 +193,7 @@ def _process_intake_files(files: list[Path], *, window: int, workers: int, show_
             "anchor_observations": Counter(),
             "relation_observations": Counter(),
             "block_anchor_rows": [],
+            "structural_compilations": [],
         }
         active_chat_metadata: dict[str, Any] = {}
         for block_index, block in enumerate(blocks, start=1):
@@ -206,6 +226,7 @@ def _process_intake_files(files: list[Path], *, window: int, workers: int, show_
         file_result["anchor_observations"].update(block_result["anchor_observations"])
         file_result["relation_observations"].update(block_result["relation_observations"])
         file_result["block_anchor_rows"].extend(block_result["block_anchor_rows"])
+        file_result["structural_compilations"].append(block_result["structural_compilation"])
     return [file_results[index] for index in sorted(file_results)]
 
 
@@ -224,6 +245,9 @@ def _process_intake_block(
     block_anchor_rows: list[tuple[str, int, int]] = []
     block_id = f"{file_digest}:{block_index}"
     anchors = anchorize(block["text"])
+    structural_compilation = _compile_truevision_structures(
+        block["text"], source_identity=block_id, block_ordinal=local_block_ordinal
+    )
     citation_id = f"TMCIT-{sha1_text(block_id)[:10]}"
     block_row = {
         "local_block_ordinal": int(local_block_ordinal),
@@ -255,7 +279,26 @@ def _process_intake_block(
         "anchor_observations": anchor_observations,
         "relation_observations": relation_observations,
         "block_anchor_rows": block_anchor_rows,
+        "structural_compilation": structural_compilation,
     }
+
+
+def _compile_truevision_structures(text: str, *, source_identity: str, block_ordinal: int) -> dict[str, Any]:
+    """Delegate structural compilation to the sole TrueVision intake owner."""
+    try:
+        from truevision_intake.structural_binding import compile_text_structures
+    except ModuleNotFoundError:
+        intake_root = Path(__file__).resolve().parents[4] / "TrueVisionIntake"
+        if not intake_root.is_dir():
+            raise RuntimeError("TRUEVISION_STRUCTURAL_COMPILER_UNAVAILABLE")
+        sys.path.insert(0, str(intake_root))
+        from truevision_intake.structural_binding import compile_text_structures
+    return compile_text_structures(
+        text,
+        source_identity=source_identity,
+        block_ordinal=block_ordinal,
+        temporary_query_overlay=False,
+    )
 
 def iter_files(path: Path) -> Iterable[Path]:
     suffixes = {".txt", ".md", ".markdown", ".rst", ".csv", ".json", ".jsonl"}
