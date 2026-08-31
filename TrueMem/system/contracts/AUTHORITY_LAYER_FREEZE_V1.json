@@ -1,0 +1,62 @@
+{
+  "schema": "truemem_authority_layer_freeze@1",
+  "status": "FROZEN_KNOWN_GOOD",
+  "implementation_commit": "846f3d8ba98e0b20d0a9cdb8b2b058a9024ed90c",
+  "implementation_files": {
+    "TrueMem/src/truemem/engine/evidence_operands.py": "b2dcb05435c99f7dd66a54b409a4d5a36e0556c17b61ec82c92a41ad298fec59",
+    "TrueMem/src/truemem/engine/operator_skills.py": "8fe13a1733fd32a8bee42f183935dcd8417d0628189bb36e3d71c23c3b79abb5",
+    "TrueMem/src/truemem/engine/query_ruling.py": "860d4f03a5987a03af604a07c7081bc2618430aca058cb12386db78c298c0c3c",
+    "TrueMem/src/truemem/engine/xpu_relationship_index.py": "918ece6c2d39486d000f50d47e3bfd2bef266e01e60a1cd1377e97d0c8110bd9",
+    "TrueMem/system/contracts/ANCHOR_STRUCTURE_SHEET.md": "0bcec78484c69fc408780e1b8bfd4f7706c5b62b3135a4b59634652e6e068798"
+  },
+  "capabilities": [
+    "all_equal",
+    "chronological_order",
+    "count_anchors",
+    "date_difference_days",
+    "earlier_date",
+    "identity_intersection",
+    "later_date",
+    "lifespan_longer",
+    "numeric_add",
+    "numeric_difference",
+    "numeric_divide",
+    "numeric_max",
+    "numeric_min",
+    "numeric_multiply",
+    "percentage_of",
+    "set_intersection",
+    "set_union"
+  ],
+  "device_boundary": {
+    "xpu": [
+      "posting lookup",
+      "signed relationship matching",
+      "ruling-group qualification",
+      "candidate construction",
+      "candidate ranking"
+    ],
+    "cpu": [
+      "source-file loading",
+      "coordinate and receipt serialization",
+      "exact UTF-8 byte verification",
+      "cryptographic hash verification",
+      "bounded scalar, date, count, equality, and set operations"
+    ],
+    "silent_fallback_allowed": false
+  },
+  "authority_laws": {
+    "source_text_normalization": "none",
+    "typed_values_must_be_derived_from_verified_source_spans": true,
+    "all_required_sheet_evidence_must_be_satisfied": true,
+    "model_authority_created": false,
+    "runtime_operation_authority_created": false,
+    "evidence_mutation_allowed": false,
+    "rejection_may_be_replaced_by_guess": false
+  },
+  "acceptance_artifacts": {
+    "/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/output/authority-layer-milestone-acceptance-20260831T111429Z.log": "9c4a61df1105e1ba125117ec6c3bd811927f3334fb32cec75176a5abb1ad2ccd",
+    "/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/output/capability-receipt-matrix-acceptance-20260831T111516Z.log": "cd77e7b91d509ac7eb17e5a601411519aa8b67250a3a2c042e81fed5f3dd7aac"
+  },
+  "change_law": "This v1 freeze is immutable. Any semantic change requires a new freeze version, new acceptance artifacts, and a new tag."
+}
