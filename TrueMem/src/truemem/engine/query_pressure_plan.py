@@ -47,10 +47,8 @@ def compile_query_pressure_plan(
         ):
             continue
         ruling_candidates.append(row)
-    # One exact subject center is required for a coherent first traversal.
-    # Prefer the structurally richest complete identity; physical question
-    # order is the deterministic tie break.  Names nested inside dates are
-    # constraints, not competing subject identities.
+    # Every maximal verified identity remains a ruling center.  Discarding all
+    # but the richest span erases comparison operands before traversal begins.
     date_spans = [
         (int(row["byte_start"]), int(row["byte_end"]))
         for row in structures if row.get("kind") == "DATE"
@@ -60,9 +58,9 @@ def compile_query_pressure_plan(
         if not any(start <= int(row["byte_start"]) and end >= int(row["byte_end"]) for start, end in date_spans)
     ]
     ruling_candidates.sort(key=lambda row: (
-        -len(_identity_children(row)), int(row["byte_start"]), -int(row["byte_end"]), str(row["structure_key"]),
+        int(row["byte_start"]), -int(row["byte_end"]), str(row["structure_key"]),
     ))
-    ruling = [str(ruling_candidates[0]["structure_key"])] if ruling_candidates else []
+    ruling = list(dict.fromkeys(str(row["structure_key"]) for row in ruling_candidates))
 
     pressure: list[dict[str, Any]] = []
     transition_context = list(dict.fromkeys(

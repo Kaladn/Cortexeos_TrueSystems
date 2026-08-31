@@ -11,6 +11,7 @@ from typing import Any, Iterable
 
 from ..nlp_resolver import resolve_answer
 from .anchors import GLUE_ANCHORS, anchorize, anchors_to_text, answer_direction_anchors, expand_query_anchors, symbol_hex
+from .anchor_focus import build_anchor_focus
 from .base import COUNT_BACKEND, safe_id, sha1_text, unique_stamp, utc_now, with_protected_notice, write_json
 from .chat import apply_block_metadata_filter, build_metadata_filter
 from .forensic import build_forensic_support_receipt
@@ -59,7 +60,7 @@ from .storage import (
 )
 
 
-def _structural_evidence_sidecar(paths: DatasetPaths, question: str, locations: list[dict[str, Any]]) -> dict[str, Any]:
+def _structural_evidence_sidecar(paths: DatasetPaths, question: str, locations: list[dict[str, Any]], focus_blocks: list[int] | None = None) -> dict[str, Any]:
     """Run generic structural traversal when the admitted graph exists."""
     graph_path = paths.state / "structure_graph.awbin"
     manifest_path = paths.state / "structure_manifest.json"
@@ -75,7 +76,7 @@ def _structural_evidence_sidecar(paths: DatasetPaths, question: str, locations: 
     start_blocks = sorted({
         int(row["block_ordinal"]) for row in locations
         if row.get("block_ordinal") is not None
-    })
+    } | {int(value) for value in (focus_blocks or [])})
     graph, verification = _resident_structural_runtime(paths)
     return traverse_compiled_question_evidence(
         paths, question, admitted_start_block_ids=start_blocks,
@@ -125,12 +126,17 @@ def query(
     metadata_filter = build_metadata_filter(created_after=created_after, created_before=created_before, speaker=speaker)
     if metadata_filter["active"]:
         blocks, block_anchor_rows = apply_block_metadata_filter(blocks, block_anchor_rows, metadata_filter)
+    anchor_focus = build_anchor_focus(
+        paths, question, block_anchor_rows=block_anchor_rows, blocks=blocks,
+    )
     relation_neighbors = top_relation_neighbors(paths, q_counter, limit=16)
     raw_candidate_blocks = score_blocks(paths, blocks, block_anchor_rows, q_counter, relation_neighbors, top_k=max(top_k * 5, 25))
     qualified = qualify_evidence(question, Counter(anchorize(question)), raw_candidate_blocks, top_k=top_k)
     cloud_gate = {**cloud_gate, "retrieval_ran": True, "topk_ran": True}
     anchor_prediction_answer = _anchor_prediction_answer(paths, direction_anchors, qualified["locations"], blocks)
-    structural_evidence = _structural_evidence_sidecar(paths, question, qualified["locations"])
+    structural_evidence = _structural_evidence_sidecar(
+        paths, question, qualified["locations"], anchor_focus["seed_block_ordinals"],
+    )
 
     answer_packet = {
         "instruction": "Use cited local evidence coordinates only. This packet is a facsimile output, not source evidence.",
@@ -152,6 +158,7 @@ def query(
         "scope": "dataset_local",
         "question": question,
         "question_anchors": q_anchors,
+        "lexicon_anchor_focus": anchor_focus,
         "answer_direction_anchors": direction_anchors,
         "answer_direction_formula": {
             "preserved_map_anchors": len(q_anchors),
