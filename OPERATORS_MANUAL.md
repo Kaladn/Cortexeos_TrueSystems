@@ -11,6 +11,12 @@ model training are separate processes. The operator may call, inspect, verify,
 continue, and explain; it never becomes evidence, memory, relationship, or
 action authority.
 
+The live operator and evidence-handoff roles are fixed by
+`docs/CODEX_TRUESYSTEMS_OPERATOR_HANDOFF_CONTRACT.md`: the calling LLM preserves
+and rearranges the human request into a bounded work order, TrueSystems returns
+deterministic evidence and operation receipts, and the calling LLM reasons and
+communicates from that handoff. TrueSystems does not compose the final answer.
+
 ## Whole-system map
 
 ```text

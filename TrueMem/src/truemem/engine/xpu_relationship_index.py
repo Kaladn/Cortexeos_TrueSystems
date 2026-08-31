@@ -14,6 +14,7 @@ import numpy as np
 from .query_ruling import relationship_demands
 
 POSTING = struct.Struct(">6sIH")
+RELATION = struct.Struct(">6s6shI")
 
 
 def _assert_xpu(*values: torch.Tensor) -> None:
@@ -34,6 +35,7 @@ class XpuRelationshipIndex:
     def __init__(self, dataset_root: Path, blocks: dict[int, dict[str, Any]]):
         if not torch.xpu.is_available():
             raise RuntimeError("XPU_UNAVAILABLE_NO_CPU_FALLBACK")
+        self.root = Path(dataset_root)
         self.device = torch.device("xpu:0")
         self.device_name = torch.xpu.get_device_name(0)
         lexicon = json.loads((dataset_root / "state/dataset_lexicon.json").read_text())
@@ -59,6 +61,7 @@ class XpuRelationshipIndex:
         self.posting_blocks = posting_blocks.to(self.device)
         self.positions = positions.to(self.device)
         counts = torch.bincount(self.symbols, minlength=self.vocabulary_size)
+        self.posting_frequency = counts
         self.symbol_starts = torch.cat((torch.zeros(1, dtype=torch.long, device=self.device), counts.cumsum(0)))
         self.document_frequency = torch.zeros(self.vocabulary_size, dtype=torch.long, device=self.device)
         encoded = self.symbols * len(blocks) + self.posting_blocks
@@ -69,9 +72,12 @@ class XpuRelationshipIndex:
         block_symbol = torch.unique(self.posting_blocks * self.vocabulary_size + self.symbols, sorted=True)
         self.block_symbol_ids = block_symbol % self.vocabulary_size
         block_ids = block_symbol // self.vocabulary_size
+        self.block_symbol_blocks = block_ids
         block_counts = torch.bincount(block_ids, minlength=len(blocks))
         self.block_starts = torch.cat((torch.zeros(1, dtype=torch.long, device=self.device), block_counts.cumsum(0)))
+        self.block_lengths = torch.bincount(self.posting_blocks, minlength=len(blocks))
         self.block_count = len(blocks)
+        self._rag_relations_loaded = False
 
         # Title boundaries are derived once during permitted CPU file loading,
         # then remain resident on XPU for every query.
@@ -81,7 +87,7 @@ class XpuRelationshipIndex:
             title = str(block["text"]).splitlines()[0] if str(block["text"]) else ""
             title_lengths[int(block_id)] = len(anchorize(title))
         self.title_lengths = title_lengths.to(self.device)
-        _assert_xpu(self.symbols, self.posting_blocks, self.positions, self.symbol_starts, self.block_symbol_ids, self.block_starts, self.title_lengths, self.document_frequency, self.kinds)
+        _assert_xpu(self.symbols, self.posting_blocks, self.positions, self.posting_frequency, self.symbol_starts, self.block_symbol_ids, self.block_symbol_blocks, self.block_starts, self.block_lengths, self.title_lengths, self.document_frequency, self.kinds)
         torch.xpu.synchronize()
         self.load_receipt = {
             "stage": "candidate_representation",
@@ -96,6 +102,167 @@ class XpuRelationshipIndex:
             "relationship_walk_on_cpu": False,
             "xpu_tensors_verified": True,
             "silent_device_fallback": False,
+        }
+
+    def _ensure_rag_relations(self) -> None:
+        """Load the native signed relationship tuples once for repeated RAG."""
+        if self._rag_relations_loaded:
+            return
+        raw = (self.root / "counts/relation_counts.awbin").read_bytes()
+        dtype = np.dtype({
+            "names": ["center", "neighbor", "offset", "count"],
+            "formats": [("u1", 6), ("u1", 6), ">i2", ">u4"],
+            "offsets": [0, 6, 12, 14],
+            "itemsize": RELATION.size,
+        })
+        rows = np.frombuffer(raw, dtype=dtype)
+        powers = np.array([256**5, 256**4, 256**3, 256**2, 256, 1], dtype=np.int64)
+        centers = torch.from_numpy((rows["center"].astype(np.int64) @ powers).copy()).to(self.device)
+        neighbors = torch.from_numpy((rows["neighbor"].astype(np.int64) @ powers).copy()).to(self.device)
+        offsets = torch.from_numpy(rows["offset"].astype(np.int64).copy()).to(self.device)
+        counts = torch.from_numpy(rows["count"].astype(np.int64).copy()).to(self.device)
+        order = torch.argsort(centers, stable=True)
+        self.rag_relation_centers = centers[order]
+        self.rag_relation_neighbors = neighbors[order]
+        self.rag_relation_offsets = offsets[order]
+        self.rag_relation_counts = counts[order]
+        center_counts = torch.bincount(self.rag_relation_centers, minlength=self.vocabulary_size)
+        self.rag_relation_starts = torch.cat((
+            torch.zeros(1, dtype=torch.long, device=self.device), center_counts.cumsum(0),
+        ))
+        self._rag_relations_loaded = True
+        _assert_xpu(
+            self.rag_relation_centers, self.rag_relation_neighbors,
+            self.rag_relation_offsets, self.rag_relation_counts,
+            self.rag_relation_starts,
+        )
+        torch.xpu.synchronize()
+
+    def rank_rag_blocks(self, question: str, *, top_k: int = 10, neighbor_limit: int = 16) -> dict[str, Any]:
+        """Run the existing count/density RAG key on resident XPU tensors.
+
+        This is a device-equivalent execution of the public query scorer:
+        direct-hit count, density score, score, then block ordinal.  It does
+        not use qrels, expected IDs, models, or dataset-specific rules.
+        """
+        if top_k <= 0 or neighbor_limit < 0:
+            raise ValueError("top_k must be positive and neighbor_limit nonnegative")
+        from collections import Counter
+        from truemem.engine.anchors import GLUE_ANCHORS, answer_direction_anchors, anchorize, expand_query_anchors
+
+        self._ensure_rag_relations()
+        question_anchors = expand_query_anchors(anchorize(question))
+        query_counts = Counter(answer_direction_anchors(question_anchors))
+        direct_rows = [
+            (self.anchor_to_id[anchor], int(count))
+            for anchor, count in query_counts.items() if anchor in self.anchor_to_id
+        ]
+        direct_ids = torch.tensor([row[0] for row in direct_rows], dtype=torch.long, device=self.device)
+        weights = torch.zeros(self.vocabulary_size, dtype=torch.float32, device=self.device)
+        if direct_rows:
+            ids = torch.tensor([row[0] for row in direct_rows], dtype=torch.long, device=self.device)
+            values = torch.tensor([80 * row[1] for row in direct_rows], dtype=torch.float32, device=self.device)
+            weights.scatter_add_(0, ids, values)
+
+        neighbor_scores = torch.zeros(self.vocabulary_size, dtype=torch.long, device=self.device)
+        for symbol_id, query_count in direct_rows:
+            begin = int(self.rag_relation_starts[symbol_id].item())
+            end = int(self.rag_relation_starts[symbol_id + 1].item())
+            neighbors = self.rag_relation_neighbors[begin:end]
+            counts = self.rag_relation_counts[begin:end] * int(query_count)
+            if neighbors.numel():
+                neighbor_scores.scatter_add_(0, neighbors, counts)
+        glue_ids = torch.tensor(
+            [self.anchor_to_id[value] for value in GLUE_ANCHORS if value in self.anchor_to_id],
+            dtype=torch.long, device=self.device,
+        )
+        if glue_ids.numel():
+            neighbor_scores[glue_ids] = 0
+        if direct_ids.numel():
+            neighbor_scores[direct_ids] = 0
+        candidate_neighbor_ids = torch.nonzero(neighbor_scores > 0, as_tuple=False).flatten()
+        if candidate_neighbor_ids.numel() and neighbor_limit:
+            neighbor_order = _lexicographic_order([
+                -neighbor_scores[candidate_neighbor_ids], candidate_neighbor_ids,
+            ])
+            selected_neighbors = candidate_neighbor_ids[neighbor_order[:neighbor_limit]]
+            for index in range(selected_neighbors.numel()):
+                weights[selected_neighbors[index]] += max(1, 4 - index // 4)
+        else:
+            selected_neighbors = torch.empty(0, dtype=torch.long, device=self.device)
+
+        symbols = self.block_symbol_ids
+        active = weights[symbols] > 0
+        active_symbols = symbols[active]
+        active_blocks = self.block_symbol_blocks[active]
+        contributions = weights[active_symbols] / self.posting_frequency[active_symbols].to(torch.float32).sqrt().clamp(min=1.0)
+        block_scores = torch.zeros(self.block_count, dtype=torch.float32, device=self.device)
+        block_scores.scatter_add_(0, active_blocks, contributions)
+        direct_hits = torch.zeros(self.block_count, dtype=torch.long, device=self.device)
+        if direct_ids.numel():
+            direct_mask = torch.isin(active_symbols, direct_ids)
+            if bool(direct_mask.any().item()):
+                direct_hits.scatter_add_(
+                    0, active_blocks[direct_mask],
+                    torch.ones(int(direct_mask.sum().item()), dtype=torch.long, device=self.device),
+                )
+        density = block_scores / self.block_lengths.to(torch.float32).sqrt().clamp(min=1.0)
+        candidate_blocks = torch.nonzero(block_scores > 0, as_tuple=False).flatten()
+        order = _lexicographic_order([
+            -direct_hits[candidate_blocks], -density[candidate_blocks],
+            -block_scores[candidate_blocks], candidate_blocks,
+        ]) if candidate_blocks.numel() else candidate_blocks
+        ranked = candidate_blocks[order[:top_k]]
+        _assert_xpu(
+            weights, neighbor_scores, selected_neighbors, block_scores,
+            direct_hits, density, candidate_blocks, order, ranked,
+        )
+        torch.xpu.synchronize()
+
+        rows = []
+        direct_set = set(int(value) for value in direct_ids.cpu().tolist())
+        for block_id in ranked.cpu().tolist():
+            begin = int(self.block_starts[block_id].item())
+            end = int(self.block_starts[block_id + 1].item())
+            matched = [
+                int(value) for value in self.block_symbol_ids[begin:end].cpu().tolist()
+                if float(weights[int(value)].item()) > 0
+            ]
+            rows.append({
+                "block_ordinal": int(block_id),
+                "score": round(float(block_scores[block_id].item()), 4),
+                "density_score": round(float(density[block_id].item()), 4),
+                "block_anchor_count": int(self.block_lengths[block_id].item()),
+                "direct_hit_count": int(direct_hits[block_id].item()),
+                "direct_matched_anchors": sorted(self.id_to_anchor[value] for value in matched if value in direct_set),
+                "matched_anchors": sorted(self.id_to_anchor[value] for value in matched),
+            })
+        return {
+            "schema": "truemem_xpu_resident_rag_ranking@1",
+            "question": question,
+            "locations": rows,
+            "relation_neighbors": [
+                {
+                    "anchor": self.id_to_anchor[int(value)],
+                    "symbol_id": int(value),
+                    "score": int(neighbor_scores[int(value)].item()),
+                }
+                for value in selected_neighbors.cpu().tolist()
+            ],
+            "stage_receipt": {
+                "stage": "resident_rag_count_density_ranking",
+                "device": self.device_name,
+                "device_type": "xpu",
+                "public_rank_key": ["direct_hit_count_desc", "density_score_desc", "score_desc", "block_ordinal_asc"],
+                "signed_relation_tuples_resident": int(self.rag_relation_offsets.numel()),
+                "signed_offsets_preserved": True,
+                "neighbor_scoring_aggregates_native_lanes": True,
+                "cpu_ranking": False,
+                "cpu_relationship_math": False,
+                "silent_device_fallback": False,
+                "qrels_used": False,
+                "model_used": False,
+            },
         }
 
     def _slice(self, symbol_id: int) -> tuple[torch.Tensor, torch.Tensor]:
@@ -274,6 +441,81 @@ class XpuRelationshipIndex:
         parent_pool = parent_ids[parent_order[:maximum_pool]] if parent_ids.numel() else parent_ids
         explicit_ruling_pool = torch.nonzero(ruling_blocks, as_tuple=False).flatten()
         pool = torch.unique(torch.cat((relation_pool, parent_pool, explicit_ruling_pool)), sorted=True)
+
+        # A question may have no source-bound relationship/title candidate, or
+        # exactly one.  Pair construction is neither possible nor necessary in
+        # those cases.  Return the exact terminal state instead of indexing an
+        # empty upper triangle.
+        if not pool.numel():
+            _assert_xpu(
+                relation_counts, parent_counts, coverage, qualified_ids, pool,
+                ruling_matches, ruling_title_matches,
+            )
+            torch.xpu.synchronize()
+            return {
+                "status": "NO_QUALIFIED_EVIDENCE",
+                "selected_block_ids": [],
+                "bridge_anchor_ids": [],
+                "bridge_anchors": [],
+                "qualified_block_count": 0,
+                "candidate_pool_count": 0,
+                "relationship_witness_lanes": witnesses,
+                "anchor_structure_sheet_id": anchor_structure_sheet["sheet_id"] if anchor_structure_sheet else None,
+                "ruling_group_matches": [],
+                "stage_receipt": {
+                    "stage": "relationship_qualification_and_chain_ranking",
+                    "device": self.device_name,
+                    "device_type": "xpu",
+                    "cpu_ranking": False,
+                    "cpu_relationship_math": False,
+                    "xpu_tensors_verified": True,
+                    "silent_device_fallback": False,
+                    "selection_cardinality": 0,
+                    "terminal_reason": "no_source_bound_relationship_or_parent_candidate",
+                    "stored_counts_modified": False,
+                    "stored_relationships_modified": False,
+                },
+            }
+        if pool.numel() == 1:
+            selected_block = int(pool[0].item())
+            _assert_xpu(
+                relation_counts, parent_counts, coverage, qualified_ids, pool,
+                ruling_matches, ruling_title_matches,
+            )
+            torch.xpu.synchronize()
+            return {
+                "status": "SINGLE_QUALIFIED_EVIDENCE",
+                "selected_block_ids": [selected_block],
+                "bridge_anchor_ids": [],
+                "bridge_anchors": [],
+                "vector": {
+                    "ruling_group_coverage": int(ruling_matches[selected_block].sum().item()) if ruling_groups else 0,
+                    "ruling_parent_title_coverage": int(ruling_title_matches[selected_block].sum().item()) if ruling_groups else 0,
+                    "query_anchor_coverage": int(coverage_count[selected_block].item()),
+                    "bridge_frequency_corrected_support": 0.0,
+                    "relationship_match_count": int(relation_counts[selected_block].item()),
+                    "parent_anchor_hit_count": int(parent_counts[selected_block].item()),
+                    "shared_bridge_anchor_count": 0,
+                },
+                "qualified_block_count": int(qualified_ids.numel()),
+                "candidate_pool_count": 1,
+                "relationship_witness_lanes": witnesses,
+                "anchor_structure_sheet_id": anchor_structure_sheet["sheet_id"] if anchor_structure_sheet else None,
+                "ruling_group_matches": [],
+                "stage_receipt": {
+                    "stage": "relationship_qualification_and_chain_ranking",
+                    "device": self.device_name,
+                    "device_type": "xpu",
+                    "cpu_ranking": False,
+                    "cpu_relationship_math": False,
+                    "xpu_tensors_verified": True,
+                    "silent_device_fallback": False,
+                    "selection_cardinality": 1,
+                    "cardinality_law": "one source-bound candidate requires no pair construction",
+                    "stored_counts_modified": False,
+                    "stored_relationships_modified": False,
+                },
+            }
 
         # Dense pool-by-vocabulary presence is bounded after qualification and
         # permits bridge comparison on XPU without rebuilding Python sets.
