@@ -22,7 +22,6 @@ from .engine import (
     run_packet_speech,
     run_pressure_probe,
     run_topk_diagnostic,
-    run_wide_deep_verification,
     show_record,
     stage_codex_sessions,
     stage_chatgpt_export,
@@ -233,11 +232,6 @@ Step-by-step:
     topk_diag_cmd.add_argument("--batch-summary", type=Path, help="Existing truemem batch_run_summary.json.")
     topk_diag_cmd.add_argument("--out", type=Path, required=True)
     topk_diag_cmd.add_argument("--max-rank", type=int, default=5)
-
-    wide_deep_cmd = sub.add_parser("wide-deep-verify", help="Verify proof support from an existing query packet without changing native rank")
-    wide_deep_cmd.add_argument("--packet", type=Path, required=True)
-    wide_deep_cmd.add_argument("--expected", type=Path, help="Optional JSON expected/gold candidate for benchmark audit")
-    wide_deep_cmd.add_argument("--out", type=Path, required=True)
 
     reverse_walk_cmd = sub.add_parser(
         "answer-reasoning-reverse-walk",
@@ -520,9 +514,6 @@ Step-by-step:
             out_dir=args.out,
             max_rank=args.max_rank,
         )
-    elif args.command == "wide-deep-verify":
-        expected = json.loads(args.expected.read_text(encoding="utf-8")) if args.expected else None
-        result = run_wide_deep_verification(packet_path=args.packet, out_dir=args.out, expected=expected)
     elif args.command == "answer-reasoning-reverse-walk":
         result = run_answer_reasoning_reverse_walk(
             runtime_root=args.runtime_root,
