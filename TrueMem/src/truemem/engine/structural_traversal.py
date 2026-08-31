@@ -44,6 +44,16 @@ def traverse_structural_evidence(
     selected = list(selected_question_structure_keys or sorted(verified_overlay_keys))
     if any(key not in verified_overlay_keys for key in selected):
         return {"status": "INVALID_STRUCTURE_PATH", "operation_executed": False, "invented_structure_rejected": True}
+    if admitted_start_block_ids is not None and not admitted_start_block_ids:
+        return {
+            "schema": "truemem_structural_traversal_receipt@2",
+            "status": "NO_ADMITTED_START_EVIDENCE",
+            "question_sha256": hashlib.sha256(question.encode("utf-8")).hexdigest(),
+            "question_overlay_id": overlay["compilation_id"],
+            "operation_executed": False, "model_used": False,
+            "training_performed": False, "ranking_modified": False,
+            "textual_answer_formed": False, "handoff_only": True,
+        }
     stored = decoded_graph or read_structural_graph(paths.state / "structure_graph.awbin")
     admitted_blocks = {int(value) for value in (admitted_start_block_ids or [])}
     admitted_keys: set[str] = set()
@@ -62,8 +72,8 @@ def traverse_structural_evidence(
         selected = sorted(set(selected))
     graph = loaded_graph or XpuStructuralGraph(paths.root)
     walk = graph.walk(selected, maximum_hops=maximum_hops, start_block_ids=sorted(admitted_blocks))
-    visited = set(walk.get("visited_symbols") or [])
-    reached = [row for row in stored["structures"] if int(row["symbol"][2:], 16) in visited]
+    visited = set(walk.get("visited_occurrence_ids") or [])
+    reached = [row for row in stored["structures"] if row["occurrence_id"] in visited]
     required = sorted(set(required_structure_kinds or []))
     found_kinds = sorted({str(row["kind"]) for row in reached})
     missing = sorted(set(required) - set(found_kinds))
@@ -85,7 +95,7 @@ def traverse_structural_evidence(
         })
     status = "EVIDENCE_BURDEN_SATISFIED" if required and not missing else walk["status"]
     receipt = {
-        "schema": "truemem_structural_traversal_receipt@1",
+        "schema": "truemem_structural_traversal_receipt@2",
         "status": status,
         "question_sha256": hashlib.sha256(question.encode("utf-8")).hexdigest(),
         "question_overlay_id": overlay["compilation_id"],
@@ -94,6 +104,9 @@ def traverse_structural_evidence(
         "required_structure_kinds": required,
         "found_structure_kinds": found_kinds,
         "missing_structure_kinds": missing,
+        "evidence_burden_note": "structure kinds are diagnostic only; operation-specific identity/relation/value burdens are not inferred here",
+        "gathered_occurrence_ids": sorted(visited),
+        "coherent_path_receipts": walk.get("paths") or [],
         "walk": walk,
         "citations": citations,
         "operation_executed": False,
@@ -101,5 +114,7 @@ def traverse_structural_evidence(
         "model_used": False,
         "training_performed": False,
         "ranking_modified": False,
+        "textual_answer_formed": False,
+        "handoff_only": True,
     }
     return receipt

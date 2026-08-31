@@ -109,3 +109,36 @@ TrueMem may load, verify, project, traverse, bind, and calculate over the
 compiled substrate. It must not reinterpret source text. Traversal Layer v1 is
 versioned above the frozen Authority Layer v1.
 
+## M4.1 occurrence and local-cloud law
+
+A structural form, an exact occurrence, and its admitted parent object are
+different identities. Every stored relation therefore preserves the exact
+subject, relation-phrase, and object occurrence IDs. Equal structural form does
+not prove equal referent.
+
+The first context cloud is the current parent object. A sentence-initial
+reference subject such as `It` may carry the native parent identity only within
+that same admitted object. This bounded carry retains the exact reference
+surface and relation phrase in the receipt; it does not perform general pronoun
+resolution or corpus-wide inference.
+
+Native parent identity regions come from the source object's first-line native
+identity. A mechanically qualified title may additionally expose its exact base
+component (for example, the component before a comma or parenthetical). Body
+mentions may cross objects only through an exact complete-structure binding to
+one such native identity component. Zero matches remain unbound; multiple
+matches remain ambiguous.
+
+Traversal uses exact occurrence IDs as its frontier:
+
+```text
+exact occurrence
+-> exact relation occurrence
+-> exact object occurrence
+-> verified parent-reference binding
+-> target parent object's local occurrence cloud
+```
+
+The forbidden operation is `shared form -> every corpus posting`. Gathered
+occurrences and their citations are handed off as an evidence workspace. This
+layer does not form a textual answer.

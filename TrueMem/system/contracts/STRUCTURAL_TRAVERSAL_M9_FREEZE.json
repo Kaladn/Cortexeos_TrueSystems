@@ -1,0 +1,48 @@
+{
+  "schema": "truemem_structural_traversal_freeze@1",
+  "authority_layer": {
+    "modified": false,
+    "tag": "truemem-authority-layer-v1",
+    "commit": "ce45ba2e957ba0d1cc46de23e0763cc18aa892a1"
+  },
+  "implementation": {
+    "TrueVisionIntake/truevision_intake/structural_binding.py": "2559bf2df9f398133223870d9bf04402bcb1855b601a9af27d6aa2d0b41e37c7",
+    "TrueMem/src/truemem/engine/structural_storage.py": "48ac4d4a166853c926a091920290c4751b3d2b3e1858bc197272bf12980ec697",
+    "TrueMem/src/truemem/engine/xpu_structural_graph.py": "163971fe87139f3b55dc9f01f63180c6e954ece59b6646aaa2972fb7ebe5f8ca",
+    "TrueMem/src/truemem/engine/structural_traversal.py": "fca8af4286627e09ba08e7c3e5d1877f38b7fb8ac02406c55ccfb320126d00ca",
+    "TrueVisionIntake/docs/STRUCTURAL_BINDING_V1.md": "b1bfe1ef1351fcb85549a09eb8b7600beed282c8637f17d24a03314cd2191478"
+  },
+  "governed_runtime": {
+    "path": "/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/output/hotpotqa-occurrence-runtime-20260831T134226Z",
+    "artifact_sha256": "0bc6064ce08c171a232910174fafe79e125b496167d786c8a899745e4928cb1e",
+    "manifest_sha256": "b79dad1ba3621334ef9cf5dee589a7bdbe06cd175a8d1d3c0464bc6627e81b58",
+    "structure_occurrences": 1700018,
+    "relation_occurrences": 238335,
+    "parent_objects": 100000,
+    "reference_binding_decisions": 795013,
+    "verification": "PASS"
+  },
+  "acceptance": {
+    "five_known_next_hops_complete": 5,
+    "five_known_next_hops_total": 5,
+    "complete_26_case_chains": 16,
+    "total_26_case_chains": 26,
+    "preexisting_complete_chains": 11,
+    "newly_completed_next_hop_chains": 5,
+    "no_admitted_start_rows_fail_closed": true,
+    "global_form_posting_broadcast": false,
+    "textual_answers_formed": false,
+    "model_used": false,
+    "training_performed": false,
+    "ranking_modified": false,
+    "replay_log_sha256": "7bcdfe99c80fe1708eb4241fcb58888ee9fc6b007c80f05a334b31cf05195afc",
+    "regression_log_sha256": "7d21e0ff20ebe395cc25368207a728d7b0061ac8646e4594d0f8c22273069aac",
+    "repository_native_tests_passed": 56,
+    "external_acceptance_tests_passed": 4
+  },
+  "operating_law": "gather -> discern -> compile -> hand off",
+  "answer_generation": "forbidden_in_this_layer",
+  "frontier_identity": "exact_structure_occurrence_id",
+  "cross_object_transition": "exact occurrence -> exact relation occurrence -> exact discovered occurrence -> verified parent binding -> bounded target parent cloud",
+  "remaining_incomplete_cases": "upstream intake or admitted-start selection gaps; not repaired by ranking, model inference, or corpus-wide traversal"
+}

@@ -12,8 +12,8 @@ import re
 from typing import Any
 
 
-SCHEMA = "truevision_structural_binding@1"
-COMPILER = "truevision_deterministic_text_structure_compiler@1"
+SCHEMA = "truevision_structural_binding@2"
+COMPILER = "truevision_deterministic_text_structure_compiler@2"
 
 MONTHS = (
     "January|February|March|April|May|June|July|August|September|October|November|December"
@@ -55,6 +55,7 @@ RELATION_WORDS = frozenset({
     "named", "played", "published", "ran", "served", "starred", "stops",
     "took", "was", "were", "wrote", "written",
 })
+REFERENCE_SUBJECTS = frozenset({"he", "her", "hers", "him", "his", "it", "its", "she", "their", "theirs", "them", "they"})
 
 
 def canonical_bytes(value: object) -> bytes:
@@ -91,9 +92,24 @@ def compile_text_structures(
     candidates.extend(_regex_candidates(source, QUANTITY_RE, "QUANTITY"))
     candidates.extend(_parenthetical_candidates(source))
     candidates.extend(_quoted_candidates(source))
+    title_end = source.find("\n")
+    if title_end < 0:
+        title_end = len(source)
+    if title_end > 0:
+        candidates.append({"char_start": 0, "char_end": title_end, "kind": "NATIVE_IDENTITY_REGION", "status": "VERIFIED_STRUCTURE"})
+        title_text = source[:title_end]
+        qualifier = re.search(r"\s*(?:,|\()[^\n]*$", title_text)
+        if qualifier and qualifier.start() > 0:
+            candidates.append({
+                "char_start": 0,
+                "char_end": qualifier.start(),
+                "kind": "NAMED_STRUCTURE",
+                "status": "VERIFIED_NATIVE_IDENTITY_COMPONENT",
+            })
     candidates = _deduplicate_candidates(candidates)
     candidates = _apply_explicit_type_cues(source, candidates)
 
+    parent_object_id = stable_hash({"source_identity": str(source_identity), "block_ordinal": int(block_ordinal), "kind": "PARENT_OBJECT"})
     structures: list[dict[str, Any]] = []
     for candidate in candidates:
         start = int(candidate["char_start"])
@@ -142,9 +158,11 @@ def compile_text_structures(
             ],
             "punctuation_count_bearing": False,
             "temporary_query_overlay": bool(temporary_query_overlay),
+            "parent_object_id": parent_object_id,
+            "inside_native_identity_region": bool(start >= 0 and end <= title_end),
         })
 
-    relations, relation_structures = _explicit_relations(source, structures, occurrences, source_identity, block_ordinal, temporary_query_overlay)
+    relations, relation_structures = _explicit_relations(source, structures, occurrences, source_identity, block_ordinal, temporary_query_overlay, parent_object_id)
     structures.extend(relation_structures)
     structures.sort(key=lambda row: (int(row["byte_start"]), -int(row["byte_end"]), str(row["kind"]), str(row["structure_key"])))
     relations.sort(key=lambda row: (int(row["byte_start"]), str(row["subject_occurrence_id"]), str(row["object_occurrence_id"])))
@@ -160,6 +178,9 @@ def compile_text_structures(
         "model_used": False,
         "statistical_nlp_used": False,
         "punctuation_count_bearing": False,
+        "parent_object_id": parent_object_id,
+        "native_identity_byte_start": 0,
+        "native_identity_byte_end": len(source[:title_end].encode("utf-8")),
         "structures": structures,
         "relations": relations,
     }
@@ -237,6 +258,26 @@ def _named_candidates(text: str, occurrences: list[dict[str, Any]]) -> list[dict
         if parenthetical:
             out.append({"char_start": int(row["char_start"]), "char_end": end_char + parenthetical.end(1), "kind": "NAMED_STRUCTURE", "status": "VERIFIED_STRUCTURE"})
         out.append({"char_start": int(row["char_start"]), "char_end": end_char, "kind": "NAMED_STRUCTURE", "status": "VERIFIED_STRUCTURE"})
+        # Preserve the complete group and expose its exact coordinated members.
+        # This is structural decomposition, not a claim that a connective is
+        # unimportant: titles such as "Parks and Recreation" retain the full
+        # parent while comparison questions can still bind both named members.
+        group_start = int(row["char_start"])
+        group_text = text[group_start:end_char]
+        for separator in re.finditer(r"\s+(?:and|or)\s+", group_text, re.IGNORECASE):
+            member_spans = ((0, separator.start()), (separator.end(), len(group_text)))
+            for member_start, member_end in member_spans:
+                while member_start < member_end and group_text[member_start].isspace():
+                    member_start += 1
+                while member_end > member_start and group_text[member_end - 1].isspace():
+                    member_end -= 1
+                if member_end > member_start:
+                    out.append({
+                        "char_start": group_start + member_start,
+                        "char_end": group_start + member_end,
+                        "kind": "NAMED_STRUCTURE",
+                        "status": "VERIFIED_COORDINATED_MEMBER",
+                    })
         cue = surface.casefold()
         if cue in EXPLICIT_TYPE_CUES and end_index > index:
             out.append({
@@ -278,8 +319,8 @@ def _apply_explicit_type_cues(text: str, candidates: list[dict[str, Any]]) -> li
     return candidates
 
 
-def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences: list[dict[str, Any]], source_identity: str, block_ordinal: int, temporary: bool) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
-    subject_objects = [row for row in structures if row["kind"] not in {"DATE", "QUANTITY", "PARENTHETICAL", "RELATION_PHRASE"}]
+def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences: list[dict[str, Any]], source_identity: str, block_ordinal: int, temporary: bool, parent_object_id: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    subject_objects = [row for row in structures if row["kind"] not in {"DATE", "QUANTITY", "PARENTHETICAL", "RELATION_PHRASE", "NATIVE_IDENTITY_REGION"}]
     subject_objects.sort(key=lambda row: (int(row["char_start"]), -int(row["char_end"])))
     relations = []
     relation_structures = []
@@ -333,6 +374,8 @@ def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences
             "children": [{"anchor": row["anchor"], "anchor_position": int(row["position"]), "child_ordinal": ordinal, "role": "STRUCTURE_MEMBER"} for ordinal, row in enumerate(phrase_children)],
             "punctuation_count_bearing": False,
             "temporary_query_overlay": bool(temporary),
+            "parent_object_id": parent_object_id,
+            "inside_native_identity_region": bool(rel_end <= text.find("\n") if "\n" in text else rel_end <= len(text)),
         })
         rel = {
             "schema": f"{SCHEMA}:explicit_relation",
@@ -352,6 +395,8 @@ def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences
             "exact_relation_text": exact_phrase,
             "normalized_relation_class": None,
             "temporary_query_overlay": bool(temporary),
+            "parent_object_id": parent_object_id,
+            "subject_binding_kind": "EXACT_OCCURRENCE",
         }
         rel["relation_id"] = stable_hash(rel)
         relations.append(rel)
@@ -371,7 +416,101 @@ def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences
             if row["subject_occurrence_id"] == left["occurrence_id"] and row["object_occurrence_id"] == right["occurrence_id"]:
                 row["explicit_alias"] = True
                 row["relation_id"] = stable_hash({key: value for key, value in row.items() if key != "relation_id"})
+    relations.extend(_local_context_relations(
+        text, structures, occurrences, relation_structures, source_identity,
+        block_ordinal, temporary, parent_object_id,
+    ))
     return relations, relation_structures
+
+
+def _local_context_relations(
+    text: str,
+    structures: list[dict[str, Any]],
+    occurrences: list[dict[str, Any]],
+    relation_structures: list[dict[str, Any]],
+    source_identity: str,
+    block_ordinal: int,
+    temporary: bool,
+    parent_object_id: str,
+) -> list[dict[str, Any]]:
+    """Carry an explicit pronominal subject only inside its source parent.
+
+    This is bounded local-cloud compilation.  It does not select a corpus-wide
+    referent: a sentence-initial reference subject binds to the admitted native
+    identity region of the same parent object.
+    """
+    native = [row for row in structures if row["kind"] == "NATIVE_IDENTITY_REGION"]
+    if not native:
+        return []
+    parent = native[0]
+    by_sentence: dict[int, list[dict[str, Any]]] = {}
+    for row in occurrences:
+        by_sentence.setdefault(_sentence_ordinal(text, int(row["char_start"])), []).append(row)
+    objects = [row for row in structures if row["kind"] not in {"DATE", "QUANTITY", "PARENTHETICAL", "RELATION_PHRASE", "NATIVE_IDENTITY_REGION"}]
+    emitted: list[dict[str, Any]] = []
+    existing = {(row["subject_occurrence_id"], row["object_occurrence_id"]) for row in []}
+    for sentence_ordinal, anchors in sorted(by_sentence.items()):
+        if sentence_ordinal <= int(parent["sentence_ordinal"]) or not anchors:
+            continue
+        first = anchors[0]
+        if str(first["surface"]).casefold() not in REFERENCE_SUBJECTS:
+            continue
+        targets = [row for row in objects if int(row["sentence_ordinal"]) == sentence_ordinal and int(row["char_start"]) > int(first["char_end"])]
+        if not targets:
+            continue
+        target = targets[0]
+        phrase_start = int(first["char_end"])
+        phrase_end = int(target["char_start"])
+        exact_phrase = text[phrase_start:phrase_end].strip()
+        words = re.findall(r"[^\W_]+(?:['’][^\W_]+)?", exact_phrase, re.UNICODE)
+        if not exact_phrase or not _has_explicit_relation_word(words):
+            continue
+        rel_start = phrase_start + len(text[phrase_start:phrase_end]) - len(text[phrase_start:phrase_end].lstrip())
+        rel_end = phrase_end - len(text[phrase_start:phrase_end]) + len(text[phrase_start:phrase_end].rstrip())
+        phrase_children = [row for row in occurrences if int(row["char_start"]) >= rel_start and int(row["char_end"]) <= rel_end]
+        identity = [str(row["anchor"]) for row in phrase_children if not str(row["anchor"]).startswith("boundary:")]
+        rel_key = structure_key("RELATION_PHRASE", exact_phrase, identity_anchors=identity)
+        byte_start = len(text[:rel_start].encode("utf-8"))
+        byte_end = len(text[:rel_end].encode("utf-8"))
+        basis = {
+            "structure_key": rel_key, "source_identity": str(source_identity),
+            "block_ordinal": int(block_ordinal), "byte_start": byte_start,
+            "byte_end": byte_end, "kind": "RELATION_PHRASE",
+            "status": "VERIFIED_LOCAL_CONTEXT_STRUCTURE",
+        }
+        rel_occurrence_id = stable_hash(basis)
+        relation_structures.append({
+            "schema": f"{SCHEMA}:structure", **basis,
+            "occurrence_id": rel_occurrence_id, "exact_text": exact_phrase,
+            "exact_text_sha256": hashlib.sha256(exact_phrase.encode("utf-8")).hexdigest(),
+            "char_start": rel_start, "char_end": rel_end,
+            "sentence_ordinal": sentence_ordinal,
+            "anchor_start": int(phrase_children[0]["position"]) if phrase_children else -1,
+            "anchor_count": len(phrase_children),
+            "children": [{"anchor": row["anchor"], "anchor_position": int(row["position"]), "child_ordinal": ordinal, "role": "STRUCTURE_MEMBER"} for ordinal, row in enumerate(phrase_children)],
+            "punctuation_count_bearing": False, "temporary_query_overlay": bool(temporary),
+            "parent_object_id": parent_object_id, "inside_native_identity_region": False,
+        })
+        relation = {
+            "schema": f"{SCHEMA}:explicit_relation",
+            "subject_structure_key": parent["structure_key"],
+            "subject_occurrence_id": parent["occurrence_id"],
+            "relation_structure_key": rel_key,
+            "relation_occurrence_id": rel_occurrence_id,
+            "object_structure_key": target["structure_key"],
+            "object_occurrence_id": target["occurrence_id"],
+            "source_identity": str(source_identity), "block_ordinal": int(block_ordinal),
+            "sentence_ordinal": sentence_ordinal,
+            "byte_start": int(parent["byte_start"]), "byte_end": int(target["byte_end"]),
+            "direction": "LOCAL_CONTEXT_FORWARD", "status": "VERIFIED_LOCAL_CONTEXT_RELATION",
+            "exact_relation_text": exact_phrase, "normalized_relation_class": None,
+            "temporary_query_overlay": bool(temporary), "parent_object_id": parent_object_id,
+            "subject_binding_kind": "SAME_PARENT_REFERENCE_SUBJECT",
+            "reference_surface": str(first["surface"]),
+        }
+        relation["relation_id"] = stable_hash(relation)
+        emitted.append(relation)
+    return emitted
 
 
 def _has_explicit_relation_word(words: list[str]) -> bool:
