@@ -10,6 +10,7 @@ from typing import Any
 
 from .structural_storage import read_structural_graph, verify_structural_graph
 from .xpu_structural_graph import XpuStructuralGraph
+from .pressure_contract import validate_pressure_points
 
 
 def _question_compile(question: str) -> dict[str, Any]:
@@ -118,3 +119,117 @@ def traverse_structural_evidence(
         "handoff_only": True,
     }
     return receipt
+
+
+def traverse_pressure_evidence(
+    paths: Any,
+    question: str,
+    *,
+    selected_question_structure_keys: list[str],
+    admitted_start_block_ids: list[int],
+    pressure_points: list[dict[str, Any]],
+    maximum_rounds: int = 6,
+    maximum_branches: int = 4096,
+    loaded_graph: XpuStructuralGraph | None = None,
+    decoded_graph: dict[str, list[dict[str, Any]]] | None = None,
+    verified_receipt: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Gather, discern, compile, and hand off exact evidence paths."""
+    verification = verified_receipt or verify_structural_graph(paths)
+    if verification["status"] != "PASS":
+        return {"status": "STALE_PROVENANCE", "verification": verification, "operation_executed": False}
+    overlay = _question_compile(question)
+    overlay_keys = {row["structure_key"] for row in overlay["structures"]}
+    selected = sorted(set(map(str, selected_question_structure_keys)))
+    if not selected or any(value not in overlay_keys for value in selected):
+        return {"status": "INVALID_STRUCTURE_PATH", "operation_executed": False, "invented_structure_rejected": True}
+    if not admitted_start_block_ids:
+        return {
+            "schema": "truemem_pressure_evidence_workspace@1",
+            "status": "NO_ADMITTED_START_EVIDENCE", "operation_executed": False,
+            "textual_answer_formed": False, "handoff_only": True,
+        }
+    graph = loaded_graph or XpuStructuralGraph(paths.root)
+    lexicon = json.loads(paths.lexicon_path.read_text(encoding="utf-8"))
+    admitted_keys = {str(row["anchor"]) for row in lexicon["anchors"]}
+    normalized = validate_pressure_points(
+        pressure_points,
+        verified_question_structure_keys=overlay_keys,
+        admitted_keys=admitted_keys,
+    )
+
+    def symbol(key: str) -> int:
+        raw = next(row["symbol"] for row in lexicon["anchors"] if str(row["anchor"]) == key)
+        return int(str(raw)[2:], 16)
+
+    tensor_specs = []
+    for row in normalized:
+        tensor_specs.append({
+            **row,
+            "ruling_symbols": [symbol(value) for value in row["ruling_structure_keys"]],
+            "exact_symbols": [symbol(value) for value in row["exact_structure_keys"]],
+            "relation_field_symbols": [symbol(value) for value in row["relation_field_anchor_keys"]],
+            "context_symbols": [symbol(value) for value in row["context_anchor_keys"]],
+            "mention_symbols": [symbol(value) for value in row["mention_structure_keys"]],
+            "target_symbols": [symbol(value) for value in row["target_structure_keys"]],
+            "transition_context_symbols": [symbol(value) for value in row["transition_context_anchor_keys"]],
+        })
+    walk = graph.walk_pressure(
+        selected, tensor_specs, start_block_ids=sorted(set(map(int, admitted_start_block_ids))),
+        maximum_rounds=maximum_rounds, maximum_branches=maximum_branches,
+    )
+    blocks = {}
+    for line in paths.blocks_path.read_text(encoding="utf-8").splitlines():
+        if line.strip():
+            row = json.loads(line)
+            blocks[int(row["block_ordinal"])] = row
+    workspace_blocks = set()
+    for branch in walk.get("branches") or []:
+        for records in branch["pressure_evidence"].values():
+            for record in records:
+                if "block_ordinal" in record:
+                    workspace_blocks.add(int(record["block_ordinal"]))
+                for key in ("occurrence", "mention_occurrence", "subject_occurrence", "relation_occurrence", "object_occurrence"):
+                    if key in record:
+                        workspace_blocks.add(int(record[key]["block_ordinal"]))
+        for record in branch["transition_evidence"]:
+            workspace_blocks.add(int(record["mention_occurrence"]["block_ordinal"]))
+            workspace_blocks.add(int(record["target_parent"]["block_ordinal"]))
+    citations = [{
+        "block_ordinal": block_id,
+        "citation_id": blocks[block_id]["citation_id"],
+        "file_path": blocks[block_id]["file_path"],
+        "line_start": blocks[block_id]["line_start"],
+        "line_end": blocks[block_id]["line_end"],
+        "text_hash": blocks[block_id]["text_hash"],
+    } for block_id in sorted(workspace_blocks)]
+    workspace = {
+        "schema": "truemem_pressure_evidence_workspace@1",
+        "status": walk["status"],
+        "question_sha256": hashlib.sha256(question.encode("utf-8")).hexdigest(),
+        "question_overlay_id": overlay["compilation_id"],
+        "selected_verified_structure_keys": selected,
+        "admitted_start_block_ids": sorted(set(map(int, admitted_start_block_ids))),
+        "pressure_points": normalized,
+        "branches": walk.get("branches") or [],
+        "rounds": walk.get("rounds") or [],
+        "citations": citations,
+        "device_receipt": {
+            "device": walk.get("device"), "device_type": walk.get("device_type"),
+            "adjacency": walk.get("adjacency"),
+            "whole_array_hot_path_scans": walk.get("whole_array_hot_path_scans"),
+            "cpu_relationship_math": walk.get("cpu_relationship_math"),
+            "cpu_frontier_ranking": walk.get("cpu_frontier_ranking"),
+            "silent_device_fallback": walk.get("silent_device_fallback"),
+        },
+        "gather_discern_compile_handoff": True,
+        "textual_answer_formed": False, "handoff_only": True,
+        "operation_executed": False, "authority_layer_modified": False,
+        "model_used": False, "training_performed": False,
+        "ranking_modified": False, "source_authority_modified": False,
+        "operator_capability_created": False,
+    }
+    workspace["workspace_sha256_without_self"] = hashlib.sha256(
+        (json.dumps(workspace, ensure_ascii=True, sort_keys=True, separators=(",", ":")) + "\n").encode("utf-8")
+    ).hexdigest()
+    return workspace

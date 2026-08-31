@@ -1,0 +1,70 @@
+{
+  "schema": "truemem_pressure_aware_traversal_freeze@2",
+  "baseline_commit": "e4435d26884e18423433695fba8c01857fd76db0",
+  "authority_layer_tag_commit": "06909f434b6aa707902edab86279b86d5c618586",
+  "authority_layer_modified": false,
+  "source_authority_modified": false,
+  "ranking_modified": false,
+  "operator_capability_created": false,
+  "model_used": false,
+  "training_performed": false,
+  "textual_answer_formed": false,
+  "implementation": {
+    "TrueMem/src/truemem/engine/pressure_contract.py": "d8046daf8ffe3398491e50b1245d90d7e5d5a3134b01bba48a34344c6502aa41",
+    "TrueMem/src/truemem/engine/structural_traversal.py": "aa0bc11501f7e8c4efbc404691239353fac110c757945082e625cfaa547bf7dc",
+    "TrueMem/src/truemem/engine/xpu_structural_graph.py": "109277d4ff17c23995e9e0bd7d13794555c3aaf91a09c520d7e48c1470993123",
+    "TrueMem/system/contracts/PRESSURE_AWARE_OCCURRENCE_TRAVERSAL_V2.md": "c448d1d79e7ddb74abb15bb3590d967149cc7aae921305c9b442518aca926c4d"
+  },
+  "governed_runtime": {
+    "path": "/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/output/hotpotqa-occurrence-runtime-20260831T134226Z",
+    "structure_graph_sha256": "0bc6064ce08c171a232910174fafe79e125b496167d786c8a899745e4928cb1e",
+    "source_blocks": 100000
+  },
+  "milestones": {
+    "M1": "exact pressure contract",
+    "M2": "native posting and structural CSR indexes",
+    "M3": "bounded local signed 6-1-6 context traversal",
+    "M4": "branch-local pressure and occurrence evidence",
+    "M5": "B70-only CSR projection and no silent fallback",
+    "M6": "global fixed point and evidence workspace compilation",
+    "M7": "five source-bound next-hop cases",
+    "M8": "frozen 26-case legacy boundary replay"
+  },
+  "acceptance": {
+    "deterministic_repeat_log": {
+      "path": "/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/output/pressure-aware-traversal-v2-20260831T144717Z.log",
+      "sha256": "19825e031fc0330dcbbf1c894b29df7d3c8e16af1fa2314d9169cae0f39f2fec"
+    },
+    "five_case_log": {
+      "path": "/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/output/pressure-traversal-five-v2-20260831T144154Z.log",
+      "sha256": "94aaca54023971eb885140168a27428140a467bc59f8897a128cd8e8ee55507c",
+      "source_bound_paths": 5,
+      "cases": 5
+    },
+    "legacy_26_log": {
+      "path": "/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/output/pressure-traversal-v2-legacy-26-20260831T144337Z.log",
+      "sha256": "7bcdfe99c80fe1708eb4241fcb58888ee9fc6b007c80f05a334b31cf05195afc",
+      "complete_chains": 16,
+      "cases": 26,
+      "pressure_contracts_invented_for_remaining_cases": false
+    },
+    "regression_log": {
+      "path": "/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/output/pressure-traversal-v2-regressions-20260831T144919Z.log",
+      "sha256": "ee83783c5bb7c601a05c325dc375850c5eb87520ac552d86eb256c1dfed44a4f",
+      "repository_tests_passed": 56,
+      "external_acceptance_scripts_passed": 5
+    }
+  },
+  "device": {
+    "name": "Intel(R) Arc(TM) Pro B70 Graphics",
+    "type": "xpu",
+    "adjacency": "CSR",
+    "whole_array_hot_path_scans": false,
+    "silent_device_fallback": false
+  },
+  "known_boundary": {
+    "legacy_26_complete": 16,
+    "legacy_26_incomplete": 10,
+    "reason": "The remaining legacy rows have no approved exact pressure-point contracts in this milestone."
+  }
+}
