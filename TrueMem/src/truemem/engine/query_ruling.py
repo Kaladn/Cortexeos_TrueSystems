@@ -9,7 +9,9 @@ from .anchors import anchorize
 SUPPORTED_OPERATIONS = {
     "all_equal",
     "attribution",
+    "chronological_order",
     "count_anchors",
+    "date_difference_days",
     "earlier_date",
     "exact_constraint_match",
     "identity_intersection",
@@ -19,7 +21,13 @@ SUPPORTED_OPERATIONS = {
     "membership_chain",
     "numeric_max",
     "numeric_min",
+    "numeric_add",
+    "numeric_difference",
+    "numeric_divide",
+    "numeric_multiply",
+    "percentage_of",
     "set_intersection",
+    "set_union",
 }
 
 

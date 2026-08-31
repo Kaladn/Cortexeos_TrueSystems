@@ -36,11 +36,45 @@ If no eligible chain exists, the selector returns
   selected evidence.
 - The overlay expires with the query.
 
+## Capability execution
+
+A capability cannot execute directly from prose or a citation label. Each
+operand must bind to an admitted evidence record and retain:
+
+- citation ID and block ordinal;
+- file and line coordinates;
+- verified block SHA-1 and SHA-256;
+- exact identity UTF-8 byte span;
+- exact value UTF-8 byte span or spans;
+- deterministic value type and parsing receipt.
+
+TrueMem derives the typed operand from the verified source span. A caller may
+not submit a typed number or date as authority. Every required evidence field
+declared by the sheet must be satisfied exactly once. Missing, duplicated,
+undeclared, stale, or byte-inexact evidence fails closed before calculation.
+
+When one block covers every ruling group, selection returns that one block. A
+multi-block pair is constructed only when no single block covers the complete
+ruling field. This prevents an unrelated second block from being added merely
+to satisfy a fixed result cardinality.
+
+Every capability attempt returns `truemem_capability_authority_receipt@1` with
+either `EXECUTED` or `REJECTED`, a stable failure code, and whether an operation
+actually ran. Rejection is an auditable result; it is not replaced by a guess.
+
+The device boundary is explicit. Posting lookup, signed relationship matching,
+ruling-group qualification, candidate construction, and ranking remain XPU
+tensor work and fail if tensors leave XPU. CPU work is limited to source-file
+loading, coordinate/receipt serialization, exact UTF-8 byte and hash checks,
+and bounded scalar/date/count/equality/set operations. This boundary is not a
+fallback path.
+
 The native implementation is:
 
 - `truemem.engine.query_ruling`
 - `truemem.engine.xpu_relationship_index`
 - `truemem.engine.operator_skills`
+- `truemem.engine.evidence_operands`
 
 Benchmark and application adapters may call this implementation. They may not
 carry private copies of its relationship or ruling laws.

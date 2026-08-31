@@ -94,6 +94,8 @@ class XpuRelationshipIndex:
             "cpu_role": "binary_file_loading_coordinate_metadata_only",
             "ranking_on_cpu": False,
             "relationship_walk_on_cpu": False,
+            "xpu_tensors_verified": True,
+            "silent_device_fallback": False,
         }
 
     def _slice(self, symbol_id: int) -> tuple[torch.Tensor, torch.Tensor]:
@@ -154,6 +156,8 @@ class XpuRelationshipIndex:
                 "device_type": "xpu",
                 "cpu_relationship_math": False,
                 "cpu_ranking": False,
+                "xpu_tensors_verified": True,
+                "silent_device_fallback": False,
             },
         }
 
@@ -281,6 +285,75 @@ class XpuRelationshipIndex:
             anchor_ids = self.block_symbol_ids[begin:end]
             content_ids = anchor_ids[self.kinds[anchor_ids] == 0]
             presence[row_index, content_ids] = 1
+        if ruling_groups:
+            single_ruling_count = ruling_matches[pool].sum(1)
+            complete_single = torch.nonzero(
+                single_ruling_count == len(ruling_groups), as_tuple=False
+            ).flatten()
+            if complete_single.numel():
+                single_title_count = ruling_title_matches[pool].sum(1)
+                single_order = _lexicographic_order([
+                    -single_title_count[complete_single],
+                    -coverage_count[pool[complete_single]],
+                    -relation_counts[pool[complete_single]],
+                    -parent_counts[pool[complete_single]],
+                    pool[complete_single],
+                ])
+                winner_pool_index = int(complete_single[single_order[0]].item())
+                selected_block = int(pool[winner_pool_index].item())
+                _assert_xpu(
+                    ruling_matches, ruling_title_matches, single_ruling_count,
+                    complete_single, single_order, pool, presence,
+                )
+                torch.xpu.synchronize()
+                return {
+                    "selected_block_ids": [selected_block],
+                    "bridge_anchor_ids": [],
+                    "bridge_anchors": [],
+                    "vector": {
+                        "ruling_group_coverage": int(single_ruling_count[winner_pool_index].item()),
+                        "ruling_parent_title_coverage": int(single_title_count[winner_pool_index].item()),
+                        "query_anchor_coverage": int(coverage_count[selected_block].item()),
+                        "bridge_frequency_corrected_support": 0.0,
+                        "relationship_match_count": int(relation_counts[selected_block].item()),
+                        "parent_anchor_hit_count": int(parent_counts[selected_block].item()),
+                        "shared_bridge_anchor_count": 0,
+                    },
+                    "qualified_block_count": int(qualified_ids.numel()),
+                    "candidate_pool_count": int(pool.numel()),
+                    "relationship_witness_lanes": witnesses,
+                    "anchor_structure_sheet_id": anchor_structure_sheet["sheet_id"],
+                    "ruling_group_matches": [
+                        {
+                            "group_id": group["group_id"],
+                            "anchors": group["anchors"],
+                            "match_scope": group["match_scope"],
+                            "matching_block_count": int(ruling_matches[:, index].sum().item()),
+                            "title_matching_block_count": int(ruling_title_matches[:, index].sum().item()),
+                        }
+                        for index, group in enumerate(ruling_groups)
+                    ],
+                    "stage_receipt": {
+                        "stage": "relationship_qualification_and_chain_ranking",
+                        "device": self.device_name,
+                        "device_type": "xpu",
+                        "cpu_ranking": False,
+                        "cpu_relationship_math": False,
+                        "xpu_tensors_verified": True,
+                        "silent_device_fallback": False,
+                        "direct_hit_primary_sort": False,
+                        "positions_preserved": True,
+                        "signed_distances_preserved": True,
+                        "temporary_query_overlay": True,
+                        "stored_counts_modified": False,
+                        "stored_relationships_modified": False,
+                        "proper_nouns_inferred": False,
+                        "ruling_groups_supplied_externally": True,
+                        "selection_cardinality": 1,
+                        "cardinality_law": "one block covering all ruling groups precedes multi-block pairing",
+                        "cpu_role": "file loading, coordinate metadata, and receipt serialization only",
+                    },
+                }
         bridge_count = presence @ presence.T
         rarity = torch.zeros(self.vocabulary_size, dtype=torch.float16, device=self.device)
         nonzero = self.document_frequency > 0
@@ -397,6 +470,12 @@ class XpuRelationshipIndex:
                 "stored_relationships_modified": False,
                 "proper_nouns_inferred": False,
                 "ruling_groups_supplied_externally": bool(anchor_structure_sheet),
+                "selection_cardinality": 2,
+                "cardinality_law": "multi-block pair used because no single block covered all ruling groups" if anchor_structure_sheet else "native baseline pair",
+                "cpu_relationship_math": False,
+                "xpu_tensors_verified": True,
+                "silent_device_fallback": False,
+                "cpu_role": "file loading, coordinate metadata, and receipt serialization only",
             },
         }
 

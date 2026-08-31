@@ -105,7 +105,10 @@ def _operand(row: dict[str, Any], index: int) -> dict[str, Any]:
     citations = [str(value) for value in row.get("citations") or [] if str(value)]
     if not citations:
         raise ValueError(f"operand {index} lacks citation authority")
-    return {"identity": str(row["identity"]), "value": row["value"], "citations": citations}
+    prepared = {"identity": str(row["identity"]), "value": row["value"], "citations": citations}
+    if "binding_receipt" in row:
+        prepared["binding_receipt"] = row["binding_receipt"]
+    return prepared
 
 
 def _date_value(value: Any) -> date:
@@ -150,4 +153,7 @@ def _result(operation: str, operands: list[dict[str, Any]], value: Any, measurem
         "model_authority_created": False,
         "evidence_modified": False,
         "capability_authority": "DETERMINISTIC_CITED_OPERANDS_ONLY",
+        "execution_device": "cpu",
+        "device_reason": "bounded scalar/date/count/equality/set operation; no relationship or ranking work",
+        "silent_device_fallback": False,
     }

@@ -102,6 +102,12 @@ from .query_ruling import (
     validate_ruling_anchor_groups,
 )
 from .operator_skills import available_operator_skills, execute_operator_skill
+from .evidence_operands import (
+    bind_operator_operands,
+    execute_anchor_sheet_capability,
+    execute_bound_operator_skill,
+    run_anchor_sheet_capability,
+)
 from .querying import batch_questions, deeper_wider_after_answer, query, score_blocks, top_relation_neighbors
 from .resonance_adapter import adapt_resonance_sample
 from .special_search import special_search
