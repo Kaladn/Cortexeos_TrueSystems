@@ -117,6 +117,7 @@ def compile_text_structures(
             "byte_start": byte_start,
             "byte_end": byte_end,
             "kind": kind,
+            "semantic_subtype": candidate.get("semantic_subtype"),
             "status": str(candidate.get("status") or "VERIFIED_STRUCTURE"),
         }
         structures.append({
@@ -271,7 +272,7 @@ def _apply_explicit_type_cues(text: str, candidates: list[dict[str, Any]]) -> li
         prefix = text[max(0, int(row["char_start"]) - 40):int(row["char_start"])].casefold()
         cue_matches = [typed for cue, typed in EXPLICIT_TYPE_CUES.items() if re.search(rf"\b{re.escape(cue)}\s+(?:of\s+)?$", prefix)]
         if len(set(cue_matches)) == 1:
-            row["kind"] = cue_matches[0]
+            row["semantic_subtype"] = cue_matches[0]
         elif len(set(cue_matches)) > 1:
             row["status"] = "AMBIGUOUS_STRUCTURE"
     return candidates

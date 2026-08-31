@@ -31,6 +31,7 @@ def write_structural_graph(paths: Any, compilations: list[dict[str, Any]], symbo
                 "byte_start": int(row["byte_start"]),
                 "byte_end": int(row["byte_end"]),
                 "kind": row["kind"],
+                "semantic_subtype": row.get("semantic_subtype"),
                 "status": row["status"],
                 "occurrence_id": row["occurrence_id"],
                 "exact_text_sha256": row["exact_text_sha256"],
