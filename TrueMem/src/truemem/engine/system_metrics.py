@@ -7,7 +7,7 @@ from typing import Any
 from .base import COUNT_BACKEND, SYMBOL_BYTES, SYMBOL_SYSTEM, dataset_paths, safe_id, with_protected_notice
 from .hardware import detect_system_resources
 from .qa_ledger import jsonl_count
-from .storage import ANCHOR_RECORD, BLOCK_ANCHOR_RECORD, RELATION_RECORD, index_readiness, record_count
+from .storage import ANCHOR_RECORD, BLOCK_ANCHOR_RECORD, RELATION_RECORD, block_anchor_record, index_readiness, record_count
 
 
 def system_metrics(
@@ -92,7 +92,7 @@ def _dataset_summary(runtime_root: Path, dataset_id: str | None) -> dict[str, An
         "admitted_dataset_artifact_size_bytes": _tree_size(paths.root),
         "anchor_count": int(counts.get("anchor_count", record_count(paths.anchor_counts_path, ANCHOR_RECORD.size)) or 0),
         "relation_count": int(counts.get("relation_count", record_count(paths.relation_counts_path, RELATION_RECORD.size)) or 0),
-        "block_anchor_posting_count": int(counts.get("block_anchor_posting_count", record_count(paths.block_anchor_path, BLOCK_ANCHOR_RECORD.size)) or 0),
+        "block_anchor_posting_count": int(counts.get("block_anchor_posting_count", record_count(paths.block_anchor_path, block_anchor_record(paths).size)) or 0),
         "block_count": int(counts.get("block_count", jsonl_count(paths.blocks_path)) or 0),
         "citation_count": int(counts.get("citation_count", jsonl_count(paths.citations / "citations.jsonl")) or 0),
         "coordinate_count": int(counts.get("coordinate_count", jsonl_count(paths.coordinates / "coordinate_index.jsonl")) or 0),

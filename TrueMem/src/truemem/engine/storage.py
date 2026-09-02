@@ -22,6 +22,45 @@ from .base import (
 ANCHOR_RECORD = struct.Struct(">6sQ")
 RELATION_RECORD = struct.Struct(">6s6shI")
 BLOCK_ANCHOR_RECORD = struct.Struct(">6sIH")
+BLOCK_ANCHOR_RECORD_V1 = BLOCK_ANCHOR_RECORD
+BLOCK_ANCHOR_RECORD_V2 = struct.Struct(">6sII")
+BLOCK_ANCHOR_SCHEMA_V1 = "truemem_block_anchor_postings@1"
+BLOCK_ANCHOR_SCHEMA_V2 = "truemem_block_anchor_postings@2"
+
+
+def block_anchor_record(paths: DatasetPaths) -> struct.Struct:
+    """Resolve the posting codec; manifests without a declaration are V1."""
+
+    return block_anchor_record_for_path(paths.block_anchor_path)
+
+
+def block_anchor_record_for_path(posting_path: Path) -> struct.Struct:
+    """Resolve a posting codec from its dataset-root manifest."""
+
+    manifest = {}
+    manifest_path = Path(posting_path).parent.parent / "dataset_manifest.json"
+    if manifest_path.is_file():
+        try:
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            manifest = {}
+    schema = str(manifest.get("block_anchor_posting_schema") or BLOCK_ANCHOR_SCHEMA_V1)
+    width = int(manifest.get("block_anchor_position_bits") or 16)
+    if schema == BLOCK_ANCHOR_SCHEMA_V1 and width == 16:
+        return BLOCK_ANCHOR_RECORD_V1
+    if schema == BLOCK_ANCHOR_SCHEMA_V2 and width == 32:
+        return BLOCK_ANCHOR_RECORD_V2
+    raise RuntimeError(f"UNSUPPORTED_BLOCK_ANCHOR_POSTING_FORMAT: schema={schema}; position_bits={width}")
+
+
+def iter_block_anchor_records(paths: DatasetPaths) -> Iterable[tuple[bytes, int, int]]:
+    record = block_anchor_record(paths)
+    with paths.block_anchor_path.open("rb") as handle:
+        while chunk := handle.read(record.size):
+            if len(chunk) != record.size:
+                raise RuntimeError("TRUNCATED_BLOCK_ANCHOR_POSTING_RECORD")
+            symbol, block_ordinal, position = record.unpack(chunk)
+            yield symbol, int(block_ordinal), int(position)
 
 
 def ensure_dataset(runtime_root: str | Path, dataset_id: str, *, owner: str = "operator_defined") -> dict[str, Any]:
@@ -395,4 +434,23 @@ def _source_freshness(intake_receipt: Path | None, artifacts: dict[str, dict[str
         "newest_source_modified_time_ns": int(newest_source),
         "oldest_index_modified_time_ns": int(oldest_index) if oldest_index is not None else None,
     }
+
+
+# Defined last so mixed-line-ending historical source remains untouched while
+# all callers receive the version-aware implementation.
+def read_block_anchor_rows(paths: DatasetPaths) -> list[tuple[bytes, int, int]]:
+    return list(iter_block_anchor_records(paths))
+
+
+def record_count(path: Path, record_size: int) -> int:
+    """Count fixed records, resolving versioned posting width when required."""
+
+    if not path.exists():
+        return 0
+    effective_size = int(record_size)
+    if path.name == "block_anchor_postings.awbin":
+        effective_size = block_anchor_record_for_path(path).size
+    if path.stat().st_size % effective_size:
+        raise RuntimeError(f"TRUNCATED_FIXED_RECORD_FILE: {path}")
+    return path.stat().st_size // effective_size
 

@@ -49,10 +49,22 @@ class XpuStructuralGraph:
         # is indexed once by physical block/position so bounded 6-1-6 clouds do
         # not depend on whether an anchor also belongs to a compiled structure.
         posting_raw = (self.root / "counts/block_anchor_postings.awbin").read_bytes()
-        posting_record = struct.Struct(">6sIH")
+        manifest = json.loads((self.root / "dataset_manifest.json").read_text(encoding="utf-8"))
+        posting_schema = str(manifest.get("block_anchor_posting_schema") or "truemem_block_anchor_postings@1")
+        position_bits = int(manifest.get("block_anchor_position_bits") or 16)
+        if posting_schema == "truemem_block_anchor_postings@1" and position_bits == 16:
+            posting_record = struct.Struct(">6sIH")
+            position_format = ">u2"
+        elif posting_schema == "truemem_block_anchor_postings@2" and position_bits == 32:
+            posting_record = struct.Struct(">6sII")
+            position_format = ">u4"
+        else:
+            raise RuntimeError(f"UNSUPPORTED_BLOCK_ANCHOR_POSTING_FORMAT: schema={posting_schema}; position_bits={position_bits}")
+        if len(posting_raw) % posting_record.size:
+            raise RuntimeError("TRUNCATED_BLOCK_ANCHOR_POSTING_RECORD")
         posting_dtype = np.dtype({
             "names": ["symbol", "block", "position"],
-            "formats": [("u1", 6), ">u4", ">u2"],
+            "formats": [("u1", 6), ">u4", position_format],
             "offsets": [0, 6, 10], "itemsize": posting_record.size,
         })
         posting_rows = np.frombuffer(posting_raw, dtype=posting_dtype)
@@ -61,7 +73,7 @@ class XpuStructuralGraph:
         posting_blocks_cpu = posting_rows["block"].astype(np.int64)
         posting_positions_cpu = posting_rows["position"].astype(np.int64)
         posting_keys = torch.from_numpy(
-            (posting_blocks_cpu * 65536 + posting_positions_cpu).copy()
+            ((posting_blocks_cpu << 32) | posting_positions_cpu).copy()
         ).to(self.device)
         posting_order = torch.argsort(posting_keys, stable=True)
         self.position_posting_keys = posting_keys[posting_order]
@@ -222,7 +234,10 @@ class XpuStructuralGraph:
             dtype=torch.long, device=self.device,
         )
         wanted_positions = starts.unsqueeze(1) + offsets.unsqueeze(0)
-        wanted_keys = blocks.unsqueeze(1) * 65536 + wanted_positions
+        wanted_keys = torch.bitwise_or(
+            torch.bitwise_left_shift(blocks.unsqueeze(1).to(torch.int64), 32),
+            wanted_positions.to(torch.int64),
+        )
         flat_keys = wanted_keys.flatten()
         indices = torch.searchsorted(self.position_posting_keys, flat_keys)
         in_range = indices < self.position_posting_keys.numel()

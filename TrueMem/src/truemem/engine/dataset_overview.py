@@ -9,7 +9,7 @@ from .anchors import symbol_hex
 from .base import COUNT_BACKEND, dataset_paths, safe_id, unique_stamp, utc_now, with_protected_notice, write_json
 from .determinism import file_receipt
 from .storage import (
-    BLOCK_ANCHOR_RECORD,
+    block_anchor_record_for_path,
     index_readiness,
     iter_anchor_records,
     iter_relation_records,
@@ -184,11 +184,12 @@ def _read_relevant_postings(block_anchor_path: Path, symbols: set[str]) -> dict[
     positions: dict[int, dict[str, list[int]]] = defaultdict(lambda: defaultdict(list))
     if not block_anchor_path.exists() or not symbols:
         return positions
+    record = block_anchor_record_for_path(block_anchor_path)
     with block_anchor_path.open("rb") as handle:
-        while chunk := handle.read(BLOCK_ANCHOR_RECORD.size):
-            if len(chunk) != BLOCK_ANCHOR_RECORD.size:
-                continue
-            symbol, block_ordinal, position = BLOCK_ANCHOR_RECORD.unpack(chunk)
+        while chunk := handle.read(record.size):
+            if len(chunk) != record.size:
+                raise RuntimeError("TRUNCATED_BLOCK_ANCHOR_POSTING_RECORD")
+            symbol, block_ordinal, position = record.unpack(chunk)
             symbol_id = symbol_hex(symbol)
             if symbol_id in symbols:
                 positions[int(block_ordinal)][symbol_id].append(int(position))

@@ -19,6 +19,7 @@ from .engine import (
     safe_id,
     with_protected_notice,
 )
+from .engine.storage import block_anchor_record
 
 
 def get_protected_notice() -> dict[str, Any]:
@@ -41,7 +42,7 @@ def get_status(runtime_root: str | Path, dataset_id: str) -> dict[str, Any]:
         "dataset_lexicon_path": str(paths.lexicon_path),
         "anchor_count": record_count(paths.anchor_counts_path, ANCHOR_RECORD.size),
         "relation_count": record_count(paths.relation_counts_path, RELATION_RECORD.size),
-        "block_anchor_posting_count": record_count(paths.block_anchor_path, BLOCK_ANCHOR_RECORD.size),
+        "block_anchor_posting_count": record_count(paths.block_anchor_path, block_anchor_record(paths).size),
         "block_count": jsonl_count(paths.blocks_path),
         "citation_count": jsonl_count(paths.citations / "citations.jsonl"),
         "persistent_memory": False,

@@ -13,13 +13,31 @@ import numpy as np
 
 from .query_ruling import relationship_demands
 
-POSTING = struct.Struct(">6sIH")
+POSTING_V1 = struct.Struct(">6sIH")
+POSTING_V2 = struct.Struct(">6sII")
 RELATION = struct.Struct(">6s6shI")
 
 
 def _assert_xpu(*values: torch.Tensor) -> None:
     if not values or any(value.device.type != "xpu" for value in values):
         raise RuntimeError("XPU_STAGE_FELL_BACK_OR_RETURNED_NON_XPU_TENSOR")
+
+
+def _coordinate_key(blocks: torch.Tensor, positions: torch.Tensor) -> torch.Tensor:
+    """Pack nonnegative block and position fields collision-free in int64."""
+
+    normalized_positions = positions.to(torch.int64)
+    keys = torch.bitwise_or(
+        torch.bitwise_left_shift(blocks.to(torch.int64), 32),
+        normalized_positions,
+    )
+    keys = torch.where(
+        (normalized_positions >= 0) & (normalized_positions <= 0xFFFFFFFF),
+        keys,
+        torch.full_like(keys, -1),
+    )
+    _assert_xpu(keys) if keys.device.type == "xpu" else None
+    return keys
 
 
 def _lexicographic_order(keys: list[torch.Tensor]) -> torch.Tensor:
@@ -50,8 +68,21 @@ class XpuRelationshipIndex:
         self.kinds = kinds
 
         raw = (dataset_root / "counts/block_anchor_postings.awbin").read_bytes()
-        count = len(raw) // POSTING.size
-        dtype = np.dtype({"names": ["symbol", "block", "position"], "formats": [("u1", 6), ">u4", ">u2"], "offsets": [0, 6, 10], "itemsize": 12})
+        manifest = json.loads((dataset_root / "dataset_manifest.json").read_text(encoding="utf-8"))
+        posting_schema = str(manifest.get("block_anchor_posting_schema") or "truemem_block_anchor_postings@1")
+        position_bits = int(manifest.get("block_anchor_position_bits") or 16)
+        if posting_schema == "truemem_block_anchor_postings@1" and position_bits == 16:
+            posting_record = POSTING_V1
+            position_format = ">u2"
+        elif posting_schema == "truemem_block_anchor_postings@2" and position_bits == 32:
+            posting_record = POSTING_V2
+            position_format = ">u4"
+        else:
+            raise RuntimeError(f"UNSUPPORTED_BLOCK_ANCHOR_POSTING_FORMAT: schema={posting_schema}; position_bits={position_bits}")
+        if len(raw) % posting_record.size:
+            raise RuntimeError("TRUNCATED_BLOCK_ANCHOR_POSTING_RECORD")
+        count = len(raw) // posting_record.size
+        dtype = np.dtype({"names": ["symbol", "block", "position"], "formats": [("u1", 6), ">u4", position_format], "offsets": [0, 6, 10], "itemsize": posting_record.size})
         rows = np.frombuffer(raw, dtype=dtype)
         powers = np.array([256**5, 256**4, 256**3, 256**2, 256, 1], dtype=np.int64)
         symbols = torch.from_numpy((rows["symbol"].astype(np.int64) @ powers).copy())
@@ -94,6 +125,8 @@ class XpuRelationshipIndex:
             "device": self.device_name,
             "device_type": "xpu",
             "posting_count": int(count),
+            "posting_schema": posting_schema,
+            "position_bits": position_bits,
             "unique_block_anchor_count": int(block_symbol.numel()),
             "vocabulary_size": int(self.vocabulary_size),
             "block_count": int(self.block_count),
@@ -286,8 +319,8 @@ class XpuRelationshipIndex:
             left_blocks, left_positions = self._slice(center)
             right_blocks, right_positions = self._slice(neighbor)
             left_mask = left_blocks == block_id
-            wanted = left_blocks[left_mask] * 65536 + left_positions[left_mask] + int(demand["signed_distance"])
-            right_keys = right_blocks * 65536 + right_positions
+            wanted = _coordinate_key(left_blocks[left_mask], left_positions[left_mask] + int(demand["signed_distance"]))
+            right_keys = _coordinate_key(right_blocks, right_positions)
             count = torch.isin(wanted, right_keys).sum()
             relationship_matches += count
             if bool((count > 0).item()):
@@ -360,11 +393,12 @@ class XpuRelationshipIndex:
             if any(symbol is None for symbol in symbol_ids):
                 continue
             first_blocks, first_positions = self._slice(int(symbol_ids[0]))
-            candidate_keys = first_blocks * 65536 + first_positions
+            candidate_keys = _coordinate_key(first_blocks, first_positions)
             matched = torch.ones(candidate_keys.shape, dtype=torch.bool, device=self.device)
             for offset, symbol_id in enumerate(symbol_ids[1:], start=1):
                 blocks, positions = self._slice(int(symbol_id))
-                matched &= torch.isin(candidate_keys + offset, blocks * 65536 + positions)
+                wanted_keys = _coordinate_key(first_blocks, first_positions + offset)
+                matched &= torch.isin(wanted_keys, _coordinate_key(blocks, positions))
             matched_blocks = first_blocks[matched]
             if matched_blocks.numel():
                 exact[matched_blocks, group_index] = True
@@ -395,8 +429,8 @@ class XpuRelationshipIndex:
                 continue
             left_blocks, left_positions = self._slice(center)
             right_blocks, right_positions = self._slice(neighbor)
-            right_keys = right_blocks * 65536 + right_positions
-            wanted = left_blocks * 65536 + left_positions + int(demand["signed_distance"])
+            right_keys = _coordinate_key(right_blocks, right_positions)
+            wanted = _coordinate_key(left_blocks, left_positions + int(demand["signed_distance"]))
             mask = torch.isin(wanted, right_keys)
             matched_blocks = left_blocks[mask]
             if matched_blocks.numel():

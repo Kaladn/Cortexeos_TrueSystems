@@ -7,7 +7,7 @@ from .anchors import anchorize, symbol_hex
 from .base import COUNT_BACKEND, dataset_paths, safe_id, sha1_text, unique_stamp, utc_now, with_protected_notice, write_json
 from .determinism import file_receipt
 from .querying import query
-from .storage import BLOCK_ANCHOR_RECORD, iter_relation_records, read_blocks, read_symbol_to_anchor
+from .storage import block_anchor_record_for_path, iter_relation_records, read_blocks, read_symbol_to_anchor
 
 
 def count_walk_speech(
@@ -274,11 +274,12 @@ def _find_block_for_location(blocks: dict[int, dict[str, Any]], location: dict[s
 
 def _block_spine(block_anchor_path: Path, block_ordinal: int, symbol_to_anchor: dict[str, str]) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
+    record = block_anchor_record_for_path(block_anchor_path)
     with block_anchor_path.open("rb") as handle:
-        while chunk := handle.read(BLOCK_ANCHOR_RECORD.size):
-            if len(chunk) != BLOCK_ANCHOR_RECORD.size:
-                continue
-            symbol, row_block_ordinal, position = BLOCK_ANCHOR_RECORD.unpack(chunk)
+        while chunk := handle.read(record.size):
+            if len(chunk) != record.size:
+                raise RuntimeError("TRUNCATED_BLOCK_ANCHOR_POSTING_RECORD")
+            symbol, row_block_ordinal, position = record.unpack(chunk)
             if int(row_block_ordinal) != block_ordinal:
                 continue
             symbol_id = symbol_hex(symbol)
