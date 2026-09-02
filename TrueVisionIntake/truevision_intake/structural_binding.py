@@ -9,6 +9,8 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+from array import array
+from bisect import bisect_left, bisect_right
 from typing import Any
 
 
@@ -111,21 +113,21 @@ def compile_text_structures(
 
     parent_object_id = stable_hash({"source_identity": str(source_identity), "block_ordinal": int(block_ordinal), "kind": "PARENT_OBJECT"})
     structures: list[dict[str, Any]] = []
+    occurrence_starts = [int(row["char_start"]) for row in occurrences]
+    sentence_boundaries = _sentence_boundaries(source)
+    byte_offsets = _utf8_prefix_offsets(source)
     for candidate in candidates:
         start = int(candidate["char_start"])
         end = int(candidate["char_end"])
         exact = source[start:end]
-        anchor_children = [
-            row for row in occurrences
-            if int(row["char_start"]) >= start and int(row["char_end"]) <= end
-        ]
+        anchor_children = _occurrences_within(occurrences, occurrence_starts, start, end)
         if not anchor_children:
             continue
         kind = str(candidate["kind"])
         identity_anchors = [str(row["anchor"]) for row in anchor_children if not str(row["anchor"]).startswith("boundary:")]
         key = structure_key(kind, exact, identity_anchors=identity_anchors)
-        byte_start = len(source[:start].encode("utf-8"))
-        byte_end = len(source[:end].encode("utf-8"))
+        byte_start = int(byte_offsets[start])
+        byte_end = int(byte_offsets[end])
         basis = {
             "structure_key": key,
             "source_identity": str(source_identity),
@@ -144,7 +146,7 @@ def compile_text_structures(
             "exact_text_sha256": hashlib.sha256(exact.encode("utf-8")).hexdigest(),
             "char_start": start,
             "char_end": end,
-            "sentence_ordinal": _sentence_ordinal(source, start),
+            "sentence_ordinal": _sentence_ordinal_from_boundaries(sentence_boundaries, start),
             "anchor_start": int(anchor_children[0]["position"]),
             "anchor_count": len(anchor_children),
             "children": [
@@ -162,7 +164,11 @@ def compile_text_structures(
             "inside_native_identity_region": bool(start >= 0 and end <= title_end),
         })
 
-    relations, relation_structures = _explicit_relations(source, structures, occurrences, source_identity, block_ordinal, temporary_query_overlay, parent_object_id)
+    relations, relation_structures = _explicit_relations(
+        source, structures, occurrences, occurrence_starts, sentence_boundaries,
+        byte_offsets,
+        source_identity, block_ordinal, temporary_query_overlay, parent_object_id,
+    )
     structures.extend(relation_structures)
     structures.sort(key=lambda row: (int(row["byte_start"]), -int(row["byte_end"]), str(row["kind"]), str(row["structure_key"])))
     relations.sort(key=lambda row: (int(row["byte_start"]), str(row["subject_occurrence_id"]), str(row["object_occurrence_id"])))
@@ -180,7 +186,7 @@ def compile_text_structures(
         "punctuation_count_bearing": False,
         "parent_object_id": parent_object_id,
         "native_identity_byte_start": 0,
-        "native_identity_byte_end": len(source[:title_end].encode("utf-8")),
+        "native_identity_byte_end": int(byte_offsets[title_end]),
         "structures": structures,
         "relations": relations,
     }
@@ -319,7 +325,20 @@ def _apply_explicit_type_cues(text: str, candidates: list[dict[str, Any]]) -> li
     return candidates
 
 
-def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences: list[dict[str, Any]], source_identity: str, block_ordinal: int, temporary: bool, parent_object_id: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+def _occurrences_within(
+    occurrences: list[dict[str, Any]],
+    occurrence_starts: list[int],
+    start: int,
+    end: int,
+) -> list[dict[str, Any]]:
+    """Return the exact ordered occurrence slice bounded by one source span."""
+
+    first = bisect_left(occurrence_starts, int(start))
+    last = bisect_left(occurrence_starts, int(end), lo=first)
+    return [row for row in occurrences[first:last] if int(row["char_end"]) <= int(end)]
+
+
+def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences: list[dict[str, Any]], occurrence_starts: list[int], sentence_boundaries: tuple[list[int], frozenset[int]], byte_offsets: array, source_identity: str, block_ordinal: int, temporary: bool, parent_object_id: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     subject_objects = [row for row in structures if row["kind"] not in {"DATE", "QUANTITY", "PARENTHETICAL", "RELATION_PHRASE", "NATIVE_IDENTITY_REGION"}]
     subject_objects.sort(key=lambda row: (int(row["char_start"]), -int(row["char_end"])))
     relations = []
@@ -341,15 +360,15 @@ def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences
             continue
         rel_start = char_left + len(phrase) - len(phrase.lstrip())
         rel_end = char_right - len(phrase) + len(phrase.rstrip())
-        phrase_children = [row for row in occurrences if int(row["char_start"]) >= rel_start and int(row["char_end"]) <= rel_end]
+        phrase_children = _occurrences_within(occurrences, occurrence_starts, rel_start, rel_end)
         relation_identity = [str(row["anchor"]) for row in phrase_children if not str(row["anchor"]).startswith("boundary:")]
         rel_key = structure_key("RELATION_PHRASE", exact_phrase, identity_anchors=relation_identity)
         pair = (str(left["occurrence_id"]), str(right["occurrence_id"]))
         if pair in seen:
             continue
         seen.add(pair)
-        byte_start = len(text[:rel_start].encode("utf-8"))
-        byte_end = len(text[:rel_end].encode("utf-8"))
+        byte_start = int(byte_offsets[rel_start])
+        byte_end = int(byte_offsets[rel_end])
         relation_basis = {
             "structure_key": rel_key,
             "source_identity": str(source_identity),
@@ -417,8 +436,9 @@ def _explicit_relations(text: str, structures: list[dict[str, Any]], occurrences
                 row["explicit_alias"] = True
                 row["relation_id"] = stable_hash({key: value for key, value in row.items() if key != "relation_id"})
     relations.extend(_local_context_relations(
-        text, structures, occurrences, relation_structures, source_identity,
-        block_ordinal, temporary, parent_object_id,
+        text, structures, occurrences, occurrence_starts, sentence_boundaries,
+        byte_offsets, relation_structures, source_identity, block_ordinal, temporary,
+        parent_object_id,
     ))
     return relations, relation_structures
 
@@ -427,6 +447,9 @@ def _local_context_relations(
     text: str,
     structures: list[dict[str, Any]],
     occurrences: list[dict[str, Any]],
+    occurrence_starts: list[int],
+    sentence_boundaries: tuple[list[int], frozenset[int]],
+    byte_offsets: array,
     relation_structures: list[dict[str, Any]],
     source_identity: str,
     block_ordinal: int,
@@ -445,7 +468,10 @@ def _local_context_relations(
     parent = native[0]
     by_sentence: dict[int, list[dict[str, Any]]] = {}
     for row in occurrences:
-        by_sentence.setdefault(_sentence_ordinal(text, int(row["char_start"])), []).append(row)
+        sentence_ordinal = _sentence_ordinal_from_boundaries(
+            sentence_boundaries, int(row["char_start"]),
+        )
+        by_sentence.setdefault(sentence_ordinal, []).append(row)
     objects = [row for row in structures if row["kind"] not in {"DATE", "QUANTITY", "PARENTHETICAL", "RELATION_PHRASE", "NATIVE_IDENTITY_REGION"}]
     emitted: list[dict[str, Any]] = []
     existing = {(row["subject_occurrence_id"], row["object_occurrence_id"]) for row in []}
@@ -467,11 +493,13 @@ def _local_context_relations(
             continue
         rel_start = phrase_start + len(text[phrase_start:phrase_end]) - len(text[phrase_start:phrase_end].lstrip())
         rel_end = phrase_end - len(text[phrase_start:phrase_end]) + len(text[phrase_start:phrase_end].rstrip())
-        phrase_children = [row for row in occurrences if int(row["char_start"]) >= rel_start and int(row["char_end"]) <= rel_end]
+        phrase_children = _occurrences_within(
+            occurrences, occurrence_starts, rel_start, rel_end,
+        )
         identity = [str(row["anchor"]) for row in phrase_children if not str(row["anchor"]).startswith("boundary:")]
         rel_key = structure_key("RELATION_PHRASE", exact_phrase, identity_anchors=identity)
-        byte_start = len(text[:rel_start].encode("utf-8"))
-        byte_end = len(text[:rel_end].encode("utf-8"))
+        byte_start = int(byte_offsets[rel_start])
+        byte_end = int(byte_offsets[rel_end])
         basis = {
             "structure_key": rel_key, "source_identity": str(source_identity),
             "block_ordinal": int(block_ordinal), "byte_start": byte_start,
@@ -534,6 +562,53 @@ def _deduplicate_candidates(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
 
 def _sentence_ordinal(text: str, char_position: int) -> int:
     return 1 + len(re.findall(r"[.!?](?:\s+|$)", text[:char_position]))
+
+
+def _sentence_boundaries(text: str) -> tuple[list[int], frozenset[int]]:
+    """Return the earliest prefix coordinate that completes each delimiter."""
+
+    boundaries = []
+    prefix_only = set()
+    for index, character in enumerate(text):
+        if character not in ".!?":
+            continue
+        following = index + 1
+        if following == len(text):
+            boundaries.append(following)
+        elif text[following].isspace():
+            boundaries.append(following)
+        else:
+            # The legacy prefix regex treats punctuation as an end-of-string
+            # delimiter only at the coordinate immediately following it.
+            prefix_only.add(following)
+    return boundaries, frozenset(prefix_only)
+
+
+def _sentence_ordinal_from_boundaries(boundaries: tuple[list[int], frozenset[int]], char_position: int) -> int:
+    """Match ``_sentence_ordinal`` without repeatedly scanning source prefixes."""
+
+    completed, prefix_only = boundaries
+    position = int(char_position)
+    return 1 + bisect_right(completed, position) + int(position in prefix_only)
+
+
+def _utf8_prefix_offsets(text: str) -> array:
+    """Map every character boundary to its exact UTF-8 byte coordinate once."""
+
+    offsets = array("Q", [0])
+    byte_position = 0
+    for character in text:
+        codepoint = ord(character)
+        if codepoint < 0x80:
+            byte_position += 1
+        elif codepoint < 0x800:
+            byte_position += 2
+        elif codepoint < 0x10000:
+            byte_position += 3
+        else:
+            byte_position += 4
+        offsets.append(byte_position)
+    return offsets
 
 
 def _capitalized(value: str) -> bool:
