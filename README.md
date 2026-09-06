@@ -15,6 +15,8 @@ Local Linux source workspace for the cooperating TrueSystems components.
 
 - `TrueCore/` — coded security agents and bounded capabilities.
 - `TrueMachine/` — the Linux temporal cognition machine formerly discussed as CompuCog.
+- `TrueComputer/` — bounded Hyprland/Wayland desktop actions with live
+  preconditions and redacted receipts.
 - `TrueVision/` — canonical TrueVision visual-state capture and generation/replay integration.
 - `TrueAudio/` — deterministic audio-state logging and replay.
 - `TrueSpeech/` — deterministic speech-region detection and caller-supplied lyric-candidate alignment.

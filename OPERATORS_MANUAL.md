@@ -29,6 +29,7 @@ not perform the operator's reasoning or analysis.
 
 ```text
 Linux/native state artifacts -> TrueMachine -> verified Fusion Packs
+operator-selected desktop action -> TrueComputer -> redacted action receipt
 documents/glyph state -> TrueVision Intake/DocuFilm -> TrueMem map -> cited retrieval/prediction packets
 decoded or machine audio -> TrueAudio state -> TrueSpeech bounded speech-state candidates
 local files/chats -> LocalMemoryChat -> cited memory packets
@@ -46,6 +47,7 @@ passed explicitly where a component exposes a path argument.
 | Need | System | Real entrypoint | Authoritative result |
 | --- | --- | --- | --- |
 | Observe Linux machine state over time | TrueMachine | `python -m truemachine run` | Fusion Pack plus WAL/index state |
+| Inspect or perform one bounded Linux desktop action | TrueComputer | `truecomputer inspect|validate|execute` | live Hyprland state or atomic redacted action receipt |
 | Verify a TrueMachine state directory | TrueMachine | `python -m truemachine verify` | JSON verification result |
 | Read document/glyph state | TrueVision Intake / DocuFilm | `truevision_intake.document_state` | document read plus stable glyph-state records |
 | Admit a document and build its deterministic map | TrueVision Intake / DocuFilm + TrueMem | `python -m truemem.cli docufilm-intake` | parent/contained anchors, a dataset-scoped range from the active workspace symbolizer, counts, coordinates, relationships, citations |
@@ -77,6 +79,28 @@ and `--truemem-state`. Each input must be JSON or JSONL and must
 declare `schema` or `schema_version`. TrueMachine samples time once per pulse,
 appends the pulse to its WAL, then atomically publishes the current Fusion Pack.
 The exact timestamp and durability rules are in `TrueMachine/docs/CONTRACT.md`.
+
+## TrueComputer
+
+TrueComputer is the bounded Wayland/Hyprland desktop actuator. It observes live
+Hyprland JSON state, validates one action against an exact active-window
+precondition, delegates to Hyprland IPC or `wtype`, checks a backend-specific
+postcondition, and atomically writes a redacted receipt. It is not a shell,
+planner, screen-understanding system, or source of human authorization.
+
+```bash
+cd TrueComputer
+CARGO_TARGET_DIR=/tmp/truecomputer-target cargo build --release
+/tmp/truecomputer-target/release/truecomputer inspect
+/tmp/truecomputer-target/release/truecomputer validate REQUEST.json
+/tmp/truecomputer-target/release/truecomputer execute REQUEST.json --receipt-dir RECEIPTS --execute
+```
+
+The live first slice supports focusing an existing window, switching to an
+existing workspace, moving the pointer within current monitor bounds, and typing
+printable text into the exact active window. Clicks, arbitrary commands,
+application launch, screenshots, and visual target selection are not implemented.
+Read `TrueComputer/AGENTS.md` and `TrueComputer/docs/CONTRACT.md` before use.
 
 ## TrueMem
 

@@ -87,6 +87,9 @@ If documentation conflicts with executable code:
   factual-decision authority.
 - TrueMachine owns temporal Linux observation, WAL durability, pulse timing,
   Fusion Pack publication, and state verification.
+- TrueComputer owns bounded Linux desktop action validation, fixed native
+  backend delegation, postcondition checks, and redacted action receipts. It is
+  not a shell, planner, vision authority, or source of human authorization.
 - TrueAudio owns audio-state logging and replay.
 - TrueSpeech consumes replayable audio state for bounded speech-region detection
   and caller-supplied candidate alignment. It does not invent transcripts.
