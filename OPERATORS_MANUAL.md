@@ -17,6 +17,14 @@ and rearranges the human request into a bounded work order, TrueSystems returns
 deterministic evidence and operation receipts, and the calling LLM reasons and
 communicates from that handoff. TrueSystems does not compose the final answer.
 
+Data-first, user-directed investigations additionally follow
+`docs/PARAMETERIZED_EVIDENCE_STUDY_CONTRACT.md`. The operator requests or locates
+data, profiles and shapes it, tells the human what it can support, asks what the
+human wishes to know, sets and discloses technical parameters, then freezes the
+plan before computation. The deterministic freeze tool is
+`TrueCore/truecore/agents/parameterized_study.py`; it validates the plan but does
+not perform the operator's reasoning or analysis.
+
 ## Whole-system map
 
 ```text
@@ -48,6 +56,7 @@ passed explicitly where a component exposes a path argument.
 | Search local remembered material | LocalMemoryChat | `python -m local_memory_chat.cli ask` | cited memory packet and receipt |
 | Retain/continue ordered conversation | Clearbox Chat-Chain | local HTTP server | persisted conversation/turn result |
 | Observe or invoke a coded security agent | TrueCore | `python -m truecore.cli.main agents ...` | agent state/decision/receipt |
+| Validate/freeze a parameterized evidence study | TrueCore | `python -m truecore.agents.parameterized_study` | canonical locked plan and deterministic freeze hash |
 | Call the currently unified subset | control-api | localhost HTTP | delegated component result |
 
 Run module commands from the named component directory with its `src` (or repo

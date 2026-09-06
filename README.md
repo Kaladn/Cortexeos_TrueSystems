@@ -5,6 +5,10 @@ callers must also obey [`AGENTS.md`](AGENTS.md). Documentation claims excluded
 from current truth are recorded in
 [`SUSPECT_DOCUMENTATION.md`](SUSPECT_DOCUMENTATION.md).
 
+For data-first studies in which the operator agent profiles supplied data,
+chooses and discloses technical settings, and then answers the human's questions,
+use the [parameterized evidence-study contract](docs/PARAMETERIZED_EVIDENCE_STUDY_CONTRACT.md).
+
 Local Linux source workspace for the cooperating TrueSystems components.
 
 ## Components
