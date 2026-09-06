@@ -3,9 +3,8 @@ from __future__ import annotations
 from collections import Counter
 import json
 from pathlib import Path
-from typing import Any
 
-from .symbolic_foundations_representation import canonical, digest, rows, write_json, write_jsonl, _external_group
+from .symbolic_foundations_representation import digest, rows, write_json, write_jsonl, _external_group
 
 SCHEMA = "truesystems_symbolic_foundations_replacement@1"
 SENTINEL = "UNSEEN_EXTERNAL_CALL"

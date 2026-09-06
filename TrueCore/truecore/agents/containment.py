@@ -17,8 +17,6 @@ EXECUTES. This separation ensures the audit trail shows both
 the recommendation and the execution.
 """
 
-import time
-from typing import Optional
 
 from truecore.agents.base import Agent, AgentDecision
 from truecore.substrates.base import Substrate, SubstrateRecord
@@ -58,7 +56,6 @@ class ContainmentAdvisorAgent(Agent):
 
         ctx = p.get("context", {})
         new_level = ctx.get("new_level", 0)
-        action = p.get("recommended_action", "")
         source_ip = self._cells_source_ips.get(cell_id, "unknown")
 
         # Level 3+: recommend cell lock

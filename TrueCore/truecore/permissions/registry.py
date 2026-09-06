@@ -20,8 +20,7 @@ import hashlib
 import hmac
 import os
 import threading
-import time
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Optional
 
 from truecore.time import utc_now

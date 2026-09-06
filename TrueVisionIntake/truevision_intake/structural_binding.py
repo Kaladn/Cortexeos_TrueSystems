@@ -474,7 +474,6 @@ def _local_context_relations(
         by_sentence.setdefault(sentence_ordinal, []).append(row)
     objects = [row for row in structures if row["kind"] not in {"DATE", "QUANTITY", "PARENTHETICAL", "RELATION_PHRASE", "NATIVE_IDENTITY_REGION"}]
     emitted: list[dict[str, Any]] = []
-    existing = {(row["subject_occurrence_id"], row["object_occurrence_id"]) for row in []}
     for sentence_ordinal, anchors in sorted(by_sentence.items()):
         if sentence_ordinal <= int(parent["sentence_ordinal"]) or not anchors:
             continue

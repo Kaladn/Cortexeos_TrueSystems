@@ -9,7 +9,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from truemem.engine.anchors import anchorize
-from truemem.engine.base import sha1_text, utc_now, with_protected_notice, write_json
+from truemem.engine.base import utc_now, with_protected_notice, write_json
 
 
 SCHEMA = "truemem_evidence_cloud_speech_run@0"
@@ -145,13 +145,6 @@ def build_evidence_cloud_speech_record(
 ) -> dict[str, Any]:
     question_anchors = [str(anchor) for anchor in packet.get("question_anchors") or anchorize(question)]
     blocks = _evidence_blocks(packet)
-    cloud = {
-        "question": question,
-        "question_anchors": question_anchors,
-        "source_packet_path": str(packet_path),
-        "blocks": blocks,
-    }
-
     passes: list[dict[str, Any]] = []
     previous_zone_id: str | None = None
     final_result: dict[str, Any] | None = None

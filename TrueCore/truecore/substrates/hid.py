@@ -13,7 +13,6 @@ attention state), and audio is reduced to level/presence metadata only.
 from __future__ import annotations
 
 import time
-from typing import Optional
 
 from truecore.substrates.base import Substrate
 from truecore.time import utc_now

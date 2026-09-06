@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
-import sys
 from pathlib import Path
 from typing import Any
 
@@ -160,7 +159,6 @@ def _render_event_segment(
     metadata = video.get("metadata", {})
     path = Path(video.get("path", ""))
     cap = cv2.VideoCapture(str(path))
-    fps = float(metadata.get("fps") or cap.get(cv2.CAP_PROP_FPS) or FPS)
     duration = float(metadata.get("duration_seconds") or 0.0)
     center = _event_center(event, duration)
     start = max(0.0, center - segment_seconds * 0.5)

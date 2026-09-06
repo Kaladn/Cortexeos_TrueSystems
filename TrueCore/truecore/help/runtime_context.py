@@ -6,7 +6,6 @@ and formats it as context for the help LLM.
 
 from __future__ import annotations
 
-import json
 from truecore.cli.common import (
     SUBSTRATE_NAMES,
     count_substrate_records,

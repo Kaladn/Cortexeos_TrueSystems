@@ -131,7 +131,6 @@ class EscalationAgent(Agent):
             state.current_level = recommended
             state.last_escalation_time = time.time()
 
-            severity_map = {1: "low", 2: "medium", 3: "high", 4: "high", 5: "critical"}
             action_map = {
                 1: "track",
                 2: "engage_deeper_decoys",

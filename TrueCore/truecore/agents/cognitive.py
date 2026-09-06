@@ -172,7 +172,6 @@ class CognitiveAgent(Agent):
         anchors = self._score_anchors(state)
         scores = [item["score"] for item in anchors.values()]
         confidences = [item["confidence"] for item in anchors.values()]
-        mean_score = sum(scores) / len(scores) if scores else 0.5
         mean_confidence = sum(confidences) / len(confidences) if confidences else 0.0
 
         variance = statistics.pvariance(scores) if len(scores) > 1 else 0.0

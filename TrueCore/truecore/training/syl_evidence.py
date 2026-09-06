@@ -45,7 +45,6 @@ def _fragment_rows(streams:list[dict])->list[dict]:
 
 def _source_task(task:tuple[dict,dict[str,int]])->dict:
  assignment,mapping=task
- from truemem.engine.anchors import anchorize,anchor_kind
  from truemem.engine.dataset_local_v2 import symbol_hex
  from truevision_intake.docufilm_truemem import build_docufilm_truemem_hierarchy
  phrase=assignment["phrase"]; read_hash=digest(phrase.encode("utf-8"))

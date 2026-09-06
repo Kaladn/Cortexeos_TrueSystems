@@ -4,7 +4,6 @@ import sys
 import unittest
 from pathlib import Path
 
-from truecore.config import load_settings, validate_settings
 
 
 class ConfigLoadTests(unittest.TestCase):

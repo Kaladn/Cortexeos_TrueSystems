@@ -23,12 +23,10 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
-import os
 import uuid
 
 from truecore.permissions.registry import (
     CallerRegistry,
-    CallerEntry,
     sign_record,
     verify_signature,
 )

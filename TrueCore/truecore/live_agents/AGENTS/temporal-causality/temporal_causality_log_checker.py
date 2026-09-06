@@ -7,7 +7,6 @@ import argparse
 import json
 import hashlib
 import re
-import sys
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path

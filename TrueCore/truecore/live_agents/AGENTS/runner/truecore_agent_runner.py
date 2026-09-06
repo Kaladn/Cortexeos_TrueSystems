@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import subprocess
 import sys
@@ -35,6 +36,10 @@ class CatalogEntry:
     source_file: str
 
 
+class AgentExecutionContractError(ValueError):
+    """Raised when executable metadata cannot be enforced safely."""
+
+
 def load_catalog(path: Path) -> Dict[str, CatalogEntry]:
     entries: Dict[str, CatalogEntry] = {}
     with path.open("r", encoding="utf-8", errors="replace", newline="") as handle:
@@ -63,7 +68,56 @@ def resolve_repo_path(path_text: str) -> Path:
     path = Path(path_text)
     if not path.is_absolute():
         path = ROOT / path
-    return path
+    return path.resolve()
+
+
+def resolve_entrypoint(spec: dict) -> Path:
+    entrypoint = resolve_repo_path(spec["entrypoint"])
+    try:
+        entrypoint.relative_to(REPO_ROOT.resolve())
+    except ValueError as exc:
+        raise AgentExecutionContractError("entrypoint escapes the TrueCore repository") from exc
+    if not entrypoint.is_file():
+        raise AgentExecutionContractError(f"entrypoint does not exist: {entrypoint}")
+    actual_hash = "sha256:" + hashlib.sha256(entrypoint.read_bytes()).hexdigest()
+    if actual_hash != spec["entrypoint_hash"]:
+        raise AgentExecutionContractError(
+            f"entrypoint hash mismatch: expected {spec['entrypoint_hash']}, found {actual_hash}"
+        )
+    return entrypoint
+
+
+def verify_catalog_contract(spec: dict, entry: CatalogEntry) -> None:
+    if spec["agent_id"] != entry.operator_id:
+        raise AgentExecutionContractError("catalog and manifest agent IDs differ")
+    if spec["entrypoint"] != entry.source_file:
+        raise AgentExecutionContractError("catalog and manifest entrypoints differ")
+    if spec["requires_approval"] != entry.requires_confirmation:
+        raise AgentExecutionContractError("catalog and manifest approval requirements differ")
+    if spec["risk_tier"] != entry.destruction_score:
+        raise AgentExecutionContractError("catalog and manifest risk scores differ")
+    if entry.sandbox_required:
+        raise AgentExecutionContractError("catalog requires a sandbox that this runner does not provide")
+
+
+def verify_command_entrypoint(spec: dict, command: list[str], entrypoint: Path) -> None:
+    script_runtimes = {"python", "javascript", "typescript"}
+    entrypoint_index = 1 if spec["runtime_language"] in script_runtimes else 0
+    if len(command) <= entrypoint_index:
+        raise AgentExecutionContractError("command has no executable entrypoint")
+    if resolve_repo_path(command[entrypoint_index]) != entrypoint:
+        raise AgentExecutionContractError("command does not invoke the hashed entrypoint")
+
+
+def verify_write_boundaries(spec: dict, params: dict[str, str], out_dir: Path) -> None:
+    for name in spec.get("write_params", []):
+        candidate = Path(params[name]).expanduser().resolve()
+        try:
+            candidate.relative_to(out_dir)
+        except ValueError as exc:
+            raise AgentExecutionContractError(
+                f"write parameter {name} escapes the selected output directory"
+            ) from exc
 
 
 def parse_params(raw_params: list[str] | None) -> dict[str, str]:
@@ -112,6 +166,10 @@ def run_agent(args: argparse.Namespace) -> int:
     except (AgentManifestError, FileNotFoundError, json.JSONDecodeError) as exc:
         print(f"Invalid agent manifest: {exc}", file=sys.stderr)
         return 1
+    missing_execution_fields = [field for field in ("command", "default_out_dir") if field not in spec]
+    if missing_execution_fields:
+        print(f"Invalid agent manifest: missing execution field {missing_execution_fields[0]}", file=sys.stderr)
+        return 1
     phrase = spec["approval_phrase"]
     out_dir = resolve_repo_path(args.out_dir or spec["default_out_dir"])
     params = parse_params(args.param)
@@ -124,7 +182,11 @@ def run_agent(args: argparse.Namespace) -> int:
         return 3
     try:
         command = build_command(spec, out_dir, params)
-    except (KeyError, ValueError) as exc:
+        entrypoint = resolve_entrypoint(spec)
+        verify_catalog_contract(spec, entry)
+        verify_command_entrypoint(spec, command, entrypoint)
+        verify_write_boundaries(spec, params, out_dir)
+    except (AgentExecutionContractError, KeyError, ValueError) as exc:
         print(f"Invalid agent parameters: {exc}", file=sys.stderr)
         return 1
 
@@ -148,7 +210,8 @@ def run_agent(args: argparse.Namespace) -> int:
         print(approval_error(entry, phrase), file=sys.stderr)
         return 2
 
-    out_dir.mkdir(parents=True, exist_ok=True)
+    if spec["allowed_writes"]:
+        out_dir.mkdir(parents=True, exist_ok=True)
     completed = subprocess.run(command, cwd=ROOT)
     return completed.returncode
 

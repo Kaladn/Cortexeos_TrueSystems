@@ -14,7 +14,6 @@ It never serves decoys directly - it recommends, and the trap
 routes read the recommendation.
 """
 
-import time
 from typing import Optional
 
 from truecore.agents.base import Agent, AgentDecision

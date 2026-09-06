@@ -73,7 +73,7 @@ def _valid_manifest():
         "entrypoint": "AGENTS/sample/sample.py",
         "entrypoint_hash": "sha256:" + ("a" * 64),
         "allowed_reads": ["AGENTS/sample"],
-        "allowed_writes": ["AGENTS/sample/runtime"],
+        "allowed_writes": [],
         "requires_approval": False,
         "approval_phrase": "",
         "mutation_class": "read_only",

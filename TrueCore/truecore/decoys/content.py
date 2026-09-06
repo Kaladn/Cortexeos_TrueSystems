@@ -5,7 +5,6 @@ per-cell so repeated requests return consistent fake data.
 """
 
 import hashlib
-from datetime import datetime, UTC
 
 
 def _seeded_hash(cell_id: str, salt: str) -> str:
@@ -51,7 +50,6 @@ def fake_api_keys(cell_id: str) -> dict:
 
 
 def fake_user_database(cell_id: str) -> dict:
-    seed = _seeded_hash(cell_id, "userdb")
     depts = ["Engineering", "Security", "Operations", "Finance", "Executive"]
     roles = ["user", "admin", "superadmin", "readonly", "operator"]
     users = []
@@ -103,7 +101,6 @@ def fake_network_map(cell_id: str) -> dict:
 
 
 def fake_backup_listing(cell_id: str) -> dict:
-    s = _seeded_hash(cell_id, "backups")
     backups = []
     for i in range(8):
         bs = _seeded_hash(cell_id, f"backup-{i}")

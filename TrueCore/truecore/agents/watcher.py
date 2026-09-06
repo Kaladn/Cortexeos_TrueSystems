@@ -14,7 +14,6 @@ plane and other agents (escalation, containment) can act on.
 
 import re
 import time
-from typing import Optional
 
 from truecore.agents.base import Agent, AgentDecision
 from truecore.substrates.base import Substrate, SubstrateRecord

@@ -6,7 +6,7 @@ import os
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from truecore.validators.confidence import ConfidenceSignal, ConfidenceValidator, ConfidenceAssessment
+from truecore.validators.confidence import ConfidenceSignal, ConfidenceValidator
 
 
 class TestConfidenceSignal(unittest.TestCase):

@@ -7,7 +7,7 @@
   "description": "Read-only verifier for temporal coherence, causality, replay safety, hash-chain integrity, and breach/error lead-up paths in JSONL/Forge-style event logs.",
   "runtime_language": "python",
   "entrypoint": "AGENTS/temporal-causality/temporal_causality_log_checker.py",
-  "entrypoint_hash": "sha256:b0ffc7f72b4d2af97892d32f47b576708e81ea4f3392957761532052720b785a",
+  "entrypoint_hash": "sha256:e76ef7cb1a90028537e82e232e4eb12bb2211571b3a40158acde738779547459",
   "allowed_reads": [
     "AGENTS/temporal-causality",
     "reports",

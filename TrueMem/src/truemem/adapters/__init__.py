@@ -14,8 +14,6 @@ def detect_source_adapter(source_dir: str | Path) -> str | None:
 def prepare_source_with_adapter_if_present(source_dir: str | Path, out_dir: str | Path) -> dict[str, Any]:
     source = Path(source_dir).expanduser().resolve()
     out = Path(out_dir).expanduser().resolve()
-    adapter = detect_source_adapter(source)
-
     out.mkdir(parents=True, exist_ok=True)
     manifest = with_protected_notice({
         "schema": "truemem_adapter_selection@1",

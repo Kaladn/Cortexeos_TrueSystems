@@ -324,7 +324,6 @@ def _draw_embers(frame: np.ndarray, state: dict[str, Any]) -> None:
 def _draw_child_and_father(frame: np.ndarray, state: dict[str, Any]) -> None:
     h, w = frame.shape[:2]
     child = float(state["child_presence"])
-    pair = float(state["pair_unity"])
     father_distance = float(state["father_distance"])
     if child <= 0.02:
         return

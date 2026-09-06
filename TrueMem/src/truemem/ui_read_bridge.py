@@ -6,7 +6,6 @@ from typing import Any
 
 from .engine import (
     ANCHOR_RECORD,
-    BLOCK_ANCHOR_RECORD,
     COUNT_BACKEND,
     RELATION_RECORD,
     SYMBOL_BYTES,

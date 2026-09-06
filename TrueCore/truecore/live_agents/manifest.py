@@ -82,6 +82,13 @@ def validate_agent_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
     _require_string_list(manifest, "allowed_writes")
     _require_string_list(manifest, "test_command")
     _require_string_list(manifest, "required_params")
+    if "command" in manifest:
+        _require_string_list(manifest, "command")
+    if "write_params" in manifest:
+        _require_string_list(manifest, "write_params")
+        unknown_write_params = sorted(set(manifest["write_params"]) - set(manifest["required_params"]))
+        if unknown_write_params:
+            raise AgentManifestError(f"write_params names unknown parameter: {unknown_write_params[0]}")
 
     if not isinstance(manifest["risk_tier"], int) or manifest["risk_tier"] < 0:
         raise AgentManifestError("risk_tier must be a non-negative integer")
@@ -91,6 +98,10 @@ def validate_agent_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
         raise AgentManifestError("mutation_class must not be empty")
     if not str(manifest["log_stream"]).strip():
         raise AgentManifestError("log_stream must not be empty")
+    if "default_out_dir" in manifest and not str(manifest["default_out_dir"]).strip():
+        raise AgentManifestError("default_out_dir must not be empty")
+    if manifest["mutation_class"] == "read_only" and manifest["allowed_writes"]:
+        raise AgentManifestError("read_only agents must not declare allowed_writes")
 
     validated = dict(manifest)
     validated["runtime_language"] = runtime

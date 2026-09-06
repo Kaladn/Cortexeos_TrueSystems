@@ -6,7 +6,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
-from .coverage_matrix import AREAS, SCHEMA, canonical, digest, _write_json, _write_jsonl
+from .coverage_matrix import AREAS, SCHEMA, digest, _write_json, _write_jsonl
 
 ASSIGNMENT_SCHEMA = "truesystems_training_coverage_assignment@1"
 

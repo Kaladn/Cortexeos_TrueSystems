@@ -7,7 +7,7 @@
   "description": "Converts a documentation folder containing Markdown, TXT, and image files into a combined generated PDF artifact with metadata-only manifest and receipt.",
   "runtime_language": "python",
   "entrypoint": "AGENTS/docs-to-pdf/docs_folder_to_pdf.py",
-  "entrypoint_hash": "sha256:c5a3ac51a9c430437eb079c77d378cc75165429d2a90cd30bf7e07fe1bbd9bec",
+  "entrypoint_hash": "sha256:72de09c8ef09b72132b798c7b6a618b24587dc51e9a5d86bfd77d66dca03252c",
   "allowed_reads": [
     "operator_selected_docs_folder"
   ],
@@ -25,7 +25,7 @@
     "unittest",
     "tests.live_agents.test_docs_folder_to_pdf_agent"
   ],
-  "risk_tier": 2,
+  "risk_tier": 3,
   "prompt_only_allowed": false,
   "required_params": [
     "source_folder"

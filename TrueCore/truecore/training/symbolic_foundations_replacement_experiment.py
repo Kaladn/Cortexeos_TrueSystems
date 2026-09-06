@@ -2,11 +2,10 @@
 from __future__ import annotations
 import hashlib,json,random,traceback
 from pathlib import Path
-from typing import Any
 import torch
 from torch import nn
 import torch.nn.functional as F
-from .symbolic_foundations_scorers import Local616SuppliedCandidateScorer,ExternalAstSuppliedCandidateScorer,_argument_kinds,_identity_maps,_verify_representation,canonical,digest,rows,write_json,UNSEEN_EXTERNAL_CALL
+from .symbolic_foundations_scorers import Local616SuppliedCandidateScorer,ExternalAstSuppliedCandidateScorer,_argument_kinds,_identity_maps,_verify_representation,digest,rows,write_json,UNSEEN_EXTERNAL_CALL
 
 SCHEMA="truesystems_symbolic_foundations_replacement_experiment@1";SEED=61613;BATCH=32;EPOCHS=13
 

@@ -14,7 +14,6 @@ The mirror substrate answers: "What happened to this cell and when?"
 The evidence substrate answers: "What did the attacker do?"
 """
 
-from typing import Optional
 
 from truecore.substrates.base import Substrate
 

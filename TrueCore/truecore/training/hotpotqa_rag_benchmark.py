@@ -150,7 +150,6 @@ def build_benchmark_source(
     query_payload = {str(row["_id"]): str(row["text"] or "") for row in _iter_parquet(query_file, ["_id", "text"])}
     source_package = output / "historical-source-package"
     source_package.mkdir()
-    split_limits = {"train": train_session_limit, "validation": validation_session_limit, "test": sealed_test_session_limit}
     split_sources = {"train": "train", "validation": "dev", "test": "test"}
     package_hashes: dict[str, str] = {}
     split_manifest: list[dict[str, Any]] = []

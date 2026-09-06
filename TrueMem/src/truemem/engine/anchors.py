@@ -7,7 +7,8 @@ import sys
 import unicodedata
 from collections import Counter
 
-from .base import SYMBOL_BYTES, SYMBOL_HEX_CHARS, SYMBOL_SYSTEM, sha1_text
+from .base import SYMBOL_BYTES as SYMBOL_BYTES
+from .base import SYMBOL_HEX_CHARS, SYMBOL_SYSTEM as SYMBOL_SYSTEM, sha1_text
 
 WORD_UNIT = r"[^\W_][\u0300-\u036f]*"
 WORD_BODY = rf"(?:{WORD_UNIT})+"

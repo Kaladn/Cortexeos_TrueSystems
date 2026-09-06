@@ -51,7 +51,6 @@ class WorkerForgeTests(unittest.TestCase):
             )
 
             manifest = json.loads(Path(result["manifest_json"]).read_text(encoding="utf-8"))
-            worker_paths = {item["path"] for item in manifest["workers"]}
             tool_paths = {item["path"] for item in manifest["tools"]}
             agent_ids = {item["agent_id"] for item in manifest["agent_candidates"]}
 

@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import numpy as np
 import cv2
 import time
-from typing import Tuple, Dict, List, Optional
+from typing import Tuple, Dict, Optional
 
 from screen_resonance_state import ScreenResonanceState
 

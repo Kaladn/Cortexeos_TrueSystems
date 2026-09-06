@@ -2,8 +2,7 @@
 from __future__ import annotations
 import json
 from pathlib import Path
-from typing import Any
-from .symbolic_foundations_scorers import canonical,digest,write_json
+from .symbolic_foundations_scorers import digest,write_json
 
 SCHEMA="truesystems_symbolic_foundations_replacement_preflight@1"
 

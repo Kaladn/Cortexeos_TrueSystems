@@ -7,7 +7,7 @@ from typing import Any
 from .base import COUNT_BACKEND, SYMBOL_BYTES, SYMBOL_SYSTEM, dataset_paths, safe_id, with_protected_notice
 from .hardware import detect_system_resources
 from .qa_ledger import jsonl_count
-from .storage import ANCHOR_RECORD, BLOCK_ANCHOR_RECORD, RELATION_RECORD, block_anchor_record, index_readiness, record_count
+from .storage import ANCHOR_RECORD, RELATION_RECORD, block_anchor_record, index_readiness, record_count
 
 
 def system_metrics(

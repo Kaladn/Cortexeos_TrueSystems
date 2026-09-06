@@ -12,12 +12,10 @@ The shun engine:
   - Provides emergency purge capability
 """
 
-import json
 import logging
 import subprocess
 import threading
 from truecore.time import utc_now
-from typing import Optional
 
 logger = logging.getLogger("control.shun")
 

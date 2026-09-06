@@ -58,7 +58,7 @@ from truecore.control.command_bus import ControlBus
 # Permissions
 from truecore.permissions.registry import CallerRegistry
 from truecore.permissions.gate import PermissionGate
-from truecore.permissions.types import SubstrateWriter, SubstrateReader
+from truecore.permissions.types import SubstrateWriter
 
 # Future model/session plumbing
 from truecore.openai_session import OpenAIKeyVault

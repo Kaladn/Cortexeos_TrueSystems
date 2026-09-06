@@ -20,7 +20,7 @@ import numpy as np
 
 from truevision_state_replay import build_rgb_replay_frame, read_cell_chunk, sha256_file
 
-from .causal_cell_map import CORE_CHANNELS, feature_indices
+from .causal_cell_map import feature_indices
 
 
 PROJECTABLE_CHANNELS = (

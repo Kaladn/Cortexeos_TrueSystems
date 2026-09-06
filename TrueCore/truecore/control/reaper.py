@@ -33,9 +33,8 @@ import time
 from typing import Optional
 
 from truecore.substrates.base import Substrate, SubstrateRecord
-from truecore.substrates.agent_decisions import AgentDecisionsSubstrate
 from truecore.control.shun import (
-    shun_ip, unshun_ip, is_shunned, PROTECTED_IPS,
+    shun_ip, is_shunned, PROTECTED_IPS,
 )
 from truecore.validators.confidence import ConfidenceSignal, ConfidenceValidator
 

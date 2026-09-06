@@ -15,7 +15,7 @@ from here into the substrates, and the agents interpret from there.
 import hashlib
 import json
 import time
-from flask import Blueprint, request, Response, current_app
+from flask import Blueprint, request, Response
 
 from truecore.core.fingerprint import (
     fingerprint_request, compute_attacker_fingerprint,
@@ -100,9 +100,6 @@ def _process_trap_request(decoy_content: str, content_type: str, status_code: in
 
     # Fingerprint
     ua = headers.get("User-Agent", headers.get("user-agent", ""))
-    accept_lang = headers.get("Accept-Language", headers.get("accept-language", ""))
-    accept_enc = headers.get("Accept-Encoding", headers.get("accept-encoding", ""))
-    fingerprint = compute_attacker_fingerprint(source_ip, ua, accept_lang, accept_enc)
     tool_sig = fingerprint_request(headers)
 
     # Get or create cell

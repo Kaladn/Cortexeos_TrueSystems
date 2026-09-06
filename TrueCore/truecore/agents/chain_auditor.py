@@ -12,7 +12,6 @@ The auditor also:
 """
 
 import time
-from typing import Optional
 
 from truecore.agents.base import Agent, AgentDecision
 from truecore.substrates.base import Substrate, SubstrateRecord

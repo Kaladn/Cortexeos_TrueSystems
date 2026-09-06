@@ -6,15 +6,13 @@ from collections import Counter
 from pathlib import Path
 from typing import Any, Iterable
 
-from .anchors import SYMBOL_BYTES, SYMBOL_SYSTEM, anchor_kind, symbol_bytes, symbol_for, symbol_hex
+from .anchors import SYMBOL_BYTES, SYMBOL_SYSTEM, anchor_kind, symbol_bytes, symbol_for
 from .base import (
     COUNT_BACKEND,
     DatasetPaths,
     dataset_paths,
-    public_paths,
     safe_id,
     utc_now,
-    unique_stamp,
     with_protected_notice,
     write_json,
 )
@@ -236,13 +234,7 @@ def iter_relation_records(paths: DatasetPaths) -> Iterable[tuple[bytes, bytes, i
                 yield anchor, neighbor, int(offset), int(observations)
 
 def read_block_anchor_rows(paths: DatasetPaths) -> list[tuple[bytes, int, int]]:
-    rows: list[tuple[bytes, int, int]] = []
-    with paths.block_anchor_path.open("rb") as handle:
-        while chunk := handle.read(BLOCK_ANCHOR_RECORD.size):
-            if len(chunk) == BLOCK_ANCHOR_RECORD.size:
-                symbol, block_ordinal, position = BLOCK_ANCHOR_RECORD.unpack(chunk)
-                rows.append((symbol, int(block_ordinal), int(position)))
-    return rows
+    return list(iter_block_anchor_records(paths))
 
 def write_blocks_jsonl(paths: DatasetPaths, blocks: list[dict[str, Any]]) -> None:
     paths.blocks_path.parent.mkdir(parents=True, exist_ok=True)
@@ -369,9 +361,16 @@ def write_chat_metadata_index(paths: DatasetPaths, rows: list[dict[str, Any]]) -
             handle.write(json.dumps(with_protected_notice(row), ensure_ascii=True) + "\n")
 
 def record_count(path: Path, record_size: int) -> int:
+    """Count fixed records, resolving versioned posting width when required."""
+
     if not path.exists():
         return 0
-    return path.stat().st_size // record_size
+    effective_size = int(record_size)
+    if path.name == "block_anchor_postings.awbin":
+        effective_size = block_anchor_record_for_path(path).size
+    if path.stat().st_size % effective_size:
+        raise RuntimeError(f"TRUNCATED_FIXED_RECORD_FILE: {path}")
+    return path.stat().st_size // effective_size
 
 def jsonl_count(path: Path) -> int:
     if not path.exists():
@@ -434,23 +433,4 @@ def _source_freshness(intake_receipt: Path | None, artifacts: dict[str, dict[str
         "newest_source_modified_time_ns": int(newest_source),
         "oldest_index_modified_time_ns": int(oldest_index) if oldest_index is not None else None,
     }
-
-
-# Defined last so mixed-line-ending historical source remains untouched while
-# all callers receive the version-aware implementation.
-def read_block_anchor_rows(paths: DatasetPaths) -> list[tuple[bytes, int, int]]:
-    return list(iter_block_anchor_records(paths))
-
-
-def record_count(path: Path, record_size: int) -> int:
-    """Count fixed records, resolving versioned posting width when required."""
-
-    if not path.exists():
-        return 0
-    effective_size = int(record_size)
-    if path.name == "block_anchor_postings.awbin":
-        effective_size = block_anchor_record_for_path(path).size
-    if path.stat().st_size % effective_size:
-        raise RuntimeError(f"TRUNCATED_FIXED_RECORD_FILE: {path}")
-    return path.stat().st_size // effective_size
 

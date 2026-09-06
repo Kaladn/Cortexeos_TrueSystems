@@ -6,7 +6,6 @@ from truevision_runtime.av_tools.av_tool_registry import list_av_tools
 from truevision_runtime.av_tools.av_tool_runner import run_av_tool_call
 from truevision_runtime.studio.studio_tooling import (
     get_render_preset,
-    list_render_presets,
     list_studio_tools,
     preset_to_template,
 )

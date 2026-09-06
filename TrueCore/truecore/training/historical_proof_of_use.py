@@ -1,9 +1,8 @@
 """Read-only held-out and Codex-use analysis of a sealed historical checkpoint."""
 from __future__ import annotations
 from collections import defaultdict
-import gzip,json,math,sys
+import gzip,json,math
 from pathlib import Path
-from typing import Any
 import torch
 import torch.nn.functional as F
 from .historical_method_equivalence import _load_authority,canonical,sha,write

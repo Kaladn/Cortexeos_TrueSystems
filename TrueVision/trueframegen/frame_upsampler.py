@@ -10,7 +10,6 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-import cv2
 import numpy as np
 
 from truevision_state_replay import build_rgb_replay_frame, read_cell_chunk, sha256_file

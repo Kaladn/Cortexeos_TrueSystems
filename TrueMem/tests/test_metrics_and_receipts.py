@@ -43,6 +43,7 @@ def test_cloud_mismatch_receipt_contains_output_path_on_first_write(tmp_path: Pa
             "retrieval_ran": False,
             "topk_ran": False,
         },
+        anchor_focus={},
     )
 
     written = json.loads(Path(output["output_path"]).read_text(encoding="utf-8"))
