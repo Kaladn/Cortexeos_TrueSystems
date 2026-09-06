@@ -790,3 +790,10 @@ The operator may summarize, group, and visualize these records, but the canonica
 artifact remains available. Never claim an operation ran without its actual
 return value or receipt. Never change implementation merely to make a test or
 expected outcome pass.
+
+A receipt proves only that a record was published. Every action receipt must
+separate execution status from verification status and name the scope of the
+verification. It must explicitly represent `executed_but_outcome_unverified`
+when the backend ran but the intended application or real-world outcome was not
+observed. Receipt existence, a zero backend exit code, or successful input
+delivery must never be promoted to verified task completion.

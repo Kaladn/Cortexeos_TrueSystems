@@ -10,7 +10,7 @@ use std::process::{Command, Output};
 use time::{format_description::well_known::Rfc3339, OffsetDateTime};
 
 const REQUEST_SCHEMA: &str = "truecomputer_action_request@1";
-const RECEIPT_SCHEMA: &str = "truecomputer_action_receipt@1";
+const RECEIPT_SCHEMA: &str = "truecomputer_action_receipt@2";
 const SNAPSHOT_SCHEMA: &str = "truecomputer_desktop_snapshot@1";
 
 #[derive(Debug, Deserialize)]
@@ -120,31 +120,168 @@ fn execute_args(args: &[String]) -> Result<(), String> {
     let before = snapshot()?;
     validate(&request, &before)?;
     let started = now();
-    let output = perform(&request.action)?;
+    let output = match perform(&request.action) {
+        Ok(output) => output,
+        Err(error) => {
+            let receipt = receipt(
+                &request,
+                &bytes,
+                &before,
+                None,
+                &started,
+                "execution_not_started",
+                None,
+                json!({
+                    "status": "not_verified",
+                    "scope": "none",
+                    "reason": "backend process could not be started",
+                }),
+            );
+            write_json_atomic(&receipt_path, &receipt)?;
+            return Err(format!(
+                "backend process could not start; receipt written: {error}"
+            ));
+        }
+    };
     if !output.status.success() {
-        return Err(format!(
-            "backend action failed: {}",
-            String::from_utf8_lossy(&output.stderr).trim()
-        ));
+        let after = snapshot().ok();
+        let receipt = receipt(
+            &request,
+            &bytes,
+            &before,
+            after.as_ref(),
+            &started,
+            "execution_failed",
+            output.status.code(),
+            json!({
+                "status": "not_verified",
+                "scope": "action_outcome",
+                "reason": "backend returned a nonzero exit status",
+            }),
+        );
+        write_json_atomic(&receipt_path, &receipt).map_err(|error| {
+            format!("action may have executed but receipt publication failed: {error}")
+        })?;
+        return Err("backend action failed; failure receipt written".into());
     }
-    let after = snapshot()?;
-    verify_postcondition(&request, &after)?;
-    let receipt = json!({
+    let after = match snapshot() {
+        Ok(after) => after,
+        Err(error) => {
+            let receipt = receipt(
+                &request,
+                &bytes,
+                &before,
+                None,
+                &started,
+                "executed_outcome_unverified",
+                output.status.code(),
+                json!({
+                    "status": "executed_but_outcome_unverified",
+                    "scope": "action_outcome",
+                    "reason": "post-action observation failed",
+                }),
+            );
+            write_json_atomic(&receipt_path, &receipt).map_err(|write_error| {
+                format!("action executed but receipt publication failed: {write_error}")
+            })?;
+            return Err(format!(
+                "action executed but outcome is unverified; receipt written: {error}"
+            ));
+        }
+    };
+    let (status, verification) = match verify_postcondition(&request, &after) {
+        Err(error) => (
+            "executed_verification_failed",
+            json!({
+                "status": "verification_failed",
+                "scope": "action_postcondition",
+                "reason": error,
+            }),
+        ),
+        Ok(()) => successful_verification(&request.action),
+    };
+    let receipt = receipt(
+        &request,
+        &bytes,
+        &before,
+        Some(&after),
+        &started,
+        status,
+        output.status.code(),
+        verification,
+    );
+    write_json_atomic(&receipt_path, &receipt)
+        .map_err(|error| format!("action executed but receipt publication failed: {error}"))?;
+    if status == "executed_verification_failed" {
+        return Err("action executed but its postcondition failed; receipt written".into());
+    }
+    println!("{}", serde_json::to_string_pretty(&receipt).map_err(err)?);
+    Ok(())
+}
+
+#[allow(clippy::too_many_arguments)]
+fn receipt(
+    request: &Request,
+    bytes: &[u8],
+    before: &Snapshot,
+    after: Option<&Snapshot>,
+    started: &str,
+    status: &str,
+    backend_exit_code: Option<i32>,
+    verification: Value,
+) -> Value {
+    let execution_status = match status {
+        "execution_not_started" => "not_started",
+        "execution_failed" => "failed",
+        _ => "executed",
+    };
+    json!({
         "schema": RECEIPT_SCHEMA,
         "request_id": request.request_id,
-        "request_sha256": sha256(&bytes),
+        "request_sha256": sha256(bytes),
         "action": action_summary(&request.action),
         "backend": backend_name(&request.action),
         "started_at_utc": started,
         "completed_at_utc": now(),
-        "status": "completed",
+        "status": status,
+        "execution": {
+            "status": execution_status,
+            "backend_exit_code": backend_exit_code,
+        },
+        "verification": verification,
         "precondition_window": window_identity(&before.active_window),
-        "postcondition_window": window_identity(&after.active_window),
-        "backend_stdout": String::from_utf8_lossy(&output.stdout).trim(),
-    });
-    write_json_atomic(&receipt_path, &receipt)?;
-    println!("{}", serde_json::to_string_pretty(&receipt).map_err(err)?);
-    Ok(())
+        "postcondition_window": after.map(|state| window_identity(&state.active_window)),
+    })
+}
+
+fn successful_verification(action: &Action) -> (&'static str, Value) {
+    match action {
+        Action::TypeText { .. } => (
+            "executed_outcome_unverified",
+            json!({
+                "status": "executed_but_outcome_unverified",
+                "scope": "application_outcome",
+                "verified": "backend exited zero and the expected window remained active",
+                "unverified": "the application retained, interpreted, submitted, or acted on the text",
+            }),
+        ),
+        Action::FocusWindow { .. } => verified("active window address equals the requested target"),
+        Action::SwitchWorkspace { .. } => {
+            verified("focused monitor reports the requested workspace")
+        }
+        Action::MovePointer { .. } => verified("post-action cursor coordinates equal the request"),
+    }
+}
+
+fn verified(evidence: &'static str) -> (&'static str, Value) {
+    (
+        "completed_verified",
+        json!({
+            "status": "verified",
+            "scope": "action_postcondition",
+            "evidence": evidence,
+        }),
+    )
 }
 
 fn read_request(path: &Path) -> Result<(Request, Vec<u8>), String> {
@@ -435,5 +572,23 @@ mod tests {
         assert_eq!(summary["character_count"], 10);
         assert!(summary.get("text").is_none());
         assert_eq!(summary["text_redacted"], true);
+    }
+
+    #[test]
+    fn text_execution_does_not_claim_application_success() {
+        let (status, verification) = successful_verification(&Action::TypeText {
+            text: "delivered input".into(),
+        });
+        assert_eq!(status, "executed_outcome_unverified");
+        assert_eq!(verification["status"], "executed_but_outcome_unverified");
+        assert!(verification.get("unverified").is_some());
+    }
+
+    #[test]
+    fn pointer_postcondition_can_be_verified_without_claiming_more() {
+        let (status, verification) = successful_verification(&Action::MovePointer { x: 10, y: 20 });
+        assert_eq!(status, "completed_verified");
+        assert_eq!(verification["status"], "verified");
+        assert_eq!(verification["scope"], "action_postcondition");
     }
 }

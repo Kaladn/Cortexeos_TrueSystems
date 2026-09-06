@@ -61,6 +61,37 @@ Unicode character count are retained. Window titles are retained because they
 are part of the exact target precondition and audit record; callers must store
 receipts accordingly.
 
+## Receipt and verification states
+
+Receipt schema `truecomputer_action_receipt@2` separates:
+
+- `execution.status`: whether the backend was not started, failed, or executed;
+- `verification.status`: whether an action-specific postcondition was verified,
+  failed, not verified, or the action executed but its outcome remains
+  unverified;
+- top-level `status`: the combined operational state.
+
+The combined states are:
+
+| `status` | Meaning |
+| --- | --- |
+| `execution_not_started` | The backend process could not be started. |
+| `execution_failed` | The backend returned nonzero; the requested action is not claimed. |
+| `executed_verification_failed` | The backend returned zero, but the observable postcondition failed. |
+| `executed_outcome_unverified` | The backend ran, but the intended application outcome was not observed. |
+| `completed_verified` | The action-specific postcondition was directly observed. |
+
+Text injection is always `executed_outcome_unverified` in this version. A zero
+`wtype` exit and an unchanged active window verify only the delivery context.
+They do not prove that the application retained, interpreted, submitted, or
+acted on the text. Its nested `verification.status` is therefore
+`executed_but_outcome_unverified`.
+
+A receipt proves that an attempt record was published. Receipt existence alone
+does not prove execution, verification, application success, or completion of
+the human's requested outcome. Backend failures and failed postconditions must
+also produce receipts after the action boundary has been entered.
+
 ## Not implemented
 
 - arbitrary command or application execution;

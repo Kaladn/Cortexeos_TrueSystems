@@ -143,7 +143,7 @@ and execute; the receipt binds the exact executed bytes by SHA-256.
 
 ## 8. Receipts and verification
 
-A completed receipt must preserve:
+Every receipt must preserve:
 
 - schema and request ID;
 - SHA-256 of exact request bytes;
@@ -151,7 +151,14 @@ A completed receipt must preserve:
 - fixed backend identity;
 - UTC start and completion timestamps;
 - pre- and post-action window identities;
-- backend completion status and non-sensitive output.
+- backend identity and exit status;
+
+Execution and verification are independent facts. Every receipt must contain
+both `execution.status` and `verification.status`, plus the verification scope.
+Never use receipt existence as a synonym for success. The top-level state must
+be one of `execution_not_started`, `execution_failed`,
+`executed_verification_failed`, `executed_outcome_unverified`, or
+`completed_verified`.
 
 Typed text must never appear in a plan, stdout receipt, saved receipt, log, test
 failure message, or screenshot. Retain only its character count and SHA-256.
@@ -165,10 +172,12 @@ Verification strength is action-specific:
 - workspace: focused monitor reports the target workspace;
 - pointer: post-action `cursorpos` equals the requested global coordinates;
 - text: the expected window remained active; application-level content remains
-  unverified unless independently observed.
+  `executed_but_outcome_unverified` unless independently observed through a
+  later, separately identified verification authority.
 
 Never upgrade backend success into proof of the user's intended application
-outcome.
+outcome. Never upgrade receipt creation into proof that execution or
+verification succeeded.
 
 ## 9. Failure and race handling
 
@@ -177,7 +186,7 @@ outcome.
 - On missing target, return failure. Do not create a workspace or choose a
   similarly named window.
 - On backend failure, preserve stderr but check it for sensitive material before
-  reporting or storing beyond the local receipt surface.
+  reporting. Write a failure receipt without copying sensitive stderr into it.
 - On postcondition failure, report `OPERATION_FAILED` or ambiguous partial state;
   never retry automatically.
 - On receipt failure after a backend action, do not repeat the action. Inspect

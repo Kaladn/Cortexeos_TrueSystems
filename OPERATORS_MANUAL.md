@@ -85,8 +85,11 @@ The exact timestamp and durability rules are in `TrueMachine/docs/CONTRACT.md`.
 TrueComputer is the bounded Wayland/Hyprland desktop actuator. It observes live
 Hyprland JSON state, validates one action against an exact active-window
 precondition, delegates to Hyprland IPC or `wtype`, checks a backend-specific
-postcondition, and atomically writes a redacted receipt. It is not a shell,
-planner, screen-understanding system, or source of human authorization.
+postcondition, and atomically writes a redacted receipt. Execution status and
+verification status are separate. A receipt may explicitly say
+`executed_but_outcome_unverified`; receipt creation never proves application
+success. TrueComputer is not a shell, planner, screen-understanding system, or
+source of human authorization.
 
 ```bash
 cd TrueComputer
