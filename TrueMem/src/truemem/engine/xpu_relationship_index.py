@@ -61,6 +61,11 @@ class XpuRelationshipIndex:
         self.vocabulary_size = max(value for value, _anchor, _kind in values) + 1
         self.anchor_to_id = {anchor: value for value, anchor, _kind in values}
         self.id_to_anchor = {value: anchor for value, anchor, _kind in values}
+        self.casefold_anchor_index: dict[str, list[str]] = {}
+        for anchor in self.anchor_to_id:
+            self.casefold_anchor_index.setdefault(anchor.casefold(), []).append(anchor)
+        for folded in self.casefold_anchor_index:
+            self.casefold_anchor_index[folded].sort()
         kind_code = {"content": 0, "relation": 1, "glue": 2, "boundary": 3, "object": 4}
         kinds = torch.full((self.vocabulary_size,), 4, dtype=torch.int8, device=self.device)
         for value, _anchor, kind in values:
@@ -171,20 +176,34 @@ class XpuRelationshipIndex:
         )
         torch.xpu.synchronize()
 
-    def rank_rag_blocks(self, question: str, *, top_k: int = 10, neighbor_limit: int = 16) -> dict[str, Any]:
+    def rank_rag_blocks(
+        self,
+        question: str,
+        *,
+        top_k: int = 10,
+        neighbor_limit: int = 16,
+        provenance_anchors: list[str] | None = None,
+        provenance_block_limit: int = 3,
+    ) -> dict[str, Any]:
         """Run the existing count/density RAG key on resident XPU tensors.
 
         This is a device-equivalent execution of the public query scorer:
         direct-hit count, density score, score, then block ordinal.  It does
         not use qrels, expected IDs, models, or dataset-specific rules.
+
+        Explicit provenance anchors reserve question-local pressure for sparse
+        admitted identities.  They never alter stored counts or relationships,
+        and broad, absent, non-content, or question-external anchors fail
+        closed.  The default empty lane preserves the historical rank key.
         """
-        if top_k <= 0 or neighbor_limit < 0:
-            raise ValueError("top_k must be positive and neighbor_limit nonnegative")
+        if top_k <= 0 or neighbor_limit < 0 or provenance_block_limit <= 0:
+            raise ValueError("top_k and provenance_block_limit must be positive and neighbor_limit nonnegative")
         from collections import Counter
-        from truemem.engine.anchors import GLUE_ANCHORS, answer_direction_anchors, anchorize, expand_query_anchors
+        from truemem.engine.anchors import GLUE_ANCHORS, anchor_kind, answer_direction_anchors, anchorize, expand_query_anchors
 
         self._ensure_rag_relations()
-        question_anchors = expand_query_anchors(anchorize(question))
+        raw_question_anchors = anchorize(question)
+        question_anchors = expand_query_anchors(raw_question_anchors)
         query_counts = Counter(answer_direction_anchors(question_anchors))
         direct_rows = [
             (self.anchor_to_id[anchor], int(count))
@@ -224,6 +243,55 @@ class XpuRelationshipIndex:
         else:
             selected_neighbors = torch.empty(0, dtype=torch.long, device=self.device)
 
+        # A caller may identify the sparse anchors that carry the provenance
+        # demand for this one query.  Verify each request against the exact
+        # question surface (case-insensitive variants remain explicit), the
+        # admitted lexicon, its content role, and its dataset document count.
+        # Only XPU posting coordinates create candidate pressure.
+        question_casefold = {value.casefold() for value in raw_question_anchors}
+        provenance_hits = torch.zeros(self.block_count, dtype=torch.long, device=self.device)
+        provenance_receipts: list[dict[str, Any]] = []
+        rejected_provenance: list[dict[str, Any]] = []
+        seen_provenance_ids: set[int] = set()
+        for requested in list(dict.fromkeys(str(value) for value in (provenance_anchors or []))):
+            if requested.casefold() not in question_casefold:
+                rejected_provenance.append({"anchor": requested, "reason": "not_present_in_question_transport"})
+                continue
+            resolved = [requested] if requested in self.anchor_to_id else self.casefold_anchor_index.get(requested.casefold(), [])
+            if not resolved:
+                rejected_provenance.append({"anchor": requested, "reason": "absent_from_admitted_lexicon"})
+                continue
+            eligible = []
+            for admitted in resolved:
+                symbol_id = int(self.anchor_to_id[admitted])
+                block_count = int(self.document_frequency[symbol_id].item())
+                if anchor_kind(admitted) != "content":
+                    rejected_provenance.append({"anchor": requested, "resolved_anchor": admitted, "reason": "not_content_anchor"})
+                elif block_count > provenance_block_limit:
+                    rejected_provenance.append({
+                        "anchor": requested,
+                        "resolved_anchor": admitted,
+                        "reason": "document_count_exceeds_question_local_limit",
+                        "document_count": block_count,
+                        "limit": provenance_block_limit,
+                    })
+                elif symbol_id not in seen_provenance_ids:
+                    eligible.append((admitted, symbol_id, block_count))
+                    seen_provenance_ids.add(symbol_id)
+            for admitted, symbol_id, block_count in eligible:
+                blocks, _positions = self._slice(symbol_id)
+                seed_blocks = torch.unique(blocks, sorted=True)
+                if seed_blocks.numel():
+                    provenance_hits.scatter_add_(0, seed_blocks, torch.ones_like(seed_blocks))
+                provenance_receipts.append({
+                    "requested_anchor": requested,
+                    "resolved_admitted_anchor": admitted,
+                    "symbol_id": symbol_id,
+                    "document_count": block_count,
+                    "seed_block_ordinals": [int(value) for value in seed_blocks.cpu().tolist()],
+                    "eligibility": "QUESTION_LOCAL_SPARSE_PROVENANCE",
+                })
+
         symbols = self.block_symbol_ids
         active = weights[symbols] > 0
         active_symbols = symbols[active]
@@ -240,15 +308,26 @@ class XpuRelationshipIndex:
                     torch.ones(int(direct_mask.sum().item()), dtype=torch.long, device=self.device),
                 )
         density = block_scores / self.block_lengths.to(torch.float32).sqrt().clamp(min=1.0)
-        candidate_blocks = torch.nonzero(block_scores > 0, as_tuple=False).flatten()
-        order = _lexicographic_order([
-            -direct_hits[candidate_blocks], -density[candidate_blocks],
-            -block_scores[candidate_blocks], candidate_blocks,
-        ]) if candidate_blocks.numel() else candidate_blocks
+        candidate_blocks = torch.nonzero((block_scores > 0) | (provenance_hits > 0), as_tuple=False).flatten()
+        if candidate_blocks.numel() and provenance_receipts:
+            order = _lexicographic_order([
+                -provenance_hits[candidate_blocks], -direct_hits[candidate_blocks],
+                -density[candidate_blocks], -block_scores[candidate_blocks], candidate_blocks,
+            ])
+            public_rank_key = [
+                "question_local_provenance_hit_count_desc", "direct_hit_count_desc",
+                "density_score_desc", "score_desc", "block_ordinal_asc",
+            ]
+        else:
+            order = _lexicographic_order([
+                -direct_hits[candidate_blocks], -density[candidate_blocks],
+                -block_scores[candidate_blocks], candidate_blocks,
+            ]) if candidate_blocks.numel() else candidate_blocks
+            public_rank_key = ["direct_hit_count_desc", "density_score_desc", "score_desc", "block_ordinal_asc"]
         ranked = candidate_blocks[order[:top_k]]
         _assert_xpu(
             weights, neighbor_scores, selected_neighbors, block_scores,
-            direct_hits, density, candidate_blocks, order, ranked,
+            direct_hits, provenance_hits, density, candidate_blocks, order, ranked,
         )
         torch.xpu.synchronize()
 
@@ -267,6 +346,7 @@ class XpuRelationshipIndex:
                 "density_score": round(float(density[block_id].item()), 4),
                 "block_anchor_count": int(self.block_lengths[block_id].item()),
                 "direct_hit_count": int(direct_hits[block_id].item()),
+                "question_local_provenance_hit_count": int(provenance_hits[block_id].item()),
                 "direct_matched_anchors": sorted(self.id_to_anchor[value] for value in matched if value in direct_set),
                 "matched_anchors": sorted(self.id_to_anchor[value] for value in matched),
             })
@@ -274,6 +354,17 @@ class XpuRelationshipIndex:
             "schema": "truemem_xpu_resident_rag_ranking@1",
             "question": question,
             "locations": rows,
+            "question_local_provenance_pressure": {
+                "schema": "truemem_question_local_provenance_pressure@1",
+                "scope": "single_query",
+                "requested_anchors": list(provenance_anchors or []),
+                "document_count_limit": provenance_block_limit,
+                "eligible": provenance_receipts,
+                "rejected": rejected_provenance,
+                "stored_counts_modified": False,
+                "stored_relationships_modified": False,
+                "stored_provenance_modified": False,
+            },
             "relation_neighbors": [
                 {
                     "anchor": self.id_to_anchor[int(value)],
@@ -286,7 +377,8 @@ class XpuRelationshipIndex:
                 "stage": "resident_rag_count_density_ranking",
                 "device": self.device_name,
                 "device_type": "xpu",
-                "public_rank_key": ["direct_hit_count_desc", "density_score_desc", "score_desc", "block_ordinal_asc"],
+                "public_rank_key": public_rank_key,
+                "question_local_provenance_pressure_active": bool(provenance_receipts),
                 "signed_relation_tuples_resident": int(self.rag_relation_offsets.numel()),
                 "signed_offsets_preserved": True,
                 "neighbor_scoring_aggregates_native_lanes": True,
