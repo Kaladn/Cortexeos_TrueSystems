@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 
 from .engine import (
-    batch_questions,
+    direct_question_batch_baseline,
     build_citation_crosslinks,
     count_walk_speech,
     dataset_overview,
@@ -15,7 +15,7 @@ from .engine import (
     export_ledger,
     adapt_resonance_sample,
     docufilm_intake,
-    query,
+    query_evidence_need_mapping,
     recent_questions,
     run_answer_reasoning_reverse_walk,
     run_evidence_cloud_speech,
@@ -42,12 +42,8 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description="TrueMem dataset-local evidence engine CLI.",
         epilog="""
-Batch walkthrough:
-  1. Create a plain text file with one question per line.
-  2. Make sure the dataset has already been built with truemem docufilm-intake.
-  3. Run: truemem batch --runtime-root <runtime> --dataset <name> --questions questions.txt
-  4. Watch the tqdm progress bar in the terminal.
-  5. Open the reported batch_run_summary.json when complete.
+The public `query` command accepts only a structured EvidenceNeed. Plain-text
+batch is retained solely as an explicitly confirmed direct-query diagnostic.
 """,
     )
     parser.add_argument("--version", action="version", version="truemem 0.05")
@@ -105,14 +101,10 @@ Step-by-step:
     overview_cmd.add_argument("--top-relations", type=int, default=50)
     overview_cmd.add_argument("--trail-limit", type=int, default=5)
 
-    query_cmd = sub.add_parser("query", help="Return a cited local answer packet from dataset coordinates")
+    query_cmd = sub.add_parser("query", help="Return exact occurrence/cloud evidence for a structured EvidenceNeed")
     query_cmd.add_argument("--runtime-root", type=Path, required=True)
     query_cmd.add_argument("--dataset-id", required=True)
-    query_cmd.add_argument("--question", required=True)
-    query_cmd.add_argument("--top-k", type=int, default=5)
-    query_cmd.add_argument("--created-after", help="Optional chat metadata lower bound, e.g. 2024-12-14")
-    query_cmd.add_argument("--created-before", help="Optional chat metadata upper bound, e.g. 2024-12-15")
-    query_cmd.add_argument("--speaker", choices=["user", "assistant"], help="Optional chat metadata speaker filter")
+    query_cmd.add_argument("--evidence-need", type=Path, required=True, help="Path to truemem_evidence_need@1 JSON")
 
     deeper_wider_cmd = sub.add_parser(
         "deeper-wider",
@@ -302,15 +294,15 @@ Step-by-step:
 
     batch_cmd = sub.add_parser(
         "batch",
-        help="Run a plain question list through dataset-local query",
+        help="Diagnostic only: run a plain question list through the old direct-query baseline",
         formatter_class=argparse.RawDescriptionHelpFormatter,
-        description="Run many dataset questions through the existing TrueMem query path.",
+        description="DIRECT_QUERY_BASELINE_NOT_OPERATOR_LOOP: diagnostic ranked question replay.",
         epilog="""
 Step-by-step:
   1. Put one question per line in questions.txt.
   2. Blank lines are ignored.
   3. Run:
-       truemem batch --runtime-root <runtime> --dataset <name> --questions questions.txt --workers 4
+       truemem batch --runtime-root <runtime> --dataset <name> --questions questions.txt --workers 4 --confirm-direct-query-baseline
   4. tqdm shows question completion progress.
   5. Each question writes its own query JSON output.
   6. The batch writes outputs/batch_<run_id>/batch_run_summary.json.
@@ -324,6 +316,12 @@ Step-by-step:
     batch_cmd.add_argument("--top-k", type=int, default=5)
     batch_cmd.add_argument("--workers", default="auto", help="Worker count or auto. Single-core is refused.")
     batch_cmd.add_argument("--no-progress", action="store_true", help="Disable tqdm progress display for scripted runs")
+    batch_cmd.add_argument(
+        "--confirm-direct-query-baseline",
+        action="store_true",
+        required=True,
+        help="Required acknowledgement that this is not the EvidenceNeed operator retrieval path.",
+    )
 
     adapters_cmd = sub.add_parser(
         "adapters",
@@ -460,14 +458,10 @@ Step-by-step:
             trail_limit=args.trail_limit,
         )
     elif args.command == "query":
-        result = query(
+        result = query_evidence_need_mapping(
             args.runtime_root,
             args.dataset_id,
-            args.question,
-            top_k=args.top_k,
-            created_after=args.created_after,
-            created_before=args.created_before,
-            speaker=args.speaker,
+            json.loads(args.evidence_need.read_text(encoding="utf-8")),
         )
     elif args.command == "deeper-wider":
         first_packet = json.loads(args.first_answer.read_text(encoding="utf-8"))
@@ -540,7 +534,7 @@ Step-by-step:
             branch_k=args.branch_k,
         )
     elif args.command == "batch":
-        result = batch_questions(args.runtime_root, args.dataset_id, args.questions, top_k=args.top_k, show_progress=not args.no_progress, workers=args.workers)
+        result = direct_question_batch_baseline(args.runtime_root, args.dataset_id, args.questions, top_k=args.top_k, show_progress=not args.no_progress, workers=args.workers)
     elif args.command == "adapters":
         if args.adapter_command == "prepare":
             result = prepare_source_with_adapter_if_present(args.source, args.out)

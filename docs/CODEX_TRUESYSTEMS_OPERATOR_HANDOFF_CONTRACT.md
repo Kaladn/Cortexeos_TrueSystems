@@ -107,6 +107,23 @@ Candidate locations alone are not a factual answer. The operator inspects the
 returned source field, determines whether the evidence obligations are
 satisfied, and communicates only what that packet supports.
 
+### Executable EvidenceNeed boundary
+
+The public TrueMem retrieval call accepts only `truemem_evidence_need@1` and
+must reject raw questions or claims before reading retrieval artifacts. Every
+need contains `subject`, `relation`, non-empty `qualifiers`, `quantity`, and
+`requested_proof_form`. Each field carries explicit admitted-anchor
+alternatives. The retrieval packet enumerates exact subject occurrences and
+their signed 6-1-6 clouds, intersects required fields for the requested proof
+form, and returns evidence locations without TopK or answer generation.
+
+An answer-shaped benchmark string may be retained outside retrieval as the
+operator's original request, but it cannot occupy the EvidenceNeed argument.
+
+The quantity field is always present. When the request contains no quantity,
+it must be encoded as `{"field":"quantity","anchors":[],"required":false}`;
+retrieval must not manufacture a numeric constraint.
+
 ## Benchmark boundary
 
 A benchmark judgment is opened only after the complete work-order and
@@ -117,4 +134,3 @@ an already returned packet.
 Direct human-request-to-TrueSystems runs remain valid diagnostic baselines, but
 they are not measurements of the complete operator architecture and must be
 labelled `DIRECT_QUERY_BASELINE_NOT_OPERATOR_LOOP`.
-

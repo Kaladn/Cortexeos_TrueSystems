@@ -6,7 +6,7 @@ from typing import Any
 from .anchors import anchorize, symbol_hex
 from .base import COUNT_BACKEND, dataset_paths, safe_id, sha1_text, unique_stamp, utc_now, with_protected_notice, write_json
 from .determinism import file_receipt
-from .querying import query
+from .querying import direct_question_query_baseline
 from .storage import block_anchor_record_for_path, iter_relation_records, read_blocks, read_symbol_to_anchor
 
 
@@ -36,7 +36,7 @@ def count_walk_speech(
         path.mkdir(parents=True, exist_ok=True)
 
     before = _core_artifact_receipts(paths)
-    packet = query(runtime_root, dataset_id, question, top_k=top_k)
+    packet = direct_question_query_baseline(runtime_root, dataset_id, question, top_k=top_k)
     locations = list((packet.get("answer_packet") or {}).get("locations") or [])
     selected_location = locations[0] if locations else None
 

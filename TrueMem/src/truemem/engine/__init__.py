@@ -73,6 +73,8 @@ from .determinism import (
 )
 from .dataset_overview import dataset_overview
 from .evidence_cloud_speech import run_evidence_cloud_speech
+from .evidence_need import AnchorGroup, EvidenceNeed, EVIDENCE_NEED_SCHEMA
+from .evidence_retrieval import query_evidence_need, query_evidence_need_mapping
 from .evidence_formula import build_topk_pressure_trellis, score_evidence_formula
 from .forensic import (
     FORENSIC_LADDER,
@@ -109,7 +111,10 @@ from .evidence_operands import (
     execute_bound_operator_skill,
     run_anchor_sheet_capability,
 )
-from .querying import batch_questions, deeper_wider_after_answer, query, score_blocks, top_relation_neighbors
+from .querying import direct_question_batch_baseline, deeper_wider_after_answer, score_blocks, top_relation_neighbors
+
+# Public query is the same hard EvidenceNeed boundary used by CLI and API.
+query = query_evidence_need
 from .resonance_adapter import adapt_resonance_sample
 from .special_search import special_search
 from .system_metrics import system_metrics

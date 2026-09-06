@@ -71,13 +71,19 @@ def truemachine_pulse(body: dict[str, Any]) -> dict[str, Any]:
 
 def truemem_query(body: dict[str, Any]) -> dict[str, Any]:
     install_component_paths()
-    from truemem.engine import query
+    from truemem.engine import query_evidence_need_mapping
 
-    return query(
+    if "question" in body:
+        raise ValueError("ANSWER_SHAPED_INPUT_FORBIDDEN: use evidence_need")
+    if "top_k" in body:
+        raise ValueError("TOPK_FORBIDDEN: EvidenceNeed retrieval enumerates exact occurrences and clouds")
+    evidence_need = body.get("evidence_need")
+    if not isinstance(evidence_need, dict):
+        raise ValueError("evidence_need must be an object")
+    return query_evidence_need_mapping(
         _required(body, "runtime_root"),
         _required(body, "dataset_id"),
-        _required(body, "question"),
-        top_k=int(body.get("top_k", 5)),
+        evidence_need,
     )
 
 

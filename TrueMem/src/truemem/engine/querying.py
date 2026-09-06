@@ -84,7 +84,7 @@ def _structural_evidence_sidecar(paths: DatasetPaths, question: str, locations: 
     )
 
 
-def query(
+def direct_question_query_baseline(
     runtime_root: str | Path,
     dataset_id: str,
     question: str,
@@ -392,7 +392,7 @@ def _block_cloud_fit(paths: DatasetPaths, anchors: list[str]) -> dict[str, Any]:
         "best_block_anchors": sorted(best_anchors),
     }
 
-def batch_questions(
+def direct_question_batch_baseline(
     runtime_root: str | Path,
     dataset_id: str,
     questions_path: str | Path,
@@ -485,7 +485,7 @@ def _run_batch_query_item(
     question = str(item["question"])
     metadata = item.get("metadata") if isinstance(item.get("metadata"), dict) else {}
     try:
-        result = query(runtime_root, dataset_id, question, top_k=top_k)
+        result = direct_question_query_baseline(runtime_root, dataset_id, question, top_k=top_k)
         elapsed = perf_counter() - item_started
         return {
             "index": int(index),

@@ -7,7 +7,7 @@ from typing import Any
 
 from .anchors import GLUE_ANCHORS, anchor_kind, anchorize
 from .base import safe_id, utc_now, with_protected_notice, write_json
-from .querying import query
+from .querying import direct_question_query_baseline
 
 
 def build_citation_crosslinks(
@@ -20,8 +20,8 @@ def build_citation_crosslinks(
     min_shared: int = 3,
 ) -> dict[str, Any]:
     """Build a cross-dataset citation sidecar from normal TrueMem query packets."""
-    left = query(runtime_root, left_dataset_id, question, top_k=top_k)
-    right = query(runtime_root, right_dataset_id, question, top_k=top_k)
+    left = direct_question_query_baseline(runtime_root, left_dataset_id, question, top_k=top_k)
+    right = direct_question_query_baseline(runtime_root, right_dataset_id, question, top_k=top_k)
     left_rows = crosslink_candidate_rows(left)
     right_rows = crosslink_candidate_rows(right)
     links: list[dict[str, Any]] = []

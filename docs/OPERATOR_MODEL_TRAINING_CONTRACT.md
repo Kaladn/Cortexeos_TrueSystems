@@ -87,16 +87,18 @@ For TrueMem the normal sequence is:
 
 ```text
 question
-  -> query
-  -> first deterministic packet
-  -> inspect convergence and branch receipt
+  -> operator compiles one or more EvidenceNeed objects
+  -> query(EvidenceNeed)
+  -> exact occurrence/cloud evidence packet
+  -> inspect proof locations, partial locations, and receipts
   -> render from cited evidence
-  -> optionally invoke deeper-wider as a separate call
-  -> retain both packets without overwriting either
+  -> issue another explicit EvidenceNeed only when the packet justifies it
 ```
 
-`deeper-wider` is a second observation over the same native counts. It is not
-automatic self-correction and does not mutate the first result.
+Raw questions, claims, prompts, benchmark answers, and expected sources are not
+valid TrueMem retrieval arguments. `deeper-wider` remains a diagnostic over
+historical prediction packets; it is not the public EvidenceNeed path, is not
+automatic self-correction, and does not mutate its input packet.
 
 ## Permitted and forbidden reasoning
 

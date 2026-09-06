@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .base import dataset_paths, safe_id, unique_stamp, utc_now, with_protected_notice, write_json
-from .querying import query
+from .querying import direct_question_query_baseline
 from .storage import ensure_dataset, status
 
 
@@ -71,7 +71,7 @@ def load_receipt_questions(*, questions: list[str] | None, questions_path: str |
 
 
 def query_receipt(runtime_root: str | Path, dataset_id: str, question_text: str, *, top_k: int) -> dict[str, Any]:
-    packet = query(runtime_root, dataset_id, question_text, top_k=top_k)
+    packet = direct_question_query_baseline(runtime_root, dataset_id, question_text, top_k=top_k)
     locations = packet.get("answer_packet", {}).get("locations", [])
     raw_json = canonical_json(packet)
     return {

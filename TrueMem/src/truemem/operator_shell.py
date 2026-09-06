@@ -6,7 +6,6 @@ from pathlib import Path
 
 from .engine import append_chat_count
 from .engine import default_chat_count_root
-from .engine import query as aw_query
 from .engine import status as aw_status
 from .engine import system_metrics
 from .operator_contract import COMMAND_REGISTRY, parse_operator_command
@@ -188,19 +187,20 @@ class OperatorShell:
     def _handle_aw_question(self, question: str, *, osrl_audit: dict[str, object]) -> dict[str, object]:
         assert self.runtime_root is not None
         assert self.dataset_id is not None
-        result = aw_query(self.runtime_root, self.dataset_id, question, top_k=self.top_k)
-        message = _render_aw_chat_answer(result)
         return {
             "kind": "aw_question",
-            "accepted": True,
+            "accepted": False,
             "dataset_id": self.dataset_id,
             "runtime_root": str(self.runtime_root),
-            "output_path": result.get("output_path"),
-            "qa_record": result.get("qa_record"),
-            "model_used": result.get("model_used", "none"),
-            "model_may_search": result.get("model_may_search", False),
+            "output_path": None,
+            "qa_record": None,
+            "model_used": "none",
+            "model_may_search": False,
             "mode": self.mode,
-            "message": message,
+            "message": (
+                "STRUCTURED_EVIDENCE_NEED_REQUIRED: free-text chat cannot enter TrueMem retrieval; "
+                "compile the request and use `truemem query --evidence-need FILE.json`."
+            ),
             "osrl_audit": osrl_audit,
         }
 

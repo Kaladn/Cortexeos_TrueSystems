@@ -43,8 +43,8 @@ passed explicitly where a component exposes a path argument.
 | Admit a document and build its deterministic map | TrueVision Intake / DocuFilm + TrueMem | `python -m truemem.cli docufilm-intake` | parent/contained anchors, a dataset-scoped range from the active workspace symbolizer, counts, coordinates, relationships, citations |
 | Record or replay derived audio state | TrueAudio | `TrueAudio/scripts/trueaudio_*.py` | audio-state artifacts, manifests, and receipts |
 | Detect bounded speech regions | TrueSpeech | `TrueSpeech/scripts/truespeech_detect_segments.py` | speech/background candidates without transcript claims |
-| Retrieve a cited answer packet | TrueMem | `python -m truemem.cli query` | cited local packet; `model_used` is `none` |
-| Search beyond the first packet | TrueMem | `python -m truemem.cli deeper-wider` | separate deeper/wider packet |
+| Retrieve a cited evidence packet | TrueMem | `python -m truemem.cli query` | exact occurrence/cloud packet for a structured `EvidenceNeed`; `model_used` is `none` |
+| Inspect a legacy prediction walk diagnostically | TrueMem | `python -m truemem.cli deeper-wider` | separate diagnostic packet; not part of EvidenceNeed retrieval |
 | Search local remembered material | LocalMemoryChat | `python -m local_memory_chat.cli ask` | cited memory packet and receipt |
 | Retain/continue ordered conversation | Clearbox Chat-Chain | local HTTP server | persisted conversation/turn result |
 | Observe or invoke a coded security agent | TrueCore | `python -m truecore.cli.main agents ...` | agent state/decision/receipt |
@@ -84,13 +84,21 @@ cd TrueMem
 PYTHONPATH=src python -m truemem.cli init --runtime-root runtime --dataset-id DATASET
 PYTHONPATH=src python -m truemem.cli docufilm-intake --runtime-root runtime --dataset-id DATASET --source DOCUMENT.txt
 PYTHONPATH=src python -m truemem.cli status --runtime-root runtime --dataset-id DATASET
-PYTHONPATH=src python -m truemem.cli query --runtime-root runtime --dataset-id DATASET --question "QUESTION"
+PYTHONPATH=src python -m truemem.cli query --runtime-root runtime --dataset-id DATASET --evidence-need EVIDENCE_NEED.json
 ```
 
-Use `deeper-wider` only after the first query packet has been returned. It is a
-second, wider relationship search and must remain a separate result so the
-caller can compare it with the first answer. Use each command's `--help` for
-the complete current option set.
+The public query boundary accepts only `truemem_evidence_need@1`. It rejects
+raw questions, claims, prompts, expected answers, and TopK. The operator must
+provide subject, relation, qualifier groups, quantity, and requested proof
+form. Query returns every exact subject occurrence with its signed 6-1-6 cloud,
+plus set-intersection proof locations. It does not decide whether a claim is
+true. The older answer-shaped ranked path remains diagnostic code and is not
+the public operator retrieval interface.
+
+`deeper-wider` accepts the older prediction-walk packet shape only. It remains
+a separate diagnostic and cannot be invoked on, or substituted for, the public
+EvidenceNeed result. Use each command's `--help` for the complete current
+option set.
 
 Relationship mechanics are specified in
 `TrueMem/system/contracts/RELATIONSHIP_GRAPH_616.md`. The predictor exposes all

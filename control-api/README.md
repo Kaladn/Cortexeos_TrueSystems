@@ -22,6 +22,11 @@ Endpoints:
 - `GET /api/v1/help/topics`
 - `POST /api/v1/help/query`
 
+`POST /api/v1/truemem/query` requires `runtime_root`, `dataset_id`, and an
+`evidence_need` object using schema `truemem_evidence_need@1`. It rejects the
+legacy `question` and `top_k` shape. The EvidenceNeed must contain structured
+subject, relation, qualifier, quantity, and requested-proof-form fields.
+
 Chat turns sent through this API may select the read-only `truesystems-help`
 provider with model `quick`, `operate`, or `source`. See
 `../docs/HELP_SYSTEM.md`.
