@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 import sys
 from collections import Counter
@@ -25,6 +26,16 @@ from .storage import (
 from .symbolizer import allocate_dataset_symbols, update_dataset_manifest_symbol_allocation
 
 
+TEXT_SOURCE_SUFFIXES = {
+    ".bash", ".bat", ".c", ".cc", ".cjs", ".cmd", ".cpp", ".cs", ".cxx",
+    ".fish", ".fs", ".fsx", ".go", ".h", ".hh", ".hpp", ".hxx", ".java",
+    ".js", ".jsx", ".kt", ".kts", ".lua", ".mjs", ".php", ".ps1", ".py",
+    ".pyw", ".r", ".rb", ".rs", ".sh", ".sql", ".swift", ".ts", ".tsx",
+    ".zsh",
+}
+DOCUMENT_SUFFIXES = {".txt", ".md", ".markdown", ".rst", ".csv", ".json", ".jsonl"}
+
+
 def docufilm_intake(
     runtime_root: str | Path,
     dataset_id: str,
@@ -37,12 +48,16 @@ def docufilm_intake(
     ram_budget_gb: float | None = 8.0,
     show_progress: bool = False,
     debug_tiny_single_core: bool = False,
+    output_format: str = "split",
 ) -> dict[str, Any]:
+    if output_format not in {"split", "native"}:
+        raise ValueError("output_format must be split or native")
     ensure_dataset(runtime_root, dataset_id, owner=owner)
     paths = dataset_paths(runtime_root, dataset_id)
     source_path = Path(source).expanduser().resolve()
     _refuse_adapter_workspace_root(source_path)
     files = list(iter_files(source_path))
+    native_attachments = _native_attachment_files(source_path)
     if not files:
         raise FileNotFoundError(source_path)
     if window <= 0:
@@ -128,6 +143,24 @@ def docufilm_intake(
     write_coordinate_index(paths, block_rows)
     write_chat_metadata_index(paths, chat_metadata_rows)
 
+    native_publication = None
+    if output_format == "native":
+        from .native_publication import publish_native_dataset
+
+        native_publication = publish_native_dataset(
+            paths,
+            [*files, *native_attachments],
+            paths.root / "combined" / f"{safe_id(dataset_id)}.lxhcc",
+        )
+
+    source_type_counts = Counter(
+        str(row["source_profile"]["source_type"]) for row in source_receipts
+    )
+    source_capability_counts = Counter(
+        capability
+        for row in source_receipts
+        for capability in row["source_profile"]["capabilities"]
+    )
     receipt = {
         "schema": "truemem_intake_receipt@1",
         "intake_authority": "TrueVision.DocuFilm",
@@ -136,6 +169,11 @@ def docufilm_intake(
         "scope": "dataset_local",
         "source": str(source_path),
         "source_file_count": len(files),
+        "native_attachment_count": len(native_attachments),
+        "native_attachments": [
+            {"path": str(path), "bytes": path.stat().st_size, "sha256": _sha256_file(path)}
+            for path in native_attachments
+        ],
         "block_count": len(block_rows),
         "citation_count": len(block_rows),
         "chat_metadata_row_count": len(chat_metadata_rows),
@@ -176,7 +214,15 @@ def docufilm_intake(
         "parallel_execution_possible": bool(resource_plan["parallel_execution_possible"]),
         "resource_plan": resource_plan,
         "sources": source_receipts,
+        "source_typing_authority": "TrueVision.DocuFilm",
+        "source_typing_schema": "truevision_source_type@1",
+        "source_type_counts": dict(sorted(source_type_counts.items())),
+        "source_capability_counts": dict(sorted(source_capability_counts.items())),
         "paths": public_paths(paths),
+        "requested_output_format": output_format,
+        "runtime_authority_format": "split",
+        "native_query_backend_active": False,
+        "native_publication": native_publication,
     }
     receipt_path = paths.receipts / f"intake_{unique_stamp()}.json"
     write_json(receipt_path, receipt)
@@ -186,14 +232,28 @@ def docufilm_intake(
 
 def _process_intake_files(files: list[Path], *, window: int, workers: int, show_progress: bool) -> list[dict[str, Any]]:
     file_results: dict[int, dict[str, Any]] = {}
-    jobs: list[tuple[int, str, str, int, int, dict[str, Any], dict[str, Any], int]] = []
+    jobs: list[tuple[int, str, str, int, int, dict[str, Any], dict[str, Any], dict[str, Any], int]] = []
     for file_order, path in enumerate(files):
         file_digest = sha1_text(str(path))
         text = path.read_text(encoding="utf-8", errors="replace")
-        blocks = split_blocks(text)
+        source_profile = _classify_truevision_source(path, text)
+        blocks = split_record_blocks(text) if path.suffix.lower() in {".csv", ".jsonl"} else split_blocks(text)
+        tabular_profile, tabular_rows = _parse_truevision_tabular_source(path, text)
+        if path.suffix.lower() in {".csv", ".jsonl"}:
+            if len(tabular_rows) != len(blocks):
+                raise ValueError(f"TrueVision tabular row count mismatch: {path}")
+            for block, tabular_row in zip(blocks, tabular_rows):
+                block["tabular_row"] = tabular_row
+        elif tabular_rows and blocks:
+            blocks[0]["tabular_rows"] = tabular_rows
         file_results[file_order] = {
             "file_order": int(file_order),
-            "source_receipt": {"path": str(path), "block_count": len(blocks)},
+            "source_receipt": {
+                "path": str(path),
+                "block_count": len(blocks),
+                "source_profile": source_profile,
+                "tabular_profile": tabular_profile,
+            },
             "blocks": [],
             "anchor_observations": Counter(),
             "relation_observations": Counter(),
@@ -213,6 +273,7 @@ def _process_intake_files(files: list[Path], *, window: int, workers: int, show_
                 block_index - 1,
                 block,
                 dict(active_chat_metadata),
+                source_profile,
                 window,
             ))
 
@@ -243,6 +304,7 @@ def _process_intake_block(
     local_block_ordinal: int,
     block: dict[str, Any],
     active_chat_metadata: dict[str, Any],
+    source_profile: dict[str, Any],
     window: int,
 ) -> dict[str, Any]:
     anchor_observations: Counter[str] = Counter()
@@ -251,7 +313,9 @@ def _process_intake_block(
     block_id = f"{file_digest}:{block_index}"
     anchors = anchorize(block["text"])
     structural_compilation = _compile_truevision_structures(
-        block["text"], source_identity=block_id, block_ordinal=local_block_ordinal
+        block["text"], source_identity=block_id, block_ordinal=local_block_ordinal,
+        source_profile=source_profile,
+        tabular=bool("tabular_row" in block or "tabular_rows" in block),
     )
     citation_id = f"TMCIT-{sha1_text(block_id)[:10]}"
     block_row = {
@@ -265,9 +329,14 @@ def _process_intake_block(
         "marker": f"[{citation_id}]",
         "text_hash": sha1_text(block["text"]),
         "sentences": numbered_sentences(block["text"]),
+        "source_profile": source_profile,
     }
     if active_chat_metadata:
         block_row["chat_metadata"] = dict(active_chat_metadata)
+    if "tabular_row" in block:
+        block_row["tabular_row"] = block["tabular_row"]
+    if "tabular_rows" in block:
+        block_row["tabular_rows"] = block["tabular_rows"]
     for position, anchor in enumerate(anchors):
         anchor_observations[anchor] += 1
         block_anchor_rows.append((anchor, local_block_ordinal, position))
@@ -288,31 +357,67 @@ def _process_intake_block(
     }
 
 
-def _compile_truevision_structures(text: str, *, source_identity: str, block_ordinal: int) -> dict[str, Any]:
+def _classify_truevision_source(path: Path, text: str) -> dict[str, Any]:
+    """Delegate source typing to the TrueVision intake authority."""
+    try:
+        from truevision_intake.source_typing import classify_source
+    except ModuleNotFoundError:
+        intake_root = Path(__file__).resolve().parents[4] / "TrueVisionIntake"
+        if not intake_root.is_dir():
+            raise RuntimeError("TRUEVISION_SOURCE_TYPING_UNAVAILABLE")
+        sys.path.insert(0, str(intake_root))
+        from truevision_intake.source_typing import classify_source
+    return classify_source(path, text)
+
+
+def _parse_truevision_tabular_source(path: Path, text: str) -> tuple[dict[str, Any] | None, list[dict[str, Any]]]:
+    """Delegate sparse-grid parsing to the TrueVision intake authority."""
+    try:
+        from truevision_intake.tabular_intake import parse_tabular_source
+    except ModuleNotFoundError:
+        intake_root = Path(__file__).resolve().parents[4] / "TrueVisionIntake"
+        if not intake_root.is_dir():
+            raise RuntimeError("TRUEVISION_TABULAR_INTAKE_UNAVAILABLE")
+        sys.path.insert(0, str(intake_root))
+        from truevision_intake.tabular_intake import parse_tabular_source
+    return parse_tabular_source(path, text)
+
+
+def _compile_truevision_structures(
+    text: str,
+    *,
+    source_identity: str,
+    block_ordinal: int,
+    source_profile: dict[str, Any],
+    tabular: bool,
+) -> dict[str, Any]:
     """Delegate structural compilation to the sole TrueVision intake owner."""
     try:
-        from truevision_intake.structural_binding import compile_text_structures
+        from truevision_intake.typed_structural import compile_typed_structures
     except ModuleNotFoundError:
         intake_root = Path(__file__).resolve().parents[4] / "TrueVisionIntake"
         if not intake_root.is_dir():
             raise RuntimeError("TRUEVISION_STRUCTURAL_COMPILER_UNAVAILABLE")
         sys.path.insert(0, str(intake_root))
-        from truevision_intake.structural_binding import compile_text_structures
-    return compile_text_structures(
+        from truevision_intake.typed_structural import compile_typed_structures
+    return compile_typed_structures(
         text,
         source_identity=source_identity,
         block_ordinal=block_ordinal,
-        temporary_query_overlay=False,
+        source_profile=source_profile,
+        tabular=tabular,
     )
 
 def iter_files(path: Path) -> Iterable[Path]:
-    suffixes = {".txt", ".md", ".markdown", ".rst", ".csv", ".json", ".jsonl"}
+    suffixes = DOCUMENT_SUFFIXES | TEXT_SOURCE_SUFFIXES
     if path.is_file() and path.suffix.lower() in suffixes:
         yield path
         return
     if path.is_dir():
         for item in sorted(path.rglob("*")):
-            if item.is_file() and item.suffix.lower() in suffixes and not any(part.startswith(".") for part in item.parts):
+            relative = item.relative_to(path)
+            hidden_directory = any(part.startswith(".") for part in relative.parts[:-1])
+            if item.is_file() and item.suffix.lower() in suffixes and not hidden_directory:
                 yield item
 
 
@@ -337,6 +442,38 @@ def _refuse_adapter_workspace_root(source_path: Path) -> None:
         f"source={source_path}; use ingest_source_dir={ingest_path}"
     )
 
+
+def _sha256_file(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        while chunk := handle.read(4 * 1024 * 1024):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _native_attachment_files(source_path: Path) -> list[Path]:
+    if not source_path.is_dir():
+        return []
+    manifest_path = source_path / "STAGING_MANIFEST.json"
+    if not manifest_path.is_file():
+        return []
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    declared = manifest.get("native_attachment_paths") or []
+    if not isinstance(declared, list):
+        raise ValueError("native_attachment_paths must be a list")
+    files = []
+    for value in declared:
+        target = (source_path / str(value)).resolve()
+        try:
+            target.relative_to(source_path)
+        except ValueError as error:
+            raise ValueError("native attachment escapes intake source") from error
+        candidates = [target] if target.is_file() else sorted(item for item in target.rglob("*") if item.is_file())
+        if not candidates:
+            raise FileNotFoundError(f"native attachment path is empty or missing: {target}")
+        files.extend(candidates)
+    return sorted(set(files), key=str)
+
 def split_blocks(text: str) -> list[dict[str, Any]]:
     lines = text.splitlines()
     blocks: list[dict[str, Any]] = []
@@ -356,6 +493,15 @@ def split_blocks(text: str) -> list[dict[str, Any]]:
     if not blocks and text:
         blocks.append({"line_start": 1, "line_end": max(1, len(lines)), "text": text})
     return blocks
+
+
+def split_record_blocks(text: str) -> list[dict[str, Any]]:
+    """Keep one serialized table record inside one cited evidence block."""
+    return [
+        {"line_start": index, "line_end": index, "text": line}
+        for index, line in enumerate(text.splitlines(), start=1)
+        if line.strip()
+    ]
 
 def chunk_block(lines: list[str], start_line: int) -> list[dict[str, Any]]:
     # One nonblank paragraph is one authoritative block. Length never splits it.

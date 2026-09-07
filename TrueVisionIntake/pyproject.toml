@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "truevision-intake"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = ["numpy", "opencv-python"]
+dependencies = ["numpy", "opencv-python", "Pygments"]
 
 [tool.setuptools]
 packages = ["truevision_intake", "truevision_intake.document_state"]

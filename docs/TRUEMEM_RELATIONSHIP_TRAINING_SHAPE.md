@@ -34,7 +34,7 @@ The live `docufilm-intake` path uses the constants and writers in
 | --- | --- | --- |
 | `anchor_counts.awbin` | `>6sQ` | six-byte symbol and occurrence count |
 | `relation_counts.awbin` | `>6s6shI` | center symbol, neighbor symbol, signed offset, count |
-| `block_anchor_postings.awbin` | `>6sIH` | symbol, block ordinal, position |
+| `block_anchor_postings.awbin` | versioned legacy `>6sIH` or current `>6sII` | symbol, block ordinal, position |
 | `state/dataset_lexicon.json` | JSON | exact anchor string to active symbol resolution |
 | `state/blocks.jsonl` | JSONL | original text, source lines, numbered sentences, anchors |
 | `coordinates/coordinate_index.jsonl` | JSONL | source location resolution |
@@ -71,10 +71,15 @@ Each candidate retains these fields independently:
 
 `Local, Back, Cloud, Forward, Support, Lift, DistanceStability, Direction`
 
-No weighted scalar combines them. Candidate rank one is not forced. Choosing a
+No weighted scalar combines them in the active answer path. Candidate rank one is not forced. Choosing a
 candidate moves the center and recalculates the next field. The optional
 deeper/wider operation accepts the already-returned first prediction and walks
 the same native relationship authority without mutating that answer.
+
+The experimental system-wide context-cloud view is separately documented in
+`docs/CONTEXT_CLOUD_SCORING.md`. It prepares an outcome-association score from
+the same immutable counts. It is off-path, versioned, decomposed, and cannot
+change active ranking, stored counts, anchor admission, or relation admission.
 
 ## Existing measurements
 

@@ -28,6 +28,7 @@ def build_glyph_state_record(
     pattern_hash: str,
     lifetime_count: int = 0,
     recognition_status: str = "recognized",
+    layout_position: dict[str, int] | None = None,
 ) -> dict[str, Any]:
     state_basis = {
         "source_id": str(source_id),
@@ -42,6 +43,7 @@ def build_glyph_state_record(
         "pattern_hash": str(pattern_hash),
         "lifetime_count": int(lifetime_count),
         "recognition_status": str(recognition_status),
+        "layout_position": dict(layout_position or {}),
     }
     return {
         "schema_version": DOCUMENT_STATE_SCHEMA_VERSION,

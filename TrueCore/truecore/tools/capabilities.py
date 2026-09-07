@@ -36,6 +36,17 @@ def build_default_capability_registry() -> dict[str, dict[str, Any]]:
             "runner_target": "forge_relational_engine",
             "central_writer_required": False,
         },
+        "truevision.code_glyph.read": {
+            "capability_id": "truevision.code_glyph.read",
+            "description": "Read declared code from calibrated DocuFilm glyph state without executing it.",
+            "authority_class": "analyze",
+            "risk_tier": 1,
+            "requires_approval": False,
+            "dry_run_required": False,
+            "dependencies": ["truevision.docufilm_state", "truevision.approved_glyph_lexicon"],
+            "runner_target": "truevision_intake.document_state.read_code_state_movie",
+            "central_writer_required": False,
+        },
         "central_writer.report_request": {
             "capability_id": "central_writer.report_request",
             "description": "Request a Central Writer operator report.",

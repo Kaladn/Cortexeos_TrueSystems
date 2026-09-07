@@ -350,6 +350,57 @@ def extract_black_glyph_patterns_from_state_movie(
     return rows
 
 
+def extract_monospace_glyph_cells_from_state_movie(
+    *,
+    manifest_path: str | Path,
+    frame_index: int = 0,
+    origin: tuple[int, int] = (0, 0),
+    cell_shape: tuple[int, int],
+    grid_shape: tuple[int, int],
+    luma_threshold: float = 128.0,
+) -> list[dict[str, Any]]:
+    """Slice stored state with explicit monospace geometry; never guess cells."""
+
+    manifest_file = Path(manifest_path)
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    feature_names = list((manifest.get("cell_state") or {}).get("feature_names") or CELL_FEATURE_NAMES)
+    cells = _load_cells_for_frame(manifest_file, manifest, frame_index)
+    luma = cells[:, :, feature_names.index("luma_mean")]
+    origin_y, origin_x = (int(origin[0]), int(origin[1]))
+    cell_height, cell_width = (int(cell_shape[0]), int(cell_shape[1]))
+    row_count, column_count = (int(grid_shape[0]), int(grid_shape[1]))
+    if min(origin_y, origin_x) < 0 or min(cell_height, cell_width, row_count, column_count) <= 0:
+        raise ValueError("monospace calibration values must be positive and origins nonnegative")
+    if origin_y + row_count * cell_height > luma.shape[0] or origin_x + column_count * cell_width > luma.shape[1]:
+        raise ValueError("monospace calibration exceeds stored cell-state frame")
+
+    output = []
+    for row in range(row_count):
+        for column in range(column_count):
+            top = origin_y + row * cell_height
+            left = origin_x + column * cell_width
+            ink = luma[top : top + cell_height, left : left + cell_width] < float(luma_threshold)
+            if not bool(ink.any()):
+                continue
+            points = np.argwhere(ink)
+            ink_top, ink_left = points.min(axis=0)
+            ink_bottom, ink_right = points.max(axis=0)
+            output.append({
+                "row": row,
+                "column": column,
+                "rows": ["".join("1" if value else "0" for value in line) for line in ink],
+                "bbox": {"x": left, "y": top, "w": cell_width, "h": cell_height},
+                "ink_bbox": {
+                    "x": left + int(ink_left), "y": top + int(ink_top),
+                    "w": int(ink_right - ink_left + 1), "h": int(ink_bottom - ink_top + 1),
+                },
+                "source": "stored_cell_state_luma_explicit_monospace_calibration",
+                "calibration_inferred": False,
+                "raw_frames_saved": False,
+            })
+    return output
+
+
 def _load_cells_for_frame(manifest_file: Path, manifest: dict[str, Any], frame_index: int) -> np.ndarray:
     chunks = list((manifest.get("cell_state") or {}).get("chunks") or [])
     if not chunks:

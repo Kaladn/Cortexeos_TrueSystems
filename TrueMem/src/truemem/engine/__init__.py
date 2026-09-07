@@ -62,6 +62,7 @@ from .crosslinks import (
     evidence_text_only,
 )
 from .count_walk_speech import count_walk_speech
+from .context_clouds import build_context_cloud, score_context_cloud_lane
 from .determinism import (
     determinism_receipt,
     directory_hashes,

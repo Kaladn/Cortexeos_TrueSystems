@@ -89,6 +89,8 @@ def ensure_dataset(runtime_root: str | Path, dataset_id: str, *, owner: str = "o
             "counts_are_memory": False,
             "counts_belong_to": "dataset",
             "count_backend": COUNT_BACKEND,
+            "block_anchor_posting_schema": BLOCK_ANCHOR_SCHEMA_V2,
+            "block_anchor_position_bits": 32,
             "symbol_system": SYMBOL_SYSTEM,
             "symbol_bytes": SYMBOL_BYTES,
             "symbol_scope": "dataset_local_demo_only",
@@ -116,7 +118,7 @@ def status(runtime_root: str | Path, dataset_id: str) -> dict[str, Any]:
         "dataset_lexicon_path": str(paths.lexicon_path),
         "anchor_count": record_count(paths.anchor_counts_path, ANCHOR_RECORD.size),
         "relation_count": record_count(paths.relation_counts_path, RELATION_RECORD.size),
-        "block_anchor_posting_count": record_count(paths.block_anchor_path, BLOCK_ANCHOR_RECORD.size),
+        "block_anchor_posting_count": record_count(paths.block_anchor_path, block_anchor_record(paths).size),
         "block_count": jsonl_count(paths.blocks_path),
         "citation_count": jsonl_count(paths.citations / "citations.jsonl"),
         "chat_metadata_row_count": jsonl_count(paths.chat_metadata_path),
@@ -165,7 +167,7 @@ def index_readiness(runtime_root: str | Path, dataset_id: str) -> dict[str, Any]
     counts = {
         "anchor_count": record_count(paths.anchor_counts_path, ANCHOR_RECORD.size),
         "relation_count": record_count(paths.relation_counts_path, RELATION_RECORD.size),
-        "block_anchor_posting_count": record_count(paths.block_anchor_path, BLOCK_ANCHOR_RECORD.size),
+        "block_anchor_posting_count": record_count(paths.block_anchor_path, block_anchor_record(paths).size),
         "block_count": jsonl_count(paths.blocks_path),
         "citation_count": jsonl_count(paths.citations / "citations.jsonl"),
         "coordinate_count": jsonl_count(paths.coordinates / "coordinate_index.jsonl"),
@@ -209,6 +211,7 @@ def write_binary_counts(
     symbol_map: dict[str, str] | None = None,
 ) -> None:
     paths.counts.mkdir(parents=True, exist_ok=True)
+    posting_record = block_anchor_record(paths)
     with paths.anchor_counts_path.open("wb") as handle:
         for anchor, observations in sorted(anchors.items()):
             handle.write(ANCHOR_RECORD.pack(_symbol_bytes_for(anchor, symbol_map), int(observations)))
@@ -217,7 +220,7 @@ def write_binary_counts(
             handle.write(RELATION_RECORD.pack(_symbol_bytes_for(anchor, symbol_map), _symbol_bytes_for(neighbor, symbol_map), int(offset), int(observations)))
     with paths.block_anchor_path.open("wb") as handle:
         for anchor, block_ordinal, position in sorted(block_anchors, key=lambda item: (_symbol_hex_for(item[0], symbol_map), item[1], item[2])):
-            handle.write(BLOCK_ANCHOR_RECORD.pack(_symbol_bytes_for(anchor, symbol_map), int(block_ordinal), int(position)))
+            handle.write(posting_record.pack(_symbol_bytes_for(anchor, symbol_map), int(block_ordinal), int(position)))
 
 def iter_anchor_records(paths: DatasetPaths) -> Iterable[tuple[bytes, int]]:
     with paths.anchor_counts_path.open("rb") as handle:

@@ -123,6 +123,22 @@ PYTHONPATH=src python -m truemem.cli status --runtime-root runtime --dataset-id 
 PYTHONPATH=src python -m truemem.cli query --runtime-root runtime --dataset-id DATASET --evidence-need EVIDENCE_NEED.json
 ```
 
+Interactive `docufilm-intake` asks whether to publish `split` or `native`
+before writing. Enter keeps the current split layout. The prompt explains that
+native is the compact all-in-one publication intended for measured size and
+query-speed comparisons, while deterministic answers must remain unchanged.
+Headless callers must pass `--output-format split|native`. Native publication
+retains the split artifacts as the active query authority until native query
+integration and parity are separately proven.
+
+For staged chat sources, native publication also stores explicit `CHAT_TURN`
+nodes and conversation-local `NEXT_TURN` edges. One turn may own several
+paragraph blocks. Edges use declared conversation IDs and integer turn indexes;
+timestamps are properties, not unique identity. Ambiguous duplicate turn
+indexes are counted and excluded, and no semantic or cross-conversation edge is
+inferred. This is the built-in bounded temporal traversal layer; Neo4j may be a
+disposable projection later, but is not an intake or evidence authority.
+
 The public query boundary accepts only `truemem_evidence_need@1`. It rejects
 raw questions, claims, prompts, expected answers, and TopK. The operator must
 provide subject, relation, qualifier groups, quantity, and requested proof

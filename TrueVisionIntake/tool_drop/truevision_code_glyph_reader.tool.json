@@ -1,0 +1,52 @@
+{
+  "schema_version": "truevision_tool_manifest_v1",
+  "tool_id": "truevision_code_glyph_reader",
+  "display_name": "TrueVision Code Glyph Reader",
+  "category": "20_state_reader",
+  "status": "active_callable",
+  "implementation_owned_by_tool_drop": false,
+  "entrypoint_type": "python_callable",
+  "entrypoint": "truevision_intake.document_state.read_code_state_movie",
+  "implementation_paths": [
+    "truevision_intake/document_state/code_glyph_reader.py",
+    "truevision_intake/document_state/document_state_movie.py",
+    "truevision_intake/document_state/state_reader.py"
+  ],
+  "input_types": [
+    "document_state_movie_manifest",
+    "approved_glyph_lexicon_records",
+    "truevision_code_deciphering_context"
+  ],
+  "output_types": [
+    "truevision_code_glyph_read",
+    "complete_anchor_admission_stream",
+    "declared_language_syntax_record"
+  ],
+  "writes": [],
+  "calls_tools": [],
+  "source_truth_compliant": true,
+  "safe_for_sc_call": "read_only_exact_state_analysis",
+  "observes_state": true,
+  "abstracts_behavior": false,
+  "generates_state": false,
+  "renders_media": false,
+  "copies_source_media": false,
+  "behavior_family": "visual_code_state",
+  "can_witness": false,
+  "can_profile": true,
+  "can_plan": false,
+  "can_replay": false,
+  "can_surface": false,
+  "boundary": {
+    "deciphering_context_required": true,
+    "monospace_calibration_inferred": false,
+    "approved_exact_glyphs_only": true,
+    "unknown_glyphs_remain_unknown": true,
+    "all_glyph_object_anchors_retained": true,
+    "complete_text_anchors_retained": true,
+    "syntax_replaces_anchors": false,
+    "language_inferred_from_glyphs": false,
+    "execution_import_eval_or_compile_allowed": false,
+    "unsupported_grammar_result": "NOT_IMPLEMENTED"
+  }
+}

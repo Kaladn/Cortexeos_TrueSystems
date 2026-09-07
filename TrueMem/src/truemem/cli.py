@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 
 from .engine import (
@@ -36,6 +37,25 @@ from .adapters import prepare_source_with_adapter_if_present
 from .operator_state import audit_operator_state
 
 
+def _intake_output_format(requested: str | None, parser: argparse.ArgumentParser) -> str:
+    if requested is not None:
+        return requested
+    if not sys.stdin.isatty():
+        parser.error("docufilm-intake requires --output-format split|native when stdin is not interactive")
+    print("Choose intake output before any data is written:")
+    print("  1) split  - current active runtime layout (default)")
+    print("  2) native - compact all-in-one publication for size/speed comparison")
+    print("Why native: measure disk savings now and native query speed once that backend is enabled.")
+    print("Native retains split runtime compatibility; deterministic answers must remain identical.")
+    while True:
+        choice = input("Output format [1/2, default 1]: ").strip().casefold()
+        if choice in {"", "1", "split"}:
+            return "split"
+        if choice in {"2", "native"}:
+            return "native"
+        print("Enter 1/split or 2/native.")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         prog="truemem",
@@ -64,6 +84,11 @@ batch is retained solely as an explicitly confirmed direct-query diagnostic.
     intake_cmd.add_argument("--reserve-ram-fraction", type=float, default=0.15, help="Fraction of total RAM to reserve for system/operator.")
     intake_cmd.add_argument("--ram-budget-gb", type=float, default=8.0, help="Maximum RAM budget for intake workers. Defaults to 8 GiB.")
     intake_cmd.add_argument("--no-progress", action="store_true", help="Disable tqdm file progress meter.")
+    intake_cmd.add_argument(
+        "--output-format",
+        choices=("split", "native"),
+        help="Headless choice. Interactive intake asks before writing; Enter keeps split.",
+    )
     intake_cmd.add_argument(
         "--debug-tiny-single-core",
         action="store_true",
@@ -427,6 +452,7 @@ Step-by-step:
     if args.command == "init":
         result = ensure_dataset(args.runtime_root, args.dataset_id, owner=args.owner)
     elif args.command == "docufilm-intake":
+        output_format = _intake_output_format(args.output_format, parser)
         result = docufilm_intake(
             args.runtime_root,
             args.dataset_id,
@@ -438,6 +464,7 @@ Step-by-step:
             ram_budget_gb=args.ram_budget_gb,
             show_progress=not args.no_progress,
             debug_tiny_single_core=args.debug_tiny_single_core,
+            output_format=output_format,
         )
     elif args.command == "status":
         result = status(args.runtime_root, args.dataset_id)

@@ -42,6 +42,9 @@ class DocumentStateReader:
                     pattern_hash=match.pattern_hash,
                     lifetime_count=int(lifetime.get("observed_count") or 0),
                     recognition_status="recognized" if recognized else "unknown",
+                    layout_position={
+                        key: int(cell[key]) for key in ("row", "column") if key in cell
+                    },
                 )
             )
 
