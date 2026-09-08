@@ -104,6 +104,12 @@ def validate_agent_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
         raise AgentManifestError("read_only agents must not declare allowed_writes")
 
     validated = dict(manifest)
+    if manifest.get("entrypoint") == "truecore.live_agents.generated_runtime" or "usage" in manifest:
+        from truecore.help.agent_usage import validate_usage
+        try:
+            validate_usage(manifest)
+        except ValueError as exc:
+            raise AgentManifestError(str(exc)) from exc
     validated["runtime_language"] = runtime
     return validated
 

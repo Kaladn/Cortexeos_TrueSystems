@@ -7,10 +7,12 @@ import ast
 import csv
 import hashlib
 import json
+import re
 from pathlib import Path
 from typing import Any
 
 from truecore.live_agents.manifest import validate_agent_manifest
+from truecore.help.agent_usage import build_usage, digest, help_entry
 
 
 CATALOG_FIELDS = (
@@ -67,6 +69,8 @@ def build_manifest(row: dict[str, str], source_root: Path, runtime_path: Path) -
     score = int(row.get("destruction_score") or 0)
     requires_approval = row.get("requires_confirmation") == "YES"
     agent_id = row["operator_id"]
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", agent_id):
+        raise ValueError("unsafe agent_id")
     manifest = {
         "agent_id": agent_id,
         "id": agent_id,
@@ -97,6 +101,9 @@ def build_manifest(row: dict[str, str], source_root: Path, runtime_path: Path) -
             "--input-json", "{input_json}",
         ],
     }
+    manifest["usage"] = build_usage(source_path, manifest)
+    manifest["usage_source_path"] = str(source_path)
+    manifest["usage_sha256"] = digest(manifest["usage"])
     return validate_agent_manifest(manifest)
 
 
@@ -120,12 +127,22 @@ def materialize(
         missing = sorted(operator_ids - found)
         if missing:
             raise ValueError("operators were not materializable: " + ", ".join(missing))
+    ids = [row["operator_id"] for row, _ in selected]
+    if len(ids) != len(set(ids)):
+        raise ValueError("duplicate agent IDs")
+    # The manifest is the single publication: help is embedded, not a separately
+    # updated copy that could drift. Validate rendering before publishing anything.
+    for _, manifest in selected:
+        help_entry(manifest)
     agent_dir.mkdir(parents=True, exist_ok=True)
     output_catalog.parent.mkdir(parents=True, exist_ok=True)
     written = []
     for row, manifest in selected:
         path = agent_dir / f"{row['operator_id']}.agent.json"
-        path.write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        temporary = path.with_suffix(".json.tmp")
+        with temporary.open("x", encoding="utf-8") as handle:
+            handle.write(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+        temporary.replace(path)
         written.append(path)
     with output_catalog.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=CATALOG_FIELDS)

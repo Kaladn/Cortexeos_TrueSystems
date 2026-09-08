@@ -15,6 +15,7 @@ def load_help_config() -> dict:
         "repo_root": repo_root,
         "truecore_root": truecore_root,
         "help_root": help_root,
+        "agent_dir": Path(os.getenv("TRUECORE_HELP_AGENT_DIR", truecore_root / "live_agents" / "AGENTS" / "agents")),
         "mirror_dir": help_root / "mirror",
         "index_path": help_root / "code_index.json",
         "manifest_path": help_root / "mirror_manifest.jsonl",

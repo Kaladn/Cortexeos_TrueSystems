@@ -13,6 +13,11 @@ invent a callable. A coded TrueCore agent is named explicitly when intended.
 
 ## 1. Canonical name and architecture
 
+Agent usage help must be derived directly from code, with zero inferred facts.
+Use the existing creator/help paths and `docs/AGENT_USAGE_HELP.md`. Catalog prose,
+names and model explanations cannot establish behavior. Preserve unresolved
+fields explicitly; never promote static extraction to backend qualification.
+
 - AWRAG is retired as a production/runtime name. It remains historical prototype
   evidence and a filesystem/source-lineage label.
 - The active architecture is the **Codex/TrueSystems operator handoff** or, more

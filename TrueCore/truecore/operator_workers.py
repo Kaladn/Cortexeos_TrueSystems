@@ -21,6 +21,12 @@ def dispatch_read_worker(operation, args, read_artifact):
             raise Rejected('INVALID_ARGUMENTS')
         if type(args['layer']) is not int or args['layer'] not in (1, 2, 3):
             raise Rejected('INVALID_ARGUMENTS')
+        if args['question'].startswith('agent:'):
+            from .help.corpus import HelpCorpus
+            entry = HelpCorpus().get(args['question'])
+            if entry is None:
+                raise Rejected('UNKNOWN_AGENT_HELP')
+            return {'grade': 'GUIDANCE_NOT_EXECUTION_PROOF', 'help': entry}
         result = _component('truesystems_api.help', 'control-api/src').answer_help(args['question'], args['layer'])
         return {'grade': 'GUIDANCE_NOT_EXECUTION_PROOF', 'help': result}
     if set(args) != {'artifact_id'}:

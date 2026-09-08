@@ -25,6 +25,12 @@ python3 -m truecore.live_agents.creator \
 
 The creator verifies the local source file and AST symbol, hashes the source,
 writes a validated manifest, and registers it in a runner-compatible catalog.
+Creation also embeds exact code-derived usage and hashes in that manifest.
+Set `TRUECORE_HELP_AGENT_DIR` to the selected `--agent-dir` so existing
+`truecore help show agent:<operator_id> --tier 3` and TrueCore `help.query`
+can read it. Help facts come from source, not catalog prose. Missing semantics
+remain unresolved. Changing source invalidates the generated help until the
+agent is recreated and reviewed; creation is not backend qualification.
 The shared Linux runtime imports and invokes that exact source symbol; it does
 not generate substitute capability code.
 

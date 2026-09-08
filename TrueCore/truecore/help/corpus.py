@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import json
+import ast
+import hashlib
 from typing import Any
 
 from truecore.help.config import load_help_config
@@ -14,11 +16,41 @@ class HelpCorpus:
         self._entries = self._load()
 
     def _load(self) -> dict[str, dict[str, Any]]:
+        from truecore.help.agent_usage import load_entries
         path = self._config["content_path"]
-        if not path.exists():
-            return {}
-        with open(path, "r", encoding="utf-8") as handle:
-            return json.load(handle)
+        entries = {}
+        if path.exists():
+            with open(path, "r", encoding="utf-8") as handle:
+                entries = json.load(handle)
+        # Authored entries select files only. Never expose their behavioral prose.
+        for help_id, old in list(entries.items()):
+            facts = []
+            for relative in old.get("tier3", {}).get("files", []):
+                source = (self._config["repo_root"] / relative).resolve()
+                if not source.is_relative_to(self._config["repo_root"].resolve()) or source.suffix != '.py' or not source.is_file():
+                    facts.append({"path": relative, "status": "UNRESOLVED"})
+                    continue
+                raw = source.read_bytes()
+                text = raw.decode('utf-8')
+                try:
+                    tree = ast.parse(text)
+                except SyntaxError:
+                    facts.append({"path": relative, "status": "SYNTAX_ERROR"})
+                    continue
+                facts.append({"path": relative, "status": "STATIC_CODE_FACTS_ONLY",
+                    "sha256": hashlib.sha256(raw).hexdigest(),
+                    "definitions": [{"name": n.name, "line": n.lineno, "end_line": n.end_lineno,
+                                     "source": ast.get_source_segment(text, n)}
+                                    for n in tree.body if isinstance(n, (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef))]})
+            entries[help_id] = {"label": help_id, "category": "Code-derived help",
+                "tier1": {"what": ', '.join(f['path'] for f in facts), "when": "STATIC_CODE_FACTS_ONLY"},
+                "tier2": {"concept": "Behavior, permissions and safe invocation remain unresolved without executable contracts."},
+                "tier3": {"how": json.dumps(facts, sort_keys=True)}, "code_facts": facts}
+        generated = load_entries(self._config["agent_dir"])
+        if set(entries) & set(generated):
+            raise ValueError("manual help must not shadow agent usage")
+        entries.update(generated)
+        return entries
 
     def get(self, help_id: str) -> dict[str, Any] | None:
         return self._entries.get(help_id)

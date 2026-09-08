@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 import re
+import ast
+import hashlib
 from typing import Any
 
 
@@ -127,16 +129,16 @@ def answer_help(question: str, layer: int = 1) -> dict[str, Any]:
     if str(layer) not in LAYERS:
         raise ValueError("layer must be 1, 2, or 3")
     topic = _select_topic(question)
-    citations = [_resolve(reference) for reference in topic.references]
-    answer = topic.quick
-    if layer >= 2:
-        answer += "\n\n" + topic.operate
-    if layer >= 3:
-        locations = ", ".join(citation["location"] for citation in citations)
-        answer += "\n\nSource locations: " + locations
+    citations = [_resolve(reference) for reference in topic.references
+                 if reference.path.endswith('.py') and reference.path != 'control-api/src/truesystems_api/help.py']
+    # Topic prose selects no facts. Every returned statement is an exact source
+    # excerpt or an explicit unresolved status, not inferred operating advice.
+    answer = "\n\n".join(c['location'] + '\n' + c.get('source', c['status']) for c in citations)
+    if not answer:
+        answer = 'UNRESOLVED: no executable source reference'
     return {
         "schema": "truesystems_help_answer@1",
-        "authority": "code_and_current_docs",
+        "authority": "STATIC_CODE_FACTS_ONLY",
         "read_only": True,
         "question": question,
         "topic_id": topic.topic_id,
@@ -157,6 +159,9 @@ def chat_help(model: str, context: dict[str, Any]) -> str:
 
 
 def _select_topic(question: str) -> Topic:
+    for topic in TOPICS:
+        if question.lower().strip() == topic.topic_id:
+            return topic
     words = set(re.findall(r"[a-z0-9-]+", question.lower()))
     scored = []
     for position, topic in enumerate(TOPICS):
@@ -170,10 +175,24 @@ def _resolve(reference: Reference) -> dict[str, Any]:
     path = REPO_ROOT / reference.path
     if not path.is_file():
         return {"path": reference.path, "line": None, "location": reference.path, "status": "missing"}
+    raw = path.read_bytes()
+    text = raw.decode('utf-8')
     line = None
-    for number, value in enumerate(path.read_text(encoding="utf-8", errors="replace").splitlines(), 1):
+    for number, value in enumerate(text.splitlines(), 1):
         if reference.needle in value:
             line = number
             break
     location = f"{reference.path}:{line}" if line else reference.path
-    return {"path": reference.path, "line": line, "location": location, "status": "resolved" if line else "file_only"}
+    if line is None:
+        return {"path": reference.path, "line": None, "location": location, "status": "UNRESOLVED"}
+    try:
+        tree = ast.parse(text)
+    except SyntaxError:
+        return {"path": reference.path, "line": line, "location": location, "status": "SYNTAX_ERROR"}
+    containing = [n for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and n.lineno <= line <= n.end_lineno]
+    node = min(containing, key=lambda n: n.end_lineno - n.lineno) if containing else None
+    start, end = (node.lineno, node.end_lineno) if node else (line, line)
+    return {"path": reference.path, "line": start, "end_line": end,
+            "location": f'{reference.path}:{start}', "status": "STATIC_CODE_FACTS_ONLY",
+            "sha256": hashlib.sha256(raw).hexdigest(),
+            "source": '\n'.join(text.splitlines()[start-1:end])}
