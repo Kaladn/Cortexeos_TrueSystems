@@ -1,5 +1,15 @@
 # Storage recovery pause — 2026-09-08
 
+## SUPERSEDING USER DECISION
+
+User cancelled the NVMe rebuild and identified the secondary drive as Steam.
+Do not erase, repartition, or relocate its contents. Keep the original and the
+verified Projects recovery copy. The recorder now uses existing free space on
+`/run/media/lamercey/New Volume`, creating a fresh TrueVision-Logs folder per run.
+The migration gates below are historical, NOT current execution instructions.
+Next: qualify live clarity and graceful sealing on the SATA destination, then
+return to the unfinished evidence test. Leave training and backup data alone.
+
 Controlling user request: preserve work, recover secondary NVMe into existing
 Projects, then provision only that NVMe for TrueVision. Do not touch training
 data, the 5TB backup, or the active system disk. Prior backup-drive recording

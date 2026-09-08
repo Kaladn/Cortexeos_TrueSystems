@@ -28,9 +28,9 @@ it does not embed or replace TrueVision.
 Run `truevision-record` from a desktop terminal and select the full monitor in
 the portal chooser. Ctrl+C requests a native stop, flushes the partial state
 chunk, and then hashes saved artifacts. Leave the terminal open until it exits.
-Planned default output: `/mnt/truevision/TrueVision-Logs/<UTC timestamp>`.
-The dedicated NVMe mount is not provisioned yet: default recording fails closed
-until recovery verification and administrator-approved disk setup are complete.
+Default output: `/run/media/lamercey/New Volume/TrueVision-Logs/<UTC timestamp>`.
+The user cancelled NVMe rebuilding: preserve the Steam drive intact.
+Default recording uses existing SATA SSD free space, without deleting old data.
 It never falls back to the 5TB backup. Each run has a unique timestamp folder.
 Ctrl+C, SIGTERM and terminal SIGHUP request a flush; a stopped run receives a
 SHA-256 ledger and `SEALED.json` (failed native runs are `SEALED_FAILED`).

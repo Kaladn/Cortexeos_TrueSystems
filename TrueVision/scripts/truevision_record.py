@@ -11,7 +11,7 @@ import signal
 import subprocess
 import time
 
-DEFAULT_DRIVE = Path('/mnt/truevision')
+DEFAULT_DRIVE = Path('/run/media/lamercey/New Volume')
 DEFAULT_BINARY = Path('/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/native-repair-build-20260908/release/truevision_capture_rs')
 
 def command(binary, root, hours):
