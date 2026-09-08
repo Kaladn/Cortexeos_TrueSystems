@@ -74,7 +74,7 @@ TOPICS = (
         "TrueMem evidence retrieval",
         ("truemem", "truemem", "anchor", "topk", "top-k", "citation", "document", "intake", "deeper", "wider"),
         "TrueMem maps text into deterministic anchors, counts, coordinates, and citations; it does not use an LLM to establish source truth.",
-        "Create a dataset with `init`, map a plain-text source with `intake`, and ask with `query`. Preserve the first cited packet. Invoke `deeper-wider` only as a separate optional second search using that first answer.",
+        "Use DocuFilm admission through `docufilm-intake`. Retrieval `query` accepts a structured EvidenceNeed, never a raw question or top_k. Preserve source coordinates and ownership. `deeper-wider` is a separate legacy diagnostic, not the evidence-query continuation contract.",
         (Reference("TrueMem/src/truemem/cli.py", "query_cmd = sub.add_parser"), Reference("TrueMem/src/truemem/engine/prediction_walk.py", "def ")),
     ),
     Topic(

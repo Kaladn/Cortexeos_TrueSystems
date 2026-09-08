@@ -238,8 +238,10 @@ PYTHONPATH=. python -m truecore.cli.main status
 PYTHONPATH=. python -m truecore.cli.main agents
 ```
 
-TrueCore's current truth document is
-`TrueCore/docs/security/TRUECORE_OPERATIONAL_TRUTH_LOCK.md`. Its static help
+The formerly cited `TrueCore/docs/security/TRUECORE_OPERATIONAL_TRUTH_LOCK.md`
+is absent in this generation. Inspect executable boundaries and
+`TrueCore/TRUECORE_TRUTH_STABILITY_AUDIT_RAIL.md` without treating that audit
+rail as a substitute execution witness. Its static help
 prompt and factual audit prompt library are real selectable instruction assets,
 but they are guidance, not agents, memory, evidence, or action authority.
 
