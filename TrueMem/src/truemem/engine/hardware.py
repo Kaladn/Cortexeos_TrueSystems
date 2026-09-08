@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import os
 import subprocess
+import sys
+from pathlib import Path
 from typing import Any
 
 MIN_RUNTIME_WORKERS = 4
@@ -24,6 +26,27 @@ def detect_system_resources() -> dict[str, Any]:
             method = "posix_sysconf"
         except (OSError, ValueError):
             method = "unavailable"
+
+    # Linux MemAvailable includes reclaimable cache. SC_AVPHYS_PAGES reports
+    # free pages and must not be presented as the Linux admission budget.
+    if sys.platform.startswith("linux"):
+        try:
+            fields = {}
+            for line in Path("/proc/meminfo").read_text(encoding="ascii").splitlines():
+                name, value = line.split(":", 1)
+                if name in {"MemTotal", "MemAvailable"}:
+                    amount, unit = value.split()
+                    if unit != "kB":
+                        raise ValueError("unexpected meminfo unit")
+                    fields[name] = int(amount) * 1024
+            if not 0 <= fields["MemAvailable"] <= fields["MemTotal"]:
+                raise ValueError("invalid meminfo memory range")
+            total_ram = fields["MemTotal"]
+            available_ram = fields["MemAvailable"]
+            method = "linux_proc_meminfo_memavailable"
+        except (OSError, ValueError, KeyError):
+            # Keep the conservative sysconf observation, labeled as such.
+            pass
 
     gpu = _detect_gpu_resources()
     return {

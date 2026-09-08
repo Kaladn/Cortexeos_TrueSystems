@@ -81,8 +81,8 @@ batch is retained solely as an explicitly confirmed direct-query diagnostic.
     intake_cmd.add_argument("--owner", default="operator_defined")
     intake_cmd.add_argument("--window", type=int, default=6)
     intake_cmd.add_argument("--workers", default="auto", help="Worker count or auto. Minimum 4 workers; single-core/low-core execution is refused.")
-    intake_cmd.add_argument("--reserve-ram-fraction", type=float, default=0.15, help="Fraction of total RAM to reserve for system/operator.")
-    intake_cmd.add_argument("--ram-budget-gb", type=float, default=8.0, help="Maximum RAM budget for intake workers. Defaults to 8 GiB.")
+    intake_cmd.add_argument("--reserve-ram-fraction", type=float, default=0.0, help="Optional fraction of total RAM reserved by the intake planner. Default: no additional reserve.")
+    intake_cmd.add_argument("--ram-budget-gb", type=float, default=None, help="Optional intake-worker planning budget in GiB. Default: available system RAM, without a fixed cap. This is not an OS-enforced memory limit.")
     intake_cmd.add_argument("--no-progress", action="store_true", help="Disable tqdm file progress meter.")
     intake_cmd.add_argument(
         "--output-format",

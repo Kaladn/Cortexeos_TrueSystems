@@ -44,20 +44,25 @@ def docufilm_intake(
     owner: str = "operator_defined",
     window: int = 6,
     workers: int | str = "auto",
-    reserve_ram_fraction: float = 0.15,
-    ram_budget_gb: float | None = 8.0,
+    reserve_ram_fraction: float = 0.0,
+    ram_budget_gb: float | None = None,
     show_progress: bool = False,
     debug_tiny_single_core: bool = False,
     output_format: str = "split",
 ) -> dict[str, Any]:
     if output_format not in {"split", "native"}:
         raise ValueError("output_format must be split or native")
-    ensure_dataset(runtime_root, dataset_id, owner=owner)
-    paths = dataset_paths(runtime_root, dataset_id)
     source_path = Path(source).expanduser().resolve()
     _refuse_adapter_workspace_root(source_path)
     files = list(iter_files(source_path))
     native_attachments = _native_attachment_files(source_path)
+    candidates = [source_path] if source_path.is_file() else sorted(source_path.rglob("*"))
+    admitted = set(files) | (set(native_attachments) if output_format == "native" else set())
+    unsupported = [str(item) for item in candidates if item.is_file()
+                   and not any(part.startswith(".") for part in item.relative_to(source_path).parts[:-1])
+                   and item not in admitted]
+    if unsupported:
+        raise ValueError("UNSUPPORTED_INTAKE_SOURCES: " + json.dumps(unsupported))
     if not files:
         raise FileNotFoundError(source_path)
     if window <= 0:
@@ -79,6 +84,8 @@ def docufilm_intake(
         debug_tiny_single_core=debug_tiny_single_core,
     )
     effective_workers = int(resource_plan["effective_workers"])
+    ensure_dataset(runtime_root, dataset_id, owner=owner)
+    paths = dataset_paths(runtime_root, dataset_id)
 
     file_results = _process_intake_files(files, window=window, workers=effective_workers, show_progress=show_progress)
     work_unit_count = sum(int(result["source_receipt"]["block_count"]) for result in file_results)

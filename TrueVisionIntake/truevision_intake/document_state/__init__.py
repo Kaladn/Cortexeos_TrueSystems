@@ -21,8 +21,11 @@ from .code_language_readers import read_code_language_structure
 from .glyph_lexicon import GlyphLexicon, GlyphMatch, normalize_trim_pattern, pattern_hash
 from .lifetime_counts import LifetimeCounts
 from .state_reader import DocumentStateReader
+from .intake_control import IntakeControl, intake_state_movie
 
 __all__ = [
+    "IntakeControl",
+    "intake_state_movie",
     "CELL_FEATURE_NAMES",
     "DOCUMENT_STATE_SCHEMA_VERSION",
     "DOCUMENT_STATE_MOVIE_SCHEMA_VERSION",

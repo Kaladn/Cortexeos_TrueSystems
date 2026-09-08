@@ -23,6 +23,34 @@ it does not embed or replace TrueVision.
 
 ## Native Linux capture
 
+### One-command state logging on this machine
+
+Run `truevision-record` from a desktop terminal and select the full monitor in
+the portal chooser. Ctrl+C requests a native stop, flushes the partial state
+chunk, and then hashes saved artifacts. Leave the terminal open until it exits.
+Planned default output: `/mnt/truevision/TrueVision-Logs/<UTC timestamp>`.
+The dedicated NVMe mount is not provisioned yet: default recording fails closed
+until recovery verification and administrator-approved disk setup are complete.
+It never falls back to the 5TB backup. Each run has a unique timestamp folder.
+Ctrl+C, SIGTERM and terminal SIGHUP request a flush; a stopped run receives a
+SHA-256 ledger and `SEALED.json` (failed native runs are `SEALED_FAILED`).
+Forced kills, power loss, or storage failure can leave an unsealed directory.
+Sealing is an integrity inventory, not proof of complete or sharp observation.
+Existing data is never deleted. The command refuses a missing mount or the
+system filesystem. It stops at 50 GiB free; it does not recycle old logs.
+`truevision-record --check` reports readiness without observing the desktop.
+
+The CLI explicitly uses 2560x1440, 640x360 cells, 9 FPS, and nine-frame chunks.
+This restores the historical clarity-test configuration, not pixel-exact video.
+Nominal uncompressed cell payload is 132,710,400 bytes/second, about 478 GB/hour.
+Continuous multi-day retention is not qualified and will hit the disk guard.
+No audio or semantic object-recognition pass is enabled by this command.
+The native binary is built externally; the Python entrypoint is
+`scripts/truevision_record.py`. Its `--binary` option can select a rebuilt binary.
+CLI checks and native partial-chunk tests pass; this specific high-grid CLI
+still needs a live monitor/stop qualification. Earlier 160x90 live success does
+not qualify its higher storage load or clarity.
+
 Requirements are the Linux desktop portal, a Wayland compositor portal backend,
 PipeWire, GStreamer with `pipewiresrc`, and Rust. On this machine the portal is
 `xdg-desktop-portal-hyprland`.
@@ -58,6 +86,27 @@ cell_state_native/<run-id>_cells_*.tvcells
 ```
 
 ## Read-only visual identity experiment
+
+### Live buffer ownership and failure handling
+
+The native PipeWire source requests eight buffers and `always-copy=true`;
+the application sink disables last-sample retention and keeps at most one
+queued sample. On the installed PipeWire/GStreamer combination this gives
+downstream processing owned memory rather than retaining the producer's scarce
+buffers. This is a deliberate copy boundary, not a GPU extraction path.
+`always-copy` is an exposed but deprecated plugin property, so its availability
+must be checked when changing runtime versions.
+
+If the observation loop returns an error, completed state still in the current
+chunk is flushed, frame records are flushed, and `failure.json` reports
+`OPERATION_FAILED` with `completed=false`. A failed run does not publish a success
+manifest. This is graceful error handling, not a guarantee against power loss,
+forced termination, or storage failure.
+
+External native tests are under
+`/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/native_capture_contract`.
+Live checks use the external `benchmark_native_state.py`; binary chunk/frame
+accounting is independently checked by `analyze_native_observation.py`.
 
 `scripts/truevision_visual_identity_intake.py` reads an already captured native
 manifest, frame records, and `.tvcells` chunk. It does not capture, replay,

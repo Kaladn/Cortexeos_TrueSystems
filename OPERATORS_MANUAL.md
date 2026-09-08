@@ -27,6 +27,18 @@ not perform the operator's reasoning or analysis.
 
 ## Whole-system map
 
+### Method supersession — September 8, 2026
+
+Conventional gradient-based model training is paused by owner direction.
+The 3.322B run remains an unpromoted historical experiment. Current development
+targets observed state, provenance, deterministic counts/weights/relationships,
+and measured GPU execution of those structures. This instruction does not
+claim deterministic language or visual construction is already qualified.
+
+DocuFilm's stored-state pause/child/return implementation and its exact limits
+are documented in `TrueVisionIntake/docs/INTAKE_CONTROL.md`. This adds no model
+tool route and does not replace TrueCore authorization.
+
 ```text
 Linux/native state artifacts -> TrueMachine -> verified Fusion Packs
 operator-selected desktop action -> TrueComputer -> redacted action receipt
@@ -281,6 +293,31 @@ return `NOT_IMPLEMENTED` and cite the missing boundary; do not substitute an
 easier mechanism.
 
 ## Provenance
+
+### September 8, 2026 intake and entrypoint qualification
+
+`TrueMem/src/truemem/engine/hardware.py` uses Linux `/proc/meminfo`
+`MemAvailable` for available-memory planning when valid, with the existing
+sysconf fallback. `docufilm_intake` and its CLI default to no explicit RAM
+budget and zero reserved fraction. Explicit caller limits remain supported;
+these are application planning values, not operating-system containment.
+The worker/resource preflight remains in effect.
+
+`docufilm_intake` rejects visible unsupported source files with
+`UNSUPPORTED_INTAKE_SOURCES` before creating the dataset. Declared native
+attachments are allowed only for native publication; their inclusion does not
+establish media recognition. Hidden-directory exclusion remains unchanged.
+Resource preflight also precedes dataset creation.
+
+TrueMachine's command parser registers each state-source option once.
+TrueVision recorder and watcher standalone help entrypoints are qualified;
+the watcher loads optional audiovisual tools only when post-capture calls run.
+This does not qualify the legacy desktop capture backend, resumable playback,
+or recursive embedded-media intake.
+
+External verification lives under
+`/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/`:
+`test_intake_ram_policy.py` and `test_system_repairs.py`.
 
 This manual incorporates only code-verified operating laws recovered from the
 component source repositories recorded during assembly, checked 2026-08-28.

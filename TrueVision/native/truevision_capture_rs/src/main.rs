@@ -43,6 +43,7 @@ struct Args {
     run_id: String,
     start_delay: f64,
     chunk_frames: usize,
+    stop_file: Option<PathBuf>,
 }
 
 struct CaptureContext {
@@ -103,7 +104,11 @@ async fn run() -> Result<(), String> {
 
     let started = Instant::now();
     let mut frame_number: u32 = 0;
+    let capture_result: Result<(), String> = (|| {
     while started.elapsed().as_secs_f64() < args.duration {
+        if args.stop_file.as_ref().is_some_and(|path| path.exists()) {
+            break;
+        }
         let frame_started = Instant::now();
         ctx.capture(source_region, &mut bgra)?;
         let screen_energy = build_cell_state(
@@ -145,6 +150,8 @@ async fn run() -> Result<(), String> {
             sleep(target - spent);
         }
     }
+    Ok(())
+    })();
     flush_chunk(
         &args,
         &cell_dir,
@@ -155,6 +162,16 @@ async fn run() -> Result<(), String> {
     records
         .flush()
         .map_err(|e| format!("records flush failed: {e}"))?;
+
+    if let Err(error) = capture_result {
+        let failure = format!(
+            "{{\"status\":\"OPERATION_FAILED\",\"completed\":false,\"frames_processed\":{},\"chunks_preserved\":{},\"error\":\"{}\"}}",
+            frame_number, chunks.len(), json_escape(&error)
+        );
+        std::fs::write(run_dir.join("failure.json"), failure)
+            .map_err(|e| format!("failure receipt write failed: {e}"))?;
+        return Err(error);
+    }
 
     let duration_seconds = started.elapsed().as_secs_f64();
     write_summary(
@@ -245,6 +262,9 @@ impl CaptureContext {
         let source = gst::ElementFactory::make("pipewiresrc")
             .property("fd", remote_fd.as_raw_fd())
             .property("path", stream.pipe_wire_node_id().to_string())
+            .property("min-buffers", 8_i32)
+            .property("max-buffers", 8_i32)
+            .property("always-copy", true)
             .build()
             .map_err(|e| format!("PipeWire source creation failed: {e}"))?;
         let convert = gst::ElementFactory::make("videoconvert").build().map_err(|e| format!("video conversion creation failed: {e}"))?;
@@ -256,6 +276,7 @@ impl CaptureContext {
             .build();
         let sink = gst_app::AppSink::builder()
             .caps(&caps)
+            .enable_last_sample(false)
             .max_buffers(1)
             .drop(true)
             .sync(false)
@@ -539,6 +560,7 @@ fn parse_args() -> Result<Args, String> {
         run_id: format!("truevision_rs_{}", timestamp_slug()),
         start_delay: 0.0,
         chunk_frames: 30,
+        stop_file: None,
     };
     while let Some(flag) = args.next() {
         let value = match flag.as_str() {
@@ -546,6 +568,7 @@ fn parse_args() -> Result<Args, String> {
             | "--fps"
             | "--resolution"
             | "--grid"
+            | "--stop-file"
             | "--region"
             | "--output-root"
             | "--run-id"
@@ -564,6 +587,7 @@ fn parse_args() -> Result<Args, String> {
             "--fps" => out.fps = parse_f64(&value, "fps")?,
             "--resolution" => out.resolution = parse_pair(&value, "resolution")?,
             "--grid" => out.grid = parse_pair(&value, "grid")?,
+            "--stop-file" => out.stop_file = Some(PathBuf::from(value)),
             "--region" => out.region = Some(parse_region(&value)?),
             "--output-root" => out.output_root = PathBuf::from(value),
             "--run-id" => out.run_id = value,
