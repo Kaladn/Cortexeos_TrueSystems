@@ -33,8 +33,10 @@ every sensory modality or cross-system handoff is already connected.
 
 `TrueCore/truecore/operator_boundary.py` exposes `OperatorBoundary.handle`.
 Host integration supplies grants and artifact bindings; the request supplies only
-schema, request_id, operation and arguments. There are two connected operations:
-`help.list` and `sensory.inspect`. Unknown operations fail closed.
+schema, request_id, operation and arguments. The completed read-only host connects
+`help.list`, `help.query`, `sensory.inspect`, `source.classify`, and `media.describe`.
+Unknown operations fail closed. See `MODEL_HOST_CONTRACT.md` for the transport,
+component readers and exact qualification boundary.
 
 The host provides the path and expected byte hash; the model provides an opaque
 artifact reference and expected run/sequence from witnessed/request information.
@@ -50,7 +52,8 @@ verification scope. Semantic correctness and actual live-world freshness are not
 established by byte hashing. The expected run/sequence prevents accidental
 substitution, not unbounded clock-based freshness claims.
 
-Only this API is to be exposed to a later model host. This is not OS isolation
+`truecore.model_host` now exposes only this API over bounded JSONL. It does not
+load a model. This is not OS isolation
 against an untrusted process with independent filesystem/network privileges.
 No local model is currently loaded or connected, and existing human/development
 API routes remain separate. They have not been secretly rerouted or removed.

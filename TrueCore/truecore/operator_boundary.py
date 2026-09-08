@@ -6,14 +6,32 @@ change them. This is an application boundary, not an OS sandbox.
 from __future__ import annotations
 import hashlib
 import json
+import os
+import stat
 from datetime import datetime, timezone
 from pathlib import Path
 from types import MappingProxyType
+from .operator_contracts import contracts
 
-OPERATIONS = {
+OPERATIONS = MappingProxyType({
     'help.list': 'List this boundary and its limits; does not execute a component.',
     'sensory.inspect': 'Inspect one host-admitted TrueMachine Fusion Pack, preserving source ownership.',
-}
+    'help.query': 'Read the code-grounded help map; guidance is not execution proof.',
+    'source.classify': 'Classify a host-admitted text source using existing DocuFilm rules; does not admit it.',
+    'media.describe': 'Describe an admitted media tool declaration; does not execute or qualify the media tool.',
+})
+
+def strict_json(raw):
+    def pairs(items):
+        value = {}
+        for key, item in items:
+            if key in value:
+                raise ValueError('DUPLICATE_JSON_KEY')
+            value[key] = item
+        return value
+    def constant(value):
+        raise ValueError('NONFINITE_JSON')
+    return json.loads(raw, object_pairs_hook=pairs, parse_constant=constant)
 
 def canonical(value):
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()
@@ -56,18 +74,25 @@ class OperatorBoundary:
             if operation == 'help.list':
                 if args:
                     raise Rejected('INVALID_ARGUMENTS')
-                result = {'operations': OPERATIONS, 'source': 'TrueCore',
+                result = {'operations': dict(OPERATIONS), 'source': 'TrueCore',
+                          'contracts': contracts(),
                           'live_capture': False, 'mutation': False,
                           'limits': ['Only listed operations are connected.',
                                      'Host grants are not human approval for other operations.']}
                 status = 'COMPLETE'
-            else:
+            elif operation == 'sensory.inspect':
                 result = self._inspect(args)
                 status = 'PARTIAL' if any(o['status'] == 'error' for o in result['observations']) else 'COMPLETE'
+            else:
+                from .operator_workers import dispatch_read_worker
+                result = dispatch_read_worker(operation, args, self._read_artifact)
+                status = 'COMPLETE'
         except Rejected as e:
             reason = str(e)
         except (OSError, UnicodeError, json.JSONDecodeError):
             status, reason = 'FAILED', 'ARTIFACT_READ_FAILED'
+        except (ValueError, TypeError, KeyError, RecursionError):
+            status, reason = 'REJECTED', 'INVALID_WORKER_INPUT'
         packet = {'schema': 'truecore.operator_result@1', 'request_sha256': request_hash,
                   'status': status, 'reason': reason, 'result': result,
                   'continuation': ('STOP_COMPLETE' if status == 'COMPLETE' else
@@ -77,6 +102,25 @@ class OperatorBoundary:
         packet['receipt_sha256'] = digest(packet)
         return packet
 
+    def _read_artifact(self, artifact_id):
+        if not isinstance(artifact_id, str) or not artifact_id:
+            raise Rejected('INVALID_ARGUMENT_BINDING')
+        binding = self.artifacts.get(artifact_id)
+        if binding is None:
+            raise Rejected('MISSING_PREREQUISITE')
+        # Only the host can bind a filesystem path. No model path, command or import.
+        path = Path(binding['path'])
+        fd = os.open(path, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK)
+        with os.fdopen(fd, 'rb') as f:
+            if not stat.S_ISREG(os.fstat(f.fileno()).st_mode):
+                raise Rejected('REGULAR_ARTIFACT_REQUIRED')
+            raw = f.read(self.max_bytes + 1)
+        if len(raw) > self.max_bytes:
+            raise Rejected('ARTIFACT_BUDGET_EXCEEDED')
+        if hashlib.sha256(raw).hexdigest() != binding['sha256']:
+            raise Rejected('STALE_OR_CHANGED_ARTIFACT')
+        return raw, path.name, binding['sha256']
+
     def _inspect(self, args):
         if set(args) != {'artifact_id', 'expected_run_id', 'expected_sequence'}:
             raise Rejected('INVALID_ARGUMENTS')
@@ -84,20 +128,8 @@ class OperatorBoundary:
             raise Rejected('INVALID_ARGUMENT_BINDING')
         if type(args['expected_sequence']) is not int or args['expected_sequence'] < 1:
             raise Rejected('INVALID_ARGUMENT_BINDING')
-        binding = self.artifacts.get(args['artifact_id'])
-        if binding is None:
-            raise Rejected('MISSING_PREREQUISITE')
-        # Only the host can bind a filesystem path. No model path, command or import.
-        path = Path(binding['path'])
-        if path.is_symlink():
-            raise Rejected('SYMLINK_ARTIFACT_FORBIDDEN')
-        with path.open('rb') as f:
-            raw = f.read(self.max_bytes + 1)
-        if len(raw) > self.max_bytes:
-            raise Rejected('ARTIFACT_BUDGET_EXCEEDED')
-        if hashlib.sha256(raw).hexdigest() != binding['sha256']:
-            raise Rejected('STALE_OR_CHANGED_ARTIFACT')
-        pack = json.loads(raw)
+        raw, _, _ = self._read_artifact(args['artifact_id'])
+        pack = strict_json(raw)
         fields = {'schema', 'run_id', 'sequence', 'cadence_ns', 'timeline_ns', 'time', 'observations'}
         if not isinstance(pack, dict) or set(pack) != fields or pack['schema'] != 'truemachine.fusion@1':
             raise Rejected('INVALID_FUSION_SCHEMA')
