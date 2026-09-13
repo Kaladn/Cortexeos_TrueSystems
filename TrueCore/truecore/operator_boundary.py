@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from types import MappingProxyType
 from .operator_contracts import contracts
+from .registered_worker_bridge import RegisteredWorkerBridge, RegisteredWorkerBridgeError
 
 OPERATIONS = MappingProxyType({
     'help.list': 'List this boundary and its limits; does not execute a component.',
@@ -19,6 +20,7 @@ OPERATIONS = MappingProxyType({
     'help.query': 'Read the code-grounded help map; guidance is not execution proof.',
     'source.classify': 'Classify a host-admitted text source using existing DocuFilm rules; does not admit it.',
     'media.describe': 'Describe an admitted media tool declaration; does not execute or qualify the media tool.',
+    'worker.invoke': 'Invoke one host-granted registered read-only worker on one host-bound resource.',
 })
 
 def strict_json(raw):
@@ -43,11 +45,12 @@ class Rejected(ValueError):
     pass
 
 class OperatorBoundary:
-    def __init__(self, *, grants, artifacts, max_bytes=4_000_000):
+    def __init__(self, *, grants, artifacts, worker_grants=(), resources=None, max_bytes=4_000_000):
         if not set(grants) <= OPERATIONS.keys():
             raise ValueError('UNKNOWN_HOST_GRANT')
         self.grants = frozenset(grants)
         self.artifacts = MappingProxyType({k: MappingProxyType(dict(v)) for k, v in artifacts.items()})
+        self.worker_bridge = RegisteredWorkerBridge(worker_grants=worker_grants, resources=resources)
         if type(max_bytes) is not int or max_bytes <= 0:
             raise ValueError('INVALID_HOST_BUDGET')
         self.max_bytes = max_bytes
@@ -76,6 +79,7 @@ class OperatorBoundary:
                     raise Rejected('INVALID_ARGUMENTS')
                 result = {'operations': dict(OPERATIONS), 'source': 'TrueCore',
                           'contracts': contracts(),
+                          'registered_workers': self.worker_bridge.public_contract(),
                           'live_capture': False, 'mutation': False,
                           'limits': ['Only listed operations are connected.',
                                      'Host grants are not human approval for other operations.']}
@@ -83,11 +87,14 @@ class OperatorBoundary:
             elif operation == 'sensory.inspect':
                 result = self._inspect(args)
                 status = 'PARTIAL' if any(o['status'] == 'error' for o in result['observations']) else 'COMPLETE'
+            elif operation == 'worker.invoke':
+                result = self.worker_bridge.invoke(args)
+                status = 'COMPLETE' if result['status'] == 'COMPLETE' else 'PARTIAL'
             else:
                 from .operator_workers import dispatch_read_worker
                 result = dispatch_read_worker(operation, args, self._read_artifact)
                 status = 'COMPLETE'
-        except Rejected as e:
+        except (Rejected, RegisteredWorkerBridgeError) as e:
             reason = str(e)
         except (OSError, UnicodeError, json.JSONDecodeError):
             status, reason = 'FAILED', 'ARTIFACT_READ_FAILED'

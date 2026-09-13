@@ -59,11 +59,18 @@ def main():
     args = parser.parse_args()
     with open(args.host_config, 'rb') as f:
         config = strict_json(f.read(4_000_001))
-    if not isinstance(config, dict) or set(config) != {'schema', 'grants', 'artifacts', 'max_calls', 'max_request_bytes'}:
+    base_fields = {'schema', 'grants', 'artifacts', 'max_calls', 'max_request_bytes'}
+    optional_fields = {'worker_grants', 'resources'}
+    if not isinstance(config, dict) or not base_fields <= set(config) or not set(config) <= base_fields | optional_fields:
         raise ValueError('INVALID_HOST_CONFIG')
     if config['schema'] != 'truecore.model_host@1':
         raise ValueError('INVALID_HOST_SCHEMA')
-    host = ModelHost(OperatorBoundary(grants=config['grants'], artifacts=config['artifacts']),
+    host = ModelHost(OperatorBoundary(
+                         grants=config['grants'],
+                         artifacts=config['artifacts'],
+                         worker_grants=config.get('worker_grants', []),
+                         resources=config.get('resources', {}),
+                     ),
                      max_calls=config['max_calls'], max_request_bytes=config['max_request_bytes'])
     while True:
         line = sys.stdin.buffer.readline(host._max_request_bytes + 1)

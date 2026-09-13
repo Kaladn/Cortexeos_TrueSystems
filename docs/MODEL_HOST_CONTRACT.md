@@ -14,6 +14,8 @@ The trusted embedding host creates a private configuration file with exactly:
   "schema": "truecore.model_host@1",
   "grants": ["help.list", "help.query", "sensory.inspect", "source.classify", "media.describe"],
   "artifacts": {},
+  "worker_grants": [],
+  "resources": {},
   "max_calls": 64,
   "max_request_bytes": 65536
 }
@@ -42,9 +44,11 @@ inference or resume any saved checkpoint. Use one serialized stream per session.
 ```
 
 The returned help contains exact argument requirements, result grades, permission,
-effects and retry rules from `operator_contracts.py`. Only five fixed operations
-are accepted. No model-supplied module path, URL, shell, filesystem path, worker
-name, approval or grant is executable.
+effects and retry rules from `operator_contracts.py`. Six fixed operation types
+are accepted. `worker.invoke` can reach only a host-granted registered read-only
+worker and a host-bound resource. No model-supplied module path, URL, shell,
+filesystem path, manifest, approval or grant is executable. A model-supplied
+worker identity is only a selection among separate host-owned worker grants.
 
 The host validates JSON framing, duplicates/nonfinite values, input size, call
 budget and request identity. A repeated ID with the identical request replays
@@ -62,6 +66,7 @@ necessary when immutable source content changes.
 | sensory.inspect | TrueCore validator of TrueMachine Fusion Pack | Preserves source errors/ownership; no semantic perception or live freshness claim |
 | source.classify | `truevision_intake.source_typing.classify_source` | Existing source typing; no source admission or code execution |
 | media.describe | `truevision_runtime.state_language.build_state_language` | Describes declarations; does not prove or execute media capability |
+| worker.invoke | registered TrueCore runner and fixed eligible worker manifest | Returns `truecore.worker_result@1`; does not create an operator answer |
 
 The source classifier classifies filenames/content formats; its internal format
 handling must not be confused with rewriting exact source anchors. The media
@@ -81,7 +86,9 @@ test artifacts. Receipt hashes cover results and stated scope; they are neither
 authorization signatures nor guarantees of observed real-world truth.
 
 Capture, rendering, playback, transcription, desktop/security actions, dataset
-mutation and training are unconnected and rejected. The 94 media file surfaces
+mutation and training are unconnected and rejected. The first worker bridge is
+limited to the read-only repository-graph family described in
+`docs/MODEL_REGISTERED_WORKER_BRIDGE.md`. The 94 media file surfaces
 remain inventory records, not 94 registered workers. To add one later, require
 its own contract, authorization, isolated acceptance, failure/retry tests and
 registration. Do not expose all catalog entries through dynamic dispatch.

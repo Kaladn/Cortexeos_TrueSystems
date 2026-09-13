@@ -15,6 +15,12 @@ All executions leaving the runner use `truecore.worker_result@1`. See
 `../../../../../docs/TRUECORE_WORKER_RESULT_AND_SKILL_INDEX_CONTRACT.md`. New
 worker families must use that envelope and regenerate the skill index.
 
+The model-facing route to eligible read-only registered workers is
+`truecore.registered_worker_bridge`. It retains this runner as the only worker
+execution doorway and replaces model-supplied paths, modules and commands with
+host-owned grants and resource bindings. See
+`../../../../../docs/MODEL_REGISTERED_WORKER_BRIDGE.md`.
+
 ## Agents
 
 Linux catalog capabilities can be materialized as real agents with:

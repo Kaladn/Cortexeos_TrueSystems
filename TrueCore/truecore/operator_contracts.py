@@ -13,6 +13,14 @@ _CONTRACTS = {
                         'result_grade': 'SOURCE_CLASSIFICATION_NOT_ADMISSION'},
     'media.describe': {'arguments': {'artifact_id': 'host-admitted JSON tool declaration reference'},
                        'result_grade': 'DECLARATION_NOT_EXECUTION_PROOF'},
+    'worker.invoke': {
+        'arguments': {
+            'worker_id': 'host-granted registered worker identity',
+            'resource_id': 'host-bound resource identity',
+            'parameters': {'limit': 'integer 1..100000'},
+        },
+        'result_grade': 'REGISTERED_WORKER_RESULT_NOT_OPERATOR_ANSWER',
+    },
 }
 
 def contracts():
