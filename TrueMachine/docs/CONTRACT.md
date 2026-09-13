@@ -92,3 +92,10 @@ location-only result and leave TrueCore as `truecore.worker_result@1`. This is
 the first implementation governed by
 `docs/TRUECORE_WORKER_RESULT_AND_SKILL_INDEX_CONTRACT.md`; later TrueMachine
 workers must use the same result envelope and manifest-derived skill index.
+
+The first named repository-view generation is implemented in
+`src/truemachine/repository_views.py`. It exposes the fifteen work-order methods
+as either bounded static investigations or explicit missing-authority results.
+Every view returns its classifier rule, independent channel availability,
+unresolved prerequisites, truncation state, locations/relationships, a receipt,
+and `answer: null`. The view engine does not perform security adjudication.

@@ -1,5 +1,5 @@
 {
-  "index_sha256": "sha256:8d7c041b18833ac082cd24e86d557b262b6b7bf77a3b336d9bff749bc2a5c49c",
+  "index_sha256": "sha256:e68b4ea746afeaef7e4d6159d953890ee1b8152a5d8657b8e51c95913ea63d72",
   "schema": "truecore.skill_index@1",
   "worker_result_schema": "truecore.worker_result@1",
   "workers": [
@@ -80,6 +80,366 @@
       "runtime_language": "python",
       "version": "1.0.0",
       "worker_id": "process_change",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_agent_registration.agent.json",
+      "manifest_sha256": "sha256:bded96f98b510d5fdf3cbb77b0ca74be7497ff7cdedcf9367876d69766d12cad",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_agent_registration_surfaces",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_agent_registration",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_canonical_evidence_writers.agent.json",
+      "manifest_sha256": "sha256:3c41788fa1a16bd6fd6560cc3f6e51a49b490f6e782b15bd97d5e62557415169",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_canonical_evidence_writers",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_canonical_evidence_writers",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_code_without_documentation.agent.json",
+      "manifest_sha256": "sha256:c1f82cf737a72ce8594b03ee5646059d277168f33c275536d24188d77a9400d7",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_code_without_documentation",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_code_without_documentation",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_detached_subgraphs.agent.json",
+      "manifest_sha256": "sha256:74bda77cc7a837b3131c963ec52d14121eb3b774218df8c7ae741438199476af",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_detached_subgraphs",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_detached_subgraphs",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_direct_truemem_references.agent.json",
+      "manifest_sha256": "sha256:d65c646d3d181257974469c7a0254b60f7401c652ac71a2543b80db89418737b",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_direct_truemem_references",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_direct_truemem_references",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_documentation_without_code.agent.json",
+      "manifest_sha256": "sha256:cfa04a3c102087843eb62b233741c973b3a30e06f3c25ac422851a36239d5925",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_documentation_claims_without_code",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_documentation_without_code",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_duplicate_implementations.agent.json",
+      "manifest_sha256": "sha256:1cfb90acd4ea7df73b2ec7d2ce490b8632e2fd5261e90c50871ecc285ee4d2a8",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_duplicate_implementations",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_duplicate_implementations",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_external_entrypoints.agent.json",
+      "manifest_sha256": "sha256:93a9c57a8b4130ae14c892ff56fbe09a74e9870d2cc81e941dbe26a63fb39326",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_external_entrypoints",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_external_entrypoints",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_filesystem_writers.agent.json",
+      "manifest_sha256": "sha256:bb2be6d4084adfd4f588824861f62f8242932f5fddb81c672391a369bfa94733",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_filesystem_writers",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_filesystem_writers",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_no_incoming_dependencies.agent.json",
+      "manifest_sha256": "sha256:c09e71f71f9e321498db3dc192ef5aae5d5977710a65a28bbf2fc38bff708e22",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_no_incoming_dependencies",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_no_incoming_dependencies",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_process_execution.agent.json",
+      "manifest_sha256": "sha256:0f8eb7f90371ed5af0ded2e3ff97cf438fe83c87db044faa5a174ecb20ed7fc3",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_process_execution",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_process_execution",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_security_config_writers.agent.json",
+      "manifest_sha256": "sha256:58433ba696e992af117cbb720eb170f1a86bd002bd6adc82b7bee01555da6ad1",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_security_config_writers",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_security_config_writers",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_truecore_bypass.agent.json",
+      "manifest_sha256": "sha256:c4f8d53e7383e067e6cf572cafd2ed553267c6c8f93e4046c0317cb57e12c119",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_truecore_bypass_candidates",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_truecore_bypass",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_unresolved_privileged_reachability.agent.json",
+      "manifest_sha256": "sha256:de8287156384ce63b8199bcb56f865343bfe037aabef4232d2813d0ee3eed7b5",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_unresolved_privileged_reachability",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_unresolved_privileged_reachability",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/repository_graph_workers.py",
+        "declared TrueMachine repository map"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_untested_privileged_sinks.agent.json",
+      "manifest_sha256": "sha256:a02cee10ccdfd52fbe1d13ed348fe096d3598f48e4a1b33b682b5c65cecb1d3d",
+      "mutation_class": "contract_declared:read",
+      "name": "locate_untested_privileged_sinks",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo_untested_privileged_sinks",
       "worker_result_schema": "truecore.worker_result@1"
     },
     {

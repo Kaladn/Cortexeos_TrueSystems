@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import hashlib
+import importlib.util
 import json
 import subprocess
 import sys
@@ -73,7 +74,14 @@ def resolve_repo_path(path_text: str) -> Path:
 
 
 def resolve_entrypoint(spec: dict) -> Path:
-    entrypoint = resolve_repo_path(spec["entrypoint"])
+    entrypoint_text = spec["entrypoint"]
+    if "/" not in entrypoint_text and "\\" not in entrypoint_text and not entrypoint_text.endswith(".py"):
+        found = importlib.util.find_spec(entrypoint_text)
+        if found is None or found.origin is None:
+            raise AgentExecutionContractError(f"entrypoint module does not exist: {entrypoint_text}")
+        entrypoint = Path(found.origin).resolve()
+    else:
+        entrypoint = resolve_repo_path(entrypoint_text)
     try:
         entrypoint.relative_to(REPO_ROOT.resolve())
     except ValueError as exc:
@@ -91,7 +99,13 @@ def resolve_entrypoint(spec: dict) -> Path:
 def verify_catalog_contract(spec: dict, entry: CatalogEntry) -> None:
     if spec["agent_id"] != entry.operator_id:
         raise AgentExecutionContractError("catalog and manifest agent IDs differ")
-    if spec["entrypoint"] != entry.source_file:
+    if spec["entrypoint"] == "truecore.live_agents.generated_runtime":
+        source_entrypoint = spec.get("source_entrypoint", "")
+        module_name = source_entrypoint.split(":", 1)[0]
+        expected_source = module_name.replace(".", "/") + ".py"
+        if entry.source_file != expected_source:
+            raise AgentExecutionContractError("catalog source and manifest source callable differ")
+    elif spec["entrypoint"] != entry.source_file:
         raise AgentExecutionContractError("catalog and manifest entrypoints differ")
     if spec["requires_approval"] != entry.requires_confirmation:
         raise AgentExecutionContractError("catalog and manifest approval requirements differ")
@@ -102,6 +116,10 @@ def verify_catalog_contract(spec: dict, entry: CatalogEntry) -> None:
 
 
 def verify_command_entrypoint(spec: dict, command: list[str], entrypoint: Path) -> None:
+    if len(command) >= 3 and command[1] == "-m":
+        if command[2] != spec["entrypoint"]:
+            raise AgentExecutionContractError("command module and hashed entrypoint differ")
+        return
     script_runtimes = {"python", "javascript", "typescript"}
     entrypoint_index = 1 if spec["runtime_language"] in script_runtimes else 0
     if len(command) <= entrypoint_index:

@@ -64,3 +64,10 @@ The first component adapter governed by this contract is
 `truemachine_repository_map`. It can request TrueMachine build, query, and
 verification operations. Its query operation returns locations and
 relationships without answers or security conclusions.
+
+The first larger worker family is recorded in
+`docs/work_orders/TRUECOG_REPOSITORY_GRAPH_WORKER_GENERATION_1.md`. Its manifests
+are generated from
+`TrueCore/truecore/live_agents/AGENTS/catalog/repository_graph_worker_source.csv`.
+The generated runtime catalog and system skill index provide the reproducible
+registration outputs.

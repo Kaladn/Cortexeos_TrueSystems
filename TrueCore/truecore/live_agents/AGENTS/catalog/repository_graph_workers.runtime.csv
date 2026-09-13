@@ -1,0 +1,16 @@
+operator_id,requires_confirmation,sandbox_required,destruction_score,risk_type,risk_reason,source_file
+repo_external_entrypoints,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_filesystem_writers,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_process_execution,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_direct_truemem_references,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_truecore_bypass,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_agent_registration,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_security_config_writers,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_canonical_evidence_writers,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_untested_privileged_sinks,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_unresolved_privileged_reachability,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_detached_subgraphs,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_no_incoming_dependencies,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_documentation_without_code,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_code_without_documentation,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py
+repo_duplicate_implementations,NO,NO,1,audit_read,read-only repository graph investigation,truecore/agents/repository_graph_workers.py

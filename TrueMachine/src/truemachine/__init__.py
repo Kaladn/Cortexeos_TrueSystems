@@ -7,6 +7,7 @@ from .model import FusionPack, Observation
 from .repository_map import build as build_repository_map
 from .repository_map import query as query_repository_map
 from .repository_map import verify as verify_repository_map
+from .repository_views import run_view as run_repository_view
 
 __all__ = [
     "Clock",
@@ -18,4 +19,5 @@ __all__ = [
     "build_repository_map",
     "query_repository_map",
     "verify_repository_map",
+    "run_repository_view",
 ]

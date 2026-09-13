@@ -1,0 +1,89 @@
+{
+  "agent_id": "repo_process_execution",
+  "allowed_reads": [
+    "truecore/agents/repository_graph_workers.py",
+    "declared TrueMachine repository map"
+  ],
+  "allowed_writes": [],
+  "approval_phrase": "",
+  "catalog_id": "repo_process_execution",
+  "command": [
+    "python3",
+    "-m",
+    "truecore.live_agents.generated_runtime",
+    "--module",
+    "truecore.agents.repository_graph_workers",
+    "--symbol",
+    "locate_process_execution",
+    "--input-json",
+    "{input_json}"
+  ],
+  "default_out_dir": "AGENTS/generated/runtime",
+  "description": "[worker] locate exact registered process execution call candidates",
+  "dry_run_supported": true,
+  "entrypoint": "truecore.live_agents.generated_runtime",
+  "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+  "id": "repo_process_execution",
+  "log_stream": "agent_decision",
+  "mutation_class": "contract_declared:read",
+  "name": "locate_process_execution",
+  "prompt_only_allowed": false,
+  "required_params": [
+    "input_json"
+  ],
+  "requires_approval": false,
+  "risk_tier": 1,
+  "runtime_language": "python",
+  "source_entrypoint": "truecore.agents.repository_graph_workers:locate_process_execution",
+  "source_entrypoint_hash": "sha256:e11ee84dcafb957f42ea1cbd5807b35cdc19dbbbd382a8823c6c4ec53da9c1c3",
+  "test_command": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.live_agents.test_agent_creator"
+  ],
+  "usage": {
+    "agent_id": "repo_process_execution",
+    "definition": {
+      "end_line": 69,
+      "line": 68,
+      "source": "def locate_process_execution(map_dir: str, limit: int = 5000) -> dict[str, Any]:\n    return _execute(\"repo_process_execution\", \"process_execution_candidates\", map_dir, limit)"
+    },
+    "parameters": {
+      "keyword_default_expressions": [],
+      "keyword_only": [],
+      "kwarg": null,
+      "positional": [
+        "map_dir: str",
+        "limit: int"
+      ],
+      "positional_only": [],
+      "trailing_positional_default_expressions": [
+        "5000"
+      ],
+      "vararg": null
+    },
+    "qualification": "STATIC_CODE_FACTS_ONLY",
+    "return_annotation": "dict[str, Any]",
+    "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+    "schema": "truecore.agent_usage@1",
+    "source_entrypoint": "truecore.agents.repository_graph_workers:locate_process_execution",
+    "source_entrypoint_hash": "sha256:e11ee84dcafb957f42ea1cbd5807b35cdc19dbbbd382a8823c6c4ec53da9c1c3",
+    "unresolved": [
+      "purpose",
+      "prerequisites",
+      "dependencies",
+      "effects",
+      "permissions",
+      "result_semantics",
+      "failure_conditions",
+      "retry",
+      "examples",
+      "backend_qualification"
+    ]
+  },
+  "usage_sha256": "34cfd4b57b8e9ed9435604f41ccf38cc9005da6951a817989df1b4a8e83b8f85",
+  "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/repository_graph_workers.py",
+  "version": "1.0.0",
+  "worker_result_schema": "truecore.worker_result@1"
+}

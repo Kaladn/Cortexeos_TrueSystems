@@ -71,6 +71,7 @@ def build_manifest(row: dict[str, str], source_root: Path, runtime_path: Path) -
     agent_id = row["operator_id"]
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", agent_id):
         raise ValueError("unsafe agent_id")
+    declared_reads = [item.strip() for item in (row.get("allowed_read_scope") or "").split("|") if item.strip()]
     manifest = {
         "agent_id": agent_id,
         "id": agent_id,
@@ -83,7 +84,7 @@ def build_manifest(row: dict[str, str], source_root: Path, runtime_path: Path) -
         "entrypoint_hash": sha256_file(runtime_path),
         "source_entrypoint": f"{module_name(source_file)}:{row['name']}",
         "source_entrypoint_hash": sha256_file(source_path),
-        "allowed_reads": [source_file],
+        "allowed_reads": [source_file, *declared_reads],
         "allowed_writes": [],
         "requires_approval": requires_approval,
         "approval_phrase": f"APPROVE {agent_id}" if requires_approval else "",
@@ -146,7 +147,7 @@ def materialize(
         temporary.replace(path)
         written.append(path)
     with output_catalog.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=CATALOG_FIELDS)
+        writer = csv.DictWriter(handle, fieldnames=CATALOG_FIELDS, lineterminator="\n")
         writer.writeheader()
         for row, _ in selected:
             writer.writerow({field: row.get(field, "") for field in CATALOG_FIELDS})

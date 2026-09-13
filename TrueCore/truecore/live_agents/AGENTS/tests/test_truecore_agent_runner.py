@@ -33,5 +33,19 @@ class TrueCoreAgentRunnerTests(unittest.TestCase):
         self.assertEqual(payload["agent_id"], "temporal_causality_log_checker")
         self.assertIn("sample.jsonl", payload["would_execute"])
 
+    def test_creator_generated_worker_binds_source_and_runtime_separately(self):
+        result = run_runner(
+            "run",
+            "repo_process_execution",
+            "--param",
+            'input_json={"kwargs":{"map_dir":"/tmp/map"}}',
+            "--dry-run",
+        )
+
+        self.assertEqual(result.returncode, 0, result.stderr)
+        payload = json.loads(result.stdout)
+        self.assertEqual(payload["agent_id"], "repo_process_execution")
+        self.assertIn("truecore.live_agents.generated_runtime", payload["would_execute"])
+
 if __name__ == "__main__":
     unittest.main()
