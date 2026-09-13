@@ -58,3 +58,30 @@ The system order is locked:
 TrueMachine is the cognition and Fusion Pack authority. TrueCore is a
 downstream security consumer. TrueCore cannot own or rewrite capture,
 timestamps, admitted state, fusion, or cognition.
+
+## Repository-state observation
+
+TrueMachine owns repository-state observation because a repository is mutable
+machine state. A repository map freezes the exact observed generation and may
+derive source-grounded structure without modifying the observed repository.
+
+The current repository-map contract is:
+
+```text
+exact Git working-tree generation
+-> file paths, bytes, modes where exposed, and SHA-256 identities
+-> exact text locations
+-> Python AST-owned code objects
+-> ownership, source-order, calls, imports, and exact name accesses
+-> location-only N-N-N packets and receipts
+```
+
+The N-N-N axes are `ownership-source_order-dependency`. Control flow is
+`NOT_IMPLEMENTED`; data flow is `EXACT_NAME_ACCESS_EVIDENCE_ONLY`. Those states
+must not be upgraded by documentation, callers, or presentation. Syntax-damaged
+and unsupported-language files remain exact source with explicit parser status.
+Ambiguous and unresolved relationships remain ambiguous and unresolved.
+
+TrueMachine locates and measures repository state. It does not decide whether
+a path is safe, vulnerable, authorized, or malicious. TrueCore remains the
+downstream policy and authority boundary.

@@ -28,4 +28,34 @@ Validate a generated state directory:
 PYTHONPATH=src python -m truemachine verify --state-dir state
 ```
 
+Observe a Git repository as exact source plus witnessed structural relationships:
+
+```bash
+PYTHONPATH=src python -m truemachine map-repository \
+  --repo /absolute/path/to/repository \
+  --output-parent /absolute/path/to/maps
+```
+
+Query a completed map for a location-only `ownership-source_order-dependency`
+neighborhood:
+
+```bash
+PYTHONPATH=src python -m truemachine query-repository \
+  --map-dir /absolute/path/to/maps/repository-map-YYYYMMDDTHHMMSSZ \
+  --exact exact.qualified.name
+```
+
+Verify all emitted artifacts, current source hashes and modes, code-object
+spans, and relationship endpoints:
+
+```bash
+PYTHONPATH=src python -m truemachine verify-repository-map \
+  --map-dir /absolute/path/to/maps/repository-map-YYYYMMDDTHHMMSSZ
+```
+
+The current mapper does not claim control flow or semantic data flow. Its
+middle axis is witnessed source order; exact name accesses are retained as
+evidence rather than promoted to data-flow authority. It returns no answer or
+security judgment.
+
 See `docs/CONTRACT.md` for the locked timestamp and durability contracts.
