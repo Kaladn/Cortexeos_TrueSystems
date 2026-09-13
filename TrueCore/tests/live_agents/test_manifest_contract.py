@@ -83,6 +83,7 @@ def _valid_manifest():
         "risk_tier": 1,
         "prompt_only_allowed": False,
         "required_params": [],
+        "worker_result_schema": "truecore.worker_result@1",
         "default_out_dir": "AGENTS/sample/runtime",
         "command": ["python", "AGENTS/sample/sample.py"],
     }

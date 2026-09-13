@@ -1,0 +1,139 @@
+{
+  "index_sha256": "sha256:8d7c041b18833ac082cd24e86d557b262b6b7bf77a3b336d9bff749bc2a5c49c",
+  "schema": "truecore.skill_index@1",
+  "worker_result_schema": "truecore.worker_result@1",
+  "workers": [
+    {
+      "allowed_reads": [
+        "operator_selected_docs_folder"
+      ],
+      "allowed_writes": [
+        "AGENTS/docs-to-pdf/runtime"
+      ],
+      "approval_phrase": "APPROVE docs_folder_to_pdf",
+      "callable": true,
+      "entrypoint": "AGENTS/docs-to-pdf/docs_folder_to_pdf.py",
+      "entrypoint_hash": "sha256:72de09c8ef09b72132b798c7b6a618b24587dc51e9a5d86bfd77d66dca03252c",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/docs_folder_to_pdf.agent.json",
+      "manifest_sha256": "sha256:857a11a4c86ffd0e8d65e398f4b4c5f5c834f28ff372c1741e6f4f6b6be3faff",
+      "mutation_class": "generated_artifact_file_write",
+      "name": "Docs Folder To PDF",
+      "required_params": [
+        "source_folder"
+      ],
+      "requires_approval": true,
+      "risk_tier": 3,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "docs_folder_to_pdf",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "declared_truesystems_evidence_services",
+        "service_receipts",
+        "frozen_work_order"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": false,
+      "entrypoint": "truecore/agents/evidence_workspace.py",
+      "entrypoint_hash": "sha256:3dd4f4bc9562f8652dd875a7a79e83d9e7540645cc5cc5cc056bfddd7b13c0f8",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/evidence_workspace_agent.agent.json",
+      "manifest_sha256": "sha256:aa5db91c9a9cb789efc19549ef6ff0ac16481437f4c98e8d5a195643d40fb092",
+      "mutation_class": "read_only",
+      "name": "Evidence Workspace Agent",
+      "required_params": [
+        "work_order",
+        "service_registry"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "evidence_workspace_agent",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "TrueMachine Fusion Pack",
+        "process_change state"
+      ],
+      "allowed_writes": [
+        "process_change state",
+        "agent_decision"
+      ],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "../agents/process_change.py",
+      "entrypoint_hash": "sha256:04ee2124d38ece31f524602daffd49c7d5ab2ce1ad4f062054f39750dcfbe50a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/process_change.agent.json",
+      "manifest_sha256": "sha256:8065196ff701b60cd39137059bbc3fe8ee2ec43688af63dde56fd0e329af7388",
+      "mutation_class": "local_agent_state",
+      "name": "Process Change Agent",
+      "required_params": [
+        "fusion_pack",
+        "state_path"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "process_change",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "AGENTS/temporal-causality",
+        "reports",
+        "runtime"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "AGENTS/temporal-causality/temporal_causality_log_checker.py",
+      "entrypoint_hash": "sha256:e76ef7cb1a90028537e82e232e4eb12bb2211571b3a40158acde738779547459",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/temporal_causality_log_checker.agent.json",
+      "manifest_sha256": "sha256:fb4bdf74c72347ce54d9ce256200b144c734c3ae03800267243b9906fbe487a9",
+      "mutation_class": "read_only",
+      "name": "Temporal Causality Log Checker",
+      "required_params": [
+        "log_path"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "temporal_causality_log_checker",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "declared Git repository",
+        "declared TrueMachine repository map",
+        "request JSON"
+      ],
+      "allowed_writes": [
+        "selected derived-artifact output directory"
+      ],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "../agents/repository_map.py",
+      "entrypoint_hash": "sha256:f99e459e12e6743ea04affabbe874893a7d2946b9e9ea9e125d5b315471c37d1",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/truemachine_repository_map.agent.json",
+      "manifest_sha256": "sha256:2d5563f51482644ed2a1e26988699dbb37c952b628f4cbe19e20cb7833c040e3",
+      "mutation_class": "derived_artifact_only",
+      "name": "TrueMachine Repository Map Worker",
+      "required_params": [
+        "request_path"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "truemachine_repository_map",
+      "worker_result_schema": "truecore.worker_result@1"
+    }
+  ]
+}
+

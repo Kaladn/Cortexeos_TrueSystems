@@ -34,6 +34,7 @@ REQUIRED_FIELDS = {
     "risk_tier",
     "prompt_only_allowed",
     "required_params",
+    "worker_result_schema",
 }
 
 HASH_RE = re.compile(r"^sha256:[0-9a-fA-F]{64}$")
@@ -98,6 +99,8 @@ def validate_agent_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
         raise AgentManifestError("mutation_class must not be empty")
     if not str(manifest["log_stream"]).strip():
         raise AgentManifestError("log_stream must not be empty")
+    if manifest["worker_result_schema"] != "truecore.worker_result@1":
+        raise AgentManifestError("worker_result_schema must be truecore.worker_result@1")
     if "default_out_dir" in manifest and not str(manifest["default_out_dir"]).strip():
         raise AgentManifestError("default_out_dir must not be empty")
     if manifest["mutation_class"] == "read_only" and manifest["allowed_writes"]:

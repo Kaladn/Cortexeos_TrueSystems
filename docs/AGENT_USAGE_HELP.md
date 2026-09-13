@@ -11,6 +11,18 @@ The existing HelpCorpus exposes `agent:<id>` through help show/search. Set
 The default is TrueCore's existing live-agent manifest directory. Help and
 execution metadata share one manifest publication; no second help copy exists.
 
+Every manifest also declares `truecore.worker_result@1`. TrueCore's runner
+validates or wraps the native worker output at execution time so downstream
+workers receive one processable envelope. Wrapping preserves native output; it
+does not infer evidence, claims, effects, or success beyond the observed process
+exit.
+
+`truecore.live_agents.skill_index` derives the system-wide skill index directly
+from validated manifests. The current tracked publication is
+`TrueCore/truecore/live_agents/AGENTS/catalog/skill_index.json`. Callability is
+reported explicitly; a manifest without an executable command remains indexed
+but cannot be described as callable.
+
 Generated manifests without usage, with broken bindings, or changed usage hashes
 are rejected by the manifest validator. Existing non-generated agents without
 usage are explicitly shown as unresolved, not silently qualified.

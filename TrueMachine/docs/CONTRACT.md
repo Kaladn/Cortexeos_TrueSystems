@@ -85,3 +85,10 @@ Ambiguous and unresolved relationships remain ambiguous and unresolved.
 TrueMachine locates and measures repository state. It does not decide whether
 a path is safe, vulnerable, authorized, or malicious. TrueCore remains the
 downstream policy and authority boundary.
+
+TrueCore exposes this capability through the registered
+`truemachine_repository_map` worker. The worker must preserve TrueMachine's
+location-only result and leave TrueCore as `truecore.worker_result@1`. This is
+the first implementation governed by
+`docs/TRUECORE_WORKER_RESULT_AND_SKILL_INDEX_CONTRACT.md`; later TrueMachine
+workers must use the same result envelope and manifest-derived skill index.

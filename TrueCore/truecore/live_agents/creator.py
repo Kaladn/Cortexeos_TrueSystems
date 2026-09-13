@@ -94,6 +94,7 @@ def build_manifest(row: dict[str, str], source_root: Path, runtime_path: Path) -
         "risk_tier": score,
         "prompt_only_allowed": False,
         "required_params": ["input_json"],
+        "worker_result_schema": "truecore.worker_result@1",
         "default_out_dir": "AGENTS/generated/runtime",
         "command": [
             "python3", "-m", "truecore.live_agents.generated_runtime",

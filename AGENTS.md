@@ -110,6 +110,15 @@ If documentation conflicts with executable code:
 - A renderer or dashboard presents records. It never upgrades a proxy to a
   measurement or a candidate to proof.
 - Material under `research_reference_not_runtime/` is never callable runtime.
+- Every registered coded worker must leave the TrueCore execution boundary as
+  `truecore.worker_result@1`, validated by
+  `TrueCore/truecore/live_agents/worker_result.py`. Component-native output may
+  be preserved inside the envelope but cannot be inferred into evidence or
+  supported claims.
+- The system-wide callable-worker index is derived from validated manifests by
+  `TrueCore/truecore/live_agents/skill_index.py` and published at
+  `TrueCore/truecore/live_agents/AGENTS/catalog/skill_index.json`. Future worker
+  families must point to `docs/TRUECORE_WORKER_RESULT_AND_SKILL_INDEX_CONTRACT.md`.
 
 ## 4. Human responsibilities
 

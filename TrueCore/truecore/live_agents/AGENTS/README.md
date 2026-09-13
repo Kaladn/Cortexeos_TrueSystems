@@ -7,8 +7,13 @@ Repo-local TrueCore coded-agent artifacts.
 - `catalog/agent_catalog.csv` follows the TrueCore `agent_catalog.csv` schema.
 - `catalog/truecore_agents.csv` contains the lower-risk deployable set.
 - `catalog/truecore_export.json` follows the documented ingestion JSON shape.
+- `catalog/skill_index.json` is the manifest-derived system-wide worker index.
 - `agents/*.agent.json` contains repo-local execution metadata.
 - `runner/truecore_agent_runner.py` is the human-approval gate and executor.
+
+All executions leaving the runner use `truecore.worker_result@1`. See
+`../../../../../docs/TRUECORE_WORKER_RESULT_AND_SKILL_INDEX_CONTRACT.md`. New
+worker families must use that envelope and regenerate the skill index.
 
 ## Agents
 

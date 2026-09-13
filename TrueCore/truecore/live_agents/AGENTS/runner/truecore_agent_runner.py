@@ -20,6 +20,7 @@ if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
 from truecore.live_agents.manifest import AgentManifestError, load_agent_manifest
+from truecore.live_agents.worker_result import canonical, digest, normalize_process_result
 
 DEFAULT_CATALOG = ROOT / "AGENTS" / "catalog" / "agent_catalog.csv"
 DEFAULT_AGENT_DIR = ROOT / "AGENTS" / "agents"
@@ -212,7 +213,17 @@ def run_agent(args: argparse.Namespace) -> int:
 
     if spec["allowed_writes"]:
         out_dir.mkdir(parents=True, exist_ok=True)
-    completed = subprocess.run(command, cwd=ROOT)
+    completed = subprocess.run(command, cwd=ROOT, capture_output=True)
+    packet = normalize_process_result(
+        worker_id=args.agent_id,
+        operation="execute",
+        returncode=completed.returncode,
+        stdout=completed.stdout,
+        stderr=completed.stderr,
+        entrypoint_hash=spec["entrypoint_hash"],
+        input_binding_hash=digest({"required_params": spec["required_params"], "params": params}),
+    )
+    sys.stdout.buffer.write(canonical(packet))
     return completed.returncode
 
 
