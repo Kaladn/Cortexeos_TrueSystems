@@ -1,0 +1,13 @@
+{
+  "schema": "truesystems.work_order_custody@1",
+  "source_attachment": "/home/lamercey/.codex/attachments/1c8a357e-28b2-44bd-8515-4f2bbe17cea1/pasted-text.txt",
+  "source_bytes": 22565,
+  "source_sha256": "496d1b922e860eaa218c098a05175e6ed4ca4bfaac47b5a22a55ce9521d33f85",
+  "repository_copy": "docs/work_orders/TRUECOG_REPOSITORY_GRAPH_WORK_ORDER_2026-09-13.md",
+  "repository_copy_bytes": 22566,
+  "repository_copy_sha256": "295e70a1e9270d81f91ff8a97df5ac49c410f120659d90fbfe870d1aa9d7a225",
+  "repository_copy_transformation": "ONE_TERMINAL_LF_ADDED",
+  "semantic_rewrite_performed": false,
+  "implementation_authority": "CODE_AND_PASSING_TESTS",
+  "work_order_status": "PRESERVED_AWAITING_WORKER_BUILD"
+}
