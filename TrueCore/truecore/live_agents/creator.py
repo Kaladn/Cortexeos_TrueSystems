@@ -85,7 +85,7 @@ def build_manifest(row: dict[str, str], source_root: Path, runtime_path: Path) -
         "source_entrypoint": f"{module_name(source_file)}:{row['name']}",
         "source_entrypoint_hash": sha256_file(source_path),
         "allowed_reads": [source_file, *declared_reads],
-        "allowed_writes": [],
+        "allowed_writes": [item.strip() for item in (row.get("allowed_write_scope") or "").split("|") if item.strip()],
         "requires_approval": requires_approval,
         "approval_phrase": f"APPROVE {agent_id}" if requires_approval else "",
         "mutation_class": "contract_declared:" + (row.get("side_effects") or "none"),
@@ -104,6 +104,11 @@ def build_manifest(row: dict[str, str], source_root: Path, runtime_path: Path) -
         ],
     }
     manifest["usage"] = build_usage(source_path, manifest)
+    if row.get("test_script"):
+        test_script = Path(row["test_script"])
+        if not test_script.is_absolute() or not test_script.is_file() or test_script.suffix != ".py":
+            raise ValueError("declared external acceptance script is unavailable")
+        manifest["test_command"] = ["python3", "-B", str(test_script)]
     manifest["usage_source_path"] = str(source_path)
     manifest["usage_sha256"] = digest(manifest["usage"])
     return validate_agent_manifest(manifest)

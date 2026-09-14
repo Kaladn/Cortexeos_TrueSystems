@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from .anchors import symbol_for
+from .job_publication import write_job_receipt
 from .base import COUNT_BACKEND, SYMBOL_BYTES, SYMBOL_SYSTEM, safe_id, utc_now, with_protected_notice, write_json
 
 REQUIRED_RESONANCE_FILES = (
@@ -42,6 +43,8 @@ def adapt_resonance_sample(
     """
     source = Path(source_dir).expanduser().resolve()
     out = Path(out_dir).expanduser().resolve()
+    if out == source or source in out.parents or out in source.parents:
+        raise ValueError("resonance outputs must be separate from the source")
     if not source.exists() or not source.is_dir():
         raise FileNotFoundError(f"resonance source folder not found: {source}")
 
@@ -111,7 +114,7 @@ def adapt_resonance_sample(
         "cache_residue_present": any(row["classification"] == "cache_residue" for row in before_hashes),
     }
     run_receipt = {
-        "schema": "truemem_resonance_adapter_run_receipt@1",
+        "schema": "truemem_resonance_adapter_run_receipt@2",
         "created_at": utc_now(),
         "dataset_id": safe_id(dataset_id),
         "source_dir": str(source),
@@ -129,19 +132,18 @@ def adapt_resonance_sample(
             "anchor_records": str(anchor_records_path),
             "summary_json": str(summary_json_path),
             "summary_md": str(summary_md_path),
-            "source_receipt": str(receipts / "source_receipt.json"),
-            "no_mutation_receipt": str(receipts / "no_mutation_receipt.json"),
             "run_receipt": str(receipts / "run_receipt.json"),
             **symbol_outputs.get("outputs", {}),
         },
     }
 
-    write_json(receipts / "source_receipt.json", source_receipt)
-    write_json(receipts / "no_mutation_receipt.json", no_mutation)
-    write_json(receipts / "run_receipt.json", run_receipt)
+    run_receipt["source_receipt"] = source_receipt
+    run_receipt["no_mutation_receipt"] = no_mutation
+    run_receipt["source_files_after"] = after_hashes
+    write_job_receipt(receipts / "run_receipt.json", run_receipt)
 
     return with_protected_notice({
-        "schema": "truemem_resonance_adapter_result@1",
+        "schema": "truemem_resonance_adapter_result@2",
         "dataset_id": safe_id(dataset_id),
         "source_dir": str(source),
         "out_dir": str(out),

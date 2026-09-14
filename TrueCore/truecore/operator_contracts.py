@@ -1,7 +1,9 @@
 """Model-visible contracts for the fixed read-only TrueCore worker surface."""
 from copy import deepcopy
+from .bounded_jobs import JOB_ARGUMENTS
 
 _CONTRACTS = {
+    'job.invoke': {'arguments': JOB_ARGUMENTS, 'result_grade': 'EXACT_ADMITTED_JOB_RECEIPT_REFERENCE'},
     'help.list': {'arguments': {}, 'result_grade': 'BOUNDARY_OPERATION_CATALOG'},
     'help.query': {'arguments': {'question': 'nonempty string <=4096 characters', 'layer': 'integer 1|2|3'},
                    'result_grade': 'GUIDANCE_NOT_EXECUTION_PROOF'},
@@ -17,7 +19,8 @@ _CONTRACTS = {
         'arguments': {
             'worker_id': 'host-granted registered worker identity',
             'resource_id': 'host-bound resource identity',
-            'parameters': {'limit': 'integer 1..100000'},
+            'parameters': {'limit': 'integer 1..100000',
+                           'scopes': 'nonempty list of exact host-granted source scopes; no duplicates'},
         },
         'result_grade': 'REGISTERED_WORKER_RESULT_NOT_OPERATOR_ANSWER',
     },
@@ -39,4 +42,5 @@ def contracts():
                          'retry': 'SAME_ID_SAME_REQUEST_REPLAYS; CORRECTION_REQUIRES_NEW_ID',
                          'bindings': ['REQUEST', 'WITNESSED_STATE', 'PREVIOUS_RESULT'],
                          'defaults': {}, 'model_may_authorize': False})
+    result['job.invoke']['effects'] = 'EXACT_HOST_ADMITTED_PLAN_ONLY'
     return result

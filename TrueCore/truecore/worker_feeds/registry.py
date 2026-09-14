@@ -15,7 +15,9 @@ def default_worker_registry() -> list[dict[str, Any]]:
             "status": "installed",
             "activation": "manual_call_only",
             "diagnostic_feed": "worker_heartbeat",
-            "writes": ["forge:worker_diagnostics", "receipt:worker_feeds"],
+            "writes": ["forge:worker_diagnostics"],
+            "result_schema": "truecore.worker_diagnostic_result@2",
+            "proof": "resolvable_forge_record",
             "param_contract": {
                 "sample_interval_seconds": {"type": "float", "default": 1.0, "min": 0.1, "max": 60.0},
                 "job_id": {"type": "string", "default": "heartbeat"},

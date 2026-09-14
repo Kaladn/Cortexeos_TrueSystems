@@ -182,11 +182,12 @@ def build_post_capture_tool_calls(config: WatcherConfig) -> list[dict[str, Any]]
 
 
 def run_post_capture_tool_calls(config: WatcherConfig) -> list[dict[str, Any]]:
-    from truevision_runtime.av_tools.av_tool_runner import run_av_tool_call
+    from truevision_runtime.av_tools.av_tool_runner import run_av_tool_job
 
     results: list[dict[str, Any]] = []
-    for call in build_post_capture_tool_calls(config):
-        result = run_av_tool_call(call, storage_root=config.storage_root)
+    calls = build_post_capture_tool_calls(config)
+    job = run_av_tool_job(calls, storage_root=config.storage_root)
+    for call, result in zip(calls, job["results"]):
         results.append(
             {
                 "tool_call": call,

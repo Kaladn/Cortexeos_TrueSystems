@@ -143,6 +143,29 @@ unqualified string `.replace()` call is not classified as a filesystem write,
 and an internal helper merely containing the characters `truemem` is not a
 direct TrueMem reference.
 
+Repository views require an explicit nonempty `scopes` list (a tuple is also
+accepted by the Python API). Only the seven exact scope names above are valid;
+missing, unknown, or duplicate scopes are refused. There is no implicit
+whole-repository default. TrueCore additionally requires host-owned
+`allowed_scopes` on each repository-map resource and rejects requests outside
+that grant before starting a worker. Security investigations should explicitly
+select `RUNTIME_SOURCE` and `PROJECT_SOURCE`; research requires its own grant
+and explicit selection.
+
+Views enumerate candidates, select scopes, sort deterministically by path,
+numeric byte span, and canonical JSON, then apply `limit`. Packets distinguish
+`total_matches` (all candidates), `filtered_matches` (in-scope candidates), and
+`returned`; `truncated` means in-scope candidates exceeded the limit. Scope,
+limit, ordering, and group policy are included in the deterministic receipt.
+Counts on `NOT_IMPLEMENTED` views are zero because enumeration is unavailable,
+not evidence that no qualifying objects exist.
+
+Duplicate groups retain only in-scope members and must still contain at least
+two members. Same-name groups must still contain different source hashes.
+Group counts count groups, not members. This intentionally excludes a lone
+runtime member whose only duplicate is outside the selected scopes. All-scope
+comparison remains available through an explicitly granted selection.
+
 `src/truemachine/repository_integrity.py` creates deterministic snapshots of a
 clean Git repository plus explicitly selected external derived-view trees. It
 stores content-addressed SHA-256 blobs, a canonical manifest, exact file modes,

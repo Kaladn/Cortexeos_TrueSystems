@@ -8,6 +8,7 @@ from typing import Any, Iterable
 from .anchors import symbol_hex
 from .base import COUNT_BACKEND, dataset_paths, safe_id, unique_stamp, utc_now, with_protected_notice, write_json
 from .determinism import file_receipt
+from .job_publication import write_job_receipt
 from .storage import (
     block_anchor_record_for_path,
     index_readiness,
@@ -41,6 +42,9 @@ def dataset_overview(
         )
 
     output_root = Path(out).expanduser().resolve()
+    dataset_root = paths.root.resolve()
+    if output_root == dataset_root or dataset_root in output_root.parents or output_root in dataset_root.parents:
+        raise ValueError("overview outputs must be separate from the source dataset")
     receipts = output_root / "receipts"
     output_root.mkdir(parents=True, exist_ok=True)
     receipts.mkdir(parents=True, exist_ok=True)
@@ -67,7 +71,7 @@ def dataset_overview(
     _write_jsonl(output_root / "relationship_trails.jsonl", relationship_trails)
 
     summary = with_protected_notice({
-        "schema": "truemem_dataset_overview_summary@1",
+        "schema": "truemem_dataset_overview_summary@2",
         "created_at": utc_now(),
         "dataset_id": safe_id(dataset_id),
         "runtime_root": str(Path(runtime_root).expanduser().resolve()),
@@ -97,7 +101,6 @@ def dataset_overview(
             "anchor_overviews": str(output_root / "anchor_overviews.jsonl"),
             "relationship_trails": str(output_root / "relationship_trails.jsonl"),
             "run_receipt": str(receipts / "run_receipt.json"),
-            "no_mutation_receipt": str(receipts / "no_mutation_receipt.json"),
         },
     })
     write_json(output_root / "overview_summary.json", summary)
@@ -117,10 +120,9 @@ def dataset_overview(
         "query_ran": False,
         "intake_ran": False,
     })
-    write_json(receipts / "no_mutation_receipt.json", mutation_receipt)
 
     run_receipt = with_protected_notice({
-        "schema": "truemem_dataset_overview_run_receipt@1",
+        "schema": "truemem_dataset_overview_run_receipt@2",
         "created_at": utc_now(),
         "run_id": unique_stamp(),
         "dataset_id": safe_id(dataset_id),
@@ -133,12 +135,11 @@ def dataset_overview(
         "counts_written": False,
         "anchor_overview_count": len(anchor_overviews),
         "relationship_trail_count": len(relationship_trails),
-        "no_mutation_receipt": str(receipts / "no_mutation_receipt.json"),
+        "no_mutation_receipt": mutation_receipt,
     })
-    write_json(receipts / "run_receipt.json", run_receipt)
+    write_job_receipt(receipts / "run_receipt.json", run_receipt)
 
     summary["outputs"]["run_receipt"] = str(receipts / "run_receipt.json")
-    summary["outputs"]["no_mutation_receipt"] = str(receipts / "no_mutation_receipt.json")
     summary["output_root"] = str(output_root)
     return summary
 

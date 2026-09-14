@@ -18,6 +18,7 @@ from typing import Any
 
 from .live_agents.manifest import load_agent_manifest
 from .live_agents.worker_result import validate_result
+from .agents.repository_graph_workers import validate_scopes
 
 
 RESOURCE_KIND = "TRUEMACHINE_REPOSITORY_MAP"
@@ -38,11 +39,15 @@ def _sha256_file(path: Path) -> str:
         return hashlib.sha256(handle.read()).hexdigest()
 
 
-def _validate_resource(resource_id: str, binding: dict[str, Any]) -> dict[str, str]:
+def _validate_resource(resource_id: str, binding: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(resource_id, str) or not resource_id:
         raise RegisteredWorkerBridgeError("INVALID_RESOURCE_ID")
-    if not isinstance(binding, dict) or set(binding) != {"kind", "path", "manifest_sha256"}:
+    if not isinstance(binding, dict) or set(binding) != {"kind", "path", "manifest_sha256", "allowed_scopes"}:
         raise RegisteredWorkerBridgeError("INVALID_HOST_RESOURCE_BINDING")
+    try:
+        allowed_scopes = validate_scopes(binding["allowed_scopes"])
+    except ValueError as exc:
+        raise RegisteredWorkerBridgeError("INVALID_HOST_SCOPE_GRANT") from exc
     if binding["kind"] != RESOURCE_KIND:
         raise RegisteredWorkerBridgeError("UNSUPPORTED_RESOURCE_KIND")
     path = Path(binding["path"])
@@ -68,6 +73,7 @@ def _validate_resource(resource_id: str, binding: dict[str, Any]) -> dict[str, s
         "manifest_path": str(manifest_path),
         "manifest_sha256": actual,
         "snapshot_id": snapshot_id,
+        "allowed_scopes": allowed_scopes,
     }
 
 
@@ -116,10 +122,17 @@ class RegisteredWorkerBridge:
         return {
             "worker_grants": sorted(self.worker_grants),
             "resource_ids": sorted(self.resources),
+            "resource_scope_grants": {
+                resource_id: list(resource["allowed_scopes"])
+                for resource_id, resource in sorted(self.resources.items())
+            },
             "arguments": {
                 "worker_id": "host-granted registered worker identity",
                 "resource_id": "host-bound TrueMachine repository-map identity",
-                "parameters": {"limit": "integer from 1 through 100000"},
+                "parameters": {
+                    "limit": "integer from 1 through 100000",
+                    "scopes": "nonempty list of exact scope names granted for this resource; no duplicates",
+                },
             },
             "model_supplied_paths": False,
             "model_supplied_commands": False,
@@ -139,15 +152,21 @@ class RegisteredWorkerBridge:
         if resource is None:
             raise RegisteredWorkerBridgeError("MISSING_WORKER_RESOURCE")
         parameters = arguments["parameters"]
-        if not isinstance(parameters, dict) or set(parameters) != {"limit"}:
+        if not isinstance(parameters, dict) or set(parameters) != {"limit", "scopes"}:
             raise RegisteredWorkerBridgeError("INVALID_WORKER_PARAMETERS")
         limit = parameters["limit"]
         if type(limit) is not int or not 1 <= limit <= 100_000:
             raise RegisteredWorkerBridgeError("INVALID_WORKER_LIMIT")
+        try:
+            scopes = validate_scopes(parameters["scopes"])
+        except ValueError as exc:
+            raise RegisteredWorkerBridgeError("INVALID_WORKER_SCOPES") from exc
+        if not set(scopes) <= set(resource["allowed_scopes"]):
+            raise RegisteredWorkerBridgeError("WORKER_SCOPE_PERMISSION_DENIED")
 
         before_hash = _sha256_file(Path(resource["manifest_path"]))
         payload = json.dumps(
-            {"kwargs": {"map_dir": resource["path"], "limit": limit}},
+            {"kwargs": {"map_dir": resource["path"], "limit": limit, "scopes": scopes}},
             ensure_ascii=True,
             sort_keys=True,
             separators=(",", ":"),
@@ -199,4 +218,8 @@ class RegisteredWorkerBridge:
         validate_result(packet)
         if packet["worker_id"] != worker_id:
             raise RegisteredWorkerBridgeError("WORKER_RESULT_IDENTITY_MISMATCH")
+        if (packet["result"].get("requested_scopes") != list(scopes)
+                or packet["result"].get("limit") != limit
+                or packet["result"].get("snapshot_id") != resource["snapshot_id"]):
+            raise RegisteredWorkerBridgeError("WORKER_RESULT_BINDING_MISMATCH")
         return packet

@@ -43,6 +43,11 @@ channels are qualified later.
 ## Governing limits
 
 - All views are bounded by a caller-selected result limit.
+- Every request names explicit source `scopes`. The host binds `allowed_scopes`
+  per map resource; unknown, omitted, duplicate, and ungranted scopes fail closed.
+- Scope selection and deterministic ordering precede the limit. Results retain
+  unfiltered `total_matches`, in-scope `filtered_matches`, `returned`, and
+  in-scope `truncated`. Duplicate groups are requalified after member filtering.
 - Every view returns `answer: null` from TrueMachine.
 - Every TrueCore worker returns `truecore.worker_result@1` with no claims.
 - Static surface classification is not control flow, data flow, reachability,

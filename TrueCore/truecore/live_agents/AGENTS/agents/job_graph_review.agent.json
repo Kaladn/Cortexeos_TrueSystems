@@ -1,0 +1,88 @@
+{
+  "agent_id": "job_graph_review",
+  "allowed_reads": [
+    "truecore/agents/bounded_job_workers.py",
+    "host-admitted map and source root"
+  ],
+  "allowed_writes": [
+    "host-admitted external job output"
+  ],
+  "approval_phrase": "",
+  "catalog_id": "job_graph_review",
+  "command": [
+    "python3",
+    "-m",
+    "truecore.live_agents.generated_runtime",
+    "--module",
+    "truecore.agents.bounded_job_workers",
+    "--symbol",
+    "graph_review",
+    "--input-json",
+    "{input_json}"
+  ],
+  "default_out_dir": "AGENTS/generated/runtime",
+  "description": "Execute the fifteen graph workers and preserve historical map and unsupported authority",
+  "dry_run_supported": true,
+  "entrypoint": "truecore.live_agents.generated_runtime",
+  "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+  "id": "job_graph_review",
+  "log_stream": "agent_decision",
+  "mutation_class": "contract_declared:write",
+  "name": "graph_review",
+  "prompt_only_allowed": false,
+  "required_params": [
+    "input_json"
+  ],
+  "requires_approval": false,
+  "risk_tier": 1,
+  "runtime_language": "python",
+  "source_entrypoint": "truecore.agents.bounded_job_workers:graph_review",
+  "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+  "test_command": [
+    "python3",
+    "-B",
+    "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/run_truecore_receipt_acceptance.py"
+  ],
+  "usage": {
+    "agent_id": "job_graph_review",
+    "definition": {
+      "end_line": 224,
+      "line": 173,
+      "source": "def graph_review(binding: dict, step_id: str) -> dict:\n    \"\"\"Rerun all fifteen registered graph workers; preserve missing authority.\"\"\"\n    worker = 'job_graph_review'\n    config, directory = selected(binding, step_id, worker)\n    if set(config) != {'map_dir', 'manifest_sha256', 'scopes', 'limit', 'source_root'}:\n        raise ValueError('INVALID_GRAPH_JOB_BINDING')\n    from truecore.registered_worker_bridge import RegisteredWorkerBridge, RESOURCE_KIND\n    import csv\n    from truecore.bounded_jobs import AGENTS\n    with (AGENTS / 'catalog/repository_graph_worker_source.csv').open() as stream:\n        ids = [row['operator_id'] for row in csv.DictReader(stream)]\n    resource = {'kind': RESOURCE_KIND, 'path': config['map_dir'],\n                'manifest_sha256': config['manifest_sha256'], 'allowed_scopes': config['scopes']}\n    bridge = RegisteredWorkerBridge(worker_grants=ids, resources={'review-map': resource})\n    packets = [bridge.invoke({'worker_id': worker_id, 'resource_id': 'review-map',\n        'parameters': {'limit': config['limit'], 'scopes': config['scopes']}}) for worker_id in ids]\n    map_dir = Path(config['map_dir'])\n    # Exact source comparison prevents historical edges being advertised as the\n    # post-edit worktree. No absent edge is promoted into safety or dead-code proof.\n    manifest = json.loads(regular(map_dir / 'manifest.json'))\n    files_entry = manifest['artifacts']['files']\n    raw = regular(map_dir / files_entry['path'])\n    if sha(raw) != files_entry['sha256']:\n        raise ValueError('GRAPH_FILES_ARTIFACT_CHANGED')\n    changed, missing = [], []\n    for row in (json.loads(line) for line in raw.splitlines() if line):\n        path = Path(config['source_root']) / row['path']\n        if not path.is_file():\n            missing.append(row['path'])\n        else:\n            # File hashes include large immutable research sources; stream them.\n            import hashlib\n            digest = hashlib.sha256()\n            with path.open('rb') as stream:\n                for chunk in iter(lambda: stream.read(1048576), b''):\n                    digest.update(chunk)\n            if digest.hexdigest() != row['sha256']:\n                changed.append(row['path'])\n    payload = {'schema': 'truecore.graph_review_bundle@1', 'snapshot_id': manifest['snapshot_id'],\n               'map_use': 'HISTORICAL_SNAPSHOT', 'current_source_mismatches': changed,\n               'missing_mapped_sources': missing, 'new_unmapped_source_discovery': 'NOT_PERFORMED',\n               'worker_packets': packets}\n    path = directory / (step_id + '.graph.json')\n    atomic(path, canonical(payload))\n    unavailable = [p['worker_id'] for p in packets if p['status'] == 'NOT_IMPLEMENTED']\n    return build_result(worker_id=worker, operation='graph.review', status='PARTIAL',\n        result={'workers_executed': len(packets), 'unsupported_workers': unavailable,\n                'map_use': 'HISTORICAL_SNAPSHOT', 'changed_mapped_sources': len(changed)},\n        unresolved=[{'code': 'HISTORICAL_MAP_NOT_CURRENT_WORKTREE'}] +\n                   [{'code': 'NOT_IMPLEMENTED', 'worker_id': name} for name in unavailable],\n        artifacts=[{'kind': 'canonical_graph_review_bundle', 'path': str(path), 'sha256': sha(regular(path))}],\n        continuation='STOP_PARTIAL', reason_code='STATIC_GRAPH_WITH_EXPLICIT_AUTHORITY_GAPS')"
+    },
+    "parameters": {
+      "keyword_default_expressions": [],
+      "keyword_only": [],
+      "kwarg": null,
+      "positional": [
+        "binding: dict",
+        "step_id: str"
+      ],
+      "positional_only": [],
+      "trailing_positional_default_expressions": [],
+      "vararg": null
+    },
+    "qualification": "STATIC_CODE_FACTS_ONLY",
+    "return_annotation": "dict",
+    "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+    "schema": "truecore.agent_usage@1",
+    "source_entrypoint": "truecore.agents.bounded_job_workers:graph_review",
+    "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+    "unresolved": [
+      "purpose",
+      "prerequisites",
+      "dependencies",
+      "effects",
+      "permissions",
+      "result_semantics",
+      "failure_conditions",
+      "retry",
+      "examples",
+      "backend_qualification"
+    ]
+  },
+  "usage_sha256": "96d72afd1f5e5875e2aa58d6566ae48f53ca95d116eeb59d2b4d0a31e11ca3d8",
+  "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/bounded_job_workers.py",
+  "version": "1.0.0",
+  "worker_result_schema": "truecore.worker_result@1"
+}

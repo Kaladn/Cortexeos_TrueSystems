@@ -1,0 +1,6 @@
+operator_id,requires_confirmation,sandbox_required,destruction_score,risk_type,risk_reason,source_file
+job_patch_files,YES,NO,2,bounded_source_update,Only exact host-admitted targets and payload hashes,truecore/agents/bounded_job_workers.py
+job_acceptance_run,YES,NO,2,external_acceptance,Exact admitted script and source bindings; not an OS sandbox,truecore/agents/bounded_job_workers.py
+job_history_readiness,NO,NO,1,evidence_readiness,Readiness is not historical analysis,truecore/agents/bounded_job_workers.py
+job_history_order,NO,NO,1,evidence_projection,Order is not causation or ownership of quotations,truecore/agents/bounded_job_workers.py
+job_graph_review,NO,NO,1,graph_review,Static candidates are not security or causal proof,truecore/agents/bounded_job_workers.py

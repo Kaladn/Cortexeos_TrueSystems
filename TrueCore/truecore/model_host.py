@@ -60,7 +60,7 @@ def main():
     with open(args.host_config, 'rb') as f:
         config = strict_json(f.read(4_000_001))
     base_fields = {'schema', 'grants', 'artifacts', 'max_calls', 'max_request_bytes'}
-    optional_fields = {'worker_grants', 'resources', 'machine_worker_grants', 'machine_resources'}
+    optional_fields = {'worker_grants', 'resources', 'machine_worker_grants', 'machine_resources', 'jobs'}
     if not isinstance(config, dict) or not base_fields <= set(config) or not set(config) <= base_fields | optional_fields:
         raise ValueError('INVALID_HOST_CONFIG')
     if config['schema'] != 'truecore.model_host@1':
@@ -72,6 +72,7 @@ def main():
                          resources=config.get('resources', {}),
                          machine_worker_grants=config.get('machine_worker_grants', []),
                          machine_resources=config.get('machine_resources', {}),
+                         jobs=config.get('jobs', {}),
                      ),
                      max_calls=config['max_calls'], max_request_bytes=config['max_request_bytes'])
     while True:

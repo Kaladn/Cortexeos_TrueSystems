@@ -1,0 +1,88 @@
+{
+  "agent_id": "job_acceptance_run",
+  "allowed_reads": [
+    "truecore/agents/bounded_job_workers.py",
+    "host-admitted script and source bindings"
+  ],
+  "allowed_writes": [
+    "host-admitted external job output"
+  ],
+  "approval_phrase": "APPROVE job_acceptance_run",
+  "catalog_id": "job_acceptance_run",
+  "command": [
+    "python3",
+    "-m",
+    "truecore.live_agents.generated_runtime",
+    "--module",
+    "truecore.agents.bounded_job_workers",
+    "--symbol",
+    "acceptance_run",
+    "--input-json",
+    "{input_json}"
+  ],
+  "default_out_dir": "AGENTS/generated/runtime",
+  "description": "Run one hash-bound external Python acceptance script with bounded process output",
+  "dry_run_supported": true,
+  "entrypoint": "truecore.live_agents.generated_runtime",
+  "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+  "id": "job_acceptance_run",
+  "log_stream": "agent_decision",
+  "mutation_class": "contract_declared:write",
+  "name": "acceptance_run",
+  "prompt_only_allowed": false,
+  "required_params": [
+    "input_json"
+  ],
+  "requires_approval": true,
+  "risk_tier": 2,
+  "runtime_language": "python",
+  "source_entrypoint": "truecore.agents.bounded_job_workers:acceptance_run",
+  "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+  "test_command": [
+    "python3",
+    "-B",
+    "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/run_truecore_receipt_acceptance.py"
+  ],
+  "usage": {
+    "agent_id": "job_acceptance_run",
+    "definition": {
+      "end_line": 123,
+      "line": 96,
+      "source": "def acceptance_run(binding: dict, step_id: str) -> dict:\n    worker = 'job_acceptance_run'\n    config, directory = selected(binding, step_id, worker)\n    if set(config) != {'script', 'script_sha256', 'source_bindings', 'timeout_seconds', 'max_output_bytes'}:\n        raise ValueError('INVALID_ACCEPTANCE_BINDING')\n    script = Path(config['script'])\n    if script.suffix != '.py' or sha(regular(script)) != config['script_sha256']:\n        raise ValueError('ACCEPTANCE_SCRIPT_CHANGED')\n    check_hashes(config['source_bindings'])\n    env = environment()\n    fixture_root = directory / (step_id + '-fixtures')\n    fixture_root.mkdir(mode=0o700)\n    env['TMPDIR'] = str(fixture_root)\n    code, raw, reason, elapsed = bounded_process([sys.executable, '-B', str(script)],\n        cwd=fixture_root, timeout=config['timeout_seconds'], maximum=config['max_output_bytes'], env=env)\n    log = directory / (step_id + '.log')\n    atomic(log, raw)\n    check_hashes(config['source_bindings'])\n    check_hashes([{'path': str(script), 'sha256': config['script_sha256']}])\n    status = 'COMPLETE' if code == 0 and reason is None else 'FAILED'\n    return build_result(worker_id=worker, operation='acceptance.run', status=status,\n        result={'process_returncode': code, 'elapsed_seconds': elapsed,\n            'script_sha256': config['script_sha256'],\n            'verification_scope': 'EXACT_ADMITTED_TEST_SCRIPT_EXIT_AND_OUTPUT_NOT_UNEXERCISED_BEHAVIOR'},\n        artifacts=[{'kind': 'acceptance_output', 'path': str(log), 'sha256': sha(raw)}],\n        errors=[] if status == 'COMPLETE' else [{'code': reason or 'ACCEPTANCE_FAILED'}],\n        continuation='STOP_COMPLETE' if status == 'COMPLETE' else 'STOP_FAILED',\n        reason_code='ACCEPTANCE_PROCESS_PASSED' if status == 'COMPLETE' else (reason or 'ACCEPTANCE_FAILED'))"
+    },
+    "parameters": {
+      "keyword_default_expressions": [],
+      "keyword_only": [],
+      "kwarg": null,
+      "positional": [
+        "binding: dict",
+        "step_id: str"
+      ],
+      "positional_only": [],
+      "trailing_positional_default_expressions": [],
+      "vararg": null
+    },
+    "qualification": "STATIC_CODE_FACTS_ONLY",
+    "return_annotation": "dict",
+    "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+    "schema": "truecore.agent_usage@1",
+    "source_entrypoint": "truecore.agents.bounded_job_workers:acceptance_run",
+    "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+    "unresolved": [
+      "purpose",
+      "prerequisites",
+      "dependencies",
+      "effects",
+      "permissions",
+      "result_semantics",
+      "failure_conditions",
+      "retry",
+      "examples",
+      "backend_qualification"
+    ]
+  },
+  "usage_sha256": "5aca78eb2171e795ad4d4c91ee2ec8d6f2d1da4f2c8816e949da4fcfd6f3b60a",
+  "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/bounded_job_workers.py",
+  "version": "1.0.0",
+  "worker_result_schema": "truecore.worker_result@1"
+}

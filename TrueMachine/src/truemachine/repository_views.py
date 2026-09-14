@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections import defaultdict
 import hashlib
+import heapq
 import json
 from pathlib import Path
 from typing import Any, Callable, Iterable
@@ -12,6 +13,23 @@ from .repository_map import canonical, iter_jsonl
 
 
 SCHEMA = "truemachine.repository_view@1"
+SOURCE_SCOPES = (
+    "RUNTIME_SOURCE", "PROJECT_SOURCE", "TRAINING_OR_EXPERIMENT", "TEST",
+    "SCRIPT", "DOCUMENTATION", "RESEARCH_REFERENCE_NOT_RUNTIME",
+)
+
+
+def validate_scopes(scopes: object) -> tuple[str, ...]:
+    """Require explicit exact scope names; authority is checked by TrueCore."""
+    if not isinstance(scopes, (list, tuple)) or not scopes:
+        raise ValueError("scopes must be a nonempty list or tuple of source scopes")
+    if any(not isinstance(scope, str) or scope not in SOURCE_SCOPES for scope in scopes):
+        raise ValueError("unknown repository source scope")
+    if len(scopes) != len(set(scopes)):
+        raise ValueError("duplicate repository source scope")
+    return tuple(sorted(scopes))
+
+
 VIEW_NAMES = (
     "external_entrypoint_candidates",
     "filesystem_writer_candidates",
@@ -126,17 +144,49 @@ def _manifest(map_dir: Path) -> dict[str, Any]:
     return manifest
 
 
-def _bounded(rows: Iterable[dict[str, Any]], limit: int) -> tuple[list[dict[str, Any]], int, bool]:
-    selected = []
-    total = 0
-    for row in rows:
-        total += 1
-        if len(selected) < limit:
-            selected.append(row)
-    return selected, total, total > limit
+def _location_order(row: dict[str, Any]) -> tuple:
+    # Canonical bytes break ties independently of input JSONL/dictionary order.
+    return (row.get("path", ""), row.get("byte_start", -1),
+            row.get("byte_end", -1), canonical(row))
 
 
-def _call_candidates(map_dir: Path, predicate: Callable[[str], bool], grade: str, rule: str, limit: int):
+def _in_scope(row: dict[str, Any], scopes: tuple[str, ...]) -> dict[str, Any] | None:
+    if "members" not in row:
+        return row if row["source_scope"] in scopes else None
+    members = sorted(
+        ({**member, "source_scope": _source_scope(member["path"])}
+         for member in row["members"] if _source_scope(member["path"]) in scopes),
+        key=_location_order,
+    )
+    # A group must still qualify using only admitted members. An excluded
+    # counterpart cannot establish a duplicate within the requested scope.
+    if len(members) < 2:
+        return None
+    if row["location_type"] == "SAME_NAME_GROUP" and len({m["exact_span_sha256"] for m in members}) < 2:
+        return None
+    return {**row, "members": members,
+            "source_scopes": sorted({member["source_scope"] for member in members})}
+
+
+def _bounded(rows: Iterable[dict[str, Any]], limit: int, scopes: tuple[str, ...]):
+    total = filtered = 0
+
+    def admitted():
+        nonlocal total, filtered
+        for row in rows:
+            total += 1
+            selected = _in_scope(row, scopes)
+            if selected is not None:
+                filtered += 1
+                yield selected
+
+    # Equivalent to sorting all admitted rows then slicing, with O(limit)
+    # retained rows. Every candidate is visited for exact counts.
+    selected = heapq.nsmallest(limit, admitted(), key=_location_order)
+    return selected, total, filtered, filtered > limit
+
+
+def _call_candidates(map_dir: Path, predicate: Callable[[str], bool], grade: str, rule: str, limit: int, scopes: tuple[str, ...]):
     def rows():
         for site in iter_jsonl(map_dir / "call_and_import_sites.jsonl"):
             if site.get("schema") != "truesystems_call_site@1":
@@ -157,10 +207,10 @@ def _call_candidates(map_dir: Path, predicate: Callable[[str], bool], grade: str
                     "classification_rule": rule,
                     "source_scope": _source_scope(site["path"]),
                 }
-    return _bounded(rows(), limit)
+    return _bounded(rows(), limit, scopes)
 
 
-def _external_entrypoints(map_dir: Path, limit: int):
+def _external_entrypoints(map_dir: Path, limit: int, scopes: tuple[str, ...]):
     def rows():
         for node in iter_jsonl(map_dir / "code_objects.jsonl"):
             path = node["path"]
@@ -169,10 +219,10 @@ def _external_entrypoints(map_dir: Path, limit: int):
             if by_filename or by_name:
                 yield {**node, "source_scope": _source_scope(path), "result_grade": "STATIC_CANDIDATE",
                        "classification_rule": "EXACT_ENTRYPOINT_NAME_OR_DUNDER_MAIN_PATH"}
-    return _bounded(rows(), limit)
+    return _bounded(rows(), limit, scopes)
 
 
-def _direct_truemem(map_dir: Path, limit: int):
+def _direct_truemem(map_dir: Path, limit: int, scopes: tuple[str, ...]):
     def rows():
         for site in iter_jsonl(map_dir / "call_and_import_sites.jsonl"):
             if site.get("schema") == "truesystems_import_site@1":
@@ -191,16 +241,17 @@ def _direct_truemem(map_dir: Path, limit: int):
                 yield {**site, "exact_surface": surface, "source_scope": _source_scope(site["path"]),
                        "result_grade": "WITNESSED_STATIC",
                        "classification_rule": "EXACT_SURFACE_CONTAINS_TRUEMEM"}
-    return _bounded(rows(), limit)
+    return _bounded(rows(), limit, scopes)
 
 
-def _registration(map_dir: Path, limit: int):
+def _registration(map_dir: Path, limit: int, scopes: tuple[str, ...]):
     return _call_candidates(
         map_dir,
         lambda surface: surface.split(".")[-1].casefold() in REGISTRATION_SURFACE_TAILS,
         "STATIC_CANDIDATE",
         "EXACT_CALL_TAIL_IN_REGISTRATION_SURFACE_REGISTRY",
         limit,
+        scopes,
     )
 
 
@@ -216,7 +267,7 @@ def _node_and_incoming(map_dir: Path):
     return nodes, incoming
 
 
-def _detached(map_dir: Path, limit: int):
+def _detached(map_dir: Path, limit: int, scopes: tuple[str, ...]):
     nodes, incoming = _node_and_incoming(map_dir)
     paths_with_external_incoming = set()
     for target, edges in incoming.items():
@@ -229,19 +280,19 @@ def _detached(map_dir: Path, limit: int):
              "classification_rule": "MODULE_HAS_NO_UNIQUELY_RESOLVED_CROSS_FILE_CALL_IN_CURRENT_MAP"}
             for node in nodes.values()
             if node.get("kind") == "module" and node["path"] not in paths_with_external_incoming)
-    return _bounded(rows, limit)
+    return _bounded(rows, limit, scopes)
 
 
-def _no_incoming(map_dir: Path, limit: int):
+def _no_incoming(map_dir: Path, limit: int, scopes: tuple[str, ...]):
     nodes, incoming = _node_and_incoming(map_dir)
     rows = ({**node, "source_scope": _source_scope(node["path"]), "result_grade": "STATIC_CANDIDATE",
              "classification_rule": "NO_UNIQUELY_RESOLVED_INCOMING_CALL_IN_CURRENT_MAP"}
             for node_id, node in nodes.items()
             if node.get("kind") in {"class", "function", "async_function"} and node_id not in incoming)
-    return _bounded(rows, limit)
+    return _bounded(rows, limit, scopes)
 
 
-def _duplicates(map_dir: Path, limit: int):
+def _duplicates(map_dir: Path, limit: int, scopes: tuple[str, ...]):
     by_hash: dict[str, list[dict[str, Any]]] = defaultdict(list)
     by_name: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for node in iter_jsonl(map_dir / "code_objects.jsonl"):
@@ -263,40 +314,42 @@ def _duplicates(map_dir: Path, limit: int):
                        "source_scopes": sorted({_source_scope(member["path"]) for member in members}),
                        "result_grade": "STATIC_CANDIDATE",
                        "classification_rule": "SAME_EXACT_DECLARED_NAME_DIFFERENT_SOURCE_HASH"}
-    return _bounded(rows(), limit)
+    return _bounded(rows(), limit, scopes)
 
 
-def run_view(map_dir: str | Path, view: str, limit: int = 5000) -> dict[str, Any]:
-    root = Path(map_dir).expanduser().resolve()
-    manifest = _manifest(root)
+def run_view(map_dir: str | Path, view: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    scopes = validate_scopes(scopes)
     if view not in VIEW_NAMES:
         raise ValueError(f"unknown repository view: {view}")
     if not isinstance(limit, int) or isinstance(limit, bool) or not 1 <= limit <= 100_000:
         raise ValueError("limit must be an integer from 1 through 100000")
+    root = Path(map_dir).expanduser().resolve()
+    manifest = _manifest(root)
     if view in NOT_IMPLEMENTED:
         locations: list[dict[str, Any]] = []
         total = 0
+        filtered = 0
         truncated = False
         grade = "NOT_IMPLEMENTED"
         unresolved = [{"required_relationship": item, "state": "NOT_IMPLEMENTED"} for item in NOT_IMPLEMENTED[view]]
     elif view == "external_entrypoint_candidates":
-        locations, total, truncated = _external_entrypoints(root, limit); grade = "STATIC_CANDIDATE"; unresolved = []
+        locations, total, filtered, truncated = _external_entrypoints(root, limit, scopes); grade = "STATIC_CANDIDATE"; unresolved = []
     elif view == "filesystem_writer_candidates":
-        locations, total, truncated = _call_candidates(root, lambda value: value in FILESYSTEM_WRITE_SURFACES or value.split(".")[-1] in FILESYSTEM_WRITE_TAILS,
-            "STATIC_CANDIDATE", "EXACT_CALL_SURFACE_IN_FILESYSTEM_WRITE_REGISTRY", limit); grade = "STATIC_CANDIDATE"; unresolved = []
+        locations, total, filtered, truncated = _call_candidates(root, lambda value: value in FILESYSTEM_WRITE_SURFACES or value.split(".")[-1] in FILESYSTEM_WRITE_TAILS,
+            "STATIC_CANDIDATE", "EXACT_CALL_SURFACE_IN_FILESYSTEM_WRITE_REGISTRY", limit, scopes); grade = "STATIC_CANDIDATE"; unresolved = []
     elif view == "process_execution_candidates":
-        locations, total, truncated = _call_candidates(root, lambda value: value in PROCESS_EXECUTION_SURFACES,
-            "STATIC_CANDIDATE", "EXACT_CALL_SURFACE_IN_PROCESS_EXECUTION_REGISTRY", limit); grade = "STATIC_CANDIDATE"; unresolved = []
+        locations, total, filtered, truncated = _call_candidates(root, lambda value: value in PROCESS_EXECUTION_SURFACES,
+            "STATIC_CANDIDATE", "EXACT_CALL_SURFACE_IN_PROCESS_EXECUTION_REGISTRY", limit, scopes); grade = "STATIC_CANDIDATE"; unresolved = []
     elif view == "direct_truemem_references":
-        locations, total, truncated = _direct_truemem(root, limit); grade = "WITNESSED_STATIC"; unresolved = []
+        locations, total, filtered, truncated = _direct_truemem(root, limit, scopes); grade = "WITNESSED_STATIC"; unresolved = []
     elif view == "agent_registration_candidates":
-        locations, total, truncated = _registration(root, limit); grade = "STATIC_CANDIDATE"; unresolved = []
+        locations, total, filtered, truncated = _registration(root, limit, scopes); grade = "STATIC_CANDIDATE"; unresolved = []
     elif view == "detached_subgraph_candidates":
-        locations, total, truncated = _detached(root, limit); grade = "STATIC_CANDIDATE"; unresolved = []
+        locations, total, filtered, truncated = _detached(root, limit, scopes); grade = "STATIC_CANDIDATE"; unresolved = []
     elif view == "no_incoming_dependency_candidates":
-        locations, total, truncated = _no_incoming(root, limit); grade = "STATIC_CANDIDATE"; unresolved = []
+        locations, total, filtered, truncated = _no_incoming(root, limit, scopes); grade = "STATIC_CANDIDATE"; unresolved = []
     elif view == "duplicate_implementation_candidates":
-        locations, total, truncated = _duplicates(root, limit); grade = "MIXED_WITNESSED_AND_CANDIDATE"; unresolved = []
+        locations, total, filtered, truncated = _duplicates(root, limit, scopes); grade = "MIXED_WITNESSED_AND_CANDIDATE"; unresolved = []
     else:
         raise AssertionError("view registry and dispatcher differ")
     relationships = []
@@ -333,6 +386,11 @@ def run_view(map_dir: str | Path, view: str, limit: int = 5000) -> dict[str, Any
         "unresolved": unresolved,
         "returned": len(locations),
         "total_matches": total,
+        "filtered_matches": filtered,
+        "requested_scopes": list(scopes),
+        "limit": limit,
+        "ordering": "PATH_BYTE_SPAN_CANONICAL_JSON",
+        "group_scope_policy": "IN_SCOPE_MEMBERS_ONLY_REQUALIFY_GROUP",
         "truncated": truncated,
         "answer": None,
     }

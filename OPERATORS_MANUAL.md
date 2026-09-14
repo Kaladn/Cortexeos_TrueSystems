@@ -257,6 +257,17 @@ rail as a substitute execution witness. Its static help
 prompt and factual audit prompt library are real selectable instruction assets,
 but they are guidance, not agents, memory, evidence, or action authority.
 
+## Finite host-admitted TrueCore jobs
+
+The operator boundary exposes `job.invoke` with only a caller-selected `job_id`.
+The host admits an exact hashed finite plan and its output/resource bindings.
+TrueCore invokes registered workers, preserves unsupported or failed steps,
+and publishes one terminal job receipt for inspection. The worker family covers
+exact source patches, external acceptance, graph review and historical evidence
+readiness/order. It does not author code, infer instruction ownership, or make
+causal claims. Read `docs/TRUECORE_BOUNDED_JOBS_CONTRACT.md` for the scope,
+recovery limits and application-versus-OS protection boundary.
+
 ## Unified localhost API
 
 ```bash

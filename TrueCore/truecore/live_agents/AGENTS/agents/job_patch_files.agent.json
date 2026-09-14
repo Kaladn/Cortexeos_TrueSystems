@@ -1,0 +1,89 @@
+{
+  "agent_id": "job_patch_files",
+  "allowed_reads": [
+    "truecore/agents/bounded_job_workers.py",
+    "host-admitted plan and source targets"
+  ],
+  "allowed_writes": [
+    "host-admitted source targets",
+    "host-admitted job prestate"
+  ],
+  "approval_phrase": "APPROVE job_patch_files",
+  "catalog_id": "job_patch_files",
+  "command": [
+    "python3",
+    "-m",
+    "truecore.live_agents.generated_runtime",
+    "--module",
+    "truecore.agents.bounded_job_workers",
+    "--symbol",
+    "patch_files",
+    "--input-json",
+    "{input_json}"
+  ],
+  "default_out_dir": "AGENTS/generated/runtime",
+  "description": "Apply exact admitted source bytes with preserved pre-state and post-state verification",
+  "dry_run_supported": true,
+  "entrypoint": "truecore.live_agents.generated_runtime",
+  "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+  "id": "job_patch_files",
+  "log_stream": "agent_decision",
+  "mutation_class": "contract_declared:write",
+  "name": "patch_files",
+  "prompt_only_allowed": false,
+  "required_params": [
+    "input_json"
+  ],
+  "requires_approval": true,
+  "risk_tier": 2,
+  "runtime_language": "python",
+  "source_entrypoint": "truecore.agents.bounded_job_workers:patch_files",
+  "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+  "test_command": [
+    "python3",
+    "-B",
+    "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/run_truecore_receipt_acceptance.py"
+  ],
+  "usage": {
+    "agent_id": "job_patch_files",
+    "definition": {
+      "end_line": 93,
+      "line": 31,
+      "source": "def patch_files(binding: dict, step_id: str) -> dict:\n    worker = 'job_patch_files'\n    config, directory = selected(binding, step_id, worker)\n    if set(config) != {'root', 'files'} or not isinstance(config['files'], list) or not 1 <= len(config['files']) <= 16:\n        raise ValueError('INVALID_PATCH_PLAN')\n    root = Path(config['root'])\n    if not root.is_absolute() or not root.is_dir() or any(p.is_symlink() for p in (root, *root.parents)):\n        raise ValueError('INVALID_PATCH_ROOT')\n    targets, seen, total = [], set(), 0\n    for row in config['files']:\n        if set(row) != {'path', 'before_sha256', 'content_utf8'}:\n            raise ValueError('INVALID_PATCH_FILE')\n        relative = Path(row['path'])\n        if relative.is_absolute() or '..' in relative.parts or not relative.parts:\n            raise ValueError('PATCH_ROOT_ESCAPE')\n        path = root / relative\n        if path in seen or any(p.is_symlink() for p in (path, *path.parents)) or not path.parent.is_dir():\n            raise ValueError('UNSAFE_PATCH_TARGET')\n        seen.add(path)\n        before = regular(path) if path.exists() else None\n        if (sha(before) if before is not None else None) != row['before_sha256']:\n            raise ValueError('PATCH_PRECONDITION_FAILED')\n        after = row['content_utf8'].encode('utf-8')\n        total += len(after) + len(before or b'')\n        if total > 4_000_000:\n            raise ValueError('PATCH_BYTE_BUDGET')\n        mode = path.stat().st_mode & 0o777 if before is not None else 0o644\n        if mode & 0o022:\n            raise ValueError('SHARED_WRITABLE_PATCH_TARGET')\n        targets.append((path, before, after, mode))\n    # Preserve every pre-state before touching any target. Missing originals\n    # remain explicitly absent; no fabricated empty-file backup.\n    backup = directory / 'prestate'\n    backup.mkdir(mode=0o700, exist_ok=True)\n    artifacts, transitions = [], []\n    for path, before, after, mode in targets:\n        if before is not None:\n            saved = backup / sha(before)\n            if saved.exists():\n                if regular(saved) != before:\n                    raise ValueError('PRESTATE_CHANGED')\n            else:\n                atomic(saved, before)\n            artifacts.append({'kind': 'preserved_prestate', 'path': str(saved), 'sha256': sha(before)})\n    status, reason = 'COMPLETE', 'EXACT_PATCH_BYTES_VERIFIED'\n    try:\n        for path, before, after, mode in targets:\n            observed = regular(path) if path.exists() else None\n            if observed != before or any(p.is_symlink() for p in (path, *path.parents)):\n                raise ValueError('PATCH_TARGET_DRIFT')\n            atomic(path, after, mode)\n            if regular(path) != after:\n                raise ValueError('PATCH_POSTCONDITION_FAILED')\n            transitions.append({'relative_path': str(path.relative_to(root)),\n                'before_sha256': sha(before) if before is not None else None, 'after_sha256': sha(after)})\n            artifacts.append({'kind': 'verified_patched_source', 'path': str(path), 'sha256': sha(after)})\n    except Exception:\n        status, reason = 'FAILED', 'PATCH_PARTIAL_FAILURE_PRESTATE_PRESERVED'\n    return build_result(worker_id=worker, operation='source.patch', status=status,\n        result={'applied_files': transitions, 'verification_scope': 'EXACT_FILE_BYTES_NOT_BEHAVIOR',\n                'recovery': 'PRESTATE_PRESERVED_NO_AUTOMATIC_OVERWRITE'}, artifacts=artifacts,\n        errors=[] if status == 'COMPLETE' else [{'code': reason}],\n        continuation='STOP_COMPLETE' if status == 'COMPLETE' else 'STOP_FAILED', reason_code=reason)"
+    },
+    "parameters": {
+      "keyword_default_expressions": [],
+      "keyword_only": [],
+      "kwarg": null,
+      "positional": [
+        "binding: dict",
+        "step_id: str"
+      ],
+      "positional_only": [],
+      "trailing_positional_default_expressions": [],
+      "vararg": null
+    },
+    "qualification": "STATIC_CODE_FACTS_ONLY",
+    "return_annotation": "dict",
+    "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+    "schema": "truecore.agent_usage@1",
+    "source_entrypoint": "truecore.agents.bounded_job_workers:patch_files",
+    "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+    "unresolved": [
+      "purpose",
+      "prerequisites",
+      "dependencies",
+      "effects",
+      "permissions",
+      "result_semantics",
+      "failure_conditions",
+      "retry",
+      "examples",
+      "backend_qualification"
+    ]
+  },
+  "usage_sha256": "a3d5a125ea8c66d0b497d7075aebc36d9eecbef6a437ff1383dd79b9b8a4e83c",
+  "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/bounded_job_workers.py",
+  "version": "1.0.0",
+  "worker_result_schema": "truecore.worker_result@1"
+}

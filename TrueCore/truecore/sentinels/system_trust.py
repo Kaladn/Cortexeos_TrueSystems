@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from truecore.internal_watch import InternalSelfLogger
+from truecore.internal_watch.intervals import read_observation
 from truecore.sentinels.contracts import build_sentinel_result
 
 
@@ -15,7 +16,8 @@ def run(input_payload: dict[str, Any]) -> dict[str, Any]:
         checks=[dict(item) for item in input_payload.get("checks", [])],
     )
     path = str(receipt["receipt_path"])
-    status = "ok" if receipt["status"] == "green" else "alert"
+    observation = read_observation(path)
+    status = "ok" if observation["effective_status"] == "green" else "alert"
     return build_sentinel_result(
         sentinel_id="system_trust_sentinel",
         status=status,

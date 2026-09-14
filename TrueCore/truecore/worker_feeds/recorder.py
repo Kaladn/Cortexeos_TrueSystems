@@ -8,7 +8,7 @@ from typing import Any
 from truecore.forge.reader import ForgeReader
 from truecore.forge.writer import ForgeWriter
 from truecore.worker_feeds.policy import validate_worker_packet
-from truecore.worker_feeds.receipts import build_worker_receipt, stable_hash, write_receipt
+from truecore.worker_feeds.receipts import build_worker_receipt, stable_hash
 
 
 class WorkerDiagnosticRecorder:
@@ -43,12 +43,25 @@ class WorkerDiagnosticRecorder:
         }
         metadata = ForgeWriter(self.forge_root).append_dict(record)
         receipt = build_worker_receipt(packet=packet, forge_metadata=metadata)
-        receipt_path = self.receipts_root / f"{receipt['receipt_id']}.json"
-        write_receipt(receipt_path, receipt)
         return {
+            "schema": "truecore.worker_diagnostic_result@2",
             "ok": True,
             "packet": packet,
             "forge_metadata": metadata,
             "receipt": receipt,
-            "receipt_path": str(receipt_path),
+            "receipt_ref": {
+                "kind": "forge_record", "substrate": "worker_diagnostics",
+                "record_id": metadata["record_id"], "sequence": metadata["sequence"],
+                "packet_sha256": chain_hash,
+            },
         }
+
+    def resolve_receipt(self, reference: dict[str, Any]) -> dict[str, Any]:
+        """Resolve proof from its existing native record without a sidecar."""
+        for record in ForgeReader(self.forge_root).iter_records():
+            if record.record_id == reference.get("record_id") and record.sequence == reference.get("sequence"):
+                packet = record.payload["packet"]
+                if stable_hash(packet) != reference.get("packet_sha256"):
+                    raise ValueError("diagnostic commitment mismatch")
+                return packet
+        raise ValueError("diagnostic record is unavailable")

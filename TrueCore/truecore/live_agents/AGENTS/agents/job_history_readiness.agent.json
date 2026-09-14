@@ -1,0 +1,86 @@
+{
+  "agent_id": "job_history_readiness",
+  "allowed_reads": [
+    "truecore/agents/bounded_job_workers.py",
+    "host-admitted source bindings"
+  ],
+  "allowed_writes": [],
+  "approval_phrase": "",
+  "catalog_id": "job_history_readiness",
+  "command": [
+    "python3",
+    "-m",
+    "truecore.live_agents.generated_runtime",
+    "--module",
+    "truecore.agents.bounded_job_workers",
+    "--symbol",
+    "history_readiness",
+    "--input-json",
+    "{input_json}"
+  ],
+  "default_out_dir": "AGENTS/generated/runtime",
+  "description": "Report historical evidence prerequisites without inventing attribution",
+  "dry_run_supported": true,
+  "entrypoint": "truecore.live_agents.generated_runtime",
+  "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+  "id": "job_history_readiness",
+  "log_stream": "agent_decision",
+  "mutation_class": "contract_declared:read",
+  "name": "history_readiness",
+  "prompt_only_allowed": false,
+  "required_params": [
+    "input_json"
+  ],
+  "requires_approval": false,
+  "risk_tier": 1,
+  "runtime_language": "python",
+  "source_entrypoint": "truecore.agents.bounded_job_workers:history_readiness",
+  "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+  "test_command": [
+    "python3",
+    "-B",
+    "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/run_truecore_receipt_acceptance.py"
+  ],
+  "usage": {
+    "agent_id": "job_history_readiness",
+    "definition": {
+      "end_line": 146,
+      "line": 126,
+      "source": "def history_readiness(binding: dict, step_id: str) -> dict:\n    \"\"\"Report evidence requirements; never pretend readiness is history analysis.\"\"\"\n    worker = 'job_history_readiness'\n    config, _ = selected(binding, step_id, worker)\n    if set(config) != {'source_bindings'} or not isinstance(config['source_bindings'], list):\n        raise ValueError('INVALID_HISTORY_BINDING')\n    if config['source_bindings']:\n        check_hashes(config['source_bindings'])\n    requirements = [\n        {'need': 'instruction_ownership', 'required_evidence': 'original speaker, exact source span, quotation ownership and explicit interpretation links'},\n        {'need': 'implementation_outcomes', 'required_evidence': 'source-linked operations and independently checked outcomes'},\n        {'need': 'capability_lineage', 'required_evidence': 'versioned implementations and explicit or qualified continuity links; names alone insufficient'},\n        {'need': 'supersession', 'required_evidence': 'explicit supersedes decision; silence remains unresolved'},\n        {'need': 'relationship_decay', 'required_evidence': 'comparable covered time windows and a frozen descriptive metric'},\n        {'need': 'causal_attribution', 'required_evidence': 'qualified causal identification beyond temporal association'},\n    ]\n    return build_result(worker_id=worker, operation='history.readiness', status='UNRESOLVED',\n        result={'history_analysis_executed': False, 'bound_source_count': len(config['source_bindings']),\n                'actor_blame_inferred': False, 'ready_for_causal_claims': False},\n        unresolved=requirements + [{'code': 'HISTORICAL_SOURCE_NOT_BOUND' if not config['source_bindings'] else 'HISTORICAL_SCHEMA_AND_LINKS_NOT_QUALIFIED'}],\n        continuation='STOP_NO_EVIDENCE', reason_code='HISTORY_EVIDENCE_PREREQUISITES_REQUIRED')"
+    },
+    "parameters": {
+      "keyword_default_expressions": [],
+      "keyword_only": [],
+      "kwarg": null,
+      "positional": [
+        "binding: dict",
+        "step_id: str"
+      ],
+      "positional_only": [],
+      "trailing_positional_default_expressions": [],
+      "vararg": null
+    },
+    "qualification": "STATIC_CODE_FACTS_ONLY",
+    "return_annotation": "dict",
+    "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+    "schema": "truecore.agent_usage@1",
+    "source_entrypoint": "truecore.agents.bounded_job_workers:history_readiness",
+    "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+    "unresolved": [
+      "purpose",
+      "prerequisites",
+      "dependencies",
+      "effects",
+      "permissions",
+      "result_semantics",
+      "failure_conditions",
+      "retry",
+      "examples",
+      "backend_qualification"
+    ]
+  },
+  "usage_sha256": "4fa5c73fabb33efd9bd2f96e50e1cea606549152990986dc91fa0dc7d30070df",
+  "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/bounded_job_workers.py",
+  "version": "1.0.0",
+  "worker_result_schema": "truecore.worker_result@1"
+}

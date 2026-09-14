@@ -1,0 +1,88 @@
+{
+  "agent_id": "job_history_order",
+  "allowed_reads": [
+    "truecore/agents/bounded_job_workers.py",
+    "host-admitted TrueMem blocks"
+  ],
+  "allowed_writes": [
+    "host-admitted external job output"
+  ],
+  "approval_phrase": "",
+  "catalog_id": "job_history_order",
+  "command": [
+    "python3",
+    "-m",
+    "truecore.live_agents.generated_runtime",
+    "--module",
+    "truecore.agents.bounded_job_workers",
+    "--symbol",
+    "history_order",
+    "--input-json",
+    "{input_json}"
+  ],
+  "default_out_dir": "AGENTS/generated/runtime",
+  "description": "Project admitted TrueMem chat blocks with speaker identity and explicit order only",
+  "dry_run_supported": true,
+  "entrypoint": "truecore.live_agents.generated_runtime",
+  "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+  "id": "job_history_order",
+  "log_stream": "agent_decision",
+  "mutation_class": "contract_declared:write",
+  "name": "history_order",
+  "prompt_only_allowed": false,
+  "required_params": [
+    "input_json"
+  ],
+  "requires_approval": false,
+  "risk_tier": 1,
+  "runtime_language": "python",
+  "source_entrypoint": "truecore.agents.bounded_job_workers:history_order",
+  "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+  "test_command": [
+    "python3",
+    "-B",
+    "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/run_truecore_receipt_acceptance.py"
+  ],
+  "usage": {
+    "agent_id": "job_history_order",
+    "definition": {
+      "end_line": 170,
+      "line": 149,
+      "source": "def history_order(binding: dict, step_id: str) -> dict:\n    \"\"\"Delegate exact admitted block ordering to its TrueMem owner.\"\"\"\n    worker = 'job_history_order'\n    config, directory = selected(binding, step_id, worker)\n    if set(config) != {'blocks_path', 'blocks_sha256', 'dataset_id'}:\n        raise ValueError('INVALID_HISTORY_ORDER_BINDING')\n    raw = regular(config['blocks_path'])\n    if sha(raw) != config['blocks_sha256']:\n        raise ValueError('HISTORY_SOURCE_CHANGED')\n    blocks = [json.loads(line) for line in raw.splitlines() if line]\n    from truemem.engine.history_projection import project_history_order\n    projection = project_history_order(config['dataset_id'], blocks)\n    if sha(regular(config['blocks_path'])) != config['blocks_sha256']:\n        raise ValueError('HISTORY_SOURCE_CHANGED')\n    path = directory / (step_id + '.projection.json')\n    atomic(path, canonical(projection))\n    return build_result(worker_id=worker, operation='history.order', status='PARTIAL',\n        result={'node_count': len(projection['nodes']), 'relationship_count': len(projection['relationships']),\n                'source_sha256': config['blocks_sha256'], 'claim_class': projection['claim_class']},\n        unresolved=[{'code': 'NOT_IMPLEMENTED', 'need': need} for need in projection['unsupported']],\n        artifacts=[{'kind': 'speaker_preserving_order_projection', 'path': str(path), 'sha256': sha(regular(path))}],\n        continuation='STOP_PARTIAL', reason_code='ORDER_IS_NOT_CAUSAL_OR_INSTRUCTION_OWNERSHIP_PROOF')"
+    },
+    "parameters": {
+      "keyword_default_expressions": [],
+      "keyword_only": [],
+      "kwarg": null,
+      "positional": [
+        "binding: dict",
+        "step_id: str"
+      ],
+      "positional_only": [],
+      "trailing_positional_default_expressions": [],
+      "vararg": null
+    },
+    "qualification": "STATIC_CODE_FACTS_ONLY",
+    "return_annotation": "dict",
+    "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+    "schema": "truecore.agent_usage@1",
+    "source_entrypoint": "truecore.agents.bounded_job_workers:history_order",
+    "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
+    "unresolved": [
+      "purpose",
+      "prerequisites",
+      "dependencies",
+      "effects",
+      "permissions",
+      "result_semantics",
+      "failure_conditions",
+      "retry",
+      "examples",
+      "backend_qualification"
+    ]
+  },
+  "usage_sha256": "46e0340340b260c21546af20d930d44ee1be44a112c202a33e12e940584da75c",
+  "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/bounded_job_workers.py",
+  "version": "1.0.0",
+  "worker_result_schema": "truecore.worker_result@1"
+}

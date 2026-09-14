@@ -14,11 +14,11 @@ for import_root in (TRUECORE_ROOT, TRUEMACHINE_SRC):
         sys.path.insert(0, str(import_root))
 
 from truecore.live_agents.worker_result import build_result
-from truemachine.repository_views import run_view
+from truemachine.repository_views import run_view, validate_scopes
 
 
-def _execute(worker_id: str, view: str, map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    packet = run_view(map_dir, view, limit)
+def _execute(worker_id: str, view: str, map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    packet = run_view(map_dir, view, limit, scopes=scopes)
     grade = packet["result_grade"]
     if grade == "NOT_IMPLEMENTED":
         status = "NOT_IMPLEMENTED"
@@ -40,6 +40,11 @@ def _execute(worker_id: str, view: str, map_dir: str, limit: int = 5000) -> dict
             "channels": packet["channels"],
             "returned": packet["returned"],
             "total_matches": packet["total_matches"],
+            "filtered_matches": packet["filtered_matches"],
+            "requested_scopes": packet["requested_scopes"],
+            "limit": packet["limit"],
+            "ordering": packet["ordering"],
+            "group_scope_policy": packet["group_scope_policy"],
             "truncated": packet["truncated"],
         },
         locations=packet["locations"],
@@ -50,6 +55,8 @@ def _execute(worker_id: str, view: str, map_dir: str, limit: int = 5000) -> dict
             "receipt_type": "truemachine.repository_view@1",
             "snapshot_id": packet["snapshot_id"],
             "method": view,
+            "requested_scopes": packet["requested_scopes"],
+            "limit": packet["limit"],
             "receipt_sha256": receipt,
         }],
         continuation=continuation,
@@ -57,61 +64,61 @@ def _execute(worker_id: str, view: str, map_dir: str, limit: int = 5000) -> dict
     )
 
 
-def locate_external_entrypoints(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_external_entrypoints", "external_entrypoint_candidates", map_dir, limit)
+def locate_external_entrypoints(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_external_entrypoints", "external_entrypoint_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_filesystem_writers(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_filesystem_writers", "filesystem_writer_candidates", map_dir, limit)
+def locate_filesystem_writers(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_filesystem_writers", "filesystem_writer_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_process_execution(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_process_execution", "process_execution_candidates", map_dir, limit)
+def locate_process_execution(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_process_execution", "process_execution_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_direct_truemem_references(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_direct_truemem_references", "direct_truemem_references", map_dir, limit)
+def locate_direct_truemem_references(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_direct_truemem_references", "direct_truemem_references", map_dir, limit, scopes=scopes)
 
 
-def locate_truecore_bypass_candidates(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_truecore_bypass", "truecore_bypass_candidates", map_dir, limit)
+def locate_truecore_bypass_candidates(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_truecore_bypass", "truecore_bypass_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_agent_registration_surfaces(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_agent_registration", "agent_registration_candidates", map_dir, limit)
+def locate_agent_registration_surfaces(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_agent_registration", "agent_registration_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_security_config_writers(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_security_config_writers", "security_config_writer_candidates", map_dir, limit)
+def locate_security_config_writers(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_security_config_writers", "security_config_writer_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_canonical_evidence_writers(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_canonical_evidence_writers", "canonical_evidence_writer_candidates", map_dir, limit)
+def locate_canonical_evidence_writers(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_canonical_evidence_writers", "canonical_evidence_writer_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_untested_privileged_sinks(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_untested_privileged_sinks", "untested_privileged_sink_candidates", map_dir, limit)
+def locate_untested_privileged_sinks(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_untested_privileged_sinks", "untested_privileged_sink_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_unresolved_privileged_reachability(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_unresolved_privileged_reachability", "unresolved_privileged_reachability_candidates", map_dir, limit)
+def locate_unresolved_privileged_reachability(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_unresolved_privileged_reachability", "unresolved_privileged_reachability_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_detached_subgraphs(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_detached_subgraphs", "detached_subgraph_candidates", map_dir, limit)
+def locate_detached_subgraphs(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_detached_subgraphs", "detached_subgraph_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_no_incoming_dependencies(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_no_incoming_dependencies", "no_incoming_dependency_candidates", map_dir, limit)
+def locate_no_incoming_dependencies(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_no_incoming_dependencies", "no_incoming_dependency_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_documentation_claims_without_code(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_documentation_without_code", "documentation_claim_without_code_candidates", map_dir, limit)
+def locate_documentation_claims_without_code(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_documentation_without_code", "documentation_claim_without_code_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_code_without_documentation(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_code_without_documentation", "code_without_documentation_candidates", map_dir, limit)
+def locate_code_without_documentation(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_code_without_documentation", "code_without_documentation_candidates", map_dir, limit, scopes=scopes)
 
 
-def locate_duplicate_implementations(map_dir: str, limit: int = 5000) -> dict[str, Any]:
-    return _execute("repo_duplicate_implementations", "duplicate_implementation_candidates", map_dir, limit)
+def locate_duplicate_implementations(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:
+    return _execute("repo_duplicate_implementations", "duplicate_implementation_candidates", map_dir, limit, scopes=scopes)

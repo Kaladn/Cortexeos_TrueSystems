@@ -5,6 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 from typing import Any
+from truecore.receipt_store import atomic_json, digest, read_json
 
 from truecore.central.contracts import (
     build_facts_report,
@@ -63,23 +64,42 @@ class CentralWriter:
             validated_report = validate_legal_ip_trace_report(report)
         else:
             validated_report = validate_facts_report(report)
-        report_path = self.reports_dir / f"{validated_report['report_id']}.json"
-        _write_json(report_path, validated_report)
-
+        report_path = self.reports_dir / f"{_report_id(validated_report['report_id'])}-{digest(validated_report['report_id'])[:12]}.json"
         receipt = build_writer_receipt(
             request_id=request_id,
             receipt_id=f"receipt_{validated_report['report_id']}",
             status="rendered",
             output_ref=str(report_path),
         )
-        receipt_path = self.receipts_dir / f"{receipt['receipt_id']}.json"
-        _write_json(receipt_path, receipt)
+        if "_publication" in validated_report:
+            raise ValueError("publication metadata is writer-owned")
+        publication = {**validated_report, "_publication": {
+            "schema": "truecore.writer_publication@2", "receipt": receipt,
+            "report_sha256": digest(validated_report),
+        }}
+        atomic_json(report_path, publication)
         return {
             "report": validated_report,
             "receipt": receipt,
             "report_path": str(report_path),
-            "receipt_path": str(receipt_path),
+            "publication_schema": publication["_publication"]["schema"],
+            "receipt_ref": {"path": str(report_path), "member": "_publication.receipt"},
         }
+
+    @staticmethod
+    def read_publication(path: str | Path) -> dict[str, Any]:
+        publication = read_json(path)
+        metadata = publication.pop("_publication", {})
+        if metadata.get("schema") != "truecore.writer_publication@2":
+            raise ValueError("unsupported writer publication")
+        report = publication
+        if report.get("kind") == "truecore_legal_ip_trace_report":
+            validate_legal_ip_trace_report(report)
+        else:
+            validate_facts_report(report)
+        if digest(report) != metadata["report_sha256"]:
+            raise ValueError("report commitment mismatch")
+        return {"report": report, **metadata}
 
 
 def _report_id(request_id: str) -> str:

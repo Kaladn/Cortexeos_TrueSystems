@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any
 
 from truecore.time import is_canonical_utc_timestamp, utc_now
+from truecore.internal_watch.intervals import publish_observation
 
 
 ALLOWED_TRUST_TARGETS = {
@@ -49,12 +50,7 @@ class InternalSelfLogger:
             human_verification=human_verification,
             machine_growth=machine_growth,
         )
-        safe_time = receipt["created_at_utc"].replace(":", "").replace(".", "")
-        path = self.receipt_root / f"{safe_time}-{receipt['receipt_id']}.self_audit.json"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(receipt, indent=2, sort_keys=True), encoding="utf-8")
-        receipt["receipt_path"] = str(path)
-        return receipt
+        return publish_observation(self.receipt_root, receipt)
 
     def write_trust_receipt(
         self,
@@ -68,12 +64,7 @@ class InternalSelfLogger:
             checks=checks,
             observer_id=observer_id,
         )
-        safe_time = receipt["created_at_utc"].replace(":", "").replace(".", "")
-        path = self.receipt_root / f"{safe_time}-{receipt['receipt_id']}.system_trust.json"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(receipt, indent=2, sort_keys=True), encoding="utf-8")
-        receipt["receipt_path"] = str(path)
-        return receipt
+        return publish_observation(self.receipt_root, receipt)
 
 
 def build_self_audit_receipt(

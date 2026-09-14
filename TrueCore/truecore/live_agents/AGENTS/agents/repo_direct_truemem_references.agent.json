@@ -35,7 +35,7 @@
   "risk_tier": 1,
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.repository_graph_workers:locate_direct_truemem_references",
-  "source_entrypoint_hash": "sha256:e11ee84dcafb957f42ea1cbd5807b35cdc19dbbbd382a8823c6c4ec53da9c1c3",
+  "source_entrypoint_hash": "sha256:a5b664d9affdae16b961fa9dbe98dcfc3bbd872666a77963ac19b7919754809c",
   "test_command": [
     "python3",
     "-m",
@@ -45,13 +45,17 @@
   "usage": {
     "agent_id": "repo_direct_truemem_references",
     "definition": {
-      "end_line": 73,
-      "line": 72,
-      "source": "def locate_direct_truemem_references(map_dir: str, limit: int = 5000) -> dict[str, Any]:\n    return _execute(\"repo_direct_truemem_references\", \"direct_truemem_references\", map_dir, limit)"
+      "end_line": 80,
+      "line": 79,
+      "source": "def locate_direct_truemem_references(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:\n    return _execute(\"repo_direct_truemem_references\", \"direct_truemem_references\", map_dir, limit, scopes=scopes)"
     },
     "parameters": {
-      "keyword_default_expressions": [],
-      "keyword_only": [],
+      "keyword_default_expressions": [
+        null
+      ],
+      "keyword_only": [
+        "scopes: list[str] | tuple[str, ...]"
+      ],
       "kwarg": null,
       "positional": [
         "map_dir: str",
@@ -68,7 +72,7 @@
     "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
     "schema": "truecore.agent_usage@1",
     "source_entrypoint": "truecore.agents.repository_graph_workers:locate_direct_truemem_references",
-    "source_entrypoint_hash": "sha256:e11ee84dcafb957f42ea1cbd5807b35cdc19dbbbd382a8823c6c4ec53da9c1c3",
+    "source_entrypoint_hash": "sha256:a5b664d9affdae16b961fa9dbe98dcfc3bbd872666a77963ac19b7919754809c",
     "unresolved": [
       "purpose",
       "prerequisites",
@@ -82,7 +86,7 @@
       "backend_qualification"
     ]
   },
-  "usage_sha256": "b5286db4cf54a57ef25d9aee4fa51ccbfa2a5a048463d39fe11b05a52d0c9a8e",
+  "usage_sha256": "71d6f6bb1231b449e7c8b063d6494528f755370f2df7016906a9bcc3ff4670a1",
   "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/repository_graph_workers.py",
   "version": "1.0.0",
   "worker_result_schema": "truecore.worker_result@1"

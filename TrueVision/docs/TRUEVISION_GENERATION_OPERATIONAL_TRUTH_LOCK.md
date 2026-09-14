@@ -96,7 +96,8 @@ TrueVision Generation can teach AnchorWorks method discipline:
 state first
 render later
 manifest every run
-receipt every write
+retain native write proof
+one outer receipt per bounded job
 do not claim what state does not prove
 ```
 
@@ -131,3 +132,19 @@ State is the source.
 Pixels are the last mile.
 Receipts separate proof from excitement.
 ```
+
+## Bounded outer receipts
+
+`run_av_tool_call` preserves each tool's native result, state, manifests and typed
+proof. Its standalone outer receipt is compact and omits raw call/result/error
+copies. Successful inventory reads return an ephemeral result without a durable
+snapshot. `run_av_tool_job` groups up to 64 explicit independent calls into one
+outer terminal receipt; the state-video watcher's post-capture calls use it.
+A failed independent call does not silently suppress the remaining calls.
+
+Operation execution and outer receipt publication are separate. A receipt write
+failure cannot turn already completed media work into a rejected operation.
+Unpublished proof remains explicit. A pending job reserves its identity and
+cannot be automatically rerun; automated crash reconciliation is not qualified.
+Native media validation, calibration, state/replay formats and source retention
+remain separate. Teacher-state purge is not receipt housekeeping.

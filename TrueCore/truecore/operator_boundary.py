@@ -14,6 +14,7 @@ from types import MappingProxyType
 from .operator_contracts import contracts
 from .machine_navigation_bridge import MachineNavigationBridge, MachineNavigationBridgeError
 from .registered_worker_bridge import RegisteredWorkerBridge, RegisteredWorkerBridgeError
+from .bounded_jobs import JobBoundary
 
 OPERATIONS = MappingProxyType({
     'help.list': 'List this boundary and its limits; does not execute a component.',
@@ -23,6 +24,7 @@ OPERATIONS = MappingProxyType({
     'media.describe': 'Describe an admitted media tool declaration; does not execute or qualify the media tool.',
     'worker.invoke': 'Invoke one host-granted registered read-only worker on one host-bound resource.',
     'machine.invoke': 'Invoke one host-granted registered read-only TrueMachine navigation worker.',
+    'job.invoke': 'Execute one exact host-admitted finite job through registered workers.',
 })
 
 def strict_json(raw):
@@ -48,7 +50,7 @@ class Rejected(ValueError):
 
 class OperatorBoundary:
     def __init__(self, *, grants, artifacts, worker_grants=(), resources=None,
-                 machine_worker_grants=(), machine_resources=None, max_bytes=4_000_000):
+                 machine_worker_grants=(), machine_resources=None, jobs=None, max_bytes=4_000_000):
         if not set(grants) <= OPERATIONS.keys():
             raise ValueError('UNKNOWN_HOST_GRANT')
         self.grants = frozenset(grants)
@@ -60,6 +62,7 @@ class OperatorBoundary:
         if type(max_bytes) is not int or max_bytes <= 0:
             raise ValueError('INVALID_HOST_BUDGET')
         self.max_bytes = max_bytes
+        self.job_boundary = JobBoundary(jobs)
 
     def handle(self, request):
         # The canonical request hash also rejects non-JSON/NaN input.
@@ -87,7 +90,7 @@ class OperatorBoundary:
                           'contracts': contracts(),
                           'registered_workers': self.worker_bridge.public_contract(),
                           'machine_navigation': self.machine_bridge.public_contract(),
-                          'live_capture': False, 'mutation': False,
+                          'live_capture': False, 'mutation': bool('job.invoke' in self.grants and self.job_boundary.jobs),
                           'limits': ['Only listed operations are connected.',
                                      'Host grants are not human approval for other operations.']}
                 status = 'COMPLETE'
@@ -107,6 +110,10 @@ class OperatorBoundary:
                     status, reason = 'REJECTED', result['continuation']['reason_code']
                 else:
                     status = 'PARTIAL'
+            elif operation == 'job.invoke':
+                result = self.job_boundary.invoke(args)
+                status = {'COMPLETE': 'COMPLETE', 'REFUSED': 'REJECTED', 'FAILED': 'FAILED'}.get(result['status'], 'PARTIAL')
+                reason = None if status == 'COMPLETE' else result['continuation']['reason_code']
             else:
                 from .operator_workers import dispatch_read_worker
                 result = dispatch_read_worker(operation, args, self._read_artifact)
@@ -122,7 +129,8 @@ class OperatorBoundary:
                   'continuation': ('STOP_COMPLETE' if status == 'COMPLETE' else
                                    'STOP_PARTIAL' if status == 'PARTIAL' else 'STOP_UNRESOLVED'),
                   'verification_scope': 'STRUCTURE_AND_HOST_BOUND_HASHES_NOT_SEMANTIC_TRUTH',
-                  'execution_scope': 'READ_ONLY_ADMITTED_ARTIFACT_NO_CAPTURE_OR_ACTION'}
+                  'execution_scope': ('EXACT_HOST_ADMITTED_JOB' if isinstance(request, dict) and request.get('operation') == 'job.invoke'
+                                      else 'READ_ONLY_ADMITTED_ARTIFACT_NO_CAPTURE_OR_ACTION')}
         packet['receipt_sha256'] = digest(packet)
         return packet
 

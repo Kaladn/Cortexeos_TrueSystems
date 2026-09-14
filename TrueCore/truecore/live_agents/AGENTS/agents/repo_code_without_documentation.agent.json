@@ -35,7 +35,7 @@
   "risk_tier": 1,
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.repository_graph_workers:locate_code_without_documentation",
-  "source_entrypoint_hash": "sha256:e11ee84dcafb957f42ea1cbd5807b35cdc19dbbbd382a8823c6c4ec53da9c1c3",
+  "source_entrypoint_hash": "sha256:a5b664d9affdae16b961fa9dbe98dcfc3bbd872666a77963ac19b7919754809c",
   "test_command": [
     "python3",
     "-m",
@@ -45,13 +45,17 @@
   "usage": {
     "agent_id": "repo_code_without_documentation",
     "definition": {
-      "end_line": 113,
-      "line": 112,
-      "source": "def locate_code_without_documentation(map_dir: str, limit: int = 5000) -> dict[str, Any]:\n    return _execute(\"repo_code_without_documentation\", \"code_without_documentation_candidates\", map_dir, limit)"
+      "end_line": 120,
+      "line": 119,
+      "source": "def locate_code_without_documentation(map_dir: str, limit: int = 5000, *, scopes: list[str] | tuple[str, ...]) -> dict[str, Any]:\n    return _execute(\"repo_code_without_documentation\", \"code_without_documentation_candidates\", map_dir, limit, scopes=scopes)"
     },
     "parameters": {
-      "keyword_default_expressions": [],
-      "keyword_only": [],
+      "keyword_default_expressions": [
+        null
+      ],
+      "keyword_only": [
+        "scopes: list[str] | tuple[str, ...]"
+      ],
       "kwarg": null,
       "positional": [
         "map_dir: str",
@@ -68,7 +72,7 @@
     "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
     "schema": "truecore.agent_usage@1",
     "source_entrypoint": "truecore.agents.repository_graph_workers:locate_code_without_documentation",
-    "source_entrypoint_hash": "sha256:e11ee84dcafb957f42ea1cbd5807b35cdc19dbbbd382a8823c6c4ec53da9c1c3",
+    "source_entrypoint_hash": "sha256:a5b664d9affdae16b961fa9dbe98dcfc3bbd872666a77963ac19b7919754809c",
     "unresolved": [
       "purpose",
       "prerequisites",
@@ -82,7 +86,7 @@
       "backend_qualification"
     ]
   },
-  "usage_sha256": "aa53de2c11030c0301ad7a566045cda4a9c9583d6fe0545f058eef377ca21bdf",
+  "usage_sha256": "3023d6b99a3bc3116ac172ec6a2679e4b5ff81f143cfb6de51f92b30406a8353",
   "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/repository_graph_workers.py",
   "version": "1.0.0",
   "worker_result_schema": "truecore.worker_result@1"

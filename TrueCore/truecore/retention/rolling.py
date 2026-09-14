@@ -14,6 +14,8 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from truecore.time import is_canonical_utc_timestamp, utc_now
+from truecore.receipt_store import atomic_json
+from truecore.retention.transaction import execute_details
 
 
 @dataclass(frozen=True, slots=True)
@@ -58,13 +60,17 @@ class RollingRetentionManager:
         fusion_store,
         managed_roots: Iterable[str | Path],
         receipt_root: str | Path,
+        eligible_details: list[dict] | None = None,
+        protected_roots: Iterable[str | Path] = (),
     ):
         self.policy = policy
         self.fusion_store = fusion_store
         self.managed_roots = [Path(root) for root in managed_roots]
         self.receipt_root = Path(receipt_root)
+        self.eligible_details = list(eligible_details or [])
+        self.protected_roots = list(protected_roots)
 
-    def close_window(self, window: RetentionWindow) -> dict[str, Any]:
+    def close_window(self, window: RetentionWindow, *, transaction_id: str | None = None) -> dict[str, Any]:
         verify = self.fusion_store.verify()
         if not verify.get("intact"):
             return {
@@ -86,15 +92,19 @@ class RollingRetentionManager:
                 **summary,
             }
 
-        health_receipt = self._write_health_receipt(window, summary, verify)
-        deleted = self._delete_managed_files()
-        deletion_receipt = self._write_deletion_receipt(window, deleted, health_receipt)
+        eligible = [entry for entry in self.eligible_details
+                    if _parse_utc(window.start_utc) <= _parse_utc(entry["recorded_at_utc"]) < _parse_utc(window.end_utc)]
+        result = execute_details(entries=eligible, managed_roots=self.managed_roots,
+                                 protected_roots=self.protected_roots, receipt_root=self.receipt_root,
+                                 transaction_id=transaction_id or window.label,
+                                 context={"window": _window_dict(window), "fusion_verify": verify, **summary})
         return {
-            "decision": "deleted_clean_window",
+            "schema": "truecore.retention_window_result@2",
+            "decision": ("deleted_clean_window" if eligible else "no_eligible_details") if result["status"] == "complete" else "partial_retention",
             "window": _window_dict(window),
-            "health_receipt_path": str(health_receipt),
-            "deletion_receipt_path": str(deletion_receipt),
-            "deleted_file_count": len(deleted),
+            "job_receipt_path": result.get("receipt_path"),
+            "deleted_file_count": result["deleted_file_count"],
+            "transaction": result,
             **summary,
         }
 
@@ -145,28 +155,6 @@ class RollingRetentionManager:
         }
         _write_json(path, payload)
         return path
-
-    def _delete_managed_files(self) -> list[dict]:
-        deleted: list[dict] = []
-        for root in self.managed_roots:
-            if not root.exists():
-                continue
-            for path in sorted(root.rglob("*")):
-                if not path.is_file():
-                    continue
-                stat = path.stat()
-                digest = _file_hash(path)
-                size = stat.st_size
-                path.unlink()
-                deleted.append(
-                    {
-                        "path": str(path),
-                        "size": size,
-                        "sha256_before_delete": digest,
-                    }
-                )
-        return deleted
-
 
 def _summarize_blocks(blocks: list[dict[str, Any]]) -> dict[str, Any]:
     source_counts: dict[str, int] = {}
@@ -222,8 +210,7 @@ def _delete_empty_dirs(root: Path) -> None:
 
 
 def _write_json(path: Path, payload: dict[str, Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(payload, indent=2, sort_keys=True), encoding="utf-8")
+    atomic_json(path, payload)
 
 
 def _file_hash(path: Path) -> str:

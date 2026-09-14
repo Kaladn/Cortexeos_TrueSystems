@@ -42,7 +42,7 @@ from truevision_runtime.studio.studio_tooling import (
 
 from .av_recalibration import append_recalibration_event, list_recalibration_events
 from .av_tool_policy import AVToolPolicyError, safe_flat_json_name, validate_tool_call
-from .av_tool_receipts import stable_hash, utc_now, write_tool_receipt
+from .av_tool_receipts import AVReceiptJob, reserve_job_call, stable_hash, utc_now, write_tool_receipt
 
 
 def _ensure_storage(storage_root: Path) -> None:
@@ -886,12 +886,46 @@ def _execute_validated_tool(validated: dict[str, Any], storage_root: Path) -> di
 
 def run_av_tool_call(call: dict[str, Any], *, storage_root: Path) -> dict[str, Any]:
     _ensure_storage(storage_root)
-    tool = str(call.get("tool") or "unknown") if isinstance(call, dict) else "invalid"
+    reserve_job_call(storage_root)
+    tool = "unknown"
     try:
         validated = validate_tool_call(call)
+        tool = validated["tool"]
         result = _execute_validated_tool(validated, storage_root)
-        receipt = write_tool_receipt(storage_root=storage_root, tool=validated["tool"], status="ok", call=validated, result=result)
-        return {"ok": True, "tool": validated["tool"], "result": result, "receipt": receipt}
+        packet = {"ok": True, "tool": tool, "result": result, "execution_status": "completed"}
     except Exception as exc:
-        receipt = write_tool_receipt(storage_root=storage_root, tool=tool, status="rejected", call=call if isinstance(call, dict) else {}, error=str(exc))
-        return {"ok": False, "tool": tool, "error": str(exc), "receipt": receipt}
+        # Do not reflect raw rejected inputs, paths or exception dumps outward.
+        reason = "AV_POLICY_REJECTED" if isinstance(exc, AVToolPolicyError) else "AV_OPERATION_FAILED"
+        packet = {"ok": False, "tool": tool, "error": reason, "execution_status": "rejected_or_failed"}
+    try:
+        packet["receipt"] = write_tool_receipt(storage_root=storage_root, tool=tool,
+            status="ok" if packet["ok"] else "rejected", call={}, result=packet.get("result"))
+        packet["receipt_publication"] = packet["receipt"].get("publication", "published")
+    except Exception:
+        # The operation outcome is already known. A logging failure must never
+        # misreport successful media work as rejected or cause an automatic retry.
+        packet["receipt"] = {"kind": "unpublished_operation_receipt", "publication": "unverified"}
+        packet["receipt_publication"] = "unverified"
+    return packet
+
+
+def run_av_tool_job(calls: list[dict[str, Any]], *, storage_root: Path,
+                    job_id: str | None = None) -> dict[str, Any]:
+    """Run a finite host-selected group with one outer terminal receipt.
+
+    Native state, manifests, validation and typed media proof remain owned by
+    each tool. No per-call full payloads are accumulated for later persistence.
+    """
+    if not isinstance(calls, list) or not 1 <= len(calls) <= 64:
+        raise ValueError("INVALID_AV_JOB_CALLS")
+    results = []
+    with AVReceiptJob(storage_root, job_id=job_id, max_calls=len(calls)) as job:
+        for call in calls:
+            result = run_av_tool_call(call, storage_root=storage_root)
+            results.append(result)
+    for result in results:
+        result["receipt"] = {**job.receipt, "operation_status": "ok" if result["ok"] else "rejected"}
+        result["receipt_publication"] = job.receipt["publication"]
+    return {"ok": len(results) == len(calls) and all(r["ok"] for r in results),
+            "results": results, "receipt": job.receipt,
+            "unexecuted_calls": len(calls) - len(results)}

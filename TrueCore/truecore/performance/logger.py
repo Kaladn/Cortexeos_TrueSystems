@@ -4,26 +4,84 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
+from contextlib import contextmanager
+from uuid import uuid4
 from pathlib import Path
 from typing import Any
 
 from truecore.time import is_canonical_utc_timestamp, utc_now
+from truecore.receipt_store import atomic_json
 
 
 class PerformanceLogger:
-    """Write cost posture receipts for workers, tools, algorithms, and models."""
+    """Standalone receipts or one terminal publication for a finite metric batch."""
 
     def __init__(self, receipt_root: str | Path):
         self.receipt_root = Path(receipt_root)
+        self._batch_active = False
+        self._pending = None
+        self.last_publication = None
+
+    @contextmanager
+    def batch(self):
+        """At most 256 samples for one algorithm/run; no per-sample disk writes.
+
+        Routine buffered metrics can be lost on process death. They are never
+        authorization, native AV state, recovery evidence, or independent trust.
+        """
+        if self._batch_active:
+            raise ValueError("nested performance batch")
+        self._batch_active, self._pending = True, None
+        self.last_publication = None
+        failed = False
+        try:
+            yield self
+        except BaseException:
+            failed = True
+            raise
+        finally:
+            self._batch_active = False
+            if self._pending is not None:
+                self._pending["batch_status"] = "partial" if failed else "complete"
+                self.last_publication = self._publish(self._pending)
+            self._pending = None
 
     def write_receipt(self, **kwargs) -> dict[str, Any]:
         receipt = build_performance_receipt(**kwargs)
-        safe_time = receipt["created_at_utc"].replace(":", "").replace(".", "")
-        path = self.receipt_root / f"{safe_time}-{receipt['receipt_id']}.performance.json"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(json.dumps(receipt, indent=2, sort_keys=True), encoding="utf-8")
-        receipt["receipt_path"] = str(path)
-        return receipt
+        if not self._batch_active:
+            return self._publish(receipt)
+        if self._pending is not None:
+            if any(receipt[k] != self._pending[k] for k in ("algorithm_id", "run_id")):
+                raise ValueError("performance batch cannot combine unrelated runs")
+            interval = self._pending["interval"]
+            if interval["sample_count"] >= 256:
+                raise ValueError("performance batch sample budget exceeded")
+        else:
+            interval = {"sample_count": 0, "totals": {}, "maxima": {}, "missing": {},
+                        "duration_bins_ms": [1, 10, 100, 1000, 10000], "duration_counts": [0] * 6,
+                        "first_observed_at_utc": receipt["created_at_utc"]}
+        interval["sample_count"] += 1
+        interval["last_observed_at_utc"] = receipt["created_at_utc"]
+        for field in ("duration_ms", "cpu_ms", "memory_peak_mb", "disk_read_mb", "disk_write_mb",
+                      "forge_write_latency_ms", "fusion_block_build_ms", "queue_wait_ms",
+                      "model_inference_latency_ms", "gpu_vram_peak_mb", "energy_estimate_wh",
+                      "records_processed", "blocks_processed", "error_count"):
+            value = receipt[field]
+            if value is None:
+                interval["missing"][field] = interval["missing"].get(field, 0) + 1
+            else:
+                interval["totals"][field] = interval["totals"].get(field, 0) + value
+                interval["maxima"][field] = max(interval["maxima"].get(field, 0), value)
+        bucket = next((i for i, edge in enumerate(interval["duration_bins_ms"]) if receipt["duration_ms"] <= edge), 5)
+        interval["duration_counts"][bucket] += 1
+        self._pending = {**receipt, "interval": interval}
+        return {**receipt, "receipt_path": None, "receipt_publication": "buffered"}
+
+    def _publish(self, receipt):
+        path = self.receipt_root / (uuid4().hex + ".performance.json")
+        atomic_json(path, receipt)
+        return {**receipt, "receipt_path": str(path), "receipt_publication": "published"}
 
 
 def build_performance_receipt(
@@ -151,11 +209,11 @@ def validate_performance_receipt(receipt: dict[str, Any]) -> dict[str, Any]:
         "events_per_second",
         "blocks_per_second",
     ):
-        if float(receipt[field]) < 0:
+        if not math.isfinite(float(receipt[field])) or float(receipt[field]) < 0:
             raise ValueError(f"{field} may not be negative")
     for field in ("gpu_vram_peak_mb", "energy_estimate_wh"):
         value = receipt[field]
-        if value is not None and float(value) < 0:
+        if value is not None and (not math.isfinite(float(value)) or float(value) < 0):
             raise ValueError(f"{field} may not be negative")
     return receipt
 
