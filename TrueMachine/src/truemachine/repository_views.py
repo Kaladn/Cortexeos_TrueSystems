@@ -93,6 +93,8 @@ def _source_scope(path: str) -> str:
         return "RESEARCH_REFERENCE_NOT_RUNTIME"
     if "tests" in parts or Path(path).name.startswith("test_"):
         return "TEST"
+    if "training" in parts:
+        return "TRAINING_OR_EXPERIMENT"
     if "scripts" in parts:
         return "SCRIPT"
     if "docs" in parts or Path(path).suffix.casefold() in {".md", ".rst"}:
@@ -103,7 +105,11 @@ def _source_scope(path: str) -> str:
         "TrueMem/src/truemem/",
         "TrueVision/truevision_runtime/",
         "TrueAudio/trueaudio_runtime/",
+        "TrueSpeech/truespeech_runtime/",
+        "TrueVisionIntake/truevision_intake/",
         "LocalMemoryChat/src/local_memory_chat/",
+        "clearbox-chat-chain/src/clearbox_chat_chain/",
+        "control-api/src/truesystems_api/",
     )
     if path.startswith(runtime_prefixes):
         return "RUNTIME_SOURCE"

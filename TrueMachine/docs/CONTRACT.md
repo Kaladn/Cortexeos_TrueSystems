@@ -136,8 +136,9 @@ unresolved prerequisites, truncation state, locations/relationships, a receipt,
 and `answer: null`. The view engine does not perform security adjudication.
 
 Every returned location also carries a deterministic path-derived source scope
-(`RUNTIME_SOURCE`, `TEST`, `SCRIPT`, `DOCUMENTATION`, `PROJECT_SOURCE`, or
-`RESEARCH_REFERENCE_NOT_RUNTIME`). This scope is not reachability proof. An
+(`RUNTIME_SOURCE`, `TRAINING_OR_EXPERIMENT`, `TEST`, `SCRIPT`, `DOCUMENTATION`,
+`PROJECT_SOURCE`, or `RESEARCH_REFERENCE_NOT_RUNTIME`). This scope is not
+reachability proof. An
 unqualified string `.replace()` call is not classified as a filesystem write,
 and an internal helper merely containing the characters `truemem` is not a
 direct TrueMem reference.
