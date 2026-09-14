@@ -1,0 +1,32 @@
+{
+  "schema": "truecog.partial_collection_repair@1",
+  "created_at_utc": "2026-09-14T09:32:55Z",
+  "repository": "/home/lamercey/TrueSystems-Alignment",
+  "starting_commit": "2d80989",
+  "status": "VERIFIED_AWAITING_COMMIT",
+  "authority": "CODE_PLUS_PASSING_EXTERNAL_TESTS",
+  "changes": [
+    "MEMORY_PROCESS_NETWORK_SCHEMAS_BUMPED_TO_V2",
+    "MISSING_MEMORY_FIELDS_EXPLICIT",
+    "UNREADABLE_PROCESS_STATUS_EXPLICIT",
+    "UNREADABLE_NETWORK_INTERFACE_FIELDS_EXPLICIT",
+    "COLLECTOR_ROOTS_INJECTABLE_FOR_ISOLATED_QUALIFICATION"
+  ],
+  "source_hashes": {
+    "TrueMachine/src/truemachine/collectors/linux.py": "f9204cba85e84279fab26a26f8a8bd00a91472b84d5fca32eb122f8e302d3f2f",
+    "TrueMachine/README.md": "8802212a22243f8a482d2b8e74dd18b9b823c6203b27e6078caeacc7fc7210f4",
+    "TrueMachine/docs/CONTRACT.md": "af204754ff93bb5fcd2dd88b89c5b1a0c8cf4002e26c21f7b573806d11e0fd34"
+  },
+  "acceptance": {
+    "test": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/test_truecog_doc_code_audit.py",
+    "output_directory": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/truecog-doc-code-audit-20260914T093255Z",
+    "summary_sha256": "59257086548f6c71ec8fda74cd7bc0b3b9d6edfea648ccfdb131b4ff4ecbbd16",
+    "test_log_sha256": "ad2e1edd836777fe52d5f721151bca4e06d5ea26f9841440a053464e9d2c40e9",
+    "result": "PASS_10_OF_10"
+  },
+  "limitations": [
+    "COLLECTOR_START_END_TIMING_NOT_IMPLEMENTED",
+    "CADENCE_LATE_GAP_ACCOUNTING_NOT_IMPLEMENTED",
+    "FUSION_OBSERVATION_TOP_LEVEL_REMAINS_SCHEMA_V1"
+  ]
+}

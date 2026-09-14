@@ -14,7 +14,9 @@ video, key-content, or pointer-coordinate capture.
 
 The default Linux pack keeps network interface state and machine load in
 separate observations. Fusion commits are serialized by an advisory state-store
-writer lock before WAL append and publication.
+writer lock before WAL append and publication. Memory, process, and network
+collector `@2` packets expose partial item reads instead of silently skipping
+them.
 
 Run for one minute:
 

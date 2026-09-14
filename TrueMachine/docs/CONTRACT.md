@@ -74,6 +74,12 @@ load is a separate `linux.load` observation sourced from `getloadavg(3)`. The
 collectors are sampled serially after the pack time sample; their presence in
 one pack is shared attribution, not a claim of simultaneous measurement.
 
+Memory, process, and network collectors use their `@2` schemas. They return a
+`collection_status` plus explicit `unresolved` records when required memory
+fields, process-status files, or interface fields cannot be read or parsed.
+Individual failures are no longer silently discarded. A top-level collector
+failure still becomes an error Observation at the engine boundary.
+
 ## Repository-state observation
 
 TrueMachine owns repository-state observation because a repository is mutable
