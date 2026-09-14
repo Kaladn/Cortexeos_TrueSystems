@@ -12,6 +12,10 @@ of its evidence; TrueCore is not part of this repository.
 It has no third-party runtime dependencies and performs no screen, image,
 video, key-content, or pointer-coordinate capture.
 
+The default Linux pack keeps network interface state and machine load in
+separate observations. Fusion commits are serialized by an advisory state-store
+writer lock before WAL append and publication.
+
 Run for one minute:
 
 ```bash

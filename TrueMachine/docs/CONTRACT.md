@@ -31,10 +31,12 @@ explicit error. Missing evidence is never replaced with invented values.
 
 The durable order is:
 
-1. serialize one canonical Fusion Pack;
-2. append and `fsync` its envelope to `fusion.wal.jsonl`;
-3. atomically publish `packs/<run_id>/<sequence>.fusion.json`;
-4. atomically update `current.fusion.json`.
+1. acquire the state directory's advisory exclusive writer lock;
+2. serialize one canonical Fusion Pack;
+3. append and `fsync` its envelope to `fusion.wal.jsonl`;
+4. atomically publish `packs/<run_id>/<sequence>.fusion.json`;
+5. atomically update `current.fusion.json`;
+6. release the writer lock.
 
 The WAL envelope carries the SHA-256 of the exact canonical pack bytes.
 `FusionStore.verify()` recalculates that envelope hash, binds envelope run and
@@ -66,6 +68,11 @@ owns observation and Fusion Pack custody. TrueCore is a downstream security
 consumer and cannot own or rewrite capture, timestamps, admitted state, or
 fusion. Broader CompuCog/TrueCog cognition remains a design target rather than a
 claim established by this package.
+
+Linux network observation contains interface state and counters only. Machine
+load is a separate `linux.load` observation sourced from `getloadavg(3)`. The
+collectors are sampled serially after the pack time sample; their presence in
+one pack is shared attribution, not a claim of simultaneous measurement.
 
 ## Repository-state observation
 

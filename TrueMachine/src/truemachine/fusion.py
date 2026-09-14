@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import fcntl
 import json
 import os
 from pathlib import Path
@@ -27,6 +28,7 @@ class FusionStore:
             self.packs_dir.mkdir(parents=True, exist_ok=True)
         self.wal_path = self.state_dir / "fusion.wal.jsonl"
         self.current_path = self.state_dir / "current.fusion.json"
+        self.lock_path = self.state_dir / ".fusion-writer.lock"
 
     @staticmethod
     def _atomic_write(path: Path, content: bytes) -> None:
@@ -48,21 +50,26 @@ class FusionStore:
                 os.unlink(temporary)
 
     def commit(self, pack: FusionPack) -> Path:
-        content = canonical_json(pack.to_dict())
-        digest = hashlib.sha256(content).hexdigest()
-        envelope = canonical_json({
-            "run_id": pack.run_id,
-            "sequence": pack.sequence,
-            "sha256": digest,
-            "pack": pack.to_dict(),
-        })
-        with self.wal_path.open("ab", buffering=0) as wal:
-            wal.write(envelope)
-            os.fsync(wal.fileno())
-        pack_path = self.packs_dir / pack.run_id / f"{pack.sequence:012d}.fusion.json"
-        self._atomic_write(pack_path, content)
-        self._atomic_write(self.current_path, content)
-        return pack_path
+        with self.lock_path.open("ab") as lock:
+            fcntl.flock(lock.fileno(), fcntl.LOCK_EX)
+            try:
+                content = canonical_json(pack.to_dict())
+                digest = hashlib.sha256(content).hexdigest()
+                envelope = canonical_json({
+                    "run_id": pack.run_id,
+                    "sequence": pack.sequence,
+                    "sha256": digest,
+                    "pack": pack.to_dict(),
+                })
+                with self.wal_path.open("ab", buffering=0) as wal:
+                    wal.write(envelope)
+                    os.fsync(wal.fileno())
+                pack_path = self.packs_dir / pack.run_id / f"{pack.sequence:012d}.fusion.json"
+                self._atomic_write(pack_path, content)
+                self._atomic_write(self.current_path, content)
+                return pack_path
+            finally:
+                fcntl.flock(lock.fileno(), fcntl.LOCK_UN)
 
     @staticmethod
     def _read_regular(path: Path) -> bytes:

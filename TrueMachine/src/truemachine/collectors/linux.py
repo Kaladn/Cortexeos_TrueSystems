@@ -71,7 +71,7 @@ class ProcessCollector:
 class NetworkCollector:
     name = "linux.network"
     schema = "truemachine.linux.network@1"
-    source_coordinates = ("/sys/class/net/<interface>", "getloadavg(3)")
+    source_coordinates = ("/sys/class/net/<interface>",)
 
     def collect(self) -> dict:
         interfaces = []
@@ -86,5 +86,13 @@ class NetworkCollector:
                 })
             except (FileNotFoundError, PermissionError, ValueError):
                 continue
-        load = os.getloadavg()
-        return {"interfaces": interfaces, "load_average": list(load)}
+        return {"interfaces": interfaces}
+
+
+class LoadCollector:
+    name = "linux.load"
+    schema = "truemachine.linux.load@1"
+    source_coordinates = ("getloadavg(3)",)
+
+    def collect(self) -> dict:
+        return {"load_average": list(os.getloadavg())}

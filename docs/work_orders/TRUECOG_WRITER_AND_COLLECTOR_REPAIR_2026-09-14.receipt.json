@@ -1,0 +1,36 @@
+{
+  "schema": "truecog.writer_collector_repair@1",
+  "created_at_utc": "2026-09-14T09:30:43Z",
+  "repository": "/home/lamercey/TrueSystems-Alignment",
+  "starting_commit": "48e31e2",
+  "status": "VERIFIED_AWAITING_COMMIT",
+  "authority": "CODE_PLUS_PASSING_EXTERNAL_TESTS",
+  "changes": [
+    "FUSION_COMMITS_SERIALIZED_BY_ADVISORY_EXCLUSIVE_STATE_STORE_LOCK",
+    "LINUX_NETWORK_CONTAINS_INTERFACE_STATE_ONLY",
+    "LINUX_LOAD_IS_SEPARATE_SOURCE_OWNED_OBSERVATION",
+    "PACK_ATTRIBUTION_EXPLICITLY_NOT_SIMULTANEOUS_COLLECTION"
+  ],
+  "source_hashes": {
+    "TrueMachine/src/truemachine/fusion.py": "fe470167be6af4141b4e61c8e5aec486536e8a9046f9ba525648379d602a898f",
+    "TrueMachine/src/truemachine/collectors/linux.py": "0b69cf1c5eef85bcf9f315dbbf4962298381a7f52cbb12f811015c3878587530",
+    "TrueMachine/src/truemachine/collectors/__init__.py": "e4df03c7546e008d40b2f344def1aaf05a34f254a6d959b0ca9d0e54b6db35cd",
+    "TrueMachine/src/truemachine/cli.py": "cd6743f20211eb370ceda82a4634cfb3a4c603a19aa23102978afe95fa64259b",
+    "TrueMachine/README.md": "9db8ff9666f57f1eee0df39c77ad57338c67a37cab49e98dd05ea88e5672f69a",
+    "TrueMachine/docs/CONTRACT.md": "4b4094e4247ee6ce512fd3afd760b3a22855e887076d756ffdac4301a4af64f3"
+  },
+  "acceptance": {
+    "test": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/test_truecog_doc_code_audit.py",
+    "output_directory": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/truecog-doc-code-audit-20260914T093043Z",
+    "summary_sha256": "083a8bb0e05e6f47db93e0e43df65db9480c1c38097b39e0d2ac556438669475",
+    "test_log_sha256": "9490489127a0be8ab7b189c6b093f1c14c2bbaa76c4621684627d5e33bbb9a9e",
+    "result": "PASS_9_OF_9"
+  },
+  "limitations": [
+    "ADVISORY_LOCK_REQUIRES_ALL_WRITERS_TO_USE_FUSIONSTORE",
+    "COLLECTOR_ITEM_LEVEL_PARTIAL_DIAGNOSTICS_NOT_IMPLEMENTED",
+    "COLLECTOR_START_END_TIMING_NOT_IMPLEMENTED",
+    "CADENCE_LATE_GAP_ACCOUNTING_NOT_IMPLEMENTED",
+    "WAL_AHEAD_RECOVERY_NOT_IMPLEMENTED"
+  ]
+}

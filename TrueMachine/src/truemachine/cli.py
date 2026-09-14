@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from .collectors import IdentityCollector, MemoryCollector, NetworkCollector, ProcessCollector, StateArtifactCollector
+from .collectors import IdentityCollector, LoadCollector, MemoryCollector, NetworkCollector, ProcessCollector, StateArtifactCollector
 from .engine import TemporalEngine
 from .fusion import FusionStore
 from . import repository_map
@@ -69,7 +69,7 @@ def main() -> int:
         return 0
     store = FusionStore(args.state_dir)
     cadence_ns = int(args.interval * 1_000_000_000)
-    collectors = [IdentityCollector(), MemoryCollector(), ProcessCollector(), NetworkCollector()]
+    collectors = [IdentityCollector(), MemoryCollector(), ProcessCollector(), NetworkCollector(), LoadCollector()]
     for system, paths in (
         ("truevision", args.truevision_state),
         ("trueaudio", args.trueaudio_state),
