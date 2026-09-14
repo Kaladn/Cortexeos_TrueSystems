@@ -16,6 +16,7 @@ from .live_agents.worker_result import validate_result
 RESOURCE_KIND = "TRUEMACHINE_FILESYSTEM_ROOT"
 SYSTEMCTL_KIND = "TRUEMACHINE_SYSTEMCTL_EXECUTABLE"
 GIT_KIND = "TRUEMACHINE_GIT_REPOSITORY"
+INTEGRITY_SNAPSHOT_KIND = "TRUEMACHINE_INTEGRITY_SNAPSHOT"
 SOURCE_MODULE = "truecore.agents.machine_navigation_workers"
 AGENT_DIR = Path(__file__).resolve().parent / "live_agents" / "AGENTS" / "agents"
 RESOURCE_FIELDS = {
@@ -24,6 +25,7 @@ RESOURCE_FIELDS = {
 }
 GIT_RESOURCE_FIELDS = RESOURCE_FIELDS | {"executable_path", "executable_sha256"}
 SYSTEMCTL_RESOURCE_FIELDS = RESOURCE_FIELDS | {"executable_sha256"}
+INTEGRITY_RESOURCE_FIELDS = RESOURCE_FIELDS | {"manifest_sha256"}
 
 WORKERS: dict[str, Callable[[str, dict[str, Any], dict[str, int]], dict[str, Any]]] = {
     "fs.list": workers.filesystem_list,
@@ -40,6 +42,7 @@ WORKERS: dict[str, Callable[[str, dict[str, Any], dict[str, int]], dict[str, Any
     "log.query": workers.log_query,
     "service.status": workers.service_status,
     "repo.status": workers.repository_status,
+    "integrity.verify": workers.repository_integrity_verify,
 }
 
 
@@ -74,11 +77,11 @@ def _validate_resource(resource_id: str, binding: dict[str, Any]) -> dict[str, A
     if not isinstance(resource_id, str) or not resource_id:
         raise MachineNavigationBridgeError("INVALID_MACHINE_RESOURCE_ID")
     if not isinstance(binding, dict) or set(binding) not in (
-        RESOURCE_FIELDS, GIT_RESOURCE_FIELDS, SYSTEMCTL_RESOURCE_FIELDS,
+        RESOURCE_FIELDS, GIT_RESOURCE_FIELDS, SYSTEMCTL_RESOURCE_FIELDS, INTEGRITY_RESOURCE_FIELDS,
     ):
         raise MachineNavigationBridgeError("INVALID_MACHINE_RESOURCE_BINDING")
     kind = binding["kind"]
-    if kind not in {RESOURCE_KIND, SYSTEMCTL_KIND, GIT_KIND}:
+    if kind not in {RESOURCE_KIND, SYSTEMCTL_KIND, GIT_KIND, INTEGRITY_SNAPSHOT_KIND}:
         raise MachineNavigationBridgeError("UNSUPPORTED_MACHINE_RESOURCE_KIND")
     path = Path(binding["path"])
     expected_file = kind == SYSTEMCTL_KIND
@@ -128,6 +131,16 @@ def _validate_resource(resource_id: str, binding: dict[str, Any]) -> dict[str, A
             "executable_path": str(executable.resolve()), "executable_sha256": actual,
             "executable_device": executable_info.st_dev, "executable_inode": executable_info.st_ino,
         })
+    if kind == INTEGRITY_SNAPSHOT_KIND:
+        if set(binding) != INTEGRITY_RESOURCE_FIELDS or set(allowed) != {"integrity.verify"}:
+            raise MachineNavigationBridgeError("INVALID_INTEGRITY_RESOURCE_WORKERS")
+        manifest_path = resolved / "manifest.json"
+        if manifest_path.is_symlink() or not manifest_path.is_file():
+            raise MachineNavigationBridgeError("INTEGRITY_MANIFEST_NOT_FOUND")
+        actual = "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+        if binding["manifest_sha256"] != actual:
+            raise MachineNavigationBridgeError("INTEGRITY_MANIFEST_HASH_MISMATCH")
+        result["manifest_sha256"] = actual
     if kind == RESOURCE_KIND and set(binding) != RESOURCE_FIELDS:
         raise MachineNavigationBridgeError("INVALID_MACHINE_RESOURCE_BINDING")
     return result
@@ -154,6 +167,13 @@ def _check_root_identity(resource: dict[str, Any]) -> None:
             executable_info.st_ino != resource["executable_inode"] or actual != resource["executable_sha256"]
         ):
             raise MachineNavigationBridgeError("GIT_EXECUTABLE_CHANGED")
+    if resource["kind"] == INTEGRITY_SNAPSHOT_KIND:
+        manifest_path = path / "manifest.json"
+        if manifest_path.is_symlink() or not manifest_path.is_file():
+            raise MachineNavigationBridgeError("INTEGRITY_SNAPSHOT_CHANGED")
+        actual = "sha256:" + hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+        if actual != resource["manifest_sha256"]:
+            raise MachineNavigationBridgeError("INTEGRITY_SNAPSHOT_CHANGED")
 
 
 class MachineNavigationBridge:

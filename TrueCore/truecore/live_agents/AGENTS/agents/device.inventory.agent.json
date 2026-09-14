@@ -34,7 +34,7 @@
   "risk_tier": 1,
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.machine_navigation_workers:device_inventory",
-  "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
+  "source_entrypoint_hash": "sha256:0a5a8c23ed33f06a7780164f24989fdc2c0b07afdcdce6f085098de05dcd0404",
   "test_command": [
     "python3",
     "-m",
@@ -44,8 +44,8 @@
   "usage": {
     "agent_id": "device.inventory",
     "definition": {
-      "end_line": 110,
-      "line": 109,
+      "end_line": 111,
+      "line": 110,
       "source": "def device_inventory(root_path: str, parameters: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:\n    return _execute(\"device.inventory\", root_path, parameters, limits)"
     },
     "parameters": {
@@ -66,7 +66,7 @@
     "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
     "schema": "truecore.agent_usage@1",
     "source_entrypoint": "truecore.agents.machine_navigation_workers:device_inventory",
-    "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
+    "source_entrypoint_hash": "sha256:0a5a8c23ed33f06a7780164f24989fdc2c0b07afdcdce6f085098de05dcd0404",
     "unresolved": [
       "purpose",
       "prerequisites",
@@ -80,7 +80,7 @@
       "backend_qualification"
     ]
   },
-  "usage_sha256": "739d09cb16b0a2d643e8224382da047602f6a973d95e0f02607183a06a076aeb",
+  "usage_sha256": "e734e7234f7ac966b06cf174d9a33672e227d9fe90e59a7b8057fb3fffcd6267",
   "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/machine_navigation_workers.py",
   "version": "1.0.0",
   "worker_result_schema": "truecore.worker_result@1"

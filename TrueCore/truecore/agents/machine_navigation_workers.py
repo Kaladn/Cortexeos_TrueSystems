@@ -19,6 +19,7 @@ from truemachine.command_observation import OPERATIONS as COMMAND_OPERATIONS
 from truemachine.command_observation import run as run_command
 from truemachine.system_observation import OPERATIONS as SYSTEM_OPERATIONS
 from truemachine.system_observation import run as run_system
+from truemachine.repository_integrity import verify_snapshot
 
 
 def _execute(
@@ -128,3 +129,30 @@ def service_status(root_path: str, parameters: dict[str, Any], limits: dict[str,
 
 def repository_status(root_path: str, parameters: dict[str, Any], limits: dict[str, Any]) -> dict[str, Any]:
     return _execute("repo.status", root_path, parameters, limits)
+
+
+def repository_integrity_verify(root_path: str, parameters: dict[str, Any], limits: dict[str, Any]) -> dict[str, Any]:
+    if parameters:
+        return build_result(
+            worker_id="integrity.verify", operation="integrity.verify", status="REFUSED",
+            errors=[{"kind": "INVALID_PARAMETERS", "message": "integrity verification accepts no model parameters"}],
+            continuation="STOP_REFUSED", reason_code="NAVIGATION_CONTRACT_REJECTED",
+        )
+    report = verify_snapshot(
+        root_path,
+        max_entries=limits["max_entries"],
+        max_file_bytes=limits["max_file_bytes"],
+        max_total_bytes=limits["max_total_bytes"],
+        timeout_seconds=limits["timeout_seconds"],
+    )
+    changed = report["status"] != "VERIFIED"
+    return build_result(
+        worker_id="integrity.verify",
+        operation="integrity.verify",
+        status="PARTIAL" if changed else "COMPLETE",
+        result={"integrity_status": report["status"], "difference_count": report["difference_count"]},
+        locations=report["differences"],
+        receipts=[{"receipt_type": report["schema"], "receipt_sha256": report["receipt_sha256"]}],
+        continuation="STOP_PARTIAL" if changed else "STOP_COMPLETE",
+        reason_code="SAFE_MODE_REQUIRED" if changed else "INTEGRITY_VERIFIED",
+    )

@@ -1,11 +1,11 @@
 {
-  "agent_id": "fs.read_metadata",
+  "agent_id": "integrity.verify",
   "allowed_reads": [
     "truecore/agents/machine_navigation_workers.py"
   ],
   "allowed_writes": [],
   "approval_phrase": "",
-  "catalog_id": "fs.read_metadata",
+  "catalog_id": "integrity.verify",
   "command": [
     "python3",
     "-m",
@@ -13,19 +13,19 @@
     "--module",
     "truecore.agents.machine_navigation_workers",
     "--symbol",
-    "filesystem_read_metadata",
+    "repository_integrity_verify",
     "--input-json",
     "{input_json}"
   ],
   "default_out_dir": "AGENTS/generated/runtime",
-  "description": "[worker] read metadata for one bounded filesystem location",
+  "description": "[worker] verify one host-bound immutable repository and derived-view snapshot",
   "dry_run_supported": true,
   "entrypoint": "truecore.live_agents.generated_runtime",
   "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
-  "id": "fs.read_metadata",
+  "id": "integrity.verify",
   "log_stream": "agent_decision",
   "mutation_class": "contract_declared:read",
-  "name": "filesystem_read_metadata",
+  "name": "repository_integrity_verify",
   "prompt_only_allowed": false,
   "required_params": [
     "input_json"
@@ -33,7 +33,7 @@
   "requires_approval": false,
   "risk_tier": 1,
   "runtime_language": "python",
-  "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_read_metadata",
+  "source_entrypoint": "truecore.agents.machine_navigation_workers:repository_integrity_verify",
   "source_entrypoint_hash": "sha256:0a5a8c23ed33f06a7780164f24989fdc2c0b07afdcdce6f085098de05dcd0404",
   "test_command": [
     "python3",
@@ -42,11 +42,11 @@
     "tests.live_agents.test_agent_creator"
   ],
   "usage": {
-    "agent_id": "fs.read_metadata",
+    "agent_id": "integrity.verify",
     "definition": {
-      "end_line": 87,
-      "line": 86,
-      "source": "def filesystem_read_metadata(root_path: str, parameters: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:\n    return _execute(\"fs.read_metadata\", root_path, parameters, limits)"
+      "end_line": 158,
+      "line": 134,
+      "source": "def repository_integrity_verify(root_path: str, parameters: dict[str, Any], limits: dict[str, Any]) -> dict[str, Any]:\n    if parameters:\n        return build_result(\n            worker_id=\"integrity.verify\", operation=\"integrity.verify\", status=\"REFUSED\",\n            errors=[{\"kind\": \"INVALID_PARAMETERS\", \"message\": \"integrity verification accepts no model parameters\"}],\n            continuation=\"STOP_REFUSED\", reason_code=\"NAVIGATION_CONTRACT_REJECTED\",\n        )\n    report = verify_snapshot(\n        root_path,\n        max_entries=limits[\"max_entries\"],\n        max_file_bytes=limits[\"max_file_bytes\"],\n        max_total_bytes=limits[\"max_total_bytes\"],\n        timeout_seconds=limits[\"timeout_seconds\"],\n    )\n    changed = report[\"status\"] != \"VERIFIED\"\n    return build_result(\n        worker_id=\"integrity.verify\",\n        operation=\"integrity.verify\",\n        status=\"PARTIAL\" if changed else \"COMPLETE\",\n        result={\"integrity_status\": report[\"status\"], \"difference_count\": report[\"difference_count\"]},\n        locations=report[\"differences\"],\n        receipts=[{\"receipt_type\": report[\"schema\"], \"receipt_sha256\": report[\"receipt_sha256\"]}],\n        continuation=\"STOP_PARTIAL\" if changed else \"STOP_COMPLETE\",\n        reason_code=\"SAFE_MODE_REQUIRED\" if changed else \"INTEGRITY_VERIFIED\",\n    )"
     },
     "parameters": {
       "keyword_default_expressions": [],
@@ -55,7 +55,7 @@
       "positional": [
         "root_path: str",
         "parameters: dict[str, Any]",
-        "limits: dict[str, int]"
+        "limits: dict[str, Any]"
       ],
       "positional_only": [],
       "trailing_positional_default_expressions": [],
@@ -65,7 +65,7 @@
     "return_annotation": "dict[str, Any]",
     "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
     "schema": "truecore.agent_usage@1",
-    "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_read_metadata",
+    "source_entrypoint": "truecore.agents.machine_navigation_workers:repository_integrity_verify",
     "source_entrypoint_hash": "sha256:0a5a8c23ed33f06a7780164f24989fdc2c0b07afdcdce6f085098de05dcd0404",
     "unresolved": [
       "purpose",
@@ -80,7 +80,7 @@
       "backend_qualification"
     ]
   },
-  "usage_sha256": "9c47be7474656218d817b6d31d5ce40c63048c267a8e2bdaaf4230714b7267aa",
+  "usage_sha256": "a3e75390ea6a809c655638c3dfd615755c99033040962f813be730257c852f68",
   "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/machine_navigation_workers.py",
   "version": "1.0.0",
   "worker_result_schema": "truecore.worker_result@1"

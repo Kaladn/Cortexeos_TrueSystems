@@ -66,10 +66,10 @@ FILESYSTEM_WRITE_SURFACES = frozenset({
     "Path.write_bytes", "Path.write_text", "write_bytes", "write_text",
     "os.replace", "os.rename", "os.remove", "os.unlink", "os.chmod", "os.chown",
     "shutil.copy", "shutil.copy2", "shutil.copyfile", "shutil.copytree", "shutil.move",
-    "unlink", "rename", "replace", "chmod", "chown",
+    "unlink", "rename", "chmod", "chown",
 })
 FILESYSTEM_WRITE_TAILS = frozenset({
-    "chmod", "chown", "rename", "replace", "unlink", "write_bytes", "write_text",
+    "chmod", "chown", "rename", "unlink", "write_bytes", "write_text",
 })
 PROCESS_EXECUTION_SURFACES = frozenset({
     "subprocess.call", "subprocess.check_call", "subprocess.check_output",
@@ -84,6 +84,30 @@ REGISTRATION_SURFACE_TAILS = frozenset({
     "subscribe",
 })
 ENTRYPOINT_NAMES = frozenset({"main", "cli", "app", "application"})
+
+
+def _source_scope(path: str) -> str:
+    """Classify only from exact repository path; this is not reachability proof."""
+    parts = tuple(Path(path).parts)
+    if "research_reference_not_runtime" in parts:
+        return "RESEARCH_REFERENCE_NOT_RUNTIME"
+    if "tests" in parts or Path(path).name.startswith("test_"):
+        return "TEST"
+    if "scripts" in parts:
+        return "SCRIPT"
+    if "docs" in parts or Path(path).suffix.casefold() in {".md", ".rst"}:
+        return "DOCUMENTATION"
+    runtime_prefixes = (
+        "TrueCore/truecore/",
+        "TrueMachine/src/truemachine/",
+        "TrueMem/src/truemem/",
+        "TrueVision/truevision_runtime/",
+        "TrueAudio/trueaudio_runtime/",
+        "LocalMemoryChat/src/local_memory_chat/",
+    )
+    if path.startswith(runtime_prefixes):
+        return "RUNTIME_SOURCE"
+    return "PROJECT_SOURCE"
 
 
 def _manifest(map_dir: Path) -> dict[str, Any]:
@@ -125,6 +149,7 @@ def _call_candidates(map_dir: Path, predicate: Callable[[str], bool], grade: str
                     "byte_end": site["byte_end"],
                     "result_grade": grade,
                     "classification_rule": rule,
+                    "source_scope": _source_scope(site["path"]),
                 }
     return _bounded(rows(), limit)
 
@@ -136,7 +161,7 @@ def _external_entrypoints(map_dir: Path, limit: int):
             by_filename = path.endswith("/__main__.py") or path == "__main__.py"
             by_name = node.get("kind") in {"function", "async_function"} and node.get("name") in ENTRYPOINT_NAMES
             if by_filename or by_name:
-                yield {**node, "result_grade": "STATIC_CANDIDATE",
+                yield {**node, "source_scope": _source_scope(path), "result_grade": "STATIC_CANDIDATE",
                        "classification_rule": "EXACT_ENTRYPOINT_NAME_OR_DUNDER_MAIN_PATH"}
     return _bounded(rows(), limit)
 
@@ -150,8 +175,15 @@ def _direct_truemem(map_dir: Path, limit: int):
                 surface = site.get("callee_surface") or ""
             else:
                 continue
-            if "truemem" in surface.casefold():
-                yield {**site, "exact_surface": surface, "result_grade": "WITNESSED_STATIC",
+            is_direct = (
+                site.get("schema") == "truesystems_import_site@1" and "truemem" in surface.casefold()
+            ) or (
+                site.get("schema") == "truesystems_call_site@1"
+                and surface.casefold().split(".", 1)[0] == "truemem"
+            )
+            if is_direct:
+                yield {**site, "exact_surface": surface, "source_scope": _source_scope(site["path"]),
+                       "result_grade": "WITNESSED_STATIC",
                        "classification_rule": "EXACT_SURFACE_CONTAINS_TRUEMEM"}
     return _bounded(rows(), limit)
 
@@ -187,7 +219,7 @@ def _detached(map_dir: Path, limit: int):
             source = nodes.get(edge["source_node_id"])
             if source and source["path"] != target_path:
                 paths_with_external_incoming.add(target_path)
-    rows = ({**node, "result_grade": "STATIC_CANDIDATE",
+    rows = ({**node, "source_scope": _source_scope(node["path"]), "result_grade": "STATIC_CANDIDATE",
              "classification_rule": "MODULE_HAS_NO_UNIQUELY_RESOLVED_CROSS_FILE_CALL_IN_CURRENT_MAP"}
             for node in nodes.values()
             if node.get("kind") == "module" and node["path"] not in paths_with_external_incoming)
@@ -196,7 +228,7 @@ def _detached(map_dir: Path, limit: int):
 
 def _no_incoming(map_dir: Path, limit: int):
     nodes, incoming = _node_and_incoming(map_dir)
-    rows = ({**node, "result_grade": "STATIC_CANDIDATE",
+    rows = ({**node, "source_scope": _source_scope(node["path"]), "result_grade": "STATIC_CANDIDATE",
              "classification_rule": "NO_UNIQUELY_RESOLVED_INCOMING_CALL_IN_CURRENT_MAP"}
             for node_id, node in nodes.items()
             if node.get("kind") in {"class", "function", "async_function"} and node_id not in incoming)
@@ -215,11 +247,14 @@ def _duplicates(map_dir: Path, limit: int):
         for digest_value, members in sorted(by_hash.items()):
             if len(members) > 1:
                 yield {"location_type": "EXACT_DUPLICATE_GROUP", "exact_span_sha256": digest_value,
-                       "members": members, "result_grade": "WITNESSED_STATIC",
+                       "members": [{**member, "source_scope": _source_scope(member["path"])} for member in members],
+                       "source_scopes": sorted({_source_scope(member["path"]) for member in members}),
+                       "result_grade": "WITNESSED_STATIC",
                        "classification_rule": "IDENTICAL_EXACT_SOURCE_SPAN_SHA256"}
         for name, members in sorted(by_name.items()):
             if len(members) > 1 and len({item["exact_span_sha256"] for item in members}) > 1:
                 yield {"location_type": "SAME_NAME_GROUP", "exact_name": name, "members": members,
+                       "source_scopes": sorted({_source_scope(member["path"]) for member in members}),
                        "result_grade": "STATIC_CANDIDATE",
                        "classification_rule": "SAME_EXACT_DECLARED_NAME_DIFFERENT_SOURCE_HASH"}
     return _bounded(rows(), limit)

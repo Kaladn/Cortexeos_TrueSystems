@@ -34,7 +34,7 @@
   "risk_tier": 1,
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_duplicate_scan",
-  "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
+  "source_entrypoint_hash": "sha256:0a5a8c23ed33f06a7780164f24989fdc2c0b07afdcdce6f085098de05dcd0404",
   "test_command": [
     "python3",
     "-m",
@@ -44,8 +44,8 @@
   "usage": {
     "agent_id": "fs.duplicate_scan",
     "definition": {
-      "end_line": 98,
-      "line": 97,
+      "end_line": 99,
+      "line": 98,
       "source": "def filesystem_duplicate_scan(root_path: str, parameters: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:\n    return _execute(\"fs.duplicate_scan\", root_path, parameters, limits)"
     },
     "parameters": {
@@ -66,7 +66,7 @@
     "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
     "schema": "truecore.agent_usage@1",
     "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_duplicate_scan",
-    "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
+    "source_entrypoint_hash": "sha256:0a5a8c23ed33f06a7780164f24989fdc2c0b07afdcdce6f085098de05dcd0404",
     "unresolved": [
       "purpose",
       "prerequisites",
@@ -80,7 +80,7 @@
       "backend_qualification"
     ]
   },
-  "usage_sha256": "d917d298e06c577ebc089ecb2d46327ab92a75c1333299d7523cf4c5f685f882",
+  "usage_sha256": "da93ac8443b17fc116c2cc0afab1583e1e9ac399e6f5990103635141db8f0955",
   "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/machine_navigation_workers.py",
   "version": "1.0.0",
   "worker_result_schema": "truecore.worker_result@1"

@@ -148,10 +148,10 @@ gate and preserves the failure evidence.
 Progress at the 2026-09-14 machine-observation checkpoint:
 
 - The governing plan and detached TruePlug ancestor are committed separately.
-- Fourteen read-only observations are implemented in TrueMachine, registered as
+- Fifteen read-only observations are implemented in TrueMachine, registered as
   TrueCore agents, exposed only through `machine.invoke`, included in the common
   skill index, and accepted by external tests.
-- All fourteen bind host resources to allowed workers, enforce strict typed
+- All fifteen bind host resources to allowed workers, enforce strict typed
   parameters and host budgets, and return locations and measurements rather than
   answers. `service.status` and `repo.status` use code-fixed argv and hash-bound
   executables; no model command is accepted.
@@ -162,7 +162,7 @@ Progress at the 2026-09-14 machine-observation checkpoint:
 Needs:
 
 - Preserve the historical work-order receipts unchanged.
-- Add a new status receipt for the fourteen-operation generation.
+- Add a new status receipt for the fifteen-operation generation.
 - Bind an independently witnessed device identity to `mount.inspect` if UUID is
   required; do not infer it from mount-source text.
 

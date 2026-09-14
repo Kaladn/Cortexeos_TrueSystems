@@ -48,11 +48,12 @@ write a substrate, modify a dataset, invoke the legacy API or bypass HID control
 Existing permission machinery is untouched. Grants authorize only these narrow
 reads, not live mutation or a general-purpose runner.
 
-The `machine.invoke` generation exposes fourteen registered read-only workers:
+The `machine.invoke` generation exposes fifteen registered read-only workers:
 `fs.list`, `fs.find`, `fs.read_metadata`, `fs.hash`, `fs.disk_usage`, and
 `fs.duplicate_scan`; `process.list`, `package.inventory`, `device.inventory`,
 `mount.inspect`, `network.status`, and `log.query`; and fixed-argv
-`service.status` and `repo.status`. The host binds each resource to one allowed
+`service.status` and `repo.status`; plus host-bound `integrity.verify`. The host
+binds each resource to one allowed
 worker family plus entry, byte, result, and command-time budgets. The model
 supplies only typed operation parameters. TrueCore refuses cross-worker resource
 reuse, absolute and parent-traversal paths, symlink traversal, unknown or changed
@@ -60,6 +61,11 @@ resources, ungranted workers, model-supplied commands, and exceeded budgets.
 TrueMachine returns locations and measurements with `answer: null`; it does not
 recommend mutation or decide safety. Mount UUID remains explicitly unresolved
 because the current mount resource does not independently establish it.
+
+`integrity.verify` accepts no model path or parameters. Its host binding fixes
+the snapshot directory, manifest hash, eligible worker, and verification budgets.
+Snapshot creation, quarantine, safe-tree materialization, and restoration are not
+model operations.
 
 It validates the `truemachine.fusion@2` shape, timeline, wall-time consistency,
 scheduling arithmetic, per-source collection windows, coordinates/status, and

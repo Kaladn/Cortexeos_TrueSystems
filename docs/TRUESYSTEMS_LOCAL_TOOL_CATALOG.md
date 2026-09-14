@@ -152,7 +152,7 @@ StateArtifactCollector(trueaudio)
 StateArtifactCollector(truemem)
 ```
 
-TrueMachine contains fourteen qualified read-only filesystem and machine
+TrueMachine contains fifteen qualified read-only filesystem and machine
 observation workers. It still contains no general process-control,
 arbitrary-execution, or mutation housekeeping worker.
 

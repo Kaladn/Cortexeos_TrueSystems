@@ -135,6 +135,32 @@ Every view returns its classifier rule, independent channel availability,
 unresolved prerequisites, truncation state, locations/relationships, a receipt,
 and `answer: null`. The view engine does not perform security adjudication.
 
+Every returned location also carries a deterministic path-derived source scope
+(`RUNTIME_SOURCE`, `TEST`, `SCRIPT`, `DOCUMENTATION`, `PROJECT_SOURCE`, or
+`RESEARCH_REFERENCE_NOT_RUNTIME`). This scope is not reachability proof. An
+unqualified string `.replace()` call is not classified as a filesystem write,
+and an internal helper merely containing the characters `truemem` is not a
+direct TrueMem reference.
+
+`src/truemachine/repository_integrity.py` creates deterministic snapshots of a
+clean Git repository plus explicitly selected external derived-view trees. It
+stores content-addressed SHA-256 blobs, a canonical manifest, exact file modes,
+and a snapshot identity. Verification re-hashes the manifest, every referenced
+blob, repository bytes, and derived-view bytes. A UTF-8 change is reported at
+line/column and exact changed-glyph coordinates; binary changes use byte
+coordinates. Added and missing paths remain distinct.
+
+An integrity failure requires safe/secure mode. The incident builder preserves
+the observed suspect bytes in quarantine and materializes a separate read-only
+trusted tree from the snapshot. It never overwrites the suspect source. Actor
+identity remains `UNRESOLVED_NO_OS_AUDIT_WITNESS` unless a separately qualified
+OS audit event names the writer; file ownership and modification time are not
+offender proof. Read-only verification is registered as `integrity.verify` and
+can enter only through a host-bound TrueCore integrity-snapshot resource.
+That worker enforces host-owned entry, per-file byte, total-byte, and elapsed-time
+budgets. Snapshot creation and safe-mode response are administrative CLI/API
+operations and are not callable by the model.
+
 ## Bounded filesystem observation
 
 `src/truemachine/navigation.py` implements six read-only observations beneath a

@@ -15,6 +15,13 @@ All executions leaving the runner use `truecore.worker_result@1`. See
 `../../../../../docs/TRUECORE_WORKER_RESULT_AND_SKILL_INDEX_CONTRACT.md`. New
 worker families must use that envelope and regenerate the skill index.
 
+`integrity.verify` is the read-only model-eligible repository/view integrity
+worker. The host binds one exact TrueMachine snapshot directory, manifest hash,
+and verification budgets. The model supplies no path and cannot request
+quarantine, restoration, or snapshot creation. Snapshot creation and safe-mode
+incident materialization remain administrative operations outside the model
+boundary.
+
 The model-facing route to eligible read-only registered workers is
 `truecore.registered_worker_bridge`. It retains this runner as the only worker
 execution doorway and replaces model-supplied paths, modules and commands with

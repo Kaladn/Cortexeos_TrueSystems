@@ -68,6 +68,13 @@ middle axis is witnessed source order; exact name accesses are retained as
 evidence rather than promoted to data-flow authority. It returns no answer or
 security judgment.
 
+`truemachine.repository_integrity` creates and verifies deterministic snapshots
+of a clean Git repository plus explicitly selected external derived views.
+Verification is exposed to models only as the host-bound, read-only TrueCore
+worker `integrity.verify`. A mismatch identifies exact line/column glyph changes
+or binary byte offsets and requires safe mode; it does not invent an offender or
+silently restore over the suspect source.
+
 See `docs/CONTRACT.md` for the locked timestamp and durability contracts.
 
 Bounded filesystem observation is available to registered TrueCore workers via
