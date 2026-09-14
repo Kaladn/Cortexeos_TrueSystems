@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "truemachine"
 version = "0.1.0"
-description = "Linux temporal machine cognition"
+description = "Linux temporal machine-state observation and fusion"
 requires-python = ">=3.11"
 dependencies = []
 

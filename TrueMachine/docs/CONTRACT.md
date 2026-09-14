@@ -2,7 +2,7 @@
 
 ## Time
 
-`pulse_index` and locked `cadence_ns` are timeline truth. This follows the
+`sequence` and locked `cadence_ns` are timeline truth. This follows the
 TrueVision rule that frame index and FPS are the clock and the TrueAudio rule
 that frame index and sample windows determine time. One `Clock.sample()` call
 adds wall-clock provenance to a pulse; wall time is not replay timeline truth.
@@ -37,10 +37,15 @@ The durable order is:
 4. atomically update `current.fusion.json`.
 
 The WAL envelope carries the SHA-256 of the exact canonical pack bytes.
-Verification recalculates every hash and checks run sequence continuity.
+`FusionStore.verify()` recalculates that envelope hash, binds envelope run and
+sequence to the embedded pack, recalculates each observation-data hash, checks
+run sequence continuity, checks every immutable per-run pack against its WAL
+entry, and checks `current.fusion.json` against the final WAL entry. It detects
+but does not repair WAL-ahead publication failure. TrueCore independently checks
+the structure and hashes of a separately host-bound Fusion Pack.
 
 Every observation also carries its source-owned schema, stable content hash,
-and source coordinates. TrueVision, TrueAudio, TrueMem, and TrueMem state artifacts
+and source coordinates. TrueVision, TrueAudio, and TrueMem state artifacts
 remain owned by those systems; TrueMachine admits their hashes and coordinates
 without rewriting their facts. Canonical JSON uses sorted keys and compact
 separators so identical admitted state produces identical hashes.
@@ -53,11 +58,14 @@ native state artifacts, never raw pixels, images, or video.
 
 The system order is locked:
 
-`TrueVision + TrueAudio + Linux state -> TrueMachine/CompuCog -> TrueCore`
+`TrueVision + TrueAudio + Linux state -> TrueMachine -> TrueCore`
 
-TrueMachine is the cognition and Fusion Pack authority. TrueCore is a
-downstream security consumer. TrueCore cannot own or rewrite capture,
-timestamps, admitted state, fusion, or cognition.
+This is a qualified pull boundary: an external host binds a completed Fusion
+Pack for TrueCore inspection. TrueMachine does not invoke TrueCore. TrueMachine
+owns observation and Fusion Pack custody. TrueCore is a downstream security
+consumer and cannot own or rewrite capture, timestamps, admitted state, or
+fusion. Broader CompuCog/TrueCog cognition remains a design target rather than a
+claim established by this package.
 
 ## Repository-state observation
 

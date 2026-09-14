@@ -1,12 +1,13 @@
 # TrueMachine
 
-TrueMachine is a Linux-native temporal cognition core. It observes the local
+TrueMachine is a Linux-native temporal machine-state observation and fusion core. It observes the local
 machine, assigns every observation one authoritative time sample, commits each
 pulse to a write-ahead log, and publishes an atomic Fusion Pack describing
 what the machine knows about itself at that moment.
 
-TrueMachine is the Linux CompuCog cognition layer. TrueCore comes after it as
-a consumer of its evidence; TrueCore is not part of this repository.
+The CompuCog name is design lineage, not proof that historical CompuCog behavior
+is imported or implemented here. TrueCore comes after TrueMachine as a consumer
+of its evidence; TrueCore is not part of this repository.
 
 It has no third-party runtime dependencies and performs no screen, image,
 video, key-content, or pointer-coordinate capture.
@@ -18,11 +19,12 @@ PYTHONPATH=src python -m truemachine run --duration 60 --interval 1 --state-dir 
 ```
 
 Admit sibling state artifacts into the same Fusion Packs with repeatable
-`--truevision-state`, `--trueaudio-state`, `--truemem-state`, and
-`--truemem-state` arguments. Each JSON/JSONL artifact must declare its own
+`--truevision-state`, `--trueaudio-state`, and `--truemem-state` arguments. Each JSON/JSONL artifact must declare its own
 `schema` or `schema_version`; TrueMachine will not invent one.
 
-Validate a generated state directory:
+Validate a generated state directory. Verification is read-only and checks the
+WAL envelopes, nested observation hashes, immutable per-run publications, and
+the current publication against the final WAL entry:
 
 ```bash
 PYTHONPATH=src python -m truemachine verify --state-dir state

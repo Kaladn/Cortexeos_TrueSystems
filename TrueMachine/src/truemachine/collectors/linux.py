@@ -20,7 +20,7 @@ def _read_key_values(path: Path) -> dict[str, str]:
 class IdentityCollector:
     name = "linux.identity"
     schema = "truemachine.linux.identity@1"
-    source_coordinates = ("/proc/sys/kernel/random/boot_id", "uname(2)")
+    source_coordinates = ("uname(2)", "gethostname(2)")
 
     def collect(self) -> dict:
         return {

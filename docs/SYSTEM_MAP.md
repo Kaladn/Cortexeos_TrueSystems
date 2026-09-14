@@ -2,7 +2,7 @@
 
 | Boundary | Code entrypoint | Reads | Writes or returns |
 | --- | --- | --- | --- |
-| TrueMachine | `TrueMachine/src/truemachine/cli.py` | Linux identity, memory, process, network, explicit state artifacts | WAL, index, current Fusion Pack, verification JSON |
+| TrueMachine | `TrueMachine/src/truemachine/cli.py` | Linux identity, memory, process, network, explicit state artifacts | WAL, immutable per-run Fusion Packs, current Fusion Pack, verification JSON |
 | TrueVision Intake / DocuFilm | `TrueVisionIntake/truevision_intake/document_state/` | document page state, glyph-state records, and frozen code-deciphering context | authoritative document-state reads, fail-closed visual code reads, and parent/contained intake records |
 | TrueAudio | `TrueAudio/trueaudio_runtime/` | decoded file audio or Linux PipeWire default-output monitor | deterministic derived audio state, replayable state, manifests, receipts |
 | TrueSpeech | `TrueSpeech/truespeech_runtime/` | replayable TrueAudio state and optional caller-supplied lyrics | speech-region and lyric-alignment candidates without transcript claims |

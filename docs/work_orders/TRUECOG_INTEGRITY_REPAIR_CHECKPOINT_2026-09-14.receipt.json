@@ -1,0 +1,63 @@
+{
+  "schema": "truecog.integrity_repair_checkpoint@1",
+  "created_at_utc": "2026-09-14T09:28:20Z",
+  "repository": "/home/lamercey/TrueSystems-Alignment",
+  "starting_commit": "b380fc3",
+  "status": "VERIFIED_AWAITING_COMMIT",
+  "authority": "CODE_PLUS_PASSING_EXTERNAL_TESTS",
+  "historical_audit": {
+    "path": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/TRUCOG_DOCUMENTATION_VS_CODE_AUDIT_20260913T191958Z.md",
+    "state": "PRESERVED_HISTORICAL_FINDING_NOT_REWRITTEN"
+  },
+  "resolved_findings": {
+    "TC-02": "CURRENT_PACKAGE_RENAMED_TEMPORAL_MACHINE_STATE_OBSERVATION_AND_FUSION",
+    "TC-03": "COMPUCOG_IDENTIFIED_AS_DESIGN_LINEAGE_ONLY",
+    "TC-04": "TRUECORE_CONNECTION_DOCUMENTED_AS_HOST_BOUND_PULL",
+    "TC-05": "PULSE_INDEX_REPLACED_WITH_SEQUENCE",
+    "TC-06": "THREE_UNIQUE_SIBLING_SYSTEMS_RECONCILED",
+    "TC-07": "UNIMPLEMENTED_BINARY_SUFFIXES_REMOVED_FROM_ACCEPTED_SET",
+    "TC-08": "WAL_AND_NESTED_HASH_VERIFICATION_SCOPES_IMPLEMENTED",
+    "TC-09": "IMMUTABLE_AND_CURRENT_PUBLICATION_PARITY_VERIFIED",
+    "TC-10": "ENVELOPE_IDENTITY_BOUND_TO_EMBEDDED_PACK",
+    "TC-11": "NESTED_OBSERVATION_HASHES_VERIFIED_STANDALONE",
+    "TC-12": "VERIFY_CLI_NO_LONGER_CREATES_STATE_DIRECTORIES",
+    "TC-13": "NONEXISTENT_INDEX_REPLACED_WITH_IMMUTABLE_PACK_FILES",
+    "TC-17": "IDENTITY_SOURCE_COORDINATES_MATCH_ACTUAL_CALLS",
+    "TC-22": "ARTIFACT_SCHEMA_AND_HASH_USE_ONE_CAPTURED_BYTE_SNAPSHOT",
+    "TC-23": "JSONL_COORDINATES_PRESERVE_PHYSICAL_RECORD_LINES"
+  },
+  "source_hashes": {
+    "TrueMachine/src/truemachine/fusion.py": "b308c467254224aba74f5a36588752395e46be2ee531ee3fafd9ad5280234b4e",
+    "TrueMachine/src/truemachine/collectors/artifact.py": "99bc9e9630f77ee32862c85e3283d568758ae8a3481eb65bcec0941ffa14d82a",
+    "TrueMachine/src/truemachine/collectors/linux.py": "41d6514d63874778d92511a450b409aeb8a9ed4bc9e9ab569614b6369d465d72",
+    "TrueMachine/src/truemachine/cli.py": "b102d07a225b15af4e1bffd168f45f04067058747aad54c623053bca883544ee",
+    "TrueMachine/README.md": "3731291389a5e1e108b13b94835d57fc9918fb7c2ad0c0287bca75132035abcf",
+    "TrueMachine/docs/CONTRACT.md": "d609163d72dfecb1135d5139df67de75b50267e3d7c61b7efbb0041f178d7ef9",
+    "TrueMachine/pyproject.toml": "5df78374228f57680f317c3fb9dffe2f59216240b162fc36f02773e042a01b39",
+    "docs/SYSTEM_MAP.md": "38cb16cfe62944f5a1fec9d20099dbcdced012098bc559e9e03e7f17b01081c8",
+    "docs/SYSTEMS_ALIGNMENT.md": "2e3ecfc4b05fe09cedd1b887d76cd316332776101720f3532f5c5076b53793c2"
+  },
+  "acceptance": {
+    "test": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/test_truecog_doc_code_audit.py",
+    "output_directory": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/truecog-doc-code-audit-20260914T092801Z",
+    "summary_sha256": "5104aa5a1b010e1e42d294b890a999261ea5911ff9ce1206b4911bd4e181e208",
+    "test_log_sha256": "0557fcc993ec0fd623a790917e0953529c4f5f46d7abf8592058bb67d915c36e",
+    "result": "PASS_7_OF_7"
+  },
+  "regressions": {
+    "operator_boundary": "PASS_18_OF_18",
+    "model_host": "PASS_20_OF_20",
+    "system_repairs": "PASS_5_OF_5",
+    "raw_training_intake_order": "PASS_9_OF_9"
+  },
+  "remaining_integrity_work": [
+    "COLLECTOR_ITEM_LEVEL_PARTIAL_DIAGNOSTICS",
+    "COLLECTOR_START_END_TIMING",
+    "CADENCE_LATE_GAP_ACCOUNTING",
+    "SINGLE_WRITER_ENFORCEMENT",
+    "WAL_AHEAD_RECOVERY",
+    "DATACLASS_CREATION_BOUNDARY_VALIDATION",
+    "NETWORK_AND_MACHINE_LOAD_SCHEMA_SPLIT",
+    "LIVE_TRUEVISION_TRUEAUDIO_LINUX_FUSION_QUALIFICATION"
+  ]
+}

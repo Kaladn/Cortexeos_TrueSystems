@@ -8,9 +8,10 @@ whole-system production promotion or a persistent-storage migration.
 ## Sensory plane: resolved mechanism, distinct name
 
 The owner's TrueCog sensory-plane role maps to the existing documented system
-order `TrueVision + TrueAudio + Linux state -> TrueMachine/CompuCog -> TrueCore`.
-Evidence: `TrueMachine/README.md` explicitly identifies TrueMachine as the Linux
-CompuCog cognition layer; `TrueMachine/docs/CONTRACT.md` fixes that ordering.
+order `TrueVision + TrueAudio + Linux state -> TrueMachine -> TrueCore`.
+Evidence: `TrueMachine/README.md` identifies CompuCog as design lineage;
+`TrueMachine/docs/CONTRACT.md` fixes the qualified pull boundary and denies an
+automatic TrueMachine-to-TrueCore push.
 `TemporalEngine.pulse`, `Observation`, `FusionPack` and `FusionStore.commit`
 implement collection, per-source errors, timestamps, hashes, WAL and publication.
 

@@ -63,10 +63,11 @@ def main() -> int:
         if args.command == "map-repository":
             return repository_map.build(args)
         return repository_map.query(args)
-    store = FusionStore(args.state_dir)
     if args.command == "verify":
+        store = FusionStore(args.state_dir, create=False)
         print(json.dumps(store.verify(), sort_keys=True))
         return 0
+    store = FusionStore(args.state_dir)
     cadence_ns = int(args.interval * 1_000_000_000)
     collectors = [IdentityCollector(), MemoryCollector(), ProcessCollector(), NetworkCollector()]
     for system, paths in (
