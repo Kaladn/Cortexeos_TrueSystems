@@ -136,3 +136,35 @@ locations, measurements, explicit unresolved entries, truncation state, a
 deterministic receipt, and `answer: null`. TrueCore owns grants and resource
 binding; TrueMachine only observes the bounded state. These operations neither
 write files nor decide which duplicate, file, or directory should be changed.
+
+## Bounded Linux and command observation
+
+`src/truemachine/system_observation.py` adds six read-only observations over
+separate host-bound roots. `process.list` reads bounded procfs status records;
+`network.status` reads bounded sysfs interface records; `package.inventory`
+reads pacman local-database records; `device.inventory` reads sysfs block-device
+records; `mount.inspect` reads one procfs `mountinfo` file; and `log.query`
+returns matching physical UTF-8 lines from one bounded regular file. They do not
+signal processes, change interfaces, invoke a package manager, mount storage, or
+rotate logs.
+
+The process and network collectors preserve unreadable or malformed entries as
+explicit unresolved records. Host entry, file-byte, total-byte, and result
+limits apply. `mount.inspect` currently reports the kernel major/minor identity,
+source, filesystem, and mount location, but reports UUID as unresolved because
+no independent device-identity resource is bound. Same-record proximity does
+not authorize a UUID inference.
+
+`src/truemachine/command_observation.py` contains the only command-backed
+operations in this generation: `service.status` and `repo.status`. Their argv is
+fixed in code. The model cannot supply a command or executable. TrueCore binds
+and hashes the exact `systemctl` or Git executable, binds the unit-status worker
+or repository root to that resource, and rechecks identities before and after
+execution. Calls have fixed output and wall-time budgets. Git status disables
+optional locks, system/global configuration, and filesystem-monitor execution.
+These observations return locations and measurements with `answer: null`; they
+do not start services, alter repositories, or adjudicate machine safety.
+
+Every `machine.invoke` resource names exactly which registered worker may use
+it. A root admitted for one observation cannot be reused by a different worker
+merely because both operations accept a directory.

@@ -1,8 +1,8 @@
 # TrueSystems Local Tool Catalog
 
 Status: code-derived working catalog
-Catalog date: 2026-09-13
-Repository state inspected: `d6a030d786b39a0ed61afb350e587f948ece09a5`
+Catalog date: 2026-09-14
+Repository state inspected: the containing commit on `alignment/truecore-boundary`
 Purpose: provide one inexpensive navigation index for local TrueSystems operations and the bounded operations still to be built.
 
 ## Authority legend
@@ -44,6 +44,7 @@ Source: `TrueCore/truecore/operator_boundary.py`
 | `source.classify` | `MODEL-LIVE` | Classify a host-admitted text source without admitting it. |
 | `media.describe` | `MODEL-LIVE` | Describe an admitted media tool declaration without executing it. |
 | `worker.invoke` | `MODEL-LIVE` | Invoke one host-granted read-only repository worker on one host-bound repository map. |
+| `machine.invoke` | `MODEL-LIVE` | Invoke one host-granted read-only TrueMachine worker on one worker-bound resource. |
 
 The model cannot supply filesystem paths, executable commands, Python modules, manifests, permissions, grants, or approval records through this boundary.
 
@@ -151,7 +152,9 @@ StateArtifactCollector(trueaudio)
 StateArtifactCollector(truemem)
 ```
 
-TrueMachine does not yet contain qualified general filesystem, package, service, mount, process-control, or arbitrary-execution housekeeping workers.
+TrueMachine contains fourteen qualified read-only filesystem and machine
+observation workers. It still contains no general process-control,
+arbitrary-execution, or mutation housekeeping worker.
 
 ## TrueComputer
 
@@ -352,12 +355,14 @@ ask
 | Training programs | `training/*.py` | Offline developer/research scripts; not model tools |
 | TrueCore front door | `TrueCore/frontdoor/src/main.rs` | Native component entrypoint; inspect contract before exposure |
 
-## Qualified bounded filesystem observation
+## Qualified bounded machine observation
 
 The following operations are `MODEL-LIVE` through `machine.invoke`. Their
 registered agent manifests and code-derived help bind to
 `TrueCore/truecore/agents/machine_navigation_workers.py`; observation is owned by
-`TrueMachine/src/truemachine/navigation.py`.
+`TrueMachine/src/truemachine/navigation.py`,
+`TrueMachine/src/truemachine/system_observation.py`, and
+`TrueMachine/src/truemachine/command_observation.py`.
 
 | Operation | Bounded result |
 | --- | --- |
@@ -367,27 +372,23 @@ registered agent manifests and code-derived help bind to
 | `fs.hash` | SHA-256 and byte count for one bounded regular file. |
 | `fs.disk_usage` | Bounded recursive file, directory, and byte measurements. |
 | `fs.duplicate_scan` | SHA-256-backed duplicate-location groups; no deletion recommendation. |
+| `process.list` | Bounded procfs process-status locations; unreadable records remain unresolved. |
+| `package.inventory` | Bounded installed-package facts from host-bound pacman database records. |
+| `device.inventory` | Bounded sysfs block-device facts and stable kernel identities where present. |
+| `mount.inspect` | Procfs mount records; UUID remains explicitly unresolved pending separate device identity. |
+| `network.status` | Bounded sysfs interface state and counters; no socket or routing claim. |
+| `log.query` | Matching physical UTF-8 lines from one host-bound regular log file. |
+| `service.status` | Fixed-argv status fields from one hash-bound systemctl executable. |
+| `repo.status` | Fixed-argv Git branch/status and optional remote locations from one host-bound repository. |
 
-The model cannot provide an absolute path, command, module, root binding, grant,
-or host budget. All results use `truecore.worker_result@1` and contain no answer.
+The model cannot provide an absolute path, command, executable, module, root
+binding, resource-to-worker assignment, grant, or host budget. All results use
+`truecore.worker_result@1` and contain no answer.
 
-## Remaining build list: bounded local housekeeping
+## Morning build list: bounded local housekeeping
 
-The IDs below remain proposed catalog names only. They are not live until code,
+These IDs are proposed catalog names only. They are not live until code,
 schemas, grants, approval behavior, receipts, and external acceptance tests exist.
-
-### Read-only inspection
-
-| Proposed operation | Bounded purpose |
-| --- | --- |
-| `process.list` | Observe processes without signaling them. |
-| `service.status` | Read declared service status. |
-| `package.inventory` | Read installed package facts. |
-| `device.inventory` | Read disks, partitions, devices, and stable identities. |
-| `mount.inspect` | Read mounts, UUIDs, and filesystem types. |
-| `network.status` | Read bounded interface/socket/routing facts. |
-| `log.query` | Query a declared log source with time and output limits. |
-| `repo.status` | Read Git identity, branch, status, and configured remotes. |
 
 ### Reversible/scoped writes
 

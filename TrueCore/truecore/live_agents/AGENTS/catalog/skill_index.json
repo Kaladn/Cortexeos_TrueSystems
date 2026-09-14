@@ -1,8 +1,31 @@
 {
-  "index_sha256": "sha256:4d044666d8bfde9be2b979eb02552211cb1963606310e40fd0d9de4f5362ae82",
+  "index_sha256": "sha256:20a0e29fe6ca73b41528fee0bed7e5acd777655d9a73513e511e959811b6e116",
   "schema": "truecore.skill_index@1",
   "worker_result_schema": "truecore.worker_result@1",
   "workers": [
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/device.inventory.agent.json",
+      "manifest_sha256": "sha256:3d6273003239f85ef533baf2660504ea5452fe97126d4a6b0fe95ea98cbbebad",
+      "mutation_class": "contract_declared:read",
+      "name": "device_inventory",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "device.inventory",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
     {
       "allowed_reads": [
         "operator_selected_docs_folder"
@@ -64,7 +87,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.disk_usage.agent.json",
-      "manifest_sha256": "sha256:75c639ecdaa4d80c25a280cb3517302b6fb7f05764913a813d7cf5ecaf293bd0",
+      "manifest_sha256": "sha256:867cfde559a97862a8f4b0771eb1f251e14681e0d4f52c32365f3193a0bde12f",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_disk_usage",
       "required_params": [
@@ -87,7 +110,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.duplicate_scan.agent.json",
-      "manifest_sha256": "sha256:dd5babf02addd3e498f199708ed3c3ca4c3cc5afff89e885a2275a4155ff8bff",
+      "manifest_sha256": "sha256:dc20cda2433c69cf09fb860b81adc7cd8226a4932daa8ad5581a9d3d3638ec5a",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_duplicate_scan",
       "required_params": [
@@ -110,7 +133,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.find.agent.json",
-      "manifest_sha256": "sha256:ff3e55f7085dce0f16fc2519f1229fb002483b9069590776f32df4a0776080ac",
+      "manifest_sha256": "sha256:03b5d5de9741ca43c94ccb1a4c56712bfd8a2e9289c16cf1eb5affe7aa4c06e2",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_find",
       "required_params": [
@@ -133,7 +156,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.hash.agent.json",
-      "manifest_sha256": "sha256:764aa627c6898a1ba9fe7e78f7fc0c1ab1e28beab0d006828fee5afdb53f26ce",
+      "manifest_sha256": "sha256:74c5254744f75923c4c9feddc4815d32227c12ee89a69f13c7e42a0a45d4e4b0",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_hash",
       "required_params": [
@@ -156,7 +179,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.list.agent.json",
-      "manifest_sha256": "sha256:d68d042da08f296d71a1b83d3b086a3986873a04553dc5ee0a0f7b9bdebfeeb2",
+      "manifest_sha256": "sha256:60f622265c76c04f101d110042251089b35fec943ee17c4c8a95fe1904f3740f",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_list",
       "required_params": [
@@ -179,7 +202,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.read_metadata.agent.json",
-      "manifest_sha256": "sha256:53bea7eaf1aa8fc3fea174524238b005303006dd8cfd4cf130cab06c0bfbca66",
+      "manifest_sha256": "sha256:534663f092ce35af241da628d2b89e32a862207be98e214d3a94fce888af07fc",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_read_metadata",
       "required_params": [
@@ -190,6 +213,121 @@
       "runtime_language": "python",
       "version": "1.0.0",
       "worker_id": "fs.read_metadata",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/log.query.agent.json",
+      "manifest_sha256": "sha256:696403b867e0b84989ca5a771f48fd92fdc11d4825b64d94de424730d80cf61a",
+      "mutation_class": "contract_declared:read",
+      "name": "log_query",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "log.query",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/mount.inspect.agent.json",
+      "manifest_sha256": "sha256:facdae6549bacc6efa6a393b3c172ca335f22df3e263dad349aae41b57ca8674",
+      "mutation_class": "contract_declared:read",
+      "name": "mount_inspect",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "mount.inspect",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/network.status.agent.json",
+      "manifest_sha256": "sha256:cc3254fb6d032b403a06997dab9396cc0ebfc53364f1e76a4a6926fb994bcbb7",
+      "mutation_class": "contract_declared:read",
+      "name": "network_status",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "network.status",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/package.inventory.agent.json",
+      "manifest_sha256": "sha256:e00417c5e56ea79378ce20cb06c4d8c94bc45d4ea8fc03f09e866f7f6001a227",
+      "mutation_class": "contract_declared:read",
+      "name": "package_inventory",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "package.inventory",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/process.list.agent.json",
+      "manifest_sha256": "sha256:103adfe8aafc3548eaba08fe1c6f0625078a4c9173e949a4957ff7debe64eb23",
+      "mutation_class": "contract_declared:read",
+      "name": "process_list",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "process.list",
       "worker_result_schema": "truecore.worker_result@1"
     },
     {
@@ -218,6 +356,29 @@
       "runtime_language": "python",
       "version": "1.0.0",
       "worker_id": "process_change",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo.status.agent.json",
+      "manifest_sha256": "sha256:288bc367a4cbb66aa20d86e41446ed9f09a133f7fd47d95501c14bd5b9cf33f2",
+      "mutation_class": "contract_declared:read|subprocess",
+      "name": "repository_status",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "repo.status",
       "worker_result_schema": "truecore.worker_result@1"
     },
     {
@@ -578,6 +739,29 @@
       "runtime_language": "python",
       "version": "1.0.0",
       "worker_id": "repo_untested_privileged_sinks",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/service.status.agent.json",
+      "manifest_sha256": "sha256:9735d06a139870ad44ea640481a5f3477c23a90f9f8a74a35780c86c2b35bb41",
+      "mutation_class": "contract_declared:read|subprocess",
+      "name": "service_status",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "service.status",
       "worker_result_schema": "truecore.worker_result@1"
     },
     {

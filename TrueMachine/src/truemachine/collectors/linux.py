@@ -55,16 +55,20 @@ class ProcessCollector:
     name = "linux.processes"
     schema = "truemachine.linux.processes@2"
 
-    def __init__(self, proc_root: str | Path = "/proc") -> None:
+    def __init__(self, proc_root: str | Path = "/proc", max_entries: int | None = None) -> None:
         self.proc_root = Path(proc_root)
+        self.max_entries = max_entries
         self.source_coordinates = (str(self.proc_root / "<pid>" / "status"),)
 
     def collect(self) -> dict:
         processes = []
         unresolved = []
-        for entry in self.proc_root.iterdir():
-            if not entry.name.isdigit():
-                continue
+        entries = sorted(
+            (entry for entry in self.proc_root.iterdir() if entry.name.isdigit()),
+            key=lambda entry: int(entry.name),
+        )
+        truncated = self.max_entries is not None and len(entries) > self.max_entries
+        for entry in entries[:self.max_entries]:
             try:
                 status = _read_key_values(entry / "status")
                 processes.append({
@@ -81,8 +85,9 @@ class ProcessCollector:
         unresolved.sort(key=lambda item: item["pid"])
         return {
             "count": len(processes), "processes": processes,
-            "collection_status": "PARTIAL" if unresolved else "COMPLETE",
+            "collection_status": "PARTIAL" if unresolved or truncated else "COMPLETE",
             "unresolved": unresolved,
+            "truncated": truncated,
         }
 
 
@@ -90,14 +95,17 @@ class NetworkCollector:
     name = "linux.network"
     schema = "truemachine.linux.network@2"
 
-    def __init__(self, sys_net_root: str | Path = "/sys/class/net") -> None:
+    def __init__(self, sys_net_root: str | Path = "/sys/class/net", max_entries: int | None = None) -> None:
         self.sys_net_root = Path(sys_net_root)
+        self.max_entries = max_entries
         self.source_coordinates = (str(self.sys_net_root / "<interface>"),)
 
     def collect(self) -> dict:
         interfaces = []
         unresolved = []
-        for entry in sorted(self.sys_net_root.iterdir(), key=lambda path: path.name):
+        entries = sorted(self.sys_net_root.iterdir(), key=lambda path: path.name)
+        truncated = self.max_entries is not None and len(entries) > self.max_entries
+        for entry in entries[:self.max_entries]:
             try:
                 interfaces.append({
                     "name": entry.name,
@@ -111,8 +119,9 @@ class NetworkCollector:
                 continue
         return {
             "interfaces": interfaces,
-            "collection_status": "PARTIAL" if unresolved else "COMPLETE",
+            "collection_status": "PARTIAL" if unresolved or truncated else "COMPLETE",
             "unresolved": unresolved,
+            "truncated": truncated,
         }
 
 

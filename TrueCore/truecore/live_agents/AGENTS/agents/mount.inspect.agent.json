@@ -1,11 +1,11 @@
 {
-  "agent_id": "fs.hash",
+  "agent_id": "mount.inspect",
   "allowed_reads": [
     "truecore/agents/machine_navigation_workers.py"
   ],
   "allowed_writes": [],
   "approval_phrase": "",
-  "catalog_id": "fs.hash",
+  "catalog_id": "mount.inspect",
   "command": [
     "python3",
     "-m",
@@ -13,19 +13,19 @@
     "--module",
     "truecore.agents.machine_navigation_workers",
     "--symbol",
-    "filesystem_hash",
+    "mount_inspect",
     "--input-json",
     "{input_json}"
   ],
   "default_out_dir": "AGENTS/generated/runtime",
-  "description": "[worker] hash one bounded regular file",
+  "description": "[worker] read bounded Linux mountinfo records",
   "dry_run_supported": true,
   "entrypoint": "truecore.live_agents.generated_runtime",
   "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
-  "id": "fs.hash",
+  "id": "mount.inspect",
   "log_stream": "agent_decision",
   "mutation_class": "contract_declared:read",
-  "name": "filesystem_hash",
+  "name": "mount_inspect",
   "prompt_only_allowed": false,
   "required_params": [
     "input_json"
@@ -33,7 +33,7 @@
   "requires_approval": false,
   "risk_tier": 1,
   "runtime_language": "python",
-  "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_hash",
+  "source_entrypoint": "truecore.agents.machine_navigation_workers:mount_inspect",
   "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
   "test_command": [
     "python3",
@@ -42,11 +42,11 @@
     "tests.live_agents.test_agent_creator"
   ],
   "usage": {
-    "agent_id": "fs.hash",
+    "agent_id": "mount.inspect",
     "definition": {
-      "end_line": 90,
-      "line": 89,
-      "source": "def filesystem_hash(root_path: str, parameters: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:\n    return _execute(\"fs.hash\", root_path, parameters, limits)"
+      "end_line": 114,
+      "line": 113,
+      "source": "def mount_inspect(root_path: str, parameters: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:\n    return _execute(\"mount.inspect\", root_path, parameters, limits)"
     },
     "parameters": {
       "keyword_default_expressions": [],
@@ -65,7 +65,7 @@
     "return_annotation": "dict[str, Any]",
     "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
     "schema": "truecore.agent_usage@1",
-    "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_hash",
+    "source_entrypoint": "truecore.agents.machine_navigation_workers:mount_inspect",
     "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
     "unresolved": [
       "purpose",
@@ -80,7 +80,7 @@
       "backend_qualification"
     ]
   },
-  "usage_sha256": "c5b6053649b20faa13eb0860c3f2f60032c7a3f59a611211be531985830f9043",
+  "usage_sha256": "887dbbad985a45f6b6555dcb46ecac95dc9afdeed9809605a88f9584fd159560",
   "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/machine_navigation_workers.py",
   "version": "1.0.0",
   "worker_result_schema": "truecore.worker_result@1"

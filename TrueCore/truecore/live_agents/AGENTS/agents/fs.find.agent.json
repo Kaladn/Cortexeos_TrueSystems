@@ -34,7 +34,7 @@
   "risk_tier": 1,
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_find",
-  "source_entrypoint_hash": "sha256:7c77921e296e4807b060601c19d25055249bab1d9cfc14c9a60ad674ea1f2efb",
+  "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
   "test_command": [
     "python3",
     "-m",
@@ -44,8 +44,8 @@
   "usage": {
     "agent_id": "fs.find",
     "definition": {
-      "end_line": 69,
-      "line": 68,
+      "end_line": 82,
+      "line": 81,
       "source": "def filesystem_find(root_path: str, parameters: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:\n    return _execute(\"fs.find\", root_path, parameters, limits)"
     },
     "parameters": {
@@ -66,7 +66,7 @@
     "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
     "schema": "truecore.agent_usage@1",
     "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_find",
-    "source_entrypoint_hash": "sha256:7c77921e296e4807b060601c19d25055249bab1d9cfc14c9a60ad674ea1f2efb",
+    "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
     "unresolved": [
       "purpose",
       "prerequisites",
@@ -80,7 +80,7 @@
       "backend_qualification"
     ]
   },
-  "usage_sha256": "7e955ccc5316326eee7c0a9468a00d00f06a3e1e8b219bde4096836e5a732a10",
+  "usage_sha256": "73b1501e3fdadca6db4e2887e2ec7bb2f7755cd699d9cc4a549f3077ea33eac4",
   "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/machine_navigation_workers.py",
   "version": "1.0.0",
   "worker_result_schema": "truecore.worker_result@1"

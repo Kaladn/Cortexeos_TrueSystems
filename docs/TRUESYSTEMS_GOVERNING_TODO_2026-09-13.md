@@ -145,27 +145,26 @@ gate and preserves the failure evidence.
 
 ### Day 1 — Synchronize truth and qualify read-only navigation
 
-Progress at the 2026-09-14 filesystem checkpoint:
+Progress at the 2026-09-14 machine-observation checkpoint:
 
 - The governing plan and detached TruePlug ancestor are committed separately.
-- Six filesystem observations are implemented in TrueMachine, registered as
+- Fourteen read-only observations are implemented in TrueMachine, registered as
   TrueCore agents, exposed only through `machine.invoke`, included in the common
   skill index, and accepted by external tests.
-- `process.list`, `service.status`, `package.inventory`, `device.inventory`,
-  `mount.inspect`, `network.status`, `log.query`, and `repo.status` remain
-  unimplemented at this boundary. Day 1 is therefore in progress, not complete.
+- All fourteen bind host resources to allowed workers, enforce strict typed
+  parameters and host budgets, and return locations and measurements rather than
+  answers. `service.status` and `repo.status` use code-fixed argv and hash-bound
+  executables; no model command is accepted.
+- `mount.inspect` is qualified as `PARTIAL`: it witnesses mountinfo fields but
+  leaves UUID unresolved until an independent device-identity resource is
+  available. Day 1 remains in progress only for that missing authority.
 
 Needs:
 
-- Commit the corrected local tool catalog and this governing TODO.
-- Preserve the historical work-order receipt unchanged.
-- Mark repository-worker generation 1 complete in a new status receipt.
-- Freeze schemas for `fs.list`, `fs.find`, `fs.read_metadata`, `fs.hash`,
-  `fs.disk_usage`, `fs.duplicate_scan`, `process.list`, `service.status`,
-  `package.inventory`, `device.inventory`, `mount.inspect`, `network.status`,
-  `log.query`, and `repo.status`.
-- Implement the smallest read-only TrueMachine primitives.
-- Register their TrueCore workers and generate code-derived help.
+- Preserve the historical work-order receipts unchanged.
+- Add a new status receipt for the fourteen-operation generation.
+- Bind an independently witnessed device identity to `mount.inspect` if UUID is
+  required; do not infer it from mount-source text.
 
 Exit gate:
 

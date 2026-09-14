@@ -74,3 +74,12 @@ or standalone path-taking CLI: the host binds the root and budgets, and the
 request supplies relative paths only. The accepted operations are `fs.list`,
 `fs.find`, `fs.read_metadata`, `fs.hash`, `fs.disk_usage`, and
 `fs.duplicate_scan`.
+
+Additional registered read-only observations are implemented by
+`truemachine.system_observation` and `truemachine.command_observation`:
+`process.list`, `package.inventory`, `device.inventory`, `mount.inspect`,
+`network.status`, `log.query`, `service.status`, and `repo.status`. Each resource
+is bound to its allowed worker by TrueCore. `mount.inspect` deliberately leaves
+UUID unresolved until an independent device-identity resource is qualified.
+The two command-backed observations use code-fixed argv and host-bound,
+hash-verified executables; they are not a shell or general command runner.

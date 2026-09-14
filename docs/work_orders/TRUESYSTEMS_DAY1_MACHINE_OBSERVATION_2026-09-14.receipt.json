@@ -1,0 +1,85 @@
+{
+  "schema": "truesystems.day1_machine_observation@1",
+  "created_at_utc": "2026-09-14T09:48:02Z",
+  "repository": "/home/lamercey/TrueSystems-Alignment",
+  "starting_commit": "01aa238",
+  "status": "VERIFIED_AWAITING_COMMIT",
+  "authority": "CODE_PLUS_PASSING_EXTERNAL_TESTS",
+  "qualified_operations": [
+    "fs.list",
+    "fs.find",
+    "fs.read_metadata",
+    "fs.hash",
+    "fs.disk_usage",
+    "fs.duplicate_scan",
+    "process.list",
+    "package.inventory",
+    "device.inventory",
+    "mount.inspect",
+    "network.status",
+    "log.query",
+    "service.status",
+    "repo.status"
+  ],
+  "boundaries": [
+    "TRUECORE_IS_THE_ONLY_MODEL_FACING_OPERATION_BOUNDARY",
+    "RESOURCES_ARE_BOUND_TO_EXACT_ALLOWED_WORKERS",
+    "MODEL_CANNOT_SUPPLY_COMMANDS_EXECUTABLES_ROOTS_GRANTS_OR_HOST_BUDGETS",
+    "COMMAND_ARGV_IS_FIXED_IN_CODE",
+    "COMMAND_EXECUTABLES_ARE_HASH_BOUND_AND_RECHECKED",
+    "ALL_RESULTS_ARE_LOCATIONS_AND_MEASUREMENTS_WITH_ANSWER_NULL"
+  ],
+  "source_hashes": {
+    "TrueCore/truecore/agents/machine_navigation_workers.py": "2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
+    "TrueCore/truecore/machine_navigation_bridge.py": "f6b61579dcec06ffc4b473598aa655d7f7752923404de03422385d1618e6291c",
+    "TrueCore/truecore/live_agents/AGENTS/catalog/agent_catalog.csv": "9baa1860f63f8b1f51c18f4d6150c5655ee56be6536441f0d0dd3e7dd686ece0",
+    "TrueCore/truecore/live_agents/AGENTS/catalog/skill_index.json": "4df2698c44fad900f27334d8ed70343a13b8a341c337261f3e1eeec53175d7f3",
+    "TrueMachine/src/truemachine/collectors/linux.py": "04eb19fc2135730b18ff120560303c22874ac957647d1889b13ba38a4862c05a",
+    "TrueMachine/src/truemachine/system_observation.py": "43c14665ed0af1b59aa895f887384515b1bc413f5ccd079e92247a69025e1943",
+    "TrueMachine/src/truemachine/command_observation.py": "ada41314cdc47d7d6497cd75573f5a73578a5fa831a1200493cbee9e06878ec5"
+  },
+  "acceptance": {
+    "filesystem": {
+      "result": "PASS_8_OF_8",
+      "log": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/machine-filesystem-qualification-20260914T094506Z.log",
+      "sha256": "845201fb2653baef0477b08361272526e83fa9c6050b6a67594c6ba372fff2dc"
+    },
+    "system_observation": {
+      "result": "PASS_4_OF_4",
+      "log": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/machine-system-qualification-20260914T094506Z.log",
+      "sha256": "88a8a200a25adfb907af17c1f484aefd56ee6414c9cd2e37595507d08c5331d0"
+    },
+    "command_observation": {
+      "result": "PASS_4_OF_4",
+      "log": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/machine-command-qualification-20260914T094506Z.log",
+      "sha256": "ee4c9c26951e71ebfe4b4225395b8ca32a6689e9f2d7029c8f04c9348c7bdecd"
+    },
+    "truecore_worker_system": "PASS_4_OF_4",
+    "operator_boundary": "PASS_18_OF_18",
+    "model_host": "PASS_20_OF_20",
+    "registered_worker_bridge": "PASS_5_OF_5",
+    "local_tool_catalog": "PASS_8_OF_8",
+    "truecog_integrity": "PASS_10_OF_10",
+    "system_repairs": "PASS_5_OF_5"
+  },
+  "preserved_failed_attempts": [
+    {
+      "log": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/machine-command-observation-first-20260914T094227Z.log",
+      "sha256": "a860666e1811d82b1fd094bb807014497aa8c0a11a72769427296446df3ed2b5",
+      "finding": "VALID_SYSTEMCTL_RESOURCE_FELL_THROUGH_TO_GENERIC_FIELD_VALIDATOR"
+    },
+    {
+      "log": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/day1-regression-test_truecog_doc_code_audit-20260914T094736Z.log",
+      "sha256": "ba15ae65fca0316f1c539e0113f5052e1d509fc7ea4ab54bae235ea61ff5755e",
+      "finding": "EXTERNAL_ASSERTION_PREDATED_EXPLICIT_NETWORK_TRUNCATION_FIELD"
+    }
+  ],
+  "limitations": [
+    "MOUNT_UUID_AUTHORITY_NOT_BOUND_AND_UUID_REMAINS_UNRESOLVED",
+    "NETWORK_STATUS_DOES_NOT_CLAIM_SOCKET_OR_ROUTING_STATE",
+    "SYSTEM_STATE_ACCEPTANCE_USES_ISOLATED_PROCFS_SYSFS_PACKAGE_LOG_FIXTURES",
+    "SERVICE_STATUS_ACCEPTANCE_USES_A_HASH_BOUND_FIXTURE_EXECUTABLE",
+    "REPOSITORY_STATUS_ACCEPTANCE_USES_INSTALLED_GIT_AGAINST_AN_ISOLATED_REPOSITORY",
+    "NO_LIVE_HOST_MUTATION_OR_PRIVILEGED_OPERATION_WAS_PERFORMED"
+  ]
+}

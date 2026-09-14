@@ -34,7 +34,7 @@
   "risk_tier": 1,
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_list",
-  "source_entrypoint_hash": "sha256:7c77921e296e4807b060601c19d25055249bab1d9cfc14c9a60ad674ea1f2efb",
+  "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
   "test_command": [
     "python3",
     "-m",
@@ -44,8 +44,8 @@
   "usage": {
     "agent_id": "fs.list",
     "definition": {
-      "end_line": 65,
-      "line": 64,
+      "end_line": 78,
+      "line": 77,
       "source": "def filesystem_list(root_path: str, parameters: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:\n    return _execute(\"fs.list\", root_path, parameters, limits)"
     },
     "parameters": {
@@ -66,7 +66,7 @@
     "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
     "schema": "truecore.agent_usage@1",
     "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_list",
-    "source_entrypoint_hash": "sha256:7c77921e296e4807b060601c19d25055249bab1d9cfc14c9a60ad674ea1f2efb",
+    "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
     "unresolved": [
       "purpose",
       "prerequisites",
@@ -80,7 +80,7 @@
       "backend_qualification"
     ]
   },
-  "usage_sha256": "f6af9d936e550cd94118e9b37ca9df5ad805d0eb0a9b6ec4be3e2ed5a30e1311",
+  "usage_sha256": "6b48e905ab5bbfecc3589db368050de76f73786608a7a49bc4e568e5185eff82",
   "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/machine_navigation_workers.py",
   "version": "1.0.0",
   "worker_result_schema": "truecore.worker_result@1"

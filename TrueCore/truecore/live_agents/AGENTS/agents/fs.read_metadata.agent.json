@@ -34,7 +34,7 @@
   "risk_tier": 1,
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_read_metadata",
-  "source_entrypoint_hash": "sha256:7c77921e296e4807b060601c19d25055249bab1d9cfc14c9a60ad674ea1f2efb",
+  "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
   "test_command": [
     "python3",
     "-m",
@@ -44,8 +44,8 @@
   "usage": {
     "agent_id": "fs.read_metadata",
     "definition": {
-      "end_line": 73,
-      "line": 72,
+      "end_line": 86,
+      "line": 85,
       "source": "def filesystem_read_metadata(root_path: str, parameters: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:\n    return _execute(\"fs.read_metadata\", root_path, parameters, limits)"
     },
     "parameters": {
@@ -66,7 +66,7 @@
     "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
     "schema": "truecore.agent_usage@1",
     "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_read_metadata",
-    "source_entrypoint_hash": "sha256:7c77921e296e4807b060601c19d25055249bab1d9cfc14c9a60ad674ea1f2efb",
+    "source_entrypoint_hash": "sha256:2844545d45f6fb7ac1dc4809b7294152c1c47cd0dace569895af5e7636a7447d",
     "unresolved": [
       "purpose",
       "prerequisites",
@@ -80,7 +80,7 @@
       "backend_qualification"
     ]
   },
-  "usage_sha256": "76ef06464f9a0e1531bae1b3f9af17fa9111feddc4fcd9722b46592b1ed3d278",
+  "usage_sha256": "6fa0f6eb535cf2eb734512de372e83f51f1d061bf207b27bf408337094a63612",
   "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/machine_navigation_workers.py",
   "version": "1.0.0",
   "worker_result_schema": "truecore.worker_result@1"

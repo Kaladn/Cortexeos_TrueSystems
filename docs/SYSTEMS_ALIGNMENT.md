@@ -47,14 +47,18 @@ write a substrate, modify a dataset, invoke the legacy API or bypass HID control
 Existing permission machinery is untouched. Grants authorize only these narrow
 reads, not live mutation or a general-purpose runner.
 
-The first `machine.invoke` generation exposes six registered read-only workers:
+The `machine.invoke` generation exposes fourteen registered read-only workers:
 `fs.list`, `fs.find`, `fs.read_metadata`, `fs.hash`, `fs.disk_usage`, and
-`fs.duplicate_scan`. The host binds an absolute filesystem root plus entry and
-byte budgets. The model supplies only a path relative to that root and the
-operation's typed parameters. TrueCore refuses absolute paths, parent traversal,
-symlink traversal, unknown resources, changed root identity, ungranted workers,
-and exceeded budgets. TrueMachine returns locations and measurements with
-`answer: null`; it does not recommend deletion or decide safety.
+`fs.duplicate_scan`; `process.list`, `package.inventory`, `device.inventory`,
+`mount.inspect`, `network.status`, and `log.query`; and fixed-argv
+`service.status` and `repo.status`. The host binds each resource to one allowed
+worker family plus entry, byte, result, and command-time budgets. The model
+supplies only typed operation parameters. TrueCore refuses cross-worker resource
+reuse, absolute and parent-traversal paths, symlink traversal, unknown or changed
+resources, ungranted workers, model-supplied commands, and exceeded budgets.
+TrueMachine returns locations and measurements with `answer: null`; it does not
+recommend mutation or decide safety. Mount UUID remains explicitly unresolved
+because the current mount resource does not independently establish it.
 
 It validates the Fusion Pack shape, timeline, wall-time consistency, per-source
 coordinates/status and data hashes. It returns source data intact, marks failed
