@@ -103,7 +103,8 @@ def create_snapshot(
     repo = Path(repository).resolve()
     vault = Path(vault_root).resolve()
     views = [Path(item).resolve() for item in external_views]
-    if not (repo / ".git").is_dir():
+    git_kind = _git(repo, "rev-parse", "--is-inside-work-tree").decode().strip()
+    if git_kind != "true":
         raise ValueError("REPOSITORY_REQUIRED")
     if _git(repo, "status", "--porcelain=v1", "-z"):
         raise ValueError("CLEAN_REPOSITORY_REQUIRED")
