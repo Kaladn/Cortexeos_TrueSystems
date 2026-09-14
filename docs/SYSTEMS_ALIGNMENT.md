@@ -35,7 +35,7 @@ every sensory modality or cross-system handoff is already connected.
 Host integration supplies grants and artifact bindings; the request supplies only
 schema, request_id, operation and arguments. The completed read-only host connects
 `help.list`, `help.query`, `sensory.inspect`, `source.classify`, `media.describe`,
-and `worker.invoke`.
+`worker.invoke`, and `machine.invoke`.
 Unknown operations fail closed. See `MODEL_HOST_CONTRACT.md` for the transport,
 component readers and exact qualification boundary.
 
@@ -45,6 +45,15 @@ The adapter reads already-admitted artifacts. It does not capture, start agents,
 write a substrate, modify a dataset, invoke the legacy API or bypass HID controls.
 Existing permission machinery is untouched. Grants authorize only these narrow
 reads, not live mutation or a general-purpose runner.
+
+The first `machine.invoke` generation exposes six registered read-only workers:
+`fs.list`, `fs.find`, `fs.read_metadata`, `fs.hash`, `fs.disk_usage`, and
+`fs.duplicate_scan`. The host binds an absolute filesystem root plus entry and
+byte budgets. The model supplies only a path relative to that root and the
+operation's typed parameters. TrueCore refuses absolute paths, parent traversal,
+symlink traversal, unknown resources, changed root identity, ungranted workers,
+and exceeded budgets. TrueMachine returns locations and measurements with
+`answer: null`; it does not recommend deletion or decide safety.
 
 It validates the Fusion Pack shape, timeline, wall-time consistency, per-source
 coordinates/status and data hashes. It returns source data intact, marks failed

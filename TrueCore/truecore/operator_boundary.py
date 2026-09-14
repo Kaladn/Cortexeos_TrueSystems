@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from types import MappingProxyType
 from .operator_contracts import contracts
+from .machine_navigation_bridge import MachineNavigationBridge, MachineNavigationBridgeError
 from .registered_worker_bridge import RegisteredWorkerBridge, RegisteredWorkerBridgeError
 
 OPERATIONS = MappingProxyType({
@@ -21,6 +22,7 @@ OPERATIONS = MappingProxyType({
     'source.classify': 'Classify a host-admitted text source using existing DocuFilm rules; does not admit it.',
     'media.describe': 'Describe an admitted media tool declaration; does not execute or qualify the media tool.',
     'worker.invoke': 'Invoke one host-granted registered read-only worker on one host-bound resource.',
+    'machine.invoke': 'Invoke one host-granted registered read-only TrueMachine navigation worker.',
 })
 
 def strict_json(raw):
@@ -45,12 +47,16 @@ class Rejected(ValueError):
     pass
 
 class OperatorBoundary:
-    def __init__(self, *, grants, artifacts, worker_grants=(), resources=None, max_bytes=4_000_000):
+    def __init__(self, *, grants, artifacts, worker_grants=(), resources=None,
+                 machine_worker_grants=(), machine_resources=None, max_bytes=4_000_000):
         if not set(grants) <= OPERATIONS.keys():
             raise ValueError('UNKNOWN_HOST_GRANT')
         self.grants = frozenset(grants)
         self.artifacts = MappingProxyType({k: MappingProxyType(dict(v)) for k, v in artifacts.items()})
         self.worker_bridge = RegisteredWorkerBridge(worker_grants=worker_grants, resources=resources)
+        self.machine_bridge = MachineNavigationBridge(
+            worker_grants=machine_worker_grants, resources=machine_resources,
+        )
         if type(max_bytes) is not int or max_bytes <= 0:
             raise ValueError('INVALID_HOST_BUDGET')
         self.max_bytes = max_bytes
@@ -80,6 +86,7 @@ class OperatorBoundary:
                 result = {'operations': dict(OPERATIONS), 'source': 'TrueCore',
                           'contracts': contracts(),
                           'registered_workers': self.worker_bridge.public_contract(),
+                          'machine_navigation': self.machine_bridge.public_contract(),
                           'live_capture': False, 'mutation': False,
                           'limits': ['Only listed operations are connected.',
                                      'Host grants are not human approval for other operations.']}
@@ -90,11 +97,21 @@ class OperatorBoundary:
             elif operation == 'worker.invoke':
                 result = self.worker_bridge.invoke(args)
                 status = 'COMPLETE' if result['status'] == 'COMPLETE' else 'PARTIAL'
+            elif operation == 'machine.invoke':
+                result = self.machine_bridge.invoke(args)
+                if result['status'] == 'COMPLETE':
+                    status = 'COMPLETE'
+                elif result['status'] == 'FAILED':
+                    status, reason = 'FAILED', result['continuation']['reason_code']
+                elif result['status'] == 'REFUSED':
+                    status, reason = 'REJECTED', result['continuation']['reason_code']
+                else:
+                    status = 'PARTIAL'
             else:
                 from .operator_workers import dispatch_read_worker
                 result = dispatch_read_worker(operation, args, self._read_artifact)
                 status = 'COMPLETE'
-        except (Rejected, RegisteredWorkerBridgeError) as e:
+        except (Rejected, RegisteredWorkerBridgeError, MachineNavigationBridgeError) as e:
             reason = str(e)
         except (OSError, UnicodeError, json.JSONDecodeError):
             status, reason = 'FAILED', 'ARTIFACT_READ_FAILED'

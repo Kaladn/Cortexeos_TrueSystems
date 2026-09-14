@@ -145,6 +145,16 @@ gate and preserves the failure evidence.
 
 ### Day 1 — Synchronize truth and qualify read-only navigation
 
+Progress at the 2026-09-14 filesystem checkpoint:
+
+- The governing plan and detached TruePlug ancestor are committed separately.
+- Six filesystem observations are implemented in TrueMachine, registered as
+  TrueCore agents, exposed only through `machine.invoke`, included in the common
+  skill index, and accepted by external tests.
+- `process.list`, `service.status`, `package.inventory`, `device.inventory`,
+  `mount.inspect`, `network.status`, `log.query`, and `repo.status` remain
+  unimplemented at this boundary. Day 1 is therefore in progress, not complete.
+
 Needs:
 
 - Commit the corrected local tool catalog and this governing TODO.

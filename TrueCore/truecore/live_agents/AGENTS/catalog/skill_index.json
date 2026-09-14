@@ -1,5 +1,5 @@
 {
-  "index_sha256": "sha256:e68b4ea746afeaef7e4d6159d953890ee1b8152a5d8657b8e51c95913ea63d72",
+  "index_sha256": "sha256:4d044666d8bfde9be2b979eb02552211cb1963606310e40fd0d9de4f5362ae82",
   "schema": "truecore.skill_index@1",
   "worker_result_schema": "truecore.worker_result@1",
   "workers": [
@@ -52,6 +52,144 @@
       "runtime_language": "python",
       "version": "1.0.0",
       "worker_id": "evidence_workspace_agent",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.disk_usage.agent.json",
+      "manifest_sha256": "sha256:75c639ecdaa4d80c25a280cb3517302b6fb7f05764913a813d7cf5ecaf293bd0",
+      "mutation_class": "contract_declared:read",
+      "name": "filesystem_disk_usage",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "fs.disk_usage",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.duplicate_scan.agent.json",
+      "manifest_sha256": "sha256:dd5babf02addd3e498f199708ed3c3ca4c3cc5afff89e885a2275a4155ff8bff",
+      "mutation_class": "contract_declared:read",
+      "name": "filesystem_duplicate_scan",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "fs.duplicate_scan",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.find.agent.json",
+      "manifest_sha256": "sha256:ff3e55f7085dce0f16fc2519f1229fb002483b9069590776f32df4a0776080ac",
+      "mutation_class": "contract_declared:read",
+      "name": "filesystem_find",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "fs.find",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.hash.agent.json",
+      "manifest_sha256": "sha256:764aa627c6898a1ba9fe7e78f7fc0c1ab1e28beab0d006828fee5afdb53f26ce",
+      "mutation_class": "contract_declared:read",
+      "name": "filesystem_hash",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "fs.hash",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.list.agent.json",
+      "manifest_sha256": "sha256:d68d042da08f296d71a1b83d3b086a3986873a04553dc5ee0a0f7b9bdebfeeb2",
+      "mutation_class": "contract_declared:read",
+      "name": "filesystem_list",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "fs.list",
+      "worker_result_schema": "truecore.worker_result@1"
+    },
+    {
+      "allowed_reads": [
+        "truecore/agents/machine_navigation_workers.py"
+      ],
+      "allowed_writes": [],
+      "approval_phrase": "",
+      "callable": true,
+      "entrypoint": "truecore.live_agents.generated_runtime",
+      "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+      "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.read_metadata.agent.json",
+      "manifest_sha256": "sha256:53bea7eaf1aa8fc3fea174524238b005303006dd8cfd4cf130cab06c0bfbca66",
+      "mutation_class": "contract_declared:read",
+      "name": "filesystem_read_metadata",
+      "required_params": [
+        "input_json"
+      ],
+      "requires_approval": false,
+      "risk_tier": 1,
+      "runtime_language": "python",
+      "version": "1.0.0",
+      "worker_id": "fs.read_metadata",
       "worker_result_schema": "truecore.worker_result@1"
     },
     {
@@ -496,4 +634,3 @@
     }
   ]
 }
-

@@ -21,6 +21,14 @@ _CONTRACTS = {
         },
         'result_grade': 'REGISTERED_WORKER_RESULT_NOT_OPERATOR_ANSWER',
     },
+    'machine.invoke': {
+        'arguments': {
+            'worker_id': 'host-granted registered read-only TrueMachine worker identity',
+            'resource_id': 'host-bound filesystem-root identity',
+            'parameters': 'operation-specific typed parameters containing relative paths only',
+        },
+        'result_grade': 'OBSERVED_MACHINE_LOCATIONS_AND_MEASUREMENTS_NOT_SAFETY_JUDGMENT',
+    },
 }
 
 def contracts():

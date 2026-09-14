@@ -1,0 +1,84 @@
+{
+  "schema": "truesystems.day1_checkpoint@1",
+  "created_at_utc": "2026-09-14T09:22:31Z",
+  "repository": "/home/lamercey/TrueSystems-Alignment",
+  "starting_commit": "40a4ff1",
+  "status": "FILESYSTEM_CLUSTER_VERIFIED_DAY1_IN_PROGRESS",
+  "authority": "CODE_PLUS_PASSING_EXTERNAL_TESTS",
+  "repository_worker_generation_1": {
+    "status": "COMPLETE_WITH_DECLARED_MISSING_AUTHORITIES",
+    "record": "docs/work_orders/TRUECOG_REPOSITORY_GRAPH_WORKER_GENERATION_1.md",
+    "record_sha256": "eb23535bcac027f7c6eb720b85d98585205942c61a98d8792981bd624e50ec33",
+    "acceptance_output": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/repository-graph-worker-generation1-20260913T202222Z.log",
+    "acceptance_sha256": "5cd331f054095c75318571b3b187bf3c3ebe5c4a934d4175609d57aa5b8cf104"
+  },
+  "qualified_operations": [
+    "fs.list",
+    "fs.find",
+    "fs.read_metadata",
+    "fs.hash",
+    "fs.disk_usage",
+    "fs.duplicate_scan"
+  ],
+  "source_hashes": {
+    "TrueMachine/src/truemachine/navigation.py": "797ffda25d1f3398d2a35757a288848407ccc28b3677ecdd437b21f5b74170c3",
+    "TrueCore/truecore/agents/machine_navigation_workers.py": "7c77921e296e4807b060601c19d25055249bab1d9cfc14c9a60ad674ea1f2efb",
+    "TrueCore/truecore/machine_navigation_bridge.py": "198a9c6f350c8eeffc8a81c1e29855d2b61199fd60ab599dd5c17d396a6eadca",
+    "TrueCore/truecore/operator_boundary.py": "20edbc6664bce7e6702b6049932da92544f95e546ac53301f8451e8868c7b164",
+    "TrueCore/truecore/operator_contracts.py": "020ed47e7742af598dd709f0368bdf909c0ef0ea8fd321df40d85ac6a9a61632",
+    "TrueCore/truecore/model_host.py": "0a63052ee2a022768010e33845d1d5d711f513dfd854e7726cff7c93a226550d",
+    "TrueCore/truecore/live_agents/AGENTS/catalog/skill_index.json": "a90f7922b71d18d94edd9a564e587fee2409975ab6873c9395259b199468a2ba"
+  },
+  "acceptance": {
+    "test": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/test_machine_navigation_bridge.py",
+    "output": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/machine-navigation-20260914T092231Z.log",
+    "output_sha256": "2ff88da39fd8577908382ca9598a0e1301f86309ba31f066e93710726fca9cca",
+    "result": "PASS_8_OF_8",
+    "coverage": [
+      "ALL_SIX_OPERATIONS",
+      "NO_FIXTURE_MUTATION",
+      "HOST_GRANTS",
+      "HOST_RESOURCE_BINDING",
+      "HOST_ENTRY_AND_BYTE_BUDGETS",
+      "ABSOLUTE_AND_PARENT_PATH_REFUSAL",
+      "SYMLINK_ESCAPE_REFUSAL",
+      "MISSING_TARGET",
+      "TRUNCATION",
+      "CHANGED_ROOT_IDENTITY",
+      "CODE_DERIVED_HELP",
+      "SKILL_INDEX",
+      "JSONL_MODEL_HOST",
+      "DETERMINISTIC_REPLAY"
+    ]
+  },
+  "regressions": {
+    "operator_boundary": {
+      "result": "PASS_18_OF_18",
+      "output": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/20260914T092132Z/acceptance.json",
+      "output_sha256": "f2af187d27a15f3bd8bc6b2f09b3f5280c116300a117867e73d03de5d158ef51"
+    },
+    "model_host": {
+      "result": "PASS_20_OF_20",
+      "output": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/host-20260914T092108Z/acceptance.json",
+      "output_sha256": "42ec2106359d5f119fafdfdd7cbf218d7f5a8f4775dbe488109f535b576c3355"
+    },
+    "registered_repository_worker_bridge": "PASS_5_OF_5",
+    "common_worker_system": "PASS_4_OF_4"
+  },
+  "remaining_day1_operations": [
+    "process.list",
+    "service.status",
+    "package.inventory",
+    "device.inventory",
+    "mount.inspect",
+    "network.status",
+    "log.query",
+    "repo.status"
+  ],
+  "limitations": [
+    "NO_LIVE_ROOT_IS_GRANTED_BY_THIS_COMMIT",
+    "NO_WRITE_OR_DESTRUCTIVE_OPERATION_EXISTS_IN_THIS_FAMILY",
+    "NO_SAFETY_OR_DUPLICATE_DELETION_JUDGMENT_IS_RETURNED",
+    "DAY1_IS_NOT_COMPLETE"
+  ]
+}

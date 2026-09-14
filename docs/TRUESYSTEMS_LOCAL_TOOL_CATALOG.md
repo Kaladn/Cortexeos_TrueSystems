@@ -352,20 +352,34 @@ ask
 | Training programs | `training/*.py` | Offline developer/research scripts; not model tools |
 | TrueCore front door | `TrueCore/frontdoor/src/main.rs` | Native component entrypoint; inspect contract before exposure |
 
-## Morning build list: bounded local housekeeping
+## Qualified bounded filesystem observation
 
-These IDs are proposed catalog names only. They are not live until code, schemas, grants, approval behavior, receipts, and external acceptance tests exist.
+The following operations are `MODEL-LIVE` through `machine.invoke`. Their
+registered agent manifests and code-derived help bind to
+`TrueCore/truecore/agents/machine_navigation_workers.py`; observation is owned by
+`TrueMachine/src/truemachine/navigation.py`.
+
+| Operation | Bounded result |
+| --- | --- |
+| `fs.list` | Direct child locations under a host-bound directory; symlinks are reported but not followed. |
+| `fs.find` | Substring name matches under bounded depth, entry, and result limits. |
+| `fs.read_metadata` | Type, size, mode, timestamps, device, and inode for one location. |
+| `fs.hash` | SHA-256 and byte count for one bounded regular file. |
+| `fs.disk_usage` | Bounded recursive file, directory, and byte measurements. |
+| `fs.duplicate_scan` | SHA-256-backed duplicate-location groups; no deletion recommendation. |
+
+The model cannot provide an absolute path, command, module, root binding, grant,
+or host budget. All results use `truecore.worker_result@1` and contain no answer.
+
+## Remaining build list: bounded local housekeeping
+
+The IDs below remain proposed catalog names only. They are not live until code,
+schemas, grants, approval behavior, receipts, and external acceptance tests exist.
 
 ### Read-only inspection
 
 | Proposed operation | Bounded purpose |
 | --- | --- |
-| `fs.list` | List one host-bound directory with depth and result limits. |
-| `fs.find` | Find names/types beneath one host-bound root. |
-| `fs.read_metadata` | Return type, size, ownership, mode, and timestamps. |
-| `fs.hash` | Hash exact admitted files without modifying them. |
-| `fs.disk_usage` | Measure bounded directory or filesystem use. |
-| `fs.duplicate_scan` | Return hash-backed duplicate candidates only. |
 | `process.list` | Observe processes without signaling them. |
 | `service.status` | Read declared service status. |
 | `package.inventory` | Read installed package facts. |

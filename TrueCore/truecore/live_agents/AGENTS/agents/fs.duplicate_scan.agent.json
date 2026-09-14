@@ -1,0 +1,87 @@
+{
+  "agent_id": "fs.duplicate_scan",
+  "allowed_reads": [
+    "truecore/agents/machine_navigation_workers.py"
+  ],
+  "allowed_writes": [],
+  "approval_phrase": "",
+  "catalog_id": "fs.duplicate_scan",
+  "command": [
+    "python3",
+    "-m",
+    "truecore.live_agents.generated_runtime",
+    "--module",
+    "truecore.agents.machine_navigation_workers",
+    "--symbol",
+    "filesystem_duplicate_scan",
+    "--input-json",
+    "{input_json}"
+  ],
+  "default_out_dir": "AGENTS/generated/runtime",
+  "description": "[worker] locate byte-identical files under bounded budgets",
+  "dry_run_supported": true,
+  "entrypoint": "truecore.live_agents.generated_runtime",
+  "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+  "id": "fs.duplicate_scan",
+  "log_stream": "agent_decision",
+  "mutation_class": "contract_declared:read",
+  "name": "filesystem_duplicate_scan",
+  "prompt_only_allowed": false,
+  "required_params": [
+    "input_json"
+  ],
+  "requires_approval": false,
+  "risk_tier": 1,
+  "runtime_language": "python",
+  "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_duplicate_scan",
+  "source_entrypoint_hash": "sha256:7c77921e296e4807b060601c19d25055249bab1d9cfc14c9a60ad674ea1f2efb",
+  "test_command": [
+    "python3",
+    "-m",
+    "unittest",
+    "tests.live_agents.test_agent_creator"
+  ],
+  "usage": {
+    "agent_id": "fs.duplicate_scan",
+    "definition": {
+      "end_line": 85,
+      "line": 84,
+      "source": "def filesystem_duplicate_scan(root_path: str, parameters: dict[str, Any], limits: dict[str, int]) -> dict[str, Any]:\n    return _execute(\"fs.duplicate_scan\", root_path, parameters, limits)"
+    },
+    "parameters": {
+      "keyword_default_expressions": [],
+      "keyword_only": [],
+      "kwarg": null,
+      "positional": [
+        "root_path: str",
+        "parameters: dict[str, Any]",
+        "limits: dict[str, int]"
+      ],
+      "positional_only": [],
+      "trailing_positional_default_expressions": [],
+      "vararg": null
+    },
+    "qualification": "STATIC_CODE_FACTS_ONLY",
+    "return_annotation": "dict[str, Any]",
+    "runtime_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
+    "schema": "truecore.agent_usage@1",
+    "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_duplicate_scan",
+    "source_entrypoint_hash": "sha256:7c77921e296e4807b060601c19d25055249bab1d9cfc14c9a60ad674ea1f2efb",
+    "unresolved": [
+      "purpose",
+      "prerequisites",
+      "dependencies",
+      "effects",
+      "permissions",
+      "result_semantics",
+      "failure_conditions",
+      "retry",
+      "examples",
+      "backend_qualification"
+    ]
+  },
+  "usage_sha256": "c5eb7f1fa0ee4dec26f11f7041f2fb704b24ca1509ba0494c7407d2282db4497",
+  "usage_source_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/agents/machine_navigation_workers.py",
+  "version": "1.0.0",
+  "worker_result_schema": "truecore.worker_result@1"
+}

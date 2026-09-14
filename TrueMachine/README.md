@@ -59,3 +59,10 @@ evidence rather than promoted to data-flow authority. It returns no answer or
 security judgment.
 
 See `docs/CONTRACT.md` for the locked timestamp and durability contracts.
+
+Bounded filesystem observation is available to registered TrueCore workers via
+`truemachine.navigation`. It is a Python API rather than an unrestricted shell
+or standalone path-taking CLI: the host binds the root and budgets, and the
+request supplies relative paths only. The accepted operations are `fs.list`,
+`fs.find`, `fs.read_metadata`, `fs.hash`, `fs.disk_usage`, and
+`fs.duplicate_scan`.

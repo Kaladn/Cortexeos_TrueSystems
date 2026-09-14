@@ -99,3 +99,19 @@ as either bounded static investigations or explicit missing-authority results.
 Every view returns its classifier rule, independent channel availability,
 unresolved prerequisites, truncation state, locations/relationships, a receipt,
 and `answer: null`. The view engine does not perform security adjudication.
+
+## Bounded filesystem observation
+
+`src/truemachine/navigation.py` implements six read-only observations beneath a
+caller-bound absolute root: directory listing, substring name finding, metadata,
+SHA-256, recursive disk usage, and duplicate-content grouping. Requests use only
+relative paths. The implementation reports symlinks in a direct listing but
+never follows them as targets or during recursion. Parent traversal, absolute
+request paths, special hash targets, exceeded entry/byte budgets, and target
+escape are refused.
+
+Every packet carries the root device/inode identity, observed relative
+locations, measurements, explicit unresolved entries, truncation state, a
+deterministic receipt, and `answer: null`. TrueCore owns grants and resource
+binding; TrueMachine only observes the bounded state. These operations neither
+write files nor decide which duplicate, file, or directory should be changed.
