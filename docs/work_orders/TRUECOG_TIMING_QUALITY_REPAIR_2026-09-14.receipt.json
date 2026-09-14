@@ -1,0 +1,59 @@
+{
+  "schema": "truecog.timing_quality_repair@1",
+  "created_at_utc": "2026-09-14T09:57:20Z",
+  "repository": "/home/lamercey/TrueSystems-Alignment",
+  "starting_commit": "58e37d0",
+  "status": "VERIFIED_AWAITING_COMMIT",
+  "authority": "CODE_PLUS_PASSING_EXTERNAL_TESTS",
+  "changes": [
+    "FUSION_SCHEMA_ADVANCED_TO_TRUEMACHINE_FUSION_V2",
+    "SUCCESS_AND_ERROR_OBSERVATIONS_CARRY_MONOTONIC_COLLECTION_WINDOWS",
+    "COLLECTION_DURATION_IS_VALIDATED_AS_END_MINUS_START",
+    "SERIAL_COLLECTION_ORDER_IS_VALIDATED",
+    "PULSE_SCHEDULING_LATENESS_IS_DURABLE",
+    "WHOLE_CADENCE_BOUNDARIES_MISSED_BEFORE_START_ARE_DURABLE",
+    "TRUECORE_INDEPENDENTLY_VALIDATES_TIMING_AND_SCHEDULING",
+    "TRUEMACHINE_STORE_INDEPENDENTLY_VALIDATES_TIMING_AND_SCHEDULING"
+  ],
+  "source_hashes": {
+    "TrueMachine/src/truemachine/model.py": "263d86b7f5ca3af571a3faa14d7865d23e2a36a80b8695b17e29ad09dc62c3ea",
+    "TrueMachine/src/truemachine/engine.py": "411b1d6cdc8bdbfb8558f18e2e5f6e927ff13071a41e984ce83c2be6b7a97f17",
+    "TrueMachine/src/truemachine/fusion.py": "c4b9d094eeb18753aac9a163adfc6941e49a45aa80ea647d59de6f00c52fdab7",
+    "TrueCore/truecore/operator_boundary.py": "4a53cdfbe3d56249f0993dbeddfc3569eb2c904cc87515dcf110fc7d65d84973",
+    "TrueCore/truecore/agents/process_change.py": "c4ed35f589cf6775f79258c533c2d7a7c1ca6c8ec609830d6249d423aa930dbd",
+    "TrueCore/truecore/live_agents/AGENTS/agents/process_change.agent.json": "2f986f73ada458fbbc34106e5fa5e82be34a5cfea216e057f17032a3624470e2",
+    "TrueCore/truecore/live_agents/AGENTS/catalog/skill_index.json": "64272b8db0ec1a29bfd2496ed7289335e3fa0c21c6ba43dbf185b56632840aa9",
+    "TrueMachine/README.md": "273fb123a639b419e7b1d76cba1a056fd160021c9d84345e1be193918999dbe4",
+    "TrueMachine/docs/CONTRACT.md": "f06b7bab88badd5d5d53b75eb1db1e4f9e10385bbbcc59328c31ac7fc57d638c",
+    "docs/SYSTEMS_ALIGNMENT.md": "eb0ba18b0da4954b286f40a200a317699833263dbed4ceda715111728d9f32f9"
+  },
+  "acceptance": {
+    "test": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/test_truecog_timing_quality.py",
+    "red_log": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/truecog-timing-quality-red-20260914T095353Z.log",
+    "red_log_sha256": "f04ff4da5e9b19146f9b883a3fcd50d9b9c0b075684e3a03156b170ea1602d37",
+    "green_log": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/truecog-timing-quality-final-20260914T095913Z.log",
+    "green_log_sha256": "30d243582219209483f42aa8c82dd2c8d0e4573a8b7918584775d416b43414a5",
+    "result": "PASS_5_OF_5",
+    "virtual_clock": true,
+    "live_machine_sampled": false,
+    "full_regression_log": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/truecog-timing-v2-full-regression-20260914T095946Z.log",
+    "full_regression_sha256": "ddfbf8e6e865d0ededd9ad1139e82d7e84d24e92213696de1410038332a96b69"
+  },
+  "regressions": {
+    "operator_boundary": "PASS_18_OF_18",
+    "model_host": "PASS_20_OF_20",
+    "truecog_integrity": "PASS_10_OF_10",
+    "system_repairs": "PASS_5_OF_5",
+    "truecore_worker_system": "PASS_4_OF_4",
+    "filesystem_observation": "PASS_8_OF_8",
+    "system_observation": "PASS_4_OF_4",
+    "command_observation": "PASS_4_OF_4"
+  },
+  "limitations": [
+    "ENGINE_RETAINS_IMMEDIATE_CATCH_UP_BEHAVIOR_WHILE_MAKING_BACKLOG_VISIBLE",
+    "NO_FINAL_RUN_DROPPED_OR_EXPECTED_PULSE_AGGREGATE_IS_PUBLISHED",
+    "DATACLASS_CONSTRUCTORS_REMAIN_CONTAINERS_RATHER_THAN_COMPLETE_VALIDATORS",
+    "WAL_AHEAD_RECOVERY_NOT_IMPLEMENTED",
+    "LIVE_MULTIMODAL_FUSION_NOT_QUALIFIED"
+  ]
+}

@@ -154,8 +154,8 @@ class OperatorBoundary:
             raise Rejected('INVALID_ARGUMENT_BINDING')
         raw, _, _ = self._read_artifact(args['artifact_id'])
         pack = strict_json(raw)
-        fields = {'schema', 'run_id', 'sequence', 'cadence_ns', 'timeline_ns', 'time', 'observations'}
-        if not isinstance(pack, dict) or set(pack) != fields or pack['schema'] != 'truemachine.fusion@1':
+        fields = {'schema', 'run_id', 'sequence', 'cadence_ns', 'timeline_ns', 'time', 'scheduling', 'observations'}
+        if not isinstance(pack, dict) or set(pack) != fields or pack['schema'] != 'truemachine.fusion@2':
             raise Rejected('INVALID_FUSION_SCHEMA')
         if pack['run_id'] != args['expected_run_id'] or pack['sequence'] != args['expected_sequence']:
             raise Rejected('WRONG_RUN_OR_SEQUENCE')
@@ -178,8 +178,26 @@ class OperatorBoundary:
             raise Rejected('INVALID_TIME_RANGE')
         if t['utc'] != utc or t['utc_date'] != utc[:10] or not isinstance(t['boot_id'], str) or not t['boot_id']:
             raise Rejected('INCONSISTENT_TIME')
+        scheduling = pack['scheduling']
+        scheduling_fields = {
+            'scheduled_monotonic_ns', 'pulse_started_monotonic_ns',
+            'scheduling_lateness_ns', 'cadence_boundaries_missed_before_start',
+        }
+        if not isinstance(scheduling, dict) or set(scheduling) != scheduling_fields:
+            raise Rejected('INVALID_SCHEDULING_TIMING')
+        if any(type(scheduling[field]) is not int or scheduling[field] < 0 for field in scheduling_fields):
+            raise Rejected('INVALID_SCHEDULING_TIMING')
+        lateness = max(0, scheduling['pulse_started_monotonic_ns'] - scheduling['scheduled_monotonic_ns'])
+        if (scheduling['scheduling_lateness_ns'] != lateness or
+            scheduling['cadence_boundaries_missed_before_start'] != lateness // pack['cadence_ns']):
+            raise Rejected('INVALID_SCHEDULING_TIMING')
+        previous_collection_end = None
         for o in pack['observations']:
-            if not isinstance(o, dict) or set(o) != {'source', 'schema', 'status', 'data', 'source_coordinates', 'content_sha256', 'error'}:
+            if not isinstance(o, dict) or set(o) != {
+                'source', 'schema', 'status', 'data', 'source_coordinates',
+                'content_sha256', 'collection_started_monotonic_ns',
+                'collection_ended_monotonic_ns', 'collection_duration_ns', 'error',
+            }:
                 raise Rejected('INVALID_OBSERVATION')
             if not all(isinstance(o[k], str) and o[k] for k in ('source', 'schema')):
                 raise Rejected('INVALID_OBSERVATION_IDENTITY')
@@ -192,8 +210,21 @@ class OperatorBoundary:
                 raise Rejected('INVALID_ERROR_OBSERVATION')
             if o['status'] == 'ok' and o['error'] is not None:
                 raise Rejected('INVALID_OK_OBSERVATION')
+            started = o['collection_started_monotonic_ns']
+            ended = o['collection_ended_monotonic_ns']
+            duration = o['collection_duration_ns']
+            if (type(started) is not int or started < 0 or type(ended) is not int or
+                ended < started or type(duration) is not int or duration != ended - started or
+                (previous_collection_end is not None and started < previous_collection_end)):
+                raise Rejected('INVALID_OBSERVATION_TIMING')
+            previous_collection_end = ended
             # TrueMachine uses ensure_ascii=True, not this boundary's canonical format.
             encoded = json.dumps(o['data'], ensure_ascii=True, sort_keys=True, separators=(',', ':'), allow_nan=False).encode()
             if hashlib.sha256(encoded).hexdigest() != o['content_sha256']:
                 raise Rejected('OBSERVATION_HASH_MISMATCH')
+        if not (
+            scheduling['pulse_started_monotonic_ns'] <= t['monotonic_ns'] <=
+            pack['observations'][0]['collection_started_monotonic_ns']
+        ):
+            raise Rejected('INVALID_SAMPLING_TIMING')
         return pack

@@ -1,5 +1,5 @@
 {
-  "index_sha256": "sha256:20a0e29fe6ca73b41528fee0bed7e5acd777655d9a73513e511e959811b6e116",
+  "index_sha256": "sha256:9acb34ba15b1dd8fff6c37c488ca7db601463ce30819a7f00b3e274779759656",
   "schema": "truecore.skill_index@1",
   "worker_result_schema": "truecore.worker_result@1",
   "workers": [
@@ -342,9 +342,9 @@
       "approval_phrase": "",
       "callable": true,
       "entrypoint": "../agents/process_change.py",
-      "entrypoint_hash": "sha256:04ee2124d38ece31f524602daffd49c7d5ab2ce1ad4f062054f39750dcfbe50a",
+      "entrypoint_hash": "sha256:c4ed35f589cf6775f79258c533c2d7a7c1ca6c8ec609830d6249d423aa930dbd",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/process_change.agent.json",
-      "manifest_sha256": "sha256:8065196ff701b60cd39137059bbc3fe8ee2ec43688af63dde56fd0e329af7388",
+      "manifest_sha256": "sha256:2f986f73ada458fbbc34106e5fa5e82be34a5cfea216e057f17032a3624470e2",
       "mutation_class": "local_agent_state",
       "name": "Process Change Agent",
       "required_params": [

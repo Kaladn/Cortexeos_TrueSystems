@@ -1,9 +1,10 @@
 # TrueMachine
 
 TrueMachine is a Linux-native temporal machine-state observation and fusion core. It observes the local
-machine, assigns every observation one authoritative time sample, commits each
-pulse to a write-ahead log, and publishes an atomic Fusion Pack describing
-what the machine knows about itself at that moment.
+machine, assigns every pulse one authoritative time sample and every collector
+its own monotonic start/end window, commits each pulse to a write-ahead log, and
+publishes an atomic Fusion Pack describing what the machine knows about itself
+at that interval.
 
 The CompuCog name is design lineage, not proof that historical CompuCog behavior
 is imported or implemented here. TrueCore comes after TrueMachine as a consumer
@@ -16,7 +17,8 @@ The default Linux pack keeps network interface state and machine load in
 separate observations. Fusion commits are serialized by an advisory state-store
 writer lock before WAL append and publication. Memory, process, and network
 collector `@2` packets expose partial item reads instead of silently skipping
-them.
+them. Fusion schema `truemachine.fusion@2` also records scheduling lateness and
+the number of whole cadence boundaries crossed before each pulse begins.
 
 Run for one minute:
 

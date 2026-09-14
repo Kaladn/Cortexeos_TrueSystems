@@ -19,15 +19,26 @@ adds wall-clock provenance to a pulse; wall time is not replay timeline truth.
 - `sequence`: contiguous pulse order within the run
 - `timeline_ns`: exactly `(sequence - 1) * cadence_ns`
 - `cadence_ns`: immutable cadence for the engine run
+- `scheduling.scheduled_monotonic_ns`: intended monotonic start for this pulse
+- `scheduling.pulse_started_monotonic_ns`: observed monotonic start
+- `scheduling.scheduling_lateness_ns`: nonnegative observed start minus intended start
+- `scheduling.cadence_boundaries_missed_before_start`: whole cadence boundaries
+  crossed by that lateness; this exposes catch-up pressure and does not claim a
+  dropped or recovered observation
+- `collection_started_monotonic_ns` / `collection_ended_monotonic_ns`: the
+  witnessed serial collection window for each source
+- `collection_duration_ns`: exactly collection end minus collection start
 
 `utc` and `utc_date` are rendered from the same `unix_time_ns`; they are never
 sampled independently. Wall-clock changes do not affect monotonic ordering.
 
 ## Fusion Packs
 
-Each pulse contains the timestamp plus all collector observations from that
-sampling boundary. Collectors report either `ok` with data or `error` with an
-explicit error. Missing evidence is never replaced with invented values.
+Each `truemachine.fusion@2` pulse contains the pack timestamp, scheduling
+quality, and all collector observations attributed to that pulse. Collectors
+report either `ok` with data or `error` with an explicit error. Both states keep
+their monotonic collection window. Missing evidence is never replaced with
+invented values.
 
 The durable order is:
 
@@ -71,8 +82,11 @@ claim established by this package.
 
 Linux network observation contains interface state and counters only. Machine
 load is a separate `linux.load` observation sourced from `getloadavg(3)`. The
-collectors are sampled serially after the pack time sample; their presence in
-one pack is shared attribution, not a claim of simultaneous measurement.
+collectors are sampled serially after the pack time sample; their individual
+start/end windows prove that order. Their presence in one pack is shared
+attribution, not a claim of simultaneous measurement. A cadence overrun remains
+visible as scheduling lateness and whole nominal boundaries missed before the
+pulse starts; the engine's current immediate catch-up behavior is not hidden.
 
 Memory, process, and network collectors use their `@2` schemas. They return a
 `collection_status` plus explicit `unresolved` records when required memory

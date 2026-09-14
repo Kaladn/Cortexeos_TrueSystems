@@ -12,7 +12,7 @@ from typing import Any, Callable
 
 STATE_SCHEMA = "truecore.process_change_agent_state@1"
 DECISION_SCHEMA = "truecore.process_change_decision@1"
-PROCESS_SCHEMA = "truemachine.linux.processes@1"
+PROCESS_SCHEMA = "truemachine.linux.processes@2"
 
 
 class ProcessChangeAgent:
@@ -93,7 +93,7 @@ class ProcessChangeAgent:
 
     @staticmethod
     def _extract_process_snapshot(fusion_pack: dict[str, Any]) -> list[dict[str, Any]]:
-        if fusion_pack.get("schema") != "truemachine.fusion@1":
+        if fusion_pack.get("schema") != "truemachine.fusion@2":
             raise ValueError("unsupported Fusion Pack schema")
         for observation in fusion_pack.get("observations", []):
             if observation.get("schema") == PROCESS_SCHEMA:

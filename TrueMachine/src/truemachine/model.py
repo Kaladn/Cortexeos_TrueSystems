@@ -16,6 +16,9 @@ class Observation:
     data: dict[str, Any]
     source_coordinates: tuple[str, ...]
     content_sha256: str
+    collection_started_monotonic_ns: int
+    collection_ended_monotonic_ns: int
+    collection_duration_ns: int
     error: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
@@ -30,6 +33,7 @@ class FusionPack:
     cadence_ns: int
     timeline_ns: int
     time: TimeSample
+    scheduling: dict[str, int]
     observations: tuple[Observation, ...]
 
     def to_dict(self) -> dict[str, Any]:
@@ -40,5 +44,6 @@ class FusionPack:
             "cadence_ns": self.cadence_ns,
             "timeline_ns": self.timeline_ns,
             "time": self.time.to_dict(),
+            "scheduling": self.scheduling,
             "observations": [item.to_dict() for item in self.observations],
         }

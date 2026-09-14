@@ -13,7 +13,8 @@ Evidence: `TrueMachine/README.md` identifies CompuCog as design lineage;
 `TrueMachine/docs/CONTRACT.md` fixes the qualified pull boundary and denies an
 automatic TrueMachine-to-TrueCore push.
 `TemporalEngine.pulse`, `Observation`, `FusionPack` and `FusionStore.commit`
-implement collection, per-source errors, timestamps, hashes, WAL and publication.
+implement collection, per-source errors, pack time, per-collector monotonic
+windows, cadence-overrun measurements, hashes, WAL and publication.
 
 TrueCog remains the owner-facing role name, not a discovered package/entrypoint.
 No new sensory engine is invented or renamed. This mapping does not claim that
@@ -60,12 +61,13 @@ TrueMachine returns locations and measurements with `answer: null`; it does not
 recommend mutation or decide safety. Mount UUID remains explicitly unresolved
 because the current mount resource does not independently establish it.
 
-It validates the Fusion Pack shape, timeline, wall-time consistency, per-source
-coordinates/status and data hashes. It returns source data intact, marks failed
-collectors PARTIAL, and issues a deterministic result hash with a limited stated
-verification scope. Semantic correctness and actual live-world freshness are not
-established by byte hashing. The expected run/sequence prevents accidental
-substitution, not unbounded clock-based freshness claims.
+It validates the `truemachine.fusion@2` shape, timeline, wall-time consistency,
+scheduling arithmetic, per-source collection windows, coordinates/status, and
+data hashes. It returns source data intact, marks failed collectors PARTIAL, and
+issues a deterministic result hash with a limited stated verification scope.
+Semantic correctness and actual live-world freshness are not established by byte
+hashing. The expected run/sequence prevents accidental substitution, not
+unbounded clock-based freshness claims.
 
 `truecore.model_host` now exposes only this API over bounded JSONL. It does not
 load a model. This is not OS isolation

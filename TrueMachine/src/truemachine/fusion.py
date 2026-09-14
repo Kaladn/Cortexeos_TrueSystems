@@ -81,7 +81,11 @@ class FusionStore:
 
     @staticmethod
     def _validate_pack(pack: Any, line_number: int) -> tuple[str, int]:
-        if not isinstance(pack, dict):
+        fields = {
+            "schema", "run_id", "sequence", "cadence_ns", "timeline_ns",
+            "time", "scheduling", "observations",
+        }
+        if not isinstance(pack, dict) or set(pack) != fields or pack.get("schema") != "truemachine.fusion@2":
             raise ValueError(f"invalid pack at WAL line {line_number}")
         run_id = pack.get("run_id")
         sequence = pack.get("sequence")
@@ -89,12 +93,46 @@ class FusionStore:
             raise ValueError(f"invalid pack run_id at WAL line {line_number}")
         if type(sequence) is not int or sequence < 1:
             raise ValueError(f"invalid pack sequence at WAL line {line_number}")
+        cadence = pack.get("cadence_ns")
+        timeline = pack.get("timeline_ns")
+        if (
+            type(cadence) is not int or cadence <= 0 or type(timeline) is not int or
+            timeline != (sequence - 1) * cadence
+        ):
+            raise ValueError(f"invalid pack timeline at WAL line {line_number}")
+        scheduling = pack.get("scheduling")
+        scheduling_fields = {
+            "scheduled_monotonic_ns", "pulse_started_monotonic_ns",
+            "scheduling_lateness_ns", "cadence_boundaries_missed_before_start",
+        }
+        if not isinstance(scheduling, dict) or set(scheduling) != scheduling_fields:
+            raise ValueError(f"invalid scheduling timing at WAL line {line_number}")
+        if any(type(scheduling[field]) is not int or scheduling[field] < 0 for field in scheduling_fields):
+            raise ValueError(f"invalid scheduling timing at WAL line {line_number}")
+        lateness = max(0, scheduling["pulse_started_monotonic_ns"] - scheduling["scheduled_monotonic_ns"])
+        if (
+            scheduling["scheduling_lateness_ns"] != lateness or
+            scheduling["cadence_boundaries_missed_before_start"] != lateness // cadence
+        ):
+            raise ValueError(f"invalid scheduling timing at WAL line {line_number}")
         observations = pack.get("observations")
-        if not isinstance(observations, list):
+        if not isinstance(observations, list) or not observations:
             raise ValueError(f"invalid observations at WAL line {line_number}")
+        previous_end: int | None = None
         for index, observation in enumerate(observations):
             if not isinstance(observation, dict) or not isinstance(observation.get("data"), dict):
                 raise ValueError(f"invalid observation {index} at WAL line {line_number}")
+            started = observation.get("collection_started_monotonic_ns")
+            ended = observation.get("collection_ended_monotonic_ns")
+            duration = observation.get("collection_duration_ns")
+            if (
+                type(started) is not int or started < 0 or
+                type(ended) is not int or ended < started or
+                type(duration) is not int or duration != ended - started or
+                (previous_end is not None and started < previous_end)
+            ):
+                raise ValueError(f"invalid observation timing at WAL line {line_number} index {index}")
+            previous_end = ended
             expected = observation.get("content_sha256")
             encoded = json.dumps(
                 observation["data"], ensure_ascii=True, sort_keys=True, separators=(",", ":")
@@ -102,6 +140,13 @@ class FusionStore:
             actual = hashlib.sha256(encoded).hexdigest()
             if expected != actual:
                 raise ValueError(f"observation hash mismatch at WAL line {line_number} index {index}")
+        sampled_monotonic = pack.get("time", {}).get("monotonic_ns")
+        first_started = observations[0]["collection_started_monotonic_ns"]
+        if (
+            type(sampled_monotonic) is not int or
+            not scheduling["pulse_started_monotonic_ns"] <= sampled_monotonic <= first_started
+        ):
+            raise ValueError(f"invalid sampling timing at WAL line {line_number}")
         return run_id, sequence
 
     def verify(self) -> dict[str, int]:
