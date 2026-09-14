@@ -52,6 +52,24 @@ human or model
   methods remain specifications. TrueCore has zero runnable Delving capabilities;
   typed value-source/receipt binding is the next blocked gate.
 
+## Immediate next work
+
+The human-visible sequence in [NEXT_UP.md](NEXT_UP.md) governs the next work:
+
+1. Resolve the `TrueCog` / `CompuCog` naming scheme before final identifiers and
+   security records are frozen.
+2. Implement and externally qualify self-describing bounded-operation correction
+   packets from
+   [Bounded Operation Requirements and Protection Plan](BOUNDED_OPERATION_REQUIREMENTS_AND_PROTECTION_PLAN.md).
+3. Begin the owner-supplied Neo4j third-party graph-control plan as a disposable,
+   derived, read-only projection boundary through TrueCore.
+
+The downloaded Neo4j plan's earlier instruction to wait until after final
+lockdown is explicitly superseded by the owner's 2026-09-14 sequence change.
+The final repository/runtime seal is last, after integration, reconciliation,
+consolidation, qualification, and naming resolution. The protected 2026-09-14
+snapshot is a checkpoint and rollback source, not the final seal.
+
 ## Governing boundaries
 
 ### TrueCore
@@ -105,6 +123,27 @@ Canonical evidence and derived projections are distinct. Generic housekeeping
 workers may not alter admitted datasets, frozen manifests, immutable receipts,
 security policy, or TrueCore authority configuration. Those require dedicated
 admission or supersession workflows.
+
+### Out-of-bounds protection
+
+All work outside a completely registered, host-bound, authorized operation is
+read-only at most. If no qualified read operation exists, it is refused. Code,
+the full supporting runtime, admitted datasets, manifests, receipts, policy, and
+authority configuration remain protected. Future mutation of a protected class
+must pass through the secured routing and protective service specified as a
+placeholder in
+`docs/BOUNDED_OPERATION_REQUIREMENTS_AND_PROTECTION_PLAN.md`; that service is not
+yet implemented.
+
+### Self-describing operations
+
+A known operation with missing, misnamed, unknown, forbidden, or invalid
+caller-supplied values must eventually return a deterministic retry contract
+derived from the callable schema. It must distinguish requirements, invalid
+arguments, authorization failure, and unknown operations, and it must never
+present host-owned roots, credentials, grants, approvals, bindings, budgets, or
+resource assignments as caller inputs. Current generic rejection codes do not
+yet satisfy this requirement.
 
 ## Worker result law
 

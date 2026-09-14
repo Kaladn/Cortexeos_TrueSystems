@@ -1,0 +1,63 @@
+{
+  "schema": "truesystems.next_up_governance@1",
+  "status": "PLAN_RECONCILED_NOT_IMPLEMENTED",
+  "recorded_at_utc": "2026-09-14T11:07:01Z",
+  "starting_commit": "83f4934ac852b0e9d5d4a2a8cc502ccac98a1e4d",
+  "owner_instructions": {
+    "self_describing_bounded_operations": "NEXT_UP",
+    "out_of_bounds_default": "READ_ONLY_OR_REFUSE",
+    "protected_classes": [
+      "SOURCE_AND_RUNTIME_CODE",
+      "ADMITTED_AND_CANONICAL_DATASETS",
+      "MANIFESTS_AND_IMMUTABLE_RECEIPTS",
+      "POLICY_AND_AUTHORITY_CONFIGURATION"
+    ],
+    "naming_resolution": "BEFORE_FINAL_SEAL",
+    "neo4j_graph_control": "NEXT_UP_BEFORE_FINAL_SEAL",
+    "final_repository_runtime_seal": "LAST_AFTER_QUALIFICATION"
+  },
+  "canonical_neo4j_input": {
+    "path": "/home/lamercey/Downloads/Neo4j_Third_Party_Graph_Control_Addition_Plan.docx",
+    "sha256": "badb384c051b196c25fe7ee1f4fc06de96d2e2d3796ee2076327dc57d71861a6",
+    "modified": false,
+    "sequence_note": "Its after-final-lock sequence is superseded by the owner's 2026-09-14 order; its authority and derived-view boundaries remain design input."
+  },
+  "repository_records": [
+    {
+      "path": "docs/NEXT_UP.md",
+      "sha256": "69addece66073cd8d90479825f6f694a4012911b34f2d4f5bf1b525d7df6e8ae"
+    },
+    {
+      "path": "docs/BOUNDED_OPERATION_REQUIREMENTS_AND_PROTECTION_PLAN.md",
+      "sha256": "9d529c7444da42c9b2ce361406743c2cfbaf489e31c3e06dcda146e891f3330c"
+    },
+    {
+      "path": "docs/TRUESYSTEMS_GOVERNING_TODO_2026-09-13.md",
+      "sha256": "cb32a500b896aa6a3fc32f1c814eeac4271b8fe2ab8cff704d81e1da274b8d5b"
+    },
+    {
+      "path": "docs/SYSTEMS_ALIGNMENT.md",
+      "sha256": "57e959710c95f624b6957a86f3c31a3a9db9d27ebcaedeb51ef0ab37a365a93d"
+    }
+  ],
+  "external_acceptance": [
+    {
+      "path": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/next-up-governance-20260914T110701Z.log",
+      "sha256": "1f11b6e880045ee35de832b81b45d06257342e13b5c79bbf0034379d4ca220b9",
+      "result": "PASS_5_OF_5"
+    },
+    {
+      "path": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/next-up-local-catalog-regression-20260914T110650Z.log",
+      "sha256": "698d16d7b93c4bd9707d3cfacda6fb1e0fea99ed0cda6e69bedc42772940540a",
+      "result": "PASS_8_OF_8"
+    }
+  ],
+  "capability_claims": {
+    "operation_requirements_packet": "NOT_IMPLEMENTED",
+    "secured_mutation_routing": "NOT_IMPLEMENTED",
+    "safe_secure_mode": "NOT_IMPLEMENTED",
+    "offender_attribution": "NOT_IMPLEMENTED_WITHOUT_OS_AUDIT_WITNESS",
+    "neo4j_integration": "NOT_IMPLEMENTED",
+    "final_seal": "NOT_PERFORMED"
+  }
+}

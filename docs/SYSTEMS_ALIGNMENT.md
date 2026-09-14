@@ -20,6 +20,12 @@ TrueCog remains the owner-facing role name, not a discovered package/entrypoint.
 No new sensory engine is invented or renamed. This mapping does not claim that
 every sensory modality or cross-system handoff is already connected.
 
+The owner has now marked the `TrueCog` / `CompuCog` naming scheme unresolved.
+Before the final security seal, a witnessed impact inventory must cover package
+names, imports, entrypoints, manifests, schemas, workers, receipts, paths, help,
+and governing documents; the owner will approve the final name map. Until then,
+implemented identifiers remain unchanged and neither name gains new authority.
+
 ## Generation authority
 
 - Frozen combined source remains preserved at its original mount path/commit.
@@ -47,6 +53,14 @@ The adapter reads already-admitted artifacts. It does not capture, start agents,
 write a substrate, modify a dataset, invoke the legacy API or bypass HID controls.
 Existing permission machinery is untouched. Grants authorize only these narrow
 reads, not live mutation or a general-purpose runner.
+
+Known operations currently fail closed but do not yet return the complete
+machine-readable correction packet required by
+`docs/BOUNDED_OPERATION_REQUIREMENTS_AND_PROTECTION_PLAN.md`. That interface is
+NEXT UP work, not a completed capability. Outside a fully registered and
+host-bound operation, access to protected code and datasets is read-only at
+most; mutation requires the future qualified protective service and matching
+authority.
 
 The `machine.invoke` generation exposes fifteen registered read-only workers:
 `fs.list`, `fs.find`, `fs.read_metadata`, `fs.hash`, `fs.disk_usage`, and
