@@ -1,0 +1,9 @@
+{
+  "pack_id": "chatpack_clearboxai_guided_tour_a1b2c3d4e5f6",
+  "title": "Clearbox AI Studio: Guided Tour",
+  "version": "1.0.0",
+  "mode": "stepwise",
+  "tags": ["clearbox", "guided-tour", "beginner", "onboarding"],
+  "difficulty": "beginner",
+  "readme": "A hands-on guided tour of Clearbox AI Studio — covering the interface, AI chat, plugins, lexicon, and core workflows. No prior experience needed."
+}

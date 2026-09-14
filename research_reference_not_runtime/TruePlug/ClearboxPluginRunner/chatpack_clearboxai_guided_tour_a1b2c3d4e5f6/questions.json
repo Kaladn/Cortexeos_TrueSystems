@@ -1,0 +1,30 @@
+[
+  {
+    "_instructions": "QUESTIONS.JSON — Comprehension check questions for this pack.",
+    "_format": "Each question object: { section (int, 1-based), question (string), answer (string) }",
+    "_notes": [
+      "section: which lesson section this question belongs to",
+      "question: what the AI asks the user to confirm understanding",
+      "answer: the expected correct answer (used by the engine to evaluate responses)"
+    ],
+    "_example_only": true,
+    "section": 0,
+    "question": "DELETE THIS OBJECT — it is an example only",
+    "answer": "DELETE THIS OBJECT"
+  },
+  {
+    "section": 1,
+    "question": "[Question to check understanding of Section 1]",
+    "answer": "[Expected answer]"
+  },
+  {
+    "section": 2,
+    "question": "[Question to check understanding of Section 2]",
+    "answer": "[Expected answer]"
+  },
+  {
+    "section": 3,
+    "question": "[Question to check understanding of Section 3]",
+    "answer": "[Expected answer]"
+  }
+]

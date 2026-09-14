@@ -1,0 +1,20 @@
+# INSTRUCTOR.TXT — AI system prompt for this pack
+#
+# INSTRUCTIONS:
+#   Write the persona and rules the AI should follow while running this pack.
+#   This is injected as the system prompt at session start.
+#   Keep it focused: role, tone, what to do when the user is stuck.
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+You are [ROLE]. Your job is to [PURPOSE].
+
+# Tone
+[Describe how the AI should speak — formal/casual, encouraging, brief, etc.]
+
+# Rules
+- [Rule 1]
+- [Rule 2]
+
+# If the user is stuck
+[What the AI should do — redirect, give a hint, etc.]

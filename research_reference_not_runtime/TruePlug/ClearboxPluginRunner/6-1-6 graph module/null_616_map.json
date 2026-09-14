@@ -1,0 +1,4822 @@
+{
+  "source": "manual_job",
+  "window": 6,
+  "topK": 10,
+  "device_used": "cpu",
+  "device_name": "CPU",
+  "total_tokens": 36,
+  "duration_ms": 0,
+  "items": {
+    "doesn't": {
+      "before": {
+        "1": [
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": null,
+      "lexicon_word": "doesn't",
+      "frequency": 0
+    },
+    "right": {
+      "before": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "somewhere",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "right",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "a",
+              "n",
+              "r",
+              "s",
+              "v"
+            ],
+            "synsets": [
+              "right.n.01",
+              "right.n.02",
+              "right_field.n.01",
+              "right.n.04",
+              "right.n.05",
+              "right.n.06",
+              "right.n.07",
+              "right.n.08",
+              "right.v.01",
+              "right.v.02",
+              "right.v.03",
+              "correct.v.01",
+              "right.a.01",
+              "correct.a.01",
+              "correct.s.01",
+              "right.a.04",
+              "right.a.05",
+              "proper.s.03",
+              "right.a.07",
+              "right.s.03",
+              "right.s.04",
+              "correct.s.02",
+              "right.s.06",
+              "right.s.07",
+              "good.s.10",
+              "veracious.s.02",
+              "right.r.01",
+              "right.r.02",
+              "right.r.03",
+              "right.r.04",
+              "properly.r.01",
+              "right.r.06",
+              "right.r.07",
+              "mighty.r.01",
+              "justly.r.02",
+              "correctly.r.01"
+            ],
+            "forms": [
+              "right"
+            ],
+            "synonyms": [
+              "aright",
+              "compensate",
+              "correct",
+              "correctly",
+              "decent",
+              "decently",
+              "flop",
+              "good",
+              "in good order",
+              "justly",
+              "mightily",
+              "mighty",
+              "powerful",
+              "proper",
+              "properly",
+              "rectify",
+              "redress",
+              "right field",
+              "right hand",
+              "right on",
+              "right wing",
+              "right-hand",
+              "rightfield",
+              "rightfulness",
+              "ripe",
+              "the right way",
+              "veracious"
+            ],
+            "derivations": [
+              "compensation",
+              "correction",
+              "correctness",
+              "goodness",
+              "properness",
+              "rectification",
+              "redress",
+              "right",
+              "right fielder",
+              "rightful",
+              "rightist",
+              "rightness"
+            ],
+            "antonyms": [
+              "center",
+              "falsify",
+              "improperly",
+              "incorrect",
+              "incorrectly",
+              "left",
+              "wrong",
+              "wrongfulness",
+              "wrongly"
+            ],
+            "definitions": [
+              "(Southern regional intensive) very; to a great degree",
+              "(frequently plural) the interest possessed by law or custom in some intangible thing",
+              "(of the side of cloth or clothing) facing or intended to face outward",
+              "a turn toward the side of the body that is on the south when the person is facing east",
+              "an abstract idea of that which is due to a person or governmental body by law or tradition or nature; ; - Eleanor Roosevelt",
+              "an interjection expressing agreement",
+              "anything in accord with principles of justice",
+              "appropriate for a condition or purpose or occasion or a person's character, needs",
+              "being or located on or directed toward the side of the body to the east when facing north",
+              "completely",
+              "correct in opinion or judgment",
+              "exactly",
+              "free from error; especially conforming to fact or truth",
+              "having the axis perpendicular to the base",
+              "immediately",
+              "in accord with accepted standards of usage or procedure",
+              "in accordance with moral or social standards",
+              "in an accurate manner",
+              "in conformance with justice or law or morality",
+              "in or into a satisfactory condition",
+              "in the right manner",
+              "intended for the right hand",
+              "location near or direction toward the right side; i.e. the side to the south when a person or object faces east",
+              "make reparations or amends for",
+              "make right or correct",
+              "most suitable or right for a particular purpose",
+              "of or belonging to the political or intellectual right",
+              "precisely accurate",
+              "precisely, exactly",
+              "put in or restore to an upright position",
+              "regain an upright or proper position",
+              "socially right or correct",
+              "the hand that is on the right side of the body",
+              "the piece of ground in the outfield on the catcher's right",
+              "those who support political or social or economic conservatism; those who believe that things are better left unchanged",
+              "toward or on the right; also used figuratively"
+            ],
+            "examples": [
+              "Certain rights can never be granted to the government but must be kept in the hands of the people",
+              "Correct the mistakes",
+              "The capsized boat righted again",
+              "They righted the sailboat that had capsized",
+              "a good time to plant tomatoes",
+              "a right angle",
+              "a right is not something that somebody gives you; it is something that nobody can take away",
+              "a right-hand glove",
+              "a right-hand turn",
+              "a veracious account",
+              "be sure your shirt is right side out",
+              "can't you carry me decent?",
+              "correct behavior",
+              "do right by him",
+              "do the right thing and confess",
+              "everything in its proper place",
+              "film rights",
+              "he feels he is in the right",
+              "he fell flop on his face",
+              "he fell right into the trap",
+              "he guessed right",
+              "he looked right and left",
+              "he stood on the right",
+              "he writes with his right hand but pitches with his left",
+              "he's mighty tired",
+              "hit him with quick rights to the body",
+              "it is powerful humid",
+              "it isn't right to leave the party without saying goodbye",
+              "mineral rights",
+              "my right hand",
+              "please do your job properly!",
+              "put things right",
+              "rectify the calculation",
+              "right a wrongs done to the victims of the Holocaust",
+              "right center field",
+              "she called right after dinner",
+              "she felt right at home",
+              "she is not suitable for the position",
+              "stand right here!",
+              "take a right at the corner",
+              "that boy is powerful big now",
+              "that serves him right",
+              "the baby is mighty cute",
+              "the correct answer",
+              "the correct version",
+              "the flower had been correctly depicted by his son",
+              "the party has moved right",
+              "the right answer",
+              "the right bank of a river is the bank on your right side when you are facing downstream",
+              "the right decision",
+              "the right man for the job",
+              "the right side of the cloth showed the pattern",
+              "the right time to act",
+              "the right way to open oysters",
+              "the rightfulness of his claim",
+              "the time is ripe for great sociological changes",
+              "they are endowed by their Creator with certain unalienable Rights",
+              "they have a right nice place",
+              "they rejoiced mightily",
+              "things are right again now",
+              "time proved him right",
+              "took the right road",
+              "what's the right word for this?"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "aright",
+          "compensate",
+          "correct",
+          "correctly",
+          "decent",
+          "decently",
+          "flop",
+          "good",
+          "in good order",
+          "justly",
+          "mightily",
+          "mighty",
+          "powerful",
+          "proper",
+          "properly",
+          "rectify",
+          "redress",
+          "right field",
+          "right hand",
+          "right on",
+          "right wing",
+          "right-hand",
+          "rightfield",
+          "rightfulness",
+          "ripe",
+          "the right way",
+          "veracious"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "right",
+      "frequency": 0
+    },
+    "produce": {
+      "before": {
+        "1": [
+          {
+            "token": "created",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "about",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "ready",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "produce",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "n",
+              "v"
+            ],
+            "synsets": [
+              "produce.n.01",
+              "produce.v.01",
+              "produce.v.02",
+              "produce.v.03",
+              "produce.v.04",
+              "grow.v.07",
+              "produce.v.06",
+              "grow.v.08"
+            ],
+            "forms": [
+              "produce"
+            ],
+            "synonyms": [
+              "acquire",
+              "bring about",
+              "bring forth",
+              "bring on",
+              "bring out",
+              "create",
+              "develop",
+              "farm",
+              "garden truck",
+              "get",
+              "give rise",
+              "green goods",
+              "green groceries",
+              "grow",
+              "make",
+              "raise"
+            ],
+            "derivations": [
+              "creation",
+              "development",
+              "farm",
+              "farmer",
+              "farming",
+              "getting",
+              "grower",
+              "growth",
+              "make",
+              "maker",
+              "making",
+              "produce",
+              "producer",
+              "product",
+              "production",
+              "raiser"
+            ],
+            "antonyms": [],
+            "definitions": [
+              "bring forth or yield",
+              "bring onto the market or release",
+              "bring out for display",
+              "cause to happen, occur or exist",
+              "come to have or undergo a change of (physical features and attributes)",
+              "create or manufacture a man-made product",
+              "cultivate by growing, often involving improvements by means of agricultural techniques",
+              "fresh fruits and vegetable grown for the market"
+            ],
+            "examples": [
+              "He grew a beard",
+              "I got funny spots all over my body",
+              "The Bordeaux region produces great red wines",
+              "The accused brought forth a letter in court that he claims exonerates him",
+              "The company has been making toys for two centuries",
+              "The new law gave rise to many complaints",
+              "The patient developed abdominal pains",
+              "The proud father produced many pictures of his baby",
+              "The tree would not produce fruit",
+              "These chemicals produce a noxious vapor",
+              "They produce good ham in Parma",
+              "This procedure produces a curious effect",
+              "We grow wheat here",
+              "We produce more cars than we can sell",
+              "We raise hogs here",
+              "Well-developed breasts",
+              "bring out a book",
+              "produce a movie",
+              "produce a new play",
+              "the new President must bring about a change in the health care system"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "acquire",
+          "bring about",
+          "bring forth",
+          "bring on",
+          "bring out",
+          "create",
+          "develop",
+          "farm",
+          "garden truck",
+          "get",
+          "give rise",
+          "green goods",
+          "green groceries",
+          "grow",
+          "make",
+          "raise"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "produce",
+      "frequency": 0
+    },
+    "matter": {
+      "before": {
+        "1": [
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "matter",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "n",
+              "v"
+            ],
+            "synsets": [
+              "matter.n.01",
+              "topic.n.02",
+              "matter.n.03",
+              "matter.n.04",
+              "matter.n.05",
+              "matter.n.06",
+              "count.v.02"
+            ],
+            "forms": [
+              "matter"
+            ],
+            "synonyms": [
+              "affair",
+              "count",
+              "issue",
+              "subject",
+              "thing",
+              "topic",
+              "weigh"
+            ],
+            "derivations": [
+              "matter",
+              "topical"
+            ],
+            "antonyms": [],
+            "definitions": [
+              "(used with negation) having consequence",
+              "a problem",
+              "a vaguely specified concern",
+              "have weight; have import, carry weight",
+              "some situation or event that is thought about",
+              "that which has mass and occupies space",
+              "written works (especially in books or magazines)"
+            ],
+            "examples": [
+              "It does not matter much",
+              "he always took some reading matter with him on the plane",
+              "he had been thinking about the subject for several years",
+              "he kept drifting off the topic",
+              "is anything the matter?",
+              "it is a matter for the police",
+              "it is none of your affair",
+              "physicists study both the nature of matter and the forces which govern it",
+              "several matters to attend to",
+              "they were friends and it was no matter who won the games",
+              "things are going well"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "affair",
+          "count",
+          "issue",
+          "subject",
+          "thing",
+          "topic",
+          "weigh"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "matter",
+      "frequency": 0
+    },
+    "create": {
+      "before": {
+        "1": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "create",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "v"
+            ],
+            "synsets": [
+              "make.v.03",
+              "create.v.02",
+              "create.v.03",
+              "create.v.04",
+              "create.v.05",
+              "produce.v.02"
+            ],
+            "forms": [
+              "create"
+            ],
+            "synonyms": [
+              "make",
+              "produce"
+            ],
+            "derivations": [
+              "Creation",
+              "creation",
+              "creative",
+              "creator",
+              "creature",
+              "make",
+              "maker",
+              "making",
+              "producer",
+              "product"
+            ],
+            "antonyms": [],
+            "definitions": [
+              "bring into existence",
+              "create by artistic means",
+              "create or manufacture a man-made product",
+              "invest with a new title, office, or rank",
+              "make or cause to be or to become",
+              "pursue a creative activity; be engaged in a creative activity"
+            ],
+            "examples": [
+              "Auden made verses",
+              "Create one a peer",
+              "Don't disturb him--he is creating",
+              "He created a new movement in painting",
+              "Picasso created Cubism",
+              "Schoenberg created twelve-tone music",
+              "The company has been making toys for two centuries",
+              "The company was created 25 years ago",
+              "We produce more cars than we can sell",
+              "create a furor",
+              "create a poem",
+              "make a mess in one's office"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "make",
+          "produce"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "create",
+      "frequency": 0
+    },
+    "don't": {
+      "before": {
+        "1": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "somewhere",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "about",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "created",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "produce",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "ready",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": null,
+      "lexicon_word": "don't",
+      "frequency": 0
+    },
+    "other": {
+      "before": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "about",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "other",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "a",
+              "s"
+            ],
+            "synsets": [
+              "other.a.01",
+              "other.s.01",
+              "early.s.01",
+              "other.s.03"
+            ],
+            "forms": [
+              "other"
+            ],
+            "synonyms": [
+              "early",
+              "former"
+            ],
+            "derivations": [
+              "otherness"
+            ],
+            "antonyms": [
+              "same"
+            ],
+            "definitions": [
+              "belonging to the distant past",
+              "not the same one or ones already mentioned or implied; - the White Queen",
+              "recently past",
+              "very unusual; different in character or quality from the normal or expected; - Lance Morrow"
+            ],
+            "examples": [
+              "a strange, other dimension...where his powers seemed to fail",
+              "any other person would tell the truth",
+              "former generations",
+              "he asked for other employment",
+              "hearing was good in his other ear",
+              "his other books are still in storage",
+              "in other times",
+              "she lived on the other side of the street from me",
+              "the construction of highways and other public works",
+              "the early inhabitants of Europe",
+              "the other evening",
+              "the other sex",
+              "then we looked at the other house",
+              "today isn't any other day",
+              "went in the other direction"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "early",
+          "former"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "other",
+      "frequency": 0
+    },
+    "something": {
+      "before": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "somewhere",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": null,
+      "lexicon_word": "something",
+      "frequency": 0
+    },
+    "document": {
+      "before": {
+        "1": [
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "document",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "n",
+              "v"
+            ],
+            "synsets": [
+              "document.n.01",
+              "document.n.02",
+              "document.n.03",
+              "text_file.n.01",
+              "document.v.01",
+              "document.v.02"
+            ],
+            "forms": [
+              "document"
+            ],
+            "synonyms": [
+              "papers",
+              "text file",
+              "written document"
+            ],
+            "derivations": [
+              "document",
+              "documental",
+              "documentary",
+              "documentation"
+            ],
+            "antonyms": [],
+            "definitions": [
+              "(computer science) a computer file that contains text (and possibly formatting instructions) using seven-bit ASCII characters",
+              "a written account of ownership or obligation",
+              "anything serving as a representation of a person's thinking by means of symbolic marks",
+              "record in detail",
+              "support or supply with references",
+              "writing that provides information (especially information of an official nature)"
+            ],
+            "examples": [
+              "Can you document your claims?",
+              "The parents documented every step of their child's development"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "papers",
+          "text file",
+          "written document"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "document",
+      "frequency": 0
+    },
+    "anchor": {
+      "before": {
+        "1": [
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "anchor",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "n",
+              "v"
+            ],
+            "synsets": [
+              "anchor.n.01",
+              "anchor.n.02",
+              "anchor.n.03",
+              "anchor.v.01",
+              "anchor.v.02"
+            ],
+            "forms": [
+              "anchor"
+            ],
+            "synonyms": [
+              "anchorman",
+              "anchorperson",
+              "backbone",
+              "cast anchor",
+              "drop anchor",
+              "ground",
+              "ground tackle",
+              "keystone",
+              "linchpin",
+              "lynchpin",
+              "mainstay"
+            ],
+            "derivations": [
+              "anchor",
+              "anchorage"
+            ],
+            "antonyms": [],
+            "definitions": [
+              "a central cohesive source of support and stability",
+              "a mechanical device that prevents a vessel from moving",
+              "a television reporter who coordinates a broadcast to which several correspondents contribute",
+              "fix firmly and stably",
+              "secure a vessel with an anchor"
+            ],
+            "examples": [
+              "We anchored at Baltimore",
+              "anchor the lamppost in concrete",
+              "faith is his anchor",
+              "he is the linchpin of this firm",
+              "the keystone of campaign reform was the ban on soft money"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "anchorman",
+          "anchorperson",
+          "backbone",
+          "cast anchor",
+          "drop anchor",
+          "ground",
+          "ground tackle",
+          "keystone",
+          "linchpin",
+          "lynchpin",
+          "mainstay"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "anchor",
+      "frequency": 0
+    },
+    "input": {
+      "before": {
+        "1": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "input",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "n",
+              "v"
+            ],
+            "synsets": [
+              "input_signal.n.01",
+              "remark.n.01",
+              "stimulation.n.02",
+              "input.n.04",
+              "input.v.01"
+            ],
+            "forms": [
+              "input"
+            ],
+            "synonyms": [
+              "comment",
+              "input signal",
+              "remark",
+              "stimulant",
+              "stimulation",
+              "stimulus"
+            ],
+            "derivations": [
+              "comment",
+              "commentate",
+              "remark",
+              "stimulate"
+            ],
+            "antonyms": [],
+            "definitions": [
+              "a component of production; something that goes into the production of output",
+              "a statement that expresses a personal opinion or belief or adds information",
+              "any stimulating information or event; acts to arouse action",
+              "enter (data or a program) into a computer",
+              "signal going into an electronic system"
+            ],
+            "examples": [
+              "from time to time she contributed a personal comment on his account"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "comment",
+          "input signal",
+          "remark",
+          "stimulant",
+          "stimulation",
+          "stimulus"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "input",
+      "frequency": 0
+    },
+    "you'll": {
+      "before": {
+        "1": [
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "about",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "created",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "produce",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": null,
+      "lexicon_word": "you'll",
+      "frequency": 0
+    },
+    "easily": {
+      "before": {
+        "1": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "about",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "created",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "produce",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "ready",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "easily",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "r"
+            ],
+            "synsets": [
+              "easily.r.01",
+              "easily.r.02",
+              "well.r.03"
+            ],
+            "forms": [
+              "easily"
+            ],
+            "synonyms": [
+              "easy",
+              "well"
+            ],
+            "derivations": [],
+            "antonyms": [],
+            "definitions": [
+              "indicating high probability; in all likelihood",
+              "with ease (`easy' is sometimes used informally for `easily')",
+              "without question"
+            ],
+            "examples": [
+              "I might well do it",
+              "a mistake that could easily have ended in disaster",
+              "easily the best book she's written",
+              "he could equally well be trying to deceive us",
+              "he won easily",
+              "she was easily excited",
+              "success came too easy",
+              "this china breaks very easily",
+              "was easily confused",
+              "you may well need your umbrella"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "easy",
+          "well"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "easily",
+      "frequency": 0
+    },
+    "created": {
+      "before": {
+        "1": [
+          {
+            "token": "about",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "produce",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "ready",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": null,
+      "lexicon_word": "created",
+      "frequency": 0
+    },
+    "paragraph": {
+      "before": {
+        "1": [
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "paragraph",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "n",
+              "v"
+            ],
+            "synsets": [
+              "paragraph.n.01",
+              "paragraph.v.01",
+              "paragraph.v.02",
+              "paragraph.v.03"
+            ],
+            "forms": [
+              "paragraph"
+            ],
+            "synonyms": [],
+            "derivations": [
+              "paragraph",
+              "paragrapher"
+            ],
+            "antonyms": [],
+            "definitions": [
+              "divide into paragraphs, as of text",
+              "one of several distinct subdivisions of a text intended to separate ideas; the beginning is usually marked by a new indented line",
+              "write about in a paragraph",
+              "write paragraphs; work as a paragrapher"
+            ],
+            "examples": [
+              "All her friends were paragraphed in last Monday's paper",
+              "This story is well paragraphed"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "paragraph",
+      "frequency": 0
+    },
+    "that's": {
+      "before": {
+        "1": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "somewhere",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": null,
+      "lexicon_word": "that's",
+      "frequency": 0
+    },
+    "about": {
+      "before": {
+        "1": [
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "created",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "produce",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "ready",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "about",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "r",
+              "s"
+            ],
+            "synsets": [
+              "about.s.01",
+              "approximately.r.01",
+              "about.r.02",
+              "about.r.03",
+              "about.r.04",
+              "about.r.05",
+              "about.r.06",
+              "about.r.07"
+            ],
+            "forms": [
+              "about"
+            ],
+            "synonyms": [
+              "almost",
+              "approximately",
+              "around",
+              "astir",
+              "close to",
+              "just about",
+              "more or less",
+              "most",
+              "near",
+              "nearly",
+              "nigh",
+              "or so",
+              "roughly",
+              "some",
+              "virtually",
+              "well-nigh"
+            ],
+            "derivations": [],
+            "antonyms": [],
+            "definitions": [
+              "(of actions or states) slightly short of or not quite accomplished; all but",
+              "(of quantities) imprecise but fairly close to correct",
+              "all around or on all sides",
+              "in or to a reversed position or direction",
+              "in rotation or succession",
+              "in the area or vicinity",
+              "on the move",
+              "used of movement to or among many different places or in no particular direction"
+            ],
+            "examples": [
+              "20 or so people were at the party",
+              "I was near exhausted by the run",
+              "I've had about all I can stand",
+              "There were trees growing all around",
+              "a few spectators standing about",
+              "about face",
+              "dirty clothes lying around (or about)",
+              "hanging around",
+              "he nearly fainted",
+              "he needs advice from someone who's been around",
+              "he's about 30 years old",
+              "holds 3 gallons, more or less",
+              "in just about a minute",
+              "lasted approximately an hour",
+              "let's look about for help",
+              "most everyone agrees",
+              "news gets around (or about)",
+              "people were rushing about",
+              "roughly $3,000",
+              "she looked around her",
+              "she sleeps around",
+              "some forty people came",
+              "suddenly she turned around",
+              "talked for nigh onto 2 hours",
+              "the baby was almost asleep when the alarm sounded",
+              "the car all but ran her down",
+              "the job is (just) about done",
+              "the recording is well-nigh perfect",
+              "the whole town was astir over the incident",
+              "traveled around in Asia",
+              "turn about is fair play",
+              "up and about",
+              "virtually all the parties signed the contract",
+              "waited around for the next flight",
+              "wandering about with no place to go",
+              "we meet about once a month",
+              "we're almost finished",
+              "weighs around a hundred pounds"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "almost",
+          "approximately",
+          "around",
+          "astir",
+          "close to",
+          "just about",
+          "more or less",
+          "most",
+          "near",
+          "nearly",
+          "nigh",
+          "or so",
+          "roughly",
+          "some",
+          "virtually",
+          "well-nigh"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "about",
+      "frequency": 0
+    },
+    "ready": {
+      "before": {
+        "1": [
+          {
+            "token": "produce",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "created",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "about",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {},
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "ready",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "a",
+              "n",
+              "s",
+              "v"
+            ],
+            "synsets": [
+              "ready.n.01",
+              "cook.v.02",
+              "fix.v.12",
+              "ready.a.01",
+              "ready.s.01",
+              "ready.s.02",
+              "ready.s.03",
+              "quick.s.04"
+            ],
+            "forms": [
+              "ready"
+            ],
+            "synonyms": [
+              "cook",
+              "fix",
+              "gear up",
+              "make",
+              "prepare",
+              "quick",
+              "set",
+              "set up"
+            ],
+            "derivations": [
+              "cook",
+              "cooker",
+              "cookery",
+              "cooking",
+              "preparation",
+              "preparative",
+              "preparatory",
+              "quickness",
+              "readiness",
+              "ready",
+              "readying",
+              "set"
+            ],
+            "antonyms": [
+              "unready"
+            ],
+            "definitions": [
+              "(of especially money) immediately available",
+              "apprehending and responding with speed and sensitivity",
+              "completely prepared or in condition for immediate action or use or progress",
+              "made suitable and available for immediate use",
+              "make ready or suitable or equip in advance for a particular purpose or for some use, event, etc",
+              "mentally disposed",
+              "poised for action",
+              "prepare for eating by applying heat"
+            ],
+            "examples": [
+              "Cook me dinner, please",
+              "Get the children ready for school!",
+              "I am ready to work",
+              "I was fixing to leave town after I paid the hotel bill",
+              "a quick mind",
+              "a ready source of cash",
+              "a ready wit",
+              "can you make me an omelette?",
+              "dinner is ready",
+              "fix breakfast for the guests, please",
+              "get ready",
+              "he seems to have ample ready money",
+              "he was ready to believe her",
+              "prepare for war",
+              "ready for action",
+              "ready for use",
+              "ready to learn to read",
+              "she is ready to resign",
+              "the bridge is ready to collapse",
+              "the soup will be ready in a minute",
+              "their guns were at the ready"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "cook",
+          "fix",
+          "gear up",
+          "make",
+          "prepare",
+          "quick",
+          "set",
+          "set up"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "ready",
+      "frequency": 0
+    },
+    "small": {
+      "before": {
+        "1": [
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "about",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "created",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "small",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "a",
+              "n",
+              "r",
+              "s"
+            ],
+            "synsets": [
+              "small.n.01",
+              "small.n.02",
+              "small.a.01",
+              "minor.s.03",
+              "little.s.01",
+              "small.s.03",
+              "humble.s.01",
+              "little.s.04",
+              "little.s.03",
+              "small.s.07",
+              "modest.s.01",
+              "belittled.s.01",
+              "small.r.01"
+            ],
+            "forms": [
+              "small"
+            ],
+            "synonyms": [
+              "belittled",
+              "diminished",
+              "humble",
+              "little",
+              "low",
+              "lowly",
+              "minor",
+              "minuscule",
+              "modest",
+              "pocket-size",
+              "pocket-sized",
+              "small-scale"
+            ],
+            "derivations": [
+              "humbleness",
+              "littleness",
+              "lowness",
+              "modestness",
+              "smallness"
+            ],
+            "antonyms": [
+              "big",
+              "large"
+            ],
+            "definitions": [
+              "(of a voice) faint",
+              "(of children and animals) young, immature",
+              "a garment size for a small person",
+              "have fine or very small constituent particles",
+              "limited in size or scope",
+              "limited or below average in number or quantity or magnitude or extent",
+              "low or inferior in station or quality",
+              "lowercase",
+              "made to seem smaller or less (especially in worth)",
+              "not large but sufficient in size or amount",
+              "on a small scale",
+              "slight or limited; especially in degree or intensity or scope",
+              "the slender part of the back"
+            ],
+            "examples": [
+              "a humble cottage",
+              "a little (or small) group",
+              "a little dining room",
+              "a little house",
+              "a little voice",
+              "a lowly parish priest",
+              "a modest man of the people",
+              "a modest salary",
+              "a newspaper with a modest circulation",
+              "a pocket-size country",
+              "a series of death struggles with small time in between",
+              "a small business",
+              "a small car",
+              "a small misty rain",
+              "a still small voice",
+              "e.e.cummings's poetry is written all in minuscule letters",
+              "helped in my own small way",
+              "her comments made me feel small",
+              "little a",
+              "modest inflation",
+              "small a",
+              "small beginnings",
+              "small children",
+              "small-scale plans",
+              "think small",
+              "what a big little boy you are"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "belittled",
+          "diminished",
+          "humble",
+          "little",
+          "low",
+          "lowly",
+          "minor",
+          "minuscule",
+          "modest",
+          "pocket-size",
+          "pocket-sized",
+          "small-scale"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "small",
+      "frequency": 0
+    },
+    "somewhere": {
+      "before": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "somewhere",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "n",
+              "r"
+            ],
+            "synsets": [
+              "somewhere.n.01",
+              "somewhere.r.01"
+            ],
+            "forms": [
+              "somewhere"
+            ],
+            "synonyms": [
+              "someplace"
+            ],
+            "derivations": [],
+            "antonyms": [],
+            "definitions": [
+              "an indefinite or unknown location",
+              "in or at or to some place; ; (`someplace' is used informally for `somewhere')"
+            ],
+            "examples": [
+              "she must be somewhere",
+              "they moved to somewhere in Spain"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "someplace"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "somewhere",
+      "frequency": 0
+    },
+    "maybe": {
+      "before": {
+        "1": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "maybe",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "r"
+            ],
+            "synsets": [
+              "possibly.r.01"
+            ],
+            "forms": [
+              "maybe"
+            ],
+            "synonyms": [
+              "mayhap",
+              "peradventure",
+              "perchance",
+              "perhaps",
+              "possibly"
+            ],
+            "derivations": [],
+            "antonyms": [],
+            "definitions": [
+              "by chance"
+            ],
+            "examples": [
+              "it may peradventure be thought that there never was such a time",
+              "perhaps she will call tomorrow",
+              "we may possibly run into them at the concert"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "mayhap",
+          "peradventure",
+          "perchance",
+          "perhaps",
+          "possibly"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "maybe",
+      "frequency": 0
+    },
+    "plain": {
+      "before": {
+        "1": [
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "somewhere",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "plain",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "a",
+              "n",
+              "r",
+              "s",
+              "v"
+            ],
+            "synsets": [
+              "plain.n.01",
+              "knit.n.02",
+              "complain.v.01",
+              "apparent.s.01",
+              "plain.a.02",
+              "plain.a.03",
+              "plain.s.02",
+              "plain.s.03",
+              "plain.s.04",
+              "homely.s.01",
+              "obviously.r.01"
+            ],
+            "forms": [
+              "plain"
+            ],
+            "synonyms": [
+              "apparent",
+              "apparently",
+              "bare",
+              "champaign",
+              "complain",
+              "evident",
+              "evidently",
+              "field",
+              "homely",
+              "kick",
+              "knit",
+              "knit stitch",
+              "kvetch",
+              "manifest",
+              "manifestly",
+              "obviously",
+              "patent",
+              "patently",
+              "plain stitch",
+              "plainly",
+              "quetch",
+              "sheer",
+              "sound off",
+              "spare",
+              "unembellished",
+              "unmingled",
+              "unmistakable",
+              "unmixed",
+              "unornamented",
+              "unpatterned",
+              "unvarnished"
+            ],
+            "derivations": [
+              "apparency",
+              "apparentness",
+              "appear",
+              "complainer",
+              "complaint",
+              "evidence",
+              "homeliness",
+              "kick",
+              "knit",
+              "patency",
+              "plainness"
+            ],
+            "antonyms": [
+              "cheer",
+              "fancy",
+              "patterned"
+            ],
+            "definitions": [
+              "a basic knitting stitch",
+              "clearly revealed to the mind or the senses or judgment",
+              "express complaints, discontent, displeasure, or unhappiness",
+              "extensive tract of level open land",
+              "free from any effort to soften to disguise",
+              "lacking embellishment or ornamentation",
+              "lacking in physical beauty or proportion",
+              "lacking patterns especially in color",
+              "not elaborate or elaborated; simple",
+              "not mixed with extraneous elements",
+              "unmistakably (`plain' is often used informally for `plainly')"
+            ],
+            "examples": [
+              "I thought he owned the property, but apparently not",
+              "My mother complains all day",
+              "She has a lot to kick about",
+              "You are plainly wrong",
+              "a homely child",
+              "a plain blue suit",
+              "a plain girl with a freckled face",
+              "a plain hair style",
+              "a plain rectangular brick building",
+              "evident hostility",
+              "functional architecture featuring stark unornamented concrete",
+              "he is plain stubborn",
+              "he longed for the fields of his youth",
+              "he was manifestly too important to leave off the guest list",
+              "in plain view",
+              "it is all patently nonsense",
+              "it is plain that he is no reactionary",
+              "made his meaning plain",
+              "manifest disapproval",
+              "not an unmixed blessing",
+              "patent advantages",
+              "plain food",
+              "plain water",
+              "several of the buildings were downright homely",
+              "she has apparently been living here for some time",
+              "she was in bed and evidently in great pain",
+              "sheer wine",
+              "stuck to the plain facts",
+              "the answer is obviously wrong",
+              "the effects of the drought are apparent to anyone who sees the parched fields",
+              "the plain and unvarnished truth",
+              "the unvarnished candor of old people and children",
+              "they emerged from the woods onto a vast open plain",
+              "unembellished white walls"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "apparent",
+          "apparently",
+          "bare",
+          "champaign",
+          "complain",
+          "evident",
+          "evidently",
+          "field",
+          "homely",
+          "kick",
+          "knit",
+          "knit stitch",
+          "kvetch",
+          "manifest",
+          "manifestly",
+          "obviously",
+          "patent",
+          "patently",
+          "plain stitch",
+          "plainly",
+          "quetch",
+          "sheer",
+          "sound off",
+          "spare",
+          "unembellished",
+          "unmingled",
+          "unmistakable",
+          "unmixed",
+          "unornamented",
+          "unpatterned",
+          "unvarnished"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "plain",
+      "frequency": 0
+    },
+    "always": {
+      "before": {
+        "1": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "always",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "r"
+            ],
+            "synsets": [
+              "always.r.01",
+              "constantly.r.01",
+              "constantly.r.02",
+              "always.r.04",
+              "always.r.05"
+            ],
+            "forms": [
+              "always"
+            ],
+            "synonyms": [
+              "constantly",
+              "e'er",
+              "ever",
+              "forever",
+              "incessantly",
+              "invariably",
+              "perpetually"
+            ],
+            "derivations": [],
+            "antonyms": [
+              "never"
+            ],
+            "definitions": [
+              "at all times; all the time and on every occasion",
+              "at any time or in any event",
+              "forever; throughout all time",
+              "without interruption",
+              "without variation or change, in every case"
+            ],
+            "examples": [
+              "I shall treasure it always",
+              "I will always be there to help you",
+              "I will always love you",
+              "always arrives on time",
+              "constantly kind and gracious",
+              "ever busy",
+              "ever hoping to strike it rich",
+              "he always arrives on time",
+              "the world is constantly changing",
+              "there is always some pollution in the air",
+              "we will always be friends",
+              "you can always resign if you don't like it",
+              "you could always take a day off"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "constantly",
+          "e'er",
+          "ever",
+          "forever",
+          "incessantly",
+          "invariably",
+          "perpetually"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "always",
+      "frequency": 0
+    },
+    "worry": {
+      "before": {
+        "1": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "about",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "created",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "produce",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "ready",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": {
+        "token": "worry",
+        "symbol": null,
+        "frequency": 0,
+        "payload": {
+          "wordnet": {
+            "pos": [
+              "n",
+              "v"
+            ],
+            "synsets": [
+              "concern.n.04",
+              "worry.n.02",
+              "worry.v.01",
+              "worry.v.02",
+              "worry.v.03",
+              "concern.v.02",
+              "worry.v.05",
+              "worry.v.06"
+            ],
+            "forms": [
+              "worry"
+            ],
+            "synonyms": [
+              "care",
+              "concern",
+              "headache",
+              "interest",
+              "occupy",
+              "trouble",
+              "vex",
+              "vexation"
+            ],
+            "derivations": [
+              "care",
+              "concern",
+              "interest",
+              "occupation",
+              "trouble",
+              "vex",
+              "vexation",
+              "worrier",
+              "worriment",
+              "worry",
+              "worrying"
+            ],
+            "antonyms": [
+              "reassure"
+            ],
+            "definitions": [
+              "a strong feeling of anxiety",
+              "be concerned with",
+              "be on the mind of",
+              "be worried, concerned, anxious, troubled, or uneasy",
+              "disturb the peace of mind of; afflict with mental agitation or distress",
+              "lacerate by biting",
+              "something or someone that causes anxiety; a source of unhappiness",
+              "touch or rub constantly"
+            ],
+            "examples": [
+              "I cannot sleep--my daughter's health is worrying me",
+              "I worry about my grades",
+              "I worry about my job",
+              "I worry about the second Germanic consonant shift",
+              "New York traffic is a constant concern",
+              "The old man worried his beads",
+              "he wanted to die and end his troubles",
+              "his worry over the prospect of being fired",
+              "it is not work but worry that kills",
+              "it's a major worry",
+              "the dog worried his bone"
+            ]
+          }
+        },
+        "context_before": {},
+        "context_after": {},
+        "aliases": [
+          "care",
+          "concern",
+          "headache",
+          "interest",
+          "occupy",
+          "trouble",
+          "vex",
+          "vexation"
+        ],
+        "categories": [],
+        "notes": "",
+        "status": "wordnet",
+        "timestamp": "2025-10-07T10:47:50.604112+00:00"
+      },
+      "lexicon_word": "worry",
+      "frequency": 0
+    },
+    "we'll": {
+      "before": {
+        "1": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "somewhere",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "we'll",
+            "count": 2,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "somewhere",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "maybe",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "we'll",
+            "count": 2,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "input",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "somewhere",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "we'll",
+            "count": 2,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "create",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "document",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "you'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "we'll",
+            "count": 2,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "easily",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "other",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          },
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "small",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          },
+          {
+            "token": "worry",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": null,
+      "lexicon_word": "we'll",
+      "frequency": 0
+    },
+    "because": {
+      "before": {
+        "1": [
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "what's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "matter",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "anchor",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "always",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "paragraph",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": null,
+      "lexicon_word": "because",
+      "frequency": 0
+    },
+    "what's": {
+      "before": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "somewhere",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "don't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "right",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ]
+      },
+      "after": {
+        "1": [
+          {
+            "token": "we'll",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "2": [
+          {
+            "token": "something",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "3": [
+          {
+            "token": "that's",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "4": [
+          {
+            "token": "plain",
+            "count": 1,
+            "in_lexicon": true,
+            "symbol": null
+          }
+        ],
+        "5": [
+          {
+            "token": "because",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ],
+        "6": [
+          {
+            "token": "doesn't",
+            "count": 1,
+            "in_lexicon": false,
+            "symbol": null
+          }
+        ]
+      },
+      "symbol": null,
+      "lexicon_payload": null,
+      "lexicon_word": "what's",
+      "frequency": 0
+    }
+  },
+  "version": "forest-bridge-1.0.0"
+}

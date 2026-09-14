@@ -1,0 +1,23 @@
+{
+    "nodes": {
+        "forge": {
+            "host": "192.168.1.10",
+            "zmq_port": 5001,
+            "role": "Forge Memory + GPU Compute"
+        },
+        "perception": {
+            "host": "192.168.1.11",
+            "zmq_port": 5004,
+            "role": "Perception"
+        },
+        "gateway": {
+            "host": "192.168.1.12",
+            "http_port": 5000,
+            "role": "API Gateway + Archon"
+        }
+    },
+    "health": {
+        "interval_sec": 5,
+        "miss_threshold": 3
+    }
+}

@@ -1,0 +1,2 @@
+"""CompuCog plugin API package."""
+

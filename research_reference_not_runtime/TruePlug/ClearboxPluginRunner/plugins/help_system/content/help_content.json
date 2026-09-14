@@ -1,0 +1,1392 @@
+{
+  "nav.mapping": {
+    "label": "DocuMap",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the 6-1-6 Mapping panel where you tokenize text through the anchor pipeline.",
+      "why": "Use this when you want to map a document's words to Forest AI's canonical lexicon using the 6-words-before, 1-anchor, 6-words-after window.",
+      "consequence": "Switches the visible workspace to the mapping panel. Any in-progress work in other panels stays in memory.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": "chatpack_forestai_guided_tour_a1b2c3d4e5f6",
+    "difficulty": "beginner"
+  },
+  "nav.lexicon": {
+    "label": "Lexicon Browser",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Lexicon Browser panel where you can search, browse, and manage your word database.",
+      "why": "Use this to inspect canonical words, see letter distribution, review recently mapped entries, or manage partitions.",
+      "consequence": "Switches to the lexicon panel and loads current stats. Random entries are shown on first load.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": "chatpack_forestai_guided_tour_a1b2c3d4e5f6",
+    "difficulty": "beginner"
+  },
+  "nav.chat": {
+    "label": "Local Chat",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the main chat panel where you interact with the connected language model.",
+      "why": "This is your primary workspace for sending prompts, viewing responses, and managing conversations.",
+      "consequence": "Switches to the chat panel. Your conversation history from today is visible and persists across panel switches.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": "chatpack_forestai_guided_tour_a1b2c3d4e5f6",
+    "difficulty": "beginner"
+  },
+  "nav.inference-ctrl": {
+    "label": "Inference Control",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Inference Control panel where you tune model generation parameters like temperature, top-p, and repeat penalty.",
+      "why": "Use this to adjust how the AI generates responses. Different tasks benefit from different parameter profiles.",
+      "consequence": "Switches to the inference panel and loads the current parameter values for the active model.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "nav.system-identity": {
+    "label": "System & Identity",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the System & Identity panel where you define the AI's persona and your user profile.",
+      "why": "The system identity shapes every response. Your user profile provides context so the AI tailors its output to your expertise and workflow.",
+      "consequence": "Switches to the identity panel and loads current system prompt, archive instruction, and user profile fields.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "nav.citations": {
+    "label": "Citations",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Citations explorer tab inside the Lexicon Browser panel.",
+      "why": "Citations track the provenance of information used in grounded responses. Use this to verify sources, run health checks, and manage citation records.",
+      "consequence": "Switches to the Lexicon Browser panel in citations mode. Auto-loads citations on first visit.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "nav.plugins": {
+    "label": "Plugins",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Plugins panel showing all discovered plugins and their connection status.",
+      "why": "Use this to see which plugins are active, connect or disconnect plugins, and check their health.",
+      "consequence": "Switches to the plugins panel and rescans the plugins directory for current status.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": "chatpack_forestai_guided_tour_a1b2c3d4e5f6",
+    "difficulty": "beginner"
+  },
+  "nav.nodes": {
+    "label": "Nodes",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Nodes panel for managing LAN-based distributed computing with other Forest AI machines.",
+      "why": "Use this to discover, pair, and manage remote nodes for distributed job execution and file access.",
+      "consequence": "Switches to the nodes panel and loads local node info plus any registered remote nodes.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "nav.streams": {
+    "label": "Data Streams",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Data Streams panel where you ingest content from Gutenberg, local files, web pages, and RSS feeds into the data lake.",
+      "why": "Data streams feed the retrieval system. More quality data means better grounded inference.",
+      "consequence": "Switches to the streams panel and initializes all four stream modules with their current manifest stats.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": "chatpack_forestai_guided_tour_a1b2c3d4e5f6",
+    "difficulty": "beginner"
+  },
+  "nav.monitoring": {
+    "label": "Monitoring",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Monitoring panel showing system health, resource usage, and observability data.",
+      "why": "Use this to check CPU, memory, and GPU usage, and to monitor Forest AI service health.",
+      "consequence": "Switches to the monitoring panel and starts polling for live metrics.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": "chatpack_forestai_guided_tour_a1b2c3d4e5f6",
+    "difficulty": "beginner"
+  },
+  "nav.settings": {
+    "label": "Settings",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Settings panel where you configure the server URL, display preferences, and auto-refresh behavior.",
+      "why": "Use this to change the Forest AI server address, toggle auto-refresh, or save your configuration.",
+      "consequence": "Switches to the settings panel showing current configuration values.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "nav.connections": {
+    "label": "Connections",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Connections panel where you manage external API provider keys and test connectivity.",
+      "why": "If you use external providers like OpenAI or Claude, configure their API keys and connection settings here.",
+      "consequence": "Switches to the connections panel showing server health checks and provider configuration.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "nav.routing": {
+    "label": "Routing",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Dev Routing panel where you configure the message processing pipeline.",
+      "why": "Routing controls which stages your messages flow through: context injection, retrieval gate, model call, and plugin chain. Use this to customize the pipeline.",
+      "consequence": "Switches to the routing panel and loads the active routing profile. Only visible when dev mode is enabled.",
+      "avoid": "This is an advanced feature. If you're not customizing the pipeline, the default profile works fine."
+    },
+    "tutorial_available": false,
+    "difficulty": "advanced"
+  },
+  "nav.artifacts": {
+    "label": "Artifacts",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Artifacts panel showing files created by LLM tool calls.",
+      "why": "When the AI uses tools that produce files, they appear here. Use this to view, download, or manage generated artifacts.",
+      "consequence": "Switches to the artifacts panel and loads the list of DPAPI-encrypted artifacts.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "nav.tools": {
+    "label": "Tool Workshop",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Tool Workshop where you create and manage custom tools the AI can invoke.",
+      "why": "Custom tools extend the AI's capabilities. Create PowerShell, Python, Executable, or HTTP tools that the model can call during conversations.",
+      "consequence": "Switches to the tools panel and loads your tool inventory.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "nav.chat-packs": {
+    "label": "Learning Center",
+    "category": "Navigation",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Learning Center where you can start guided lesson packs.",
+      "why": "Lesson packs walk you through Forest AI concepts step by step, with interactive Q&A and progress tracking.",
+      "consequence": "Switches to the learning center and loads available packs plus any saved sessions.",
+      "avoid": "No risk. Navigation is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "chat.connect": {
+    "label": "Connect to Model",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Tests the connection to the LLM server and loads available models into the dropdown.",
+      "why": "You need a working connection before you can send any messages. Click this after starting the server or if the connection drops.",
+      "consequence": "On success, the model dropdown populates and the status turns green. On failure, you see a red error status with details.",
+      "avoid": "If the LLM server is not running, this will show a connection error. Start the server first."
+    },
+    "tutorial_available": "chatpack_forestai_guided_tour_a1b2c3d4e5f6",
+    "difficulty": "beginner"
+  },
+  "chat.send": {
+    "label": "Send Message",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Sends your prompt to the connected language model and streams the response.",
+      "why": "This is how you talk to the AI. Type a prompt, then click Send or press Ctrl+Enter.",
+      "consequence": "The model receives your prompt plus conversation history and any active context. The response streams in token by token and is logged to your daily thread file.",
+      "avoid": "Don't send if no model is connected (status shows 'Not Connected'). Connect first."
+    },
+    "tutorial_available": "chatpack_forestai_guided_tour_a1b2c3d4e5f6",
+    "difficulty": "beginner"
+  },
+  "chat.model-select": {
+    "label": "Model Selector",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Chooses which language model processes your prompts.",
+      "why": "Different models have different strengths. qwen2.5:32b is the default general-purpose model. gpt-oss models are available for specialized tasks.",
+      "consequence": "Changing the model affects all subsequent messages. Previous messages were generated by whichever model was selected at the time.",
+      "avoid": "If only one model is loaded in Ollama, there is nothing to change here."
+    },
+    "tutorial_available": "chatpack_forestai_guided_tour_a1b2c3d4e5f6",
+    "difficulty": "beginner"
+  },
+  "chat.prompt": {
+    "label": "Prompt Input",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "The text area where you type your message to the AI.",
+      "why": "This is your main input. Type a question, instruction, or conversation. Press Send or Ctrl+Enter to submit.",
+      "consequence": "Text here is sent to the model along with your conversation history, system identity, and any active 6-1-6 context.",
+      "avoid": "Sending an empty prompt will be rejected."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "chat.upload": {
+    "label": "Upload Document",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Upload any file to the governed artifacts store (artifacts/user/ directory).",
+      "why": "Share documents, images, data files, or code with the system. Uploaded files are stored alongside AI-generated artifacts and are fully audited.",
+      "consequence": "The file is written to artifacts/user/ via the gateway with a full audit trail. It appears in the Artifacts panel for browsing, download, and deletion. Maximum 10MB per file.",
+      "avoid": "Do not upload sensitive credentials or keys — use the Connections panel for API keys instead."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "chat.clear": {
+    "label": "Clear Chat Display",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Clears the visible chat messages from the display.",
+      "why": "Use this for a clean screen when starting a new topic or when the chat gets long.",
+      "consequence": "Only clears the display. Your conversation history is preserved in the daily thread file. Refresh the page to restore from saved history.",
+      "avoid": "Don't use if you need to reference recent messages visible on screen."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "chat.exec-pipeline": {
+    "label": "Pipeline Mode",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Sets message execution to pipeline mode where your prompt flows through the configured routing stages.",
+      "why": "Pipeline mode activates context injection, retrieval gating, and plugin chain processing as defined in your routing profile.",
+      "consequence": "Messages are processed through all enabled routing stages before reaching the model. This enables grounding, context injection, and other pipeline features.",
+      "avoid": "If you want raw model interaction without any pipeline processing, use Direct mode instead."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "chat.exec-direct": {
+    "label": "Direct Mode",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Sets message execution to direct mode, bypassing all routing pipeline stages.",
+      "why": "Direct mode sends your prompt straight to the model with no context injection, retrieval, or plugin processing.",
+      "consequence": "Your message goes directly to the model. No 6-1-6 context, no grounding, no pipeline stages. Useful for simple conversations or debugging.",
+      "avoid": "If you need grounded responses or context-aware answers, use Pipeline mode instead."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "chat.mode-select": {
+    "label": "Chat Mode",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Selects the conversation mode: LLM (standard), Reasoning (step-by-step), Grounded (citation-backed), Wolf Analysis (deep analysis), or Hybrid.",
+      "why": "Different modes activate different processing strategies. Reasoning mode triggers chain-of-thought. Grounded mode forces citation attachment.",
+      "consequence": "Changes how the AI processes your next message. The mode is sent as metadata with each prompt.",
+      "avoid": "Hybrid mode is not yet fully implemented. Stick to LLM or Grounded for production use."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "chat.tools-toggle": {
+    "label": "Tool Access Toggle",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Enables or disables the AI's ability to invoke registered tools during conversations.",
+      "why": "When enabled, the model can call PowerShell, Python, HTTP, or executable tools you've defined in the Tool Workshop.",
+      "consequence": "When ON, the tool manifest is included in the system prompt so the model knows what tools are available. When OFF, tools are hidden from the model.",
+      "avoid": "Disable tools if you don't want the AI to execute any system commands or scripts."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "chat.continue-toggle": {
+    "label": "Continue Context Toggle",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Enables the continue feature, which lets you ask the AI to extend or fix its last response.",
+      "why": "If the model was cut off, gave an incomplete answer, or needs correction, use Continue to prompt it to keep going with optional extra context.",
+      "consequence": "When ON, shows the continue context area where you can paste errors or add context before hitting Continue.",
+      "avoid": "If continue produces identical responses, a loop warning will appear and auto-stop."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "chat.continue-last": {
+    "label": "Continue Last Response",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Sends a continuation request to the model, optionally with extra context from the continue input area.",
+      "why": "Use this when the AI's response was truncated or you want it to elaborate. Paste an error message or correction in the text area first for guided continuation.",
+      "consequence": "Re-sends the conversation with a continuation prompt. The model picks up where it left off or adjusts based on your extra context.",
+      "avoid": "Don't spam continue — if the model produces the same output, loop detection will stop it."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "chat.explorer": {
+    "label": "Chat Explorer",
+    "category": "Chat",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Chat Explorer day picker in the citations pane, showing your conversation history organized by date.",
+      "why": "Browse previous days' conversations read-only. Useful for reviewing past discussions or finding specific exchanges.",
+      "consequence": "Replaces the citations pane with a list of days. Click a day to view that day's messages. Click Back to return to citations.",
+      "avoid": "Chat Explorer is read-only. You cannot edit or delete past conversations from here."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "inference.temperature": {
+    "label": "Temperature",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Temperature controls how creative or predictable the AI's responses are.",
+      "why": "Lower values (0.0-0.3) give focused, repeatable answers good for factual work. Higher values (0.7+) give variety and exploration good for brainstorming.",
+      "consequence": "Moving it left makes responses more deterministic. Moving it right makes them more surprising. At 0.0, the same prompt always gives the same answer.",
+      "avoid": "Don't set above 1.2 unless you want unpredictable output. Above 1.5, responses may become incoherent."
+    },
+    "layer2": {
+      "examples": [
+        {"setting": "0.1", "use_case": "Code generation, factual Q&A", "result": "Nearly identical outputs each time"},
+        {"setting": "0.7", "use_case": "General conversation", "result": "Natural variety, still coherent"},
+        {"setting": "1.5", "use_case": "Creative brainstorming", "result": "Wild, sometimes nonsensical"}
+      ],
+      "relationships": [
+        "Works with Top-P -- raising both amplifies randomness.",
+        "Mirostat overrides temperature when active."
+      ],
+      "common_mistakes": [
+        "Setting to 2.0 and wondering why output is garbage.",
+        "Setting to 0.0 and expecting creative writing."
+      ],
+      "typical_workflow": "Most users keep this at 0.5-0.7 for general use. Drop to 0.1 for precise tasks."
+    },
+    "layer3": {
+      "api_param": "temperature",
+      "type": "float",
+      "range": [0.0, 2.0],
+      "default": 0.7,
+      "config_path": "Runtime only -- sent per-request to Ollama /api/generate",
+      "edge_cases": "At exactly 0.0, top_p is ignored (greedy decoding). Some backends treat 0.0 as 'use default' not 'deterministic'.",
+      "related_params": ["top_p", "top_k", "mirostat_mode"]
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "inference.top-p": {
+    "label": "Top-P (Nucleus Sampling)",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Top-P controls the diversity of token selection by limiting the cumulative probability pool.",
+      "why": "At 0.9, the model considers the smallest set of tokens whose combined probability is 90%. Lower values narrow the pool, higher values widen it.",
+      "consequence": "Lower values make output more focused on likely tokens. Higher values allow more variety. At 1.0, all tokens are considered.",
+      "avoid": "Avoid setting both temperature and top-p to extreme values simultaneously. They amplify each other."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "inference.max-tokens": {
+    "label": "Max Tokens",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Sets the maximum number of tokens the model can generate in a single response.",
+      "why": "Use this to limit response length. Short for quick answers, long for detailed explanations or code generation.",
+      "consequence": "The model stops generating when it hits this limit, even mid-sentence. Higher values allow longer responses but take more time.",
+      "avoid": "Setting this too low (under 100) may cut off useful responses. Setting it very high (8000+) with a slow model means long wait times."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "inference.model-select": {
+    "label": "Tuning Model Selector",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Selects which model the inference parameter sliders apply to.",
+      "why": "Different models may benefit from different parameter values. This lets you maintain separate tuning profiles per model.",
+      "consequence": "Changing this loads the stored parameter profile for that model, or defaults if none is saved yet.",
+      "avoid": "If you only have one model loaded, this just reflects the active model."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "inference.apply-server": {
+    "label": "Apply to Server",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Sends your current slider settings to the LLM server so they take effect on the next message.",
+      "why": "Slider changes are local until you apply them. This pushes the configuration to the running server.",
+      "consequence": "All subsequent model responses use these inference parameters. The active config badge updates to reflect the applied values.",
+      "avoid": "Don't apply if you're still experimenting with sliders. Changes take effect on the next message you send."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "inference.repeat-penalty": {
+    "label": "Repeat Penalty",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Penalizes the model for repeating tokens it has already used, reducing repetitive output.",
+      "why": "Higher values discourage the model from reusing words and phrases. Useful when responses become loops or echo themselves.",
+      "consequence": "At 1.0 (no penalty), repetition is uninhibited. At 1.1-1.2, mild discouragement. Above 1.3, the model actively avoids repeating itself.",
+      "avoid": "Don't set above 1.5 — the model may produce incoherent output as it strains to avoid any repetition."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "inference.seed": {
+    "label": "Seed",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Sets the random seed for reproducible generation. Use -1 for a different seed each time.",
+      "why": "A fixed seed with temperature 0 gives identical output for the same prompt. Useful for testing and comparing changes.",
+      "consequence": "With a fixed seed, re-sending the same prompt produces the same response. With -1, each response varies naturally.",
+      "avoid": "Seed only guarantees determinism with temperature 0. At higher temperatures, outputs still vary slightly."
+    },
+    "tutorial_available": false,
+    "difficulty": "advanced"
+  },
+  "inference.presets": {
+    "label": "Response Mode Presets",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Quick-apply preset parameter profiles. Each preset configures temperature, top-p, repeat penalty, and max tokens in one click.",
+      "why": "Presets save you from adjusting individual sliders for common use cases: Precise (factual), Workhorse (balanced output), Explorer (creative), Locked (deterministic).",
+      "consequence": "Clicking a preset immediately updates all sliders to that profile's values. The Custom preset preserves your manual adjustments.",
+      "avoid": "Presets overwrite your current slider positions. If you've tuned custom values, click Custom first to preserve them."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "inference.generation-contract": {
+    "label": "Generation Contract",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Rules injected into the system prompt that constrain model output: END marker, essentials checklist, bullet mode, and custom rules.",
+      "why": "The generation contract ensures the model 'lands the plane' — finishes cleanly, hits required points, and follows your formatting rules.",
+      "consequence": "Checked options are appended to the system prompt before each message. The model sees them as instructions it must follow.",
+      "avoid": "Too many strict rules can make responses feel formulaic. Use sparingly for production conversations."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "inference.reset-defaults": {
+    "label": "Reset Defaults",
+    "category": "Inference Controls",
+    "icon": "",
+    "layer1": {
+      "what": "Resets all inference parameters to their default values (Balanced preset).",
+      "why": "If you've made changes you want to undo, this is the fast path back to safe defaults.",
+      "consequence": "All sliders, seed, and generation contract options revert to defaults. This does not auto-apply to the server — click Apply to Server after resetting.",
+      "avoid": "Your custom settings are lost immediately. There is no undo."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "streams.gutenberg": {
+    "label": "Gutenberg Stream",
+    "category": "Data Streams",
+    "icon": "",
+    "layer1": {
+      "what": "Ingests public domain books from Project Gutenberg into the LakeSpeak data lake.",
+      "why": "Feed high-quality text into the retrieval system so the AI can ground responses in real source material.",
+      "consequence": "Downloads book text, chunks it, extracts anchors and relations, and stores everything in the LakeSpeak index. The book becomes searchable for grounded inference.",
+      "avoid": "Don't ingest massive volumes at once. Each book goes through the full pipeline. Start with a few to verify quality."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "streams.local-files": {
+    "label": "Local Files Stream",
+    "category": "Data Streams",
+    "icon": "",
+    "layer1": {
+      "what": "Ingests text files from your local filesystem into the LakeSpeak data lake.",
+      "why": "Use this to index your own documents, notes, or text files so the AI can reference them during grounded conversations.",
+      "consequence": "Reads files from the specified paths, chunks the content, and stores it in the LakeSpeak index. Supports recursive directory scanning.",
+      "avoid": "Don't point this at huge directories without checking file counts first. Use the manifest to see what will be ingested."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "streams.web-scrape": {
+    "label": "Web Scrape Stream",
+    "category": "Data Streams",
+    "icon": "",
+    "layer1": {
+      "what": "Ingests web pages into the LakeSpeak data lake by fetching and parsing HTML content.",
+      "why": "Use this to index web content so the AI can ground responses in specific online sources.",
+      "consequence": "Fetches the URL, strips boilerplate HTML, chunks the text content, and stores it in the LakeSpeak index.",
+      "avoid": "Respect rate limits. Don't scrape sites that prohibit it. Use the preview to verify content quality before ingesting."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "streams.rss-feeds": {
+    "label": "RSS Feeds Stream",
+    "category": "Data Streams",
+    "icon": "",
+    "layer1": {
+      "what": "Ingests articles from RSS/Atom feeds into the LakeSpeak data lake.",
+      "why": "Use this to continuously index content from news feeds, blogs, or other syndicated sources.",
+      "consequence": "Fetches feed entries, extracts article content, chunks it, and stores it in the LakeSpeak index. The Latest field controls how many recent entries to process.",
+      "avoid": "Check the feed URL is valid first. Use Preview to verify content extraction works before ingesting."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "streams.dry-run": {
+    "label": "Dry Run",
+    "category": "Data Streams",
+    "icon": "",
+    "layer1": {
+      "what": "Simulates the ingestion process without writing anything to the data lake.",
+      "why": "Preview what will happen: how many chunks, words, and anchors a source will produce, without committing any data.",
+      "consequence": "Returns statistics (chunk count, word count, anchor count) but does not modify any indexes or storage. Completely safe.",
+      "avoid": "No reason to avoid it. Dry run is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "streams.ingest": {
+    "label": "Ingest",
+    "category": "Data Streams",
+    "icon": "",
+    "layer1": {
+      "what": "Runs the full ingestion pipeline: fetches content, chunks it, extracts anchors, and writes everything to the data lake.",
+      "why": "This is the real operation — after previewing or dry-running, click Ingest to commit the data to LakeSpeak.",
+      "consequence": "Content is permanently added to the data lake. The manifest updates with the new entry. The data becomes available for grounded inference.",
+      "avoid": "Use Dry Run first to verify what will happen. Ingest writes to disk and is harder to undo."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "streams.preview": {
+    "label": "Preview",
+    "category": "Data Streams",
+    "icon": "",
+    "layer1": {
+      "what": "Fetches and displays a sample of the source content without ingesting it.",
+      "why": "Check that the content looks correct before committing to a full ingest. Useful for verifying web scrapes and Gutenberg book selections.",
+      "consequence": "Shows a text preview in the panel. Nothing is written to disk or the data lake.",
+      "avoid": "No risk. Preview is read-only."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "routing.save": {
+    "label": "Save Routing Profile",
+    "category": "Routing",
+    "icon": "",
+    "layer1": {
+      "what": "Saves the current pipeline stage configuration to the active routing profile.",
+      "why": "Routing controls which stages messages flow through: context injection, retrieval gate, model call, and plugin chain. Save preserves your pipeline setup.",
+      "consequence": "Overwrites the current profile's settings in forest.config.json. The pipeline order and per-stage config are persisted.",
+      "avoid": "If you're experimenting, use Save As to create a named profile instead of overwriting the default."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "routing.save-as": {
+    "label": "Save As Named Profile",
+    "category": "Routing",
+    "icon": "",
+    "layer1": {
+      "what": "Saves the current pipeline configuration as a new named profile.",
+      "why": "Named profiles let you maintain multiple pipeline configurations and switch between them. Useful for different workflows.",
+      "consequence": "Creates a new named profile in the routing profiles directory. Does not overwrite the default or any existing profile.",
+      "avoid": "Profile names must match the pattern: letters, numbers, hyphens, underscores, max 64 characters."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "routing.profiles-dropdown": {
+    "label": "Saved Profiles Dropdown",
+    "category": "Routing",
+    "icon": "",
+    "layer1": {
+      "what": "Lists all saved routing profiles. Select one to load its pipeline configuration.",
+      "why": "Switch between different pipeline setups for different workflows without reconfiguring stages manually each time.",
+      "consequence": "Loading a profile replaces the current pipeline stage configuration with the saved one. Unsaved changes to the current profile are lost.",
+      "avoid": "Save your current profile before loading a different one if you want to keep your changes."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "routing.reset": {
+    "label": "Reset Default",
+    "category": "Routing",
+    "icon": "",
+    "layer1": {
+      "what": "Resets the pipeline configuration to the factory default profile.",
+      "why": "If you've made changes that broke routing or want a clean slate, this restores the standard pipeline.",
+      "consequence": "Overwrites the current pipeline with default stages. Your custom changes are lost. Named profiles are not affected.",
+      "avoid": "Save your current profile first with Save As if you might want it back."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "routing.exec-toggle": {
+    "label": "Pipeline / Direct Toggle",
+    "category": "Routing",
+    "icon": "",
+    "layer1": {
+      "what": "Switches between Pipeline mode (messages flow through routing stages) and Direct mode (messages go straight to the model).",
+      "why": "Pipeline mode enables grounding, context injection, and plugin processing. Direct mode is raw model interaction.",
+      "consequence": "This toggle syncs with the same control in the chat panel. Changing it here changes it everywhere.",
+      "avoid": "Direct mode skips all pipeline features. Use Pipeline for production conversations."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "system-identity.save-identity": {
+    "label": "Save Identity & Archive",
+    "category": "System & Identity",
+    "icon": "",
+    "layer1": {
+      "what": "Saves the system identity (who the AI is) and archive instruction (how it handles retrieved history).",
+      "why": "The system identity shapes every response. The archive instruction defines how the AI uses retrieved conversation history from previous sessions.",
+      "consequence": "Writes to forest.config.json. All subsequent messages use the updated identity and archive instruction.",
+      "avoid": "Be thoughtful about identity changes. They affect the tone and behavior of every response the AI gives."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "system-identity.save-profile": {
+    "label": "Save User Profile",
+    "category": "System & Identity",
+    "icon": "",
+    "layer1": {
+      "what": "Saves your user profile including display name, role, working context, communication style, expertise level, and notes.",
+      "why": "The user profile gives the AI context about who you are and how you prefer to communicate. This helps it tailor responses to your needs.",
+      "consequence": "Writes profile data to forest.config.json. The AI's system prompt includes your profile in subsequent messages.",
+      "avoid": "No risk in saving. The profile only affects how the AI addresses you and calibrates its responses."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "system-identity.clear-profile": {
+    "label": "Clear User Profile",
+    "category": "System & Identity",
+    "icon": "",
+    "layer1": {
+      "what": "Removes all user profile data, resetting it to empty defaults.",
+      "why": "Use this if you want to start fresh or remove personal context from the system.",
+      "consequence": "Clears display name, role, context, notes, style, and level. The AI will respond without user-specific context until you fill it in again.",
+      "avoid": "This is immediate. There is no undo. Save a backup of your profile text if you might want it back."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "connections.save-key": {
+    "label": "Save API Key",
+    "category": "Connections",
+    "icon": "",
+    "layer1": {
+      "what": "Saves an encrypted API key for the selected external provider (OpenAI, Claude, etc.).",
+      "why": "External providers require API keys for authentication. This stores the key securely using DPAPI encryption on your local machine.",
+      "consequence": "The key is encrypted at rest and only decrypted when making API calls to that provider. You can use the provider's models after saving a valid key.",
+      "avoid": "Never share your API keys. They are stored locally and encrypted, but treat them as sensitive credentials."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "connections.test-connection": {
+    "label": "Test Connection",
+    "category": "Connections",
+    "icon": "",
+    "layer1": {
+      "what": "Tests connectivity to the selected external provider by making a lightweight API call.",
+      "why": "Verify your API key works and the provider is reachable before using it for chat. Tests the /v1/models endpoint.",
+      "consequence": "Makes a single API call to verify connectivity. Shows success or failure with a descriptive message. Does not consume meaningful API credits.",
+      "avoid": "No risk. Testing is free or negligible cost."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "connections.disconnect": {
+    "label": "Disconnect Provider",
+    "category": "Connections",
+    "icon": "",
+    "layer1": {
+      "what": "Disconnects the external provider and optionally deletes the stored API key.",
+      "why": "Use this if you no longer want to use a provider, or if you need to rotate your API key.",
+      "consequence": "The provider becomes unavailable for chat. If you delete the key, you will need to re-enter it to reconnect.",
+      "avoid": "Make sure you are not in the middle of an active conversation using this provider's model."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "nodes.discovery-toggle": {
+    "label": "Start/Stop Discovery",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Toggles LAN discovery to find other Forest AI nodes on your local network.",
+      "why": "Discovery broadcasts on your LAN to find other machines running the Forest Node daemon. Found nodes appear in the Discovered Nodes list.",
+      "consequence": "When active, the system listens for and announces its presence on the local network. When stopped, no network traffic is generated.",
+      "avoid": "Don't run discovery on untrusted networks. Only use on your own LAN."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "nodes.connect": {
+    "label": "Connect to Node",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Opens a modal to register a remote Forest AI node by IP address and port.",
+      "why": "If a node is not discovered automatically, you can connect to it manually by entering its IP address and daemon port.",
+      "consequence": "Adds the node to your registered nodes list. The node must be running the Forest Node daemon and be reachable on the specified port (default 5052).",
+      "avoid": "Don't connect to nodes you don't trust. The connection requires HMAC pairing before any operations are allowed."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "nodes.refresh": {
+    "label": "Refresh Nodes",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Reloads the node list, checking status and connectivity of all registered nodes.",
+      "why": "Nodes may come online or go offline. Refresh updates the status indicators for all registered nodes.",
+      "consequence": "Queries each registered node for its current status. Updates the online/offline indicators and system info.",
+      "avoid": "No risk. This is a read-only status check."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "nodes.heartbeat": {
+    "label": "Heartbeat",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Sends a heartbeat ping to all registered nodes to check if they are alive and responding.",
+      "why": "A quick health check that verifies network connectivity and daemon responsiveness without fetching full status.",
+      "consequence": "Each node receives a lightweight ping. Online nodes respond immediately. Offline nodes time out after a few seconds.",
+      "avoid": "No risk. Heartbeat is a passive health probe."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "nodes.pair-mobile": {
+    "label": "Pair Mobile Device",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Starts the 3-step mobile device pairing wizard: USB detection, Windows Hello approval, and enrollment bundle delivery.",
+      "why": "Pair your phone to access Forest AI from a mobile browser with Ed25519-signed authentication.",
+      "consequence": "Creates an encrypted enrollment bundle containing the device's credentials. The phone can then authenticate to the UI server over TLS.",
+      "avoid": "Requires a USB connection and Windows Hello biometric approval. Make sure your phone is connected via USB cable."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "nodes.fb-locked": {
+    "label": "Locked Mode",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Sets the file browser to locked mode — the most restrictive access level. Only pre-approved paths are visible.",
+      "why": "Locked mode is the default and safest access level for browsing remote node files.",
+      "consequence": "Only files in the node's allowlist are visible. You cannot navigate outside approved directories.",
+      "avoid": "No risk. This is the default safe mode."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "nodes.fb-allowlist": {
+    "label": "Allowlist Mode",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Sets the file browser to allowlist mode — expands visible paths to the full allowlist configured on the remote node.",
+      "why": "Allowlist mode gives broader read access while still restricting navigation to approved directories.",
+      "consequence": "All paths in the node's allowlist configuration become browsable. You can read files but not write unless write mode is separately enabled.",
+      "avoid": "Allowlist paths are set by the remote node's config. You cannot add paths from the browser."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "nodes.fb-full": {
+    "label": "Full System Access",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Requests full filesystem access on the remote node. Requires a 30-second arming countdown as deliberate friction.",
+      "why": "Full access lets you browse the entire remote filesystem. The countdown is intentional UX friction, not a security gate — it ensures you meant to do this.",
+      "consequence": "After the 30-second countdown, the full filesystem becomes browsable (read-only by default). Access expires after a TTL. You can lock immediately at any time.",
+      "avoid": "This is the highest access level. Only use when you genuinely need to browse outside the allowlist."
+    },
+    "tutorial_available": false,
+    "difficulty": "advanced"
+  },
+  "nodes.fb-lock-now": {
+    "label": "Lock Now",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Immediately revokes elevated file browser access and returns to locked mode.",
+      "why": "Use this when you're done browsing in allowlist or full mode. Returns to the safest access level instantly.",
+      "consequence": "Access drops to locked mode. Any open file previews close. The TTL timer is cancelled.",
+      "avoid": "No risk. Locking is always safe."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "nodes.fb-write": {
+    "label": "Write Mode",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Toggles write access in the file browser, enabling file upload and folder creation on the remote node.",
+      "why": "By default, the file browser is read-only. Enable write mode to upload files or create directories on the remote node.",
+      "consequence": "When ON, Upload and New Folder buttons become visible. Files and folders can be created in the current directory.",
+      "avoid": "Write operations modify the remote filesystem. Make sure you're in the correct directory before uploading."
+    },
+    "tutorial_available": false,
+    "difficulty": "advanced"
+  },
+  "nodes.fb-upload": {
+    "label": "Upload File",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Uploads a file from your local machine to the current directory on the remote node.",
+      "why": "Transfer files to a remote node for processing, configuration, or data sharing.",
+      "consequence": "The file is uploaded to the remote node's current browsed directory. Overwrites files with the same name.",
+      "avoid": "Requires write mode to be enabled. Check the current directory path in the breadcrumb before uploading."
+    },
+    "tutorial_available": false,
+    "difficulty": "advanced"
+  },
+  "nodes.fb-mkdir": {
+    "label": "New Folder",
+    "category": "Nodes",
+    "icon": "",
+    "layer1": {
+      "what": "Creates a new folder in the current directory on the remote node.",
+      "why": "Organize files on the remote node by creating directories as needed.",
+      "consequence": "Prompts for a folder name and creates it in the currently browsed directory.",
+      "avoid": "Requires write mode to be enabled. Folder names must be valid for the remote OS."
+    },
+    "tutorial_available": false,
+    "difficulty": "advanced"
+  },
+  "settings.save": {
+    "label": "Save Settings",
+    "category": "Settings",
+    "icon": "",
+    "layer1": {
+      "what": "Saves your current settings to the configuration file.",
+      "why": "Settings changes only persist when you explicitly save them. Otherwise they reset on next launch.",
+      "consequence": "Writes to forest.config.json. The server URL, display preferences, and auto-refresh setting are persisted.",
+      "avoid": "Don't save if you are testing a temporary server URL you don't want to keep."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "documap.refresh-stats": {
+    "label": "Refresh Stats",
+    "category": "DocuMap",
+    "icon": "",
+    "layer1": {
+      "what": "Reloads the DocuMap statistics: queued documents, mapped documents, grove anchors, and system-verified counts.",
+      "why": "Stats may be stale after ingesting new data or mapping documents. Refresh pulls the latest numbers from the bridge.",
+      "consequence": "Fetches fresh stats from /api/documap/stats and updates all the stat cards. No data is modified.",
+      "avoid": "No risk. This is a read-only operation."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "documap.doc-search": {
+    "label": "Search Documents",
+    "category": "DocuMap",
+    "icon": "",
+    "layer1": {
+      "what": "Filters the Data Grove document list by filename or title as you type.",
+      "why": "When you have many mapped documents, searching lets you quickly find specific ones without scrolling.",
+      "consequence": "Filters the visible list in real time. No API calls — filtering happens in the browser on already-loaded data.",
+      "avoid": "No risk. Search is local filtering."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "documap.refresh-docs": {
+    "label": "Refresh Doc List",
+    "category": "DocuMap",
+    "icon": "",
+    "layer1": {
+      "what": "Reloads the list of mapped documents from the Data Grove.",
+      "why": "New documents may have been mapped since the last load. Refresh fetches the latest list.",
+      "consequence": "Fetches documents from /api/documap/docs and rebuilds the document list display.",
+      "avoid": "No risk. This is a read-only refresh."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "documap.graph": {
+    "label": "Anchor Graph Viewer",
+    "category": "DocuMap",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the interactive Cytoscape graph viewer showing anchor relationships for the selected document.",
+      "why": "Visualize how anchors connect within a document. Useful for understanding the 6-1-6 mapping topology.",
+      "consequence": "Opens a full-screen overlay with an interactive force-directed graph. You can pan, zoom, and export.",
+      "avoid": "Very large documents may produce slow-to-render graphs. Start with smaller documents."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "documap.upload": {
+    "label": "Upload & Map",
+    "category": "DocuMap",
+    "icon": "",
+    "layer1": {
+      "what": "Uploads the file or pasted text and runs it through the 6-1-6 mapping pipeline.",
+      "why": "This is the primary action for adding new content to the Data Grove. Your text is tokenized, anchors are extracted, and the map is stored.",
+      "consequence": "The document is processed synchronously. A progress bar shows chunk-by-chunk status. On completion, coverage stats and unmapped word count are displayed.",
+      "avoid": "Very large documents take longer. Check the filename field is set before uploading."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "documap.download": {
+    "label": "Download Map JSON",
+    "category": "DocuMap",
+    "icon": "",
+    "layer1": {
+      "what": "Downloads the mapping result of the last processed document as a JSON file.",
+      "why": "Export the raw 6-1-6 mapping data for analysis, backup, or external tool use.",
+      "consequence": "Triggers a browser download of the JSON file containing all anchor windows, token IDs, and mapping metadata.",
+      "avoid": "Only available after a successful mapping. If no mapping has been done, there is nothing to download."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "documap.file-upload": {
+    "label": "File Upload Area",
+    "category": "DocuMap",
+    "icon": "",
+    "layer1": {
+      "what": "Click or drag-and-drop a file to upload it for 6-1-6 mapping.",
+      "why": "Upload .txt, .md, or .json files containing text you want to map to the canonical lexicon.",
+      "consequence": "The file contents are loaded into the upload form. You still need to click Upload & Map to process it.",
+      "avoid": "Only text-based files are supported. Binary files, images, and PDFs are not handled."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "lexicon.search": {
+    "label": "Lexicon Search",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "Search the lexicon by word, binary address, hex code, or tone signature.",
+      "why": "Find specific entries in your word database. The search queries the backend and returns matching entries as explorer cards.",
+      "consequence": "Results appear in the card grid below. Each card shows the word, its binary address, hex code, tone, and frequency data.",
+      "avoid": "Very short queries (1-2 characters) may return too many results. Be specific."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "lexicon.filter-all": {
+    "label": "ALL Pack Filter",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "Shows entries from all lexicon packs (canonical + medical combined).",
+      "why": "The default view. Removes any active pack filter and shows the full lexicon.",
+      "consequence": "Reloads results showing all packs. The filter indicator in the context strip clears.",
+      "avoid": "No risk. This is the default state."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "lexicon.filter-canonical": {
+    "label": "CANONICAL Pack Filter",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "Filters the lexicon to show only entries from the canonical word pack.",
+      "why": "The canonical pack contains core English vocabulary mapped through the 6-1-6 pipeline.",
+      "consequence": "Results, letter distribution, and browse operations are scoped to canonical entries only.",
+      "avoid": "No risk. Click ALL to remove the filter."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "lexicon.filter-medical": {
+    "label": "MEDICAL Pack Filter",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "Filters the lexicon to show only entries from the medical terminology pack.",
+      "why": "The medical pack contains specialized healthcare and clinical vocabulary.",
+      "consequence": "Results, letter distribution, and browse operations are scoped to medical entries only.",
+      "avoid": "No risk. Click ALL to remove the filter."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "lexicon.top-words": {
+    "label": "Top Words",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "Loads the 30 most frequently occurring words in the lexicon, sorted by frequency count.",
+      "why": "See which words appear most often across your mapped documents. Useful for understanding your corpus composition.",
+      "consequence": "Replaces the current card grid with top-frequency entries. Each card shows the word's frequency count.",
+      "avoid": "No risk. This is a read-only browse operation."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "lexicon.random": {
+    "label": "Random Sample",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "Loads 24 randomly selected entries from the lexicon.",
+      "why": "Discover words you might not find by searching. A quick way to explore the breadth of your lexicon.",
+      "consequence": "Replaces the card grid with randomly selected entries. Click again for a different set.",
+      "avoid": "No risk. This is a read-only browse operation."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "lexicon.recent": {
+    "label": "Recently Mapped",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "Shows the 30 most recently mapped words, ordered by mapping timestamp.",
+      "why": "Track what was just added to the lexicon. Useful after running a mapping job to see the new entries.",
+      "consequence": "Replaces the card grid with recently mapped entries. The most recent appears first.",
+      "avoid": "No risk. This is a read-only browse operation."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "lexicon.partition-files": {
+    "label": "Partition Files",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "Lists all lexicon partition files on disk, showing file sizes and entry counts.",
+      "why": "The lexicon is stored across multiple partition files. This view lets you inspect the physical storage layout.",
+      "consequence": "Shows a list of partition files. Click one to browse its contents. Each file holds a subset of the lexicon.",
+      "avoid": "No risk. This is a read-only view of the storage structure."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "lexicon.unmatched": {
+    "label": "Unmatched Words",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "Shows words that appeared in mapped documents but could not be matched to any canonical lexicon entry.",
+      "why": "Unmatched words represent gaps in your lexicon. Review them to decide if they should be added or are noise.",
+      "consequence": "Displays a list of unmatched words with their occurrence counts. High-frequency unmatched words may need to be added to the lexicon.",
+      "avoid": "No risk. This is a diagnostic read-only view."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "lexicon.clear-canonical": {
+    "label": "Clear Canonical",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "DANGER: Deletes all entries from the canonical lexicon pack. This is a brain operation.",
+      "why": "Only use this if you need to completely rebuild the canonical lexicon from scratch.",
+      "consequence": "All canonical entries are permanently deleted. The lexicon must be repopulated by re-mapping documents. Requires Windows Hello + confirmation phrase.",
+      "avoid": "This is irreversible without a backup restore. Make absolutely sure you have a backup before proceeding."
+    },
+    "tutorial_available": false,
+    "difficulty": "advanced"
+  },
+  "lexicon.return-to-pool": {
+    "label": "Return to Pool",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "DANGER: Returns canonical words back to the unmapped pool for re-processing.",
+      "why": "Use this if words were incorrectly mapped and need to be re-evaluated through the pipeline.",
+      "consequence": "Selected canonical entries lose their canonical status and return to the unmapped word pool. Requires Windows Hello + confirmation phrase.",
+      "avoid": "This is a destructive brain operation. Only use when you know specific words were mis-mapped."
+    },
+    "tutorial_available": false,
+    "difficulty": "advanced"
+  },
+  "lexicon.import-words": {
+    "label": "Import Word List",
+    "category": "Lexicon Browser",
+    "icon": "",
+    "layer1": {
+      "what": "DANGER: Bulk-imports a word list into the canonical lexicon from an external file.",
+      "why": "Seed the lexicon with a large word list instead of mapping documents one at a time.",
+      "consequence": "All words in the imported file are added to the canonical pack. Duplicates are skipped. Requires Windows Hello + confirmation phrase.",
+      "avoid": "Large imports can significantly change the lexicon composition. Review the word list before importing."
+    },
+    "tutorial_available": false,
+    "difficulty": "advanced"
+  },
+  "citations.search": {
+    "label": "Citation Search",
+    "category": "Citations Explorer",
+    "icon": "",
+    "layer1": {
+      "what": "Search citations by coordinate, subject tag, note text, or cite_id.",
+      "why": "Find specific citations in your citation store without scrolling through the full list.",
+      "consequence": "Filters the visible citation cards in real time as you type. Results match against coordinate, subject, note, and cite_id fields.",
+      "avoid": "No risk. Search is a client-side filter on loaded data."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "citations.filter-all": {
+    "label": "ALL Source Filter",
+    "category": "Citations Explorer",
+    "icon": "",
+    "layer1": {
+      "what": "Shows citations from all sources (UI, System, and LakeSpeak combined).",
+      "why": "The default view. Removes any active source filter and shows all citation records.",
+      "consequence": "All citation cards become visible. The filter indicator in the context strip clears.",
+      "avoid": "No risk. This is the default state."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "citations.filter-ui": {
+    "label": "UI Source Filter",
+    "category": "Citations Explorer",
+    "icon": "",
+    "layer1": {
+      "what": "Filters citations to show only those created from the UI (user-attached citations).",
+      "why": "UI citations are manually attached by you during conversations using the cite overlay.",
+      "consequence": "Only UI-sourced citation cards are shown. Cards have green left borders.",
+      "avoid": "No risk. Click ALL to remove the filter."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "citations.filter-system": {
+    "label": "SYSTEM Source Filter",
+    "category": "Citations Explorer",
+    "icon": "",
+    "layer1": {
+      "what": "Filters citations to show only those created by the system (auto-generated citations).",
+      "why": "System citations are automatically created by the pipeline during grounded inference when the model references archived content.",
+      "consequence": "Only system-sourced citation cards are shown. Cards have cyan left borders.",
+      "avoid": "No risk. Click ALL to remove the filter."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "citations.filter-lakespeak": {
+    "label": "LAKESPEAK Source Filter",
+    "category": "Citations Explorer",
+    "icon": "",
+    "layer1": {
+      "what": "Filters citations to show only those linked to LakeSpeak data lake content.",
+      "why": "LakeSpeak citations reference content from ingested data streams (Gutenberg, local files, web scrapes, RSS feeds).",
+      "consequence": "Only LakeSpeak-sourced citation cards are shown. Cards have gold left borders.",
+      "avoid": "No risk. Click ALL to remove the filter."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "citations.all": {
+    "label": "All Citations",
+    "category": "Citations Explorer",
+    "icon": "",
+    "layer1": {
+      "what": "Loads or reloads the full citation list from the citation store.",
+      "why": "Fetches all citations (paginated) and renders them as explorer cards. Use this to refresh after changes.",
+      "consequence": "Replaces the card grid with all citations. The first page loads immediately; use Load More for additional pages.",
+      "avoid": "No risk. This is a read-only fetch."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "citations.load-more": {
+    "label": "Load More",
+    "category": "Citations Explorer",
+    "icon": "",
+    "layer1": {
+      "what": "Loads the next page of citations, appending to the current display.",
+      "why": "Citations are paginated to keep the UI responsive. Click Load More to fetch additional entries.",
+      "consequence": "Fetches the next batch and appends citation cards to the grid. If no more citations exist, a message indicates the end.",
+      "avoid": "No risk. Pagination is automatic."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "citations.health-check": {
+    "label": "Health Check",
+    "category": "Citations Explorer",
+    "icon": "",
+    "layer1": {
+      "what": "Runs a 30-day citation health audit, checking for orphaned, stale, or broken citation records.",
+      "why": "Over time, citations may become orphaned if source messages are deleted, or stale if the underlying archive changes.",
+      "consequence": "Generates a health report showing total citations, broken references, orphaned records, and overall health status.",
+      "avoid": "No risk. Health check is read-only. It reports problems but does not fix them."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "artifacts.refresh": {
+    "label": "Refresh Artifacts",
+    "category": "Artifacts",
+    "icon": "",
+    "layer1": {
+      "what": "Reloads the list of artifacts (files created by LLM tool calls).",
+      "why": "New artifacts may have been created during conversations. Refresh updates the list.",
+      "consequence": "Fetches the current artifact inventory and rebuilds the sidebar list. Artifacts are DPAPI-encrypted on disk.",
+      "avoid": "No risk. This is a read-only refresh."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "plugins.rescan": {
+    "label": "Rescan Plugins",
+    "category": "Plugins",
+    "icon": "",
+    "layer1": {
+      "what": "Rescans the plugins directory and updates the plugin list with current status.",
+      "why": "If you've added, removed, or modified plugins, rescan discovers the changes.",
+      "consequence": "Re-reads the plugins directory, checks each plugin's health, and refreshes the list and pipeline lane.",
+      "avoid": "No risk. Rescan does not modify plugins."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "tools.new-tool": {
+    "label": "New Tool",
+    "category": "Tool Workshop",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the tool creation form to define a new custom tool the AI can invoke.",
+      "why": "Extend the AI's capabilities by creating PowerShell, Python, Executable, or HTTP tools.",
+      "consequence": "Opens the editor in the detail pane. Fill in the tool name, type, description, and implementation, then save.",
+      "avoid": "Tool implementations run with your system privileges. Only create tools you trust."
+    },
+    "tutorial_available": false,
+    "difficulty": "intermediate"
+  },
+  "tools.refresh": {
+    "label": "Refresh Tools",
+    "category": "Tool Workshop",
+    "icon": "",
+    "layer1": {
+      "what": "Reloads the tool inventory from the tools directory.",
+      "why": "If you've manually added or modified tool definition files, refresh picks up the changes.",
+      "consequence": "Re-reads the tools directory and updates the sidebar list with current tool definitions.",
+      "avoid": "No risk. Refresh is read-only."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "learning.install": {
+    "label": "Install Pack",
+    "category": "Learning Center",
+    "icon": "",
+    "layer1": {
+      "what": "Installs a new lesson pack from a local folder path.",
+      "why": "Add custom or downloaded lesson packs to your Learning Center library.",
+      "consequence": "Copies the pack from the specified path into the chat_packs directory. The pack appears in Available Packs after installation.",
+      "avoid": "Make sure the path points to a valid pack folder with a manifest.json."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "learning.next-section": {
+    "label": "Next Section",
+    "category": "Learning Center",
+    "icon": "",
+    "layer1": {
+      "what": "Advances to the next section or question in the current lesson pack.",
+      "why": "Move through the lesson content step by step. Progress is saved automatically.",
+      "consequence": "Loads the next section content and updates the progress bar. If you're at the last section, the lesson completes.",
+      "avoid": "Make sure you've reviewed the current section before advancing. You can always go back via the outline sidebar."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "learning.discuss": {
+    "label": "Discuss in Chat",
+    "category": "Learning Center",
+    "icon": "",
+    "layer1": {
+      "what": "Opens the Local Chat panel with the current lesson context pre-loaded, so you can ask the AI questions about the material.",
+      "why": "If something in the lesson is unclear, switch to chat to have an interactive conversation about it with full lesson context.",
+      "consequence": "Switches to the chat panel with a breadcrumb linking back to the lesson. The pack context is included in the system prompt.",
+      "avoid": "No risk. Your lesson progress is preserved."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  },
+  "learning.reset": {
+    "label": "Reset Lesson",
+    "category": "Learning Center",
+    "icon": "",
+    "layer1": {
+      "what": "Resets the current lesson pack to the beginning, clearing all progress.",
+      "why": "Start over from the first section if you want to review the material from scratch.",
+      "consequence": "All section progress is cleared. The lesson starts from section 1. This cannot be undone.",
+      "avoid": "Your progress is permanently lost. Only reset if you're sure you want to start over."
+    },
+    "tutorial_available": false,
+    "difficulty": "beginner"
+  }
+}

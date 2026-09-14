@@ -1,0 +1,742 @@
+you don't i said psuedon reasoning explicitly 
+the_basement_multilevel_graph_report.md
+File
+tokenization_results.json
+File
+processing_metrics (1).json
+File
+semantic_vectors (1).json
+File
+semantic_mapping (2).jsonl
+File
+semantic mapping
+Preview unavailable
+forest_semantic_mapper_real.html
+File
+forest_semantic_mapper.html
+File
+
+Yeah — I think I caught you mid-thought, but I see the direction.
+
+Those old HTML mappers don't need to become some giant revived Forest product. Strip them down into intake engines. Keep the useful little pipeline:
+
+accept data → preserve source identity → tokenize/objectize → establish containment → build measured relationships → emit common dataset package
+
+Then TruePlug can instantiate that inside every disposable plugin world. Same intake contract, regardless of whether the material came from synthetic documents, fake databases, fake API responses, fake network traffic, application help, UI observations, or test fixtures.
+
+And if you're heading toward sending TruePlug out to other people, that's where this gets especially nice: they don't need your datasets. Ship the contained environment and the intake machinery. Their material gets mapped locally inside their own TruePlug enclosure and never needs to become part of your TrueSystems estate.
+
+So you're not distributing your laboratory specimens.
+
+You're distributing the little laboratory that can manufacture its own specimens. 😆
+
+Finish that last thought, though — “send out to the people so they can…” sounded like you were about to land somewhere specific.
+
+please buildout what we spoke on with the plan you have the plugin runner for reference and the html docs. the weight is the calculation. how many times did we come 2 positions from buildout? there is full doc weight and builds a lovely topk
+
+Yep. Now we can state the build cleanly. The old HTML proves the tiny local intake/mapping pattern; the plugin runner proves the detached lab pattern; the current TrueSystems laws tell us where authority lives. The missing piece is to weld those into TruePlug’s contained dataset-and-plugin factory without dragging the old fake “semantic” scoring forward.
+
+The core idea is:
+
+TruePlug gets its own disposable mini-system, creates or ingests data inside that boundary, maps exact positions and relationships, calculates recurrence-based weights over the whole contained document/dataset, builds Top-K traversal candidates, lets ARC/assembler experiment over that structure, and only exports a candidate plugin + qualification packet. It never needs canonical TrueSystems data.
+
+The old mapper already has the correct mechanical skeleton: local file intake, positional objects, context windows, per-object relationship arrays, metadata-rich exports, and fully local browser execution. The larger version already supports multi-file intake, adjustable relationship depth, combined dataset generation, and JSON/CSV/JSONL export.
+
+What we throw away is the bullshit semantic labeling and arbitrary heuristics. That larger file literally derives “similarity” from character overlap/length/substring and has a placeholder frequency weight. The modern weight is measured occurrence geometry.
+
+1. TruePlug contained world
+
+Every plugin-development run gets its own disposable root:
+
+trueplug_run/
+├── manifest/
+├── source/
+├── intake/
+├── graph/
+├── weights/
+├── fixtures/
+├── fake_fs/
+├── fake_db/
+├── fake_net/
+├── fake_web/
+├── fake_ui/
+├── plugin/
+├── logs/
+├── receipts/
+├── tests/
+└── promotion/
+
+Nothing outside that root is visible unless a separately defined development fixture explicitly exposes it.
+
+That hardens what the old plugin runner already does well: detached discovery, mounting, fixtures, mock services, health/route inspection, and promotion preparation.
+
+The current runner is detached but not sandboxed because plugins share its process/runtime, so this build adds per-plugin process, environment, filesystem, network, resource and termination boundaries.
+
+2. Intake law
+
+Do not begin with “semantic meaning.”
+
+Begin with exact observed structure.
+
+For ordered text:
+
+dataset
+→ document
+→ paragraph
+→ sentence
+→ exact occurrence
+
+Every occurrence keeps:
+
+dataset_id
+document_id
+container_id
+occurrence_id
+exact_text
+ordinal
+byte/span coordinates
+parent chain
+source hash
+
+No stemming. No synonym merging. No silent normalization. No semantic collapse.
+
+That preserves the current TrueSystems law that source remains authority and graphs carry addresses/measurements rather than replacing source.
+
+3. Relationship field
+
+For ordered material, each exact occurrence can expose a signed local field:
+
+... -3 -2 -1 | CENTER | +1 +2 +3 ...
+
+The radius is configurable.
+
+6-1-6 remains a useful default experiment for ordered data, not a universal geometry.
+
+For every observed pair:
+
+(center_occurrence, neighbor_occurrence)
+
+record:
+
+signed_offset
+absolute_offset
+same_sentence
+same_paragraph
+same_document
+same_dataset
+center_identity
+neighbor_identity
+witness_location
+
+No inferred edge merely because two strings look similar.
+
+4. The weight you’re talking about
+
+This is the key correction.
+
+Weight is not an arbitrary decimal assigned to a word.
+
+Weight comes from the measured question:
+
+How often did object B occur at a particular positional relationship to object A across the admitted container?
+
+So for focused object A, maintain counts:
+
+A → B @ -6 = count
+A → B @ -5 = count
+...
+A → B @ -2 = count
+A → B @ -1 = count
+A → B @ +1 = count
+A → B @ +2 = count
+...
+
+Your example:
+
+How many times did buildout occur two positions away?
+
+is literally one channel:
+
+count(center=A, neighbor="buildout", offset=±2)
+
+But we preserve the sign too:
+
+A → buildout @ -2 = 17
+A → buildout @ +2 = 41
+
+because direction may matter.
+
+Then aggregate without destroying the raw counts:
+
+offset_count[-2] = 17
+offset_count[+2] = 41
+absolute_distance_count[2] = 58
+
+That gives us several independent measured channels.
+
+5. Full-document weight
+
+Now zoom out.
+
+For a focused relationship A → B, full-document weight is built from all exact witnesses in that document, not merely the current local window.
+
+At minimum preserve:
+
+pair_occurrence_count
+distinct_A_occurrences
+distinct_B_occurrences
+signed_offset_histogram
+absolute_distance_histogram
+same_sentence_count
+same_paragraph_count
+document_count
+
+Then derive useful projections.
+
+For example:
+
+pair_mass(A,B)
+    = total exact witnessed A↔B positional co-occurrences
+
+and:
+
+offset_mass(A,B,d)
+    = witnesses of B at signed offset d from A
+
+You can also calculate recurrence coverage:
+
+A_coverage(A,B)
+    = distinct A occurrences that witness B
+      ------------------------------------
+      total distinct A occurrences
+
+That answers:
+
+When A appears, how consistently does B participate in A’s field?
+
+That is a useful deterministic measurement.
+
+It is not probability of truth.
+
+6. Positional pressure
+
+Raw counts stay raw.
+
+For traversal ranking, you can create a separate positional pressure channel.
+
+The current system already has a clean rational form proposed for bounded structural traversal:
+
+pressure(distance) = (N - distance + 1) / N
+
+while retaining raw distance, radius, numerator, denominator, direction and axis.
+
+For a radius of 6:
+
+distance 1 → 6/6
+distance 2 → 5/6
+distance 3 → 4/6
+distance 4 → 3/6
+distance 5 → 2/6
+distance 6 → 1/6
+
+So if buildout occurred 41 times at +2, its pressure-weighted positional mass for that lane is:
+
+41 × 5/6
+
+But keep both values:
+
+raw_count = 41
+pressure = 5/6
+weighted_mass = 205/6
+
+Never only save the final decimal.
+
+That means every ranking is reproducible.
+
+7. Top-K
+
+Now we get the lovely part you remembered.
+
+For focused object A, build candidates from observed neighbors.
+
+Each candidate B can have a ranking vector like:
+
+B:
+  pair_count
+  distinct_center_coverage
+  signed_position_counts
+  nearest_distance
+  weighted_positional_mass
+  sentence_support
+  paragraph_support
+  document_support
+
+Then Top-K selection can remain deterministic.
+
+A simple first ordering could be:
+
+1. highest distinct-center coverage
+2. highest total witnessed pair count
+3. highest positional weighted mass
+4. nearest minimum observed distance
+5. canonical first source ordinal
+
+Or, if you want the old lane idea preserved, select Top-K per signed lane:
+
+-6 → top K
+-5 → top K
+...
+-1 → top K
++1 → top K
+...
++6 → top K
+
+That is actually nicer because one dominant relationship cannot erase everything else.
+
+Then you can produce:
+
+focus = A
+
+-2:
+  buildout  count=17
+  worker    count=14
+  graph     count=11
+
++2:
+  buildout  count=41
+  plugin    count=28
+  test      count=19
+
+Now ARC or the assembler has a very small, structured candidate surface to walk.
+
+8. Parent/container weight
+
+And we should preserve the other thing you’ve been describing lately: the child relationships can boil upward.
+
+Example:
+
+paragraph P
+├── A ↔ buildout
+├── A ↔ plugin
+├── A ↔ graph
+└── A ↔ test
+
+The paragraph gets a parent summary derived from those child observations.
+
+Likewise:
+
+document
+→ paragraphs
+→ sentences
+→ occurrences
+
+The document-level surface can say:
+
+A ↔ buildout:
+  child_witness_count = 58
+  paragraphs_witnessed = 9
+  sentences_witnessed = 22
+  dominant_offsets = [+2, -2]
+
+But the parent score never replaces the children.
+
+Click/open/drill into the children for proof.
+
+That’s the useful mini-graph-inside-the-larger-graph idea you were describing earlier.
+
+9. Relationship decay and takeover
+
+This also gives us the proper place for your relationship decay/takeover mechanism.
+
+Important distinction:
+
+The historical relationship does not vanish.
+
+What can decay is the current traversal pressure or relevance to the active focus.
+
+So as the walk proceeds:
+
+A → B → C → D
+
+A’s influence can decline while a newly witnessed C→X relationship overtakes it.
+
+Keep channels separate:
+
+historical_count
+current_focus_pressure
+path_hops
+current_parent
+
+Then another candidate can overtake because it has stronger witnessed structure at the new center.
+
+That gives pseudo-reasoning without deleting historical relationships.
+
+10. Multi-container containment
+
+Never allow positional relationships to casually jump across unrelated containers.
+
+Sentence relationships stay in sentence bounds.
+
+Paragraph relationships stay in paragraph bounds.
+
+Document relationships stay in document bounds.
+
+Dataset/cross-document relationships require their own explicit channel.
+
+This is critical because the newer relationship experiments already showed that unconstrained walking can manufacture cross-container edges that should not exist. The current governing laws explicitly say text clouds obey block/document containment and naturally contract at edges.
+
+11. TruePlug dataset generator
+
+So the contained TruePlug intake worker becomes something like:
+
+trueplug_dataset_build
+
+Input:
+
+{
+  "sandbox_id": "...",
+  "sources": [...],
+  "geometry": {
+    "type": "ordered_text",
+    "radius": 6
+  },
+  "containers": [
+    "document",
+    "paragraph",
+    "sentence"
+  ],
+  "top_k": 3
+}
+
+Output:
+
+dataset manifest
+exact source custody
+occurrence table
+container table
+relationship witnesses
+signed offset histograms
+pair counts
+parent summaries
+Top-K views
+operational metrics
+hashes
+receipt
+
+No answer.
+
+No semantic judgment.
+
+No truth conclusion.
+
+Just a rich synthetic estate.
+
+12. ARC / assembler use
+
+Now the ARC learner and self-learning assembler can operate inside the sandbox:
+
+synthetic world
+↓
+dataset intake
+↓
+relationship graph
+↓
+counts / weights
+↓
+Top-K candidate walks
+↓
+observed operation sequences
+↓
+repeated pattern detection
+↓
+candidate plugin assembly
+↓
+run candidate plugin
+↓
+observe effects
+↓
+modify/retry
+
+That is where pseudo-reasoning becomes useful.
+
+The graph narrows possibilities.
+
+The counts rank observed recurrence.
+
+Top-K controls branching.
+
+ARC explores.
+
+The assembler builds.
+
+None of them gets authority over the real machine.
+
+13. Fake infrastructure
+
+The plugin can be handed controlled services:
+
+FakeWeb
+FakeNetwork
+FakeDatabase
+FakeFilesystem
+FakeHostAPI
+FakeApplication
+FakeUserSession
+FakeTrueMachine
+FakeTrueCore contract
+
+The old runner already mounts simulated host services like /api/stats, /api/config, and /api/models; that proves the pattern.
+
+Extend that idea rather than inventing a separate simulator framework.
+
+Every fake resource should support:
+
+initial_state
+allowed_operations
+known hidden ground truth
+expected postconditions
+fault injection
+reset
+snapshot
+replay
+14. Generated curriculum
+
+Now TruePlug can procedurally make progressively ugly worlds.
+
+Example:
+
+Level 1
+10 files
+clean names
+one valid path
+
+Level 2
+100 files
+duplicates
+two misleading paths
+
+Level 3
+1,000 files
+broken references
+ambiguous naming
+orphaned objects
+
+Level 4
+fake network
+fake DB
+fake UI
+filesystem side effects
+
+Level 5
+documentation disagrees with application behavior
+
+Level 6
+permissions intentionally insufficient
+
+Level 7
+malicious-looking but benign surface
+
+Level 8
+actual prohibited behavior in a contained fixture
+
+Because TruePlug generates the world, it knows exact expected state.
+
+That lets us benchmark the workers against our own system laws rather than generic reasoning benchmarks.
+
+15. Plugin factory
+
+Once the assembler identifies a reusable operation pattern:
+
+observed workflow
+↓
+candidate capability definition
+↓
+generated callable
+↓
+typed args
+↓
+effect declaration
+↓
+generated fixtures
+↓
+generated tests
+↓
+detached execution
+↓
+replay
+↓
+qualification
+
+Then package:
+
+plugin/
+manifest.json
+callable
+schemas
+tests
+fixture manifest
+effect manifest
+permission request
+source hashes
+qualification.json
+receipts/
+
+The old runner does not yet automate this scaffolding/package step, but its missing operations are already clearly bounded: workspace creation, manifest, package skeleton, routes/schemas, tests, detached run, immutable candidate and promotion packet.
+
+16. Promotion boundary
+
+This remains hard:
+
+TruePlug:
+"This candidate passed my contained development contract."
+
+TrueCore:
+"This candidate is admitted with these exact authorities."
+
+TruePlug does not self-register.
+
+And do not reuse the old passed >= 6 style promotion logic. The runner currently has a structural readiness weakness where any six passing checks may produce “ready.”
+
+Use mandatory gates:
+
+SOURCE_HASHED
+SANDBOX_CONTAINED
+MANIFEST_VALID
+ENTRYPOINT_LOADS
+TESTS_PASS
+EFFECTS_WITNESSED
+PERMISSIONS_DECLARED
+NETWORK_CONTAINED
+FILESYSTEM_CONTAINED
+REPLAY_PASS
+FAILURE_BEHAVIOR_WITNESSED
+NO_CRITICAL_UNRESOLVED
+PACKAGE_IMMUTABLE
+
+All required.
+
+17. The first implementation pass
+
+I would give Codex this exact order:
+
+Stage 1 — Recover runner without redesign
+
+Keep:
+
+discovery
+mounting
+mock host
+fixtures
+health
+route inspection
+change detection
+development UI
+external scan directories
+
+Do not touch production TrueCore yet.
+
+Stage 2 — Add real sandbox boundary
+
+Per plugin:
+
+process
+workspace
+environment
+filesystem namespace
+network namespace/fake network
+time/memory limits
+stdout/stderr
+kill/reset
+Stage 3 — Port the HTML intake pattern
+
+Not the UI.
+
+Extract:
+
+file intake
+occurrence creation
+containment
+position mapping
+relationship witness creation
+export
+metrics
+Stage 4 — Replace fake semantic math
+
+Remove:
+
+character similarity
+length-based semantic scores
+hard-coded 0.7 frequency weight
+semantic richness claims
+
+Replace with:
+
+exact occurrence counts
+signed positional counts
+container recurrence
+parent counts
+raw relationship witnesses
+rational positional pressure
+Stage 5 — Build Top-K view
+
+Per center:
+
+Top-K by lane
+Top-K overall
+full-document relation summary
+drill-down witness locations
+Stage 6 — Add synthetic world generators
+
+Start:
+
+text/filesystem/database/http
+
+then network/UI later.
+
+Stage 7 — ARC adapter
+
+ARC only sees:
+
+sandbox state
+graph
+weights
+Top-K
+worker outputs
+receipts
+
+No live TrueSystems.
+
+Stage 8 — assembler
+
+Generate candidate plugins from repeated successful contained workflows.
+
+Stage 9 — qualification packet
+
+Hash everything.
+
+Replay candidate.
+
+Compare expected vs witnessed behavior.
+
+Stage 10 — handoff only
+
+Emit candidate for TrueCore consideration.
+
+No automatic admission.
+
+And yes, the weight calculation you just reminded me of is the missing anchor:
+
+not “how semantically important is buildout?”
+
+“How many exact witnessed times did buildout occur at -2, +2, -1, +1, etc., relative to this center across this document/container/dataset?”
+
+Then full-document recurrence + positional pressure + containment gives you an extremely clean deterministic Top-K relationship field.
+
+That is much more faithful to the actual thing you were building than those old semanticScore = 0.95 numbers ever were.
+
+dociment only. lol. so others can build
+
+Download the TruePlug build specification 
+
+TruePlug_Contained_Dataset_Plugin_Factory_Build_Specification.docx
+Document

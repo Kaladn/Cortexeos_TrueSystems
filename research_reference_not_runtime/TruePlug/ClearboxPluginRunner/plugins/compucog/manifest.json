@@ -1,0 +1,11 @@
+{
+  "display_name": "CompuCog",
+  "description": "CompuCog control-plane plugin and API proxy surface.",
+  "mount_prefix": "/api/compucog",
+  "type": "router",
+  "requires": [
+    "api_server"
+  ],
+  "config_section": "compucog"
+}
+

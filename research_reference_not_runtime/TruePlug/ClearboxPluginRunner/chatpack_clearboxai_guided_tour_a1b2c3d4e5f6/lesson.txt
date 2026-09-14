@@ -1,0 +1,34 @@
+# LESSON.TXT — The lesson content for this pack
+#
+# INSTRUCTIONS:
+#   Write the lesson as Markdown. The engine splits it into sections at each
+#   "# Section N: Title" heading. Each section is a step in the guided session.
+#   Keep sections short — one concept or task per section.
+#
+#   Required heading format:
+#     # Section 1: Your Title Here
+#     # Section 2: Next Title
+#     (and so on)
+#
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Section 1: [Title]
+
+[Write the content for section 1 here.
+What should the user learn or do in this step?]
+
+---
+
+# Section 2: [Title]
+
+[Section 2 content]
+
+---
+
+# Section 3: [Title]
+
+[Section 3 content]
+
+---
+
+# Add more sections as needed. No hard limit, but 5–10 is ideal for a guided tour.

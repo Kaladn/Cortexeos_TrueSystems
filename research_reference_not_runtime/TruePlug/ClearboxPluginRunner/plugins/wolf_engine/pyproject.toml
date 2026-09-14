@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "wolf-engine"
+version = "0.1.0"
+description = "Symbol-First Cognitive Architecture with Dual-Lane Persistence"
+requires-python = ">=3.11"
+dependencies = [
+    "pyzmq>=25.0",
+    "flask>=3.0",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=8.0"]
+
+[tool.setuptools.packages.find]
+include = ["wolf_engine*"]
+
+[tool.pytest.ini_options]
+testpaths = ["wolf_engine/tests"]

@@ -1,0 +1,3758 @@
+{
+  "meta": {
+    "total_nodes": 27,
+    "total_edges": 386,
+    "anchors": 27,
+    "candidates": 0,
+    "window": 6,
+    "top_k": 10
+  },
+  "nodes": [
+    {
+      "id": "doesn't",
+      "token": "doesn't",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "right",
+      "token": "right",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 18,
+      "degree": 36
+    },
+    {
+      "id": "produce",
+      "token": "produce",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 7,
+      "degree": 14
+    },
+    {
+      "id": "matter",
+      "token": "matter",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "create",
+      "token": "create",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "don't",
+      "token": "don't",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 18,
+      "degree": 36
+    },
+    {
+      "id": "other",
+      "token": "other",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "something",
+      "token": "something",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 36,
+      "degree": 72
+    },
+    {
+      "id": "document",
+      "token": "document",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "anchor",
+      "token": "anchor",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 24,
+      "degree": 48
+    },
+    {
+      "id": "input",
+      "token": "input",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "you'll",
+      "token": "you'll",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "easily",
+      "token": "easily",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "created",
+      "token": "created",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 8,
+      "degree": 16
+    },
+    {
+      "id": "paragraph",
+      "token": "paragraph",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "that's",
+      "token": "that's",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "about",
+      "token": "about",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 9,
+      "degree": 18
+    },
+    {
+      "id": "ready",
+      "token": "ready",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 6,
+      "degree": 12
+    },
+    {
+      "id": "small",
+      "token": "small",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "somewhere",
+      "token": "somewhere",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 9,
+      "degree": 18
+    },
+    {
+      "id": "maybe",
+      "token": "maybe",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "plain",
+      "token": "plain",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "always",
+      "token": "always",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "worry",
+      "token": "worry",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 10,
+      "degree": 20
+    },
+    {
+      "id": "we'll",
+      "token": "we'll",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 54,
+      "degree": 100
+    },
+    {
+      "id": "because",
+      "token": "because",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 12,
+      "degree": 24
+    },
+    {
+      "id": "what's",
+      "token": "what's",
+      "type": "anchor",
+      "in_lexicon": true,
+      "symbol": null,
+      "frequency": 0,
+      "count": 11,
+      "degree": 22
+    }
+  ],
+  "edges": [
+    {
+      "source": "doesn't",
+      "target": "because",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "plain",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "that's",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "something",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "what's",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "matter",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "always",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "paragraph",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "doesn't",
+      "target": "something",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "input",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "something",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "maybe",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "something",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "paragraph",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "don't",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "create",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "document",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "somewhere",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "other",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "what's",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "small",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "right",
+      "target": "you'll",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "produce",
+      "target": "created",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "produce",
+      "target": "about",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "produce",
+      "target": "worry",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "produce",
+      "target": "don't",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "produce",
+      "target": "easily",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "produce",
+      "target": "you'll",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "produce",
+      "target": "ready",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "doesn't",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "because",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "plain",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "that's",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "something",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "always",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "paragraph",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "something",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "matter",
+      "target": "maybe",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "right",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "input",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "something",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "maybe",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "something",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "document",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "other",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "small",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "you'll",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "create",
+      "target": "easily",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "right",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "easily",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "you'll",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "small",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "other",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "document",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "worry",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "somewhere",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "about",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "created",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "what's",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "produce",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "ready",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "don't",
+      "target": "something",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "document",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "create",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "right",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "input",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "small",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "you'll",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "easily",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "don't",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "worry",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "other",
+      "target": "about",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "paragraph",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "maybe",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "what's",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "always",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "something",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "paragraph",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "somewhere",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "always",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "matter",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "don't",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "doesn't",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "that's",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "maybe",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "input",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "plain",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "something",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "because",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "input",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "right",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "doesn't",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "create",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "matter",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "right",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "document",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "create",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "something",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "create",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "right",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "input",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "something",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "maybe",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "other",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "small",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "you'll",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "easily",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "document",
+      "target": "don't",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "matter",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "doesn't",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "matter",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "because",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "doesn't",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "plain",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "because",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "that's",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "plain",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "something",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "that's",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "always",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "always",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "paragraph",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "paragraph",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "something",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "something",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "maybe",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "maybe",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "something",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "something",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "anchor",
+      "target": "input",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "something",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "maybe",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "something",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "paragraph",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "always",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "right",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "create",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "document",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "input",
+      "target": "other",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "small",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "other",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "document",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "create",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "right",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "easily",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "don't",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "worry",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "about",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "created",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "you'll",
+      "target": "produce",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "you'll",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "small",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "other",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "document",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "create",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "don't",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "worry",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "about",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "created",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "produce",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "easily",
+      "target": "ready",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "created",
+      "target": "about",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "created",
+      "target": "worry",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "created",
+      "target": "don't",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "created",
+      "target": "easily",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "created",
+      "target": "you'll",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "created",
+      "target": "small",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "created",
+      "target": "produce",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "created",
+      "target": "ready",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "always",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "matter",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "doesn't",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "because",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "something",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "maybe",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "something",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "input",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "paragraph",
+      "target": "right",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "something",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "what's",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "somewhere",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "plain",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "because",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "doesn't",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "matter",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "that's",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "about",
+      "target": "worry",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "about",
+      "target": "don't",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "about",
+      "target": "easily",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "about",
+      "target": "you'll",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "about",
+      "target": "small",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "about",
+      "target": "other",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "about",
+      "target": "created",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "about",
+      "target": "produce",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "about",
+      "target": "ready",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "ready",
+      "target": "produce",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "ready",
+      "target": "created",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "ready",
+      "target": "about",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "ready",
+      "target": "worry",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "ready",
+      "target": "don't",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "ready",
+      "target": "easily",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "other",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "document",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "create",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "right",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "you'll",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "easily",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "don't",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "worry",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "about",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "small",
+      "target": "created",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "somewhere",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "somewhere",
+      "target": "don't",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "somewhere",
+      "target": "right",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "somewhere",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "somewhere",
+      "target": "what's",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "somewhere",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "somewhere",
+      "target": "something",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "somewhere",
+      "target": "that's",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "somewhere",
+      "target": "plain",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "something",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "paragraph",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "always",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "matter",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "something",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "input",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "right",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "create",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "maybe",
+      "target": "document",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "that's",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "something",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "what's",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "somewhere",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "because",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "doesn't",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "matter",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "plain",
+      "target": "always",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "anchor",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "matter",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "doesn't",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "because",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "plain",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "paragraph",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "something",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "maybe",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "something",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "input",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "always",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "don't",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "easily",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "you'll",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "small",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "other",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "about",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "created",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "produce",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "worry",
+      "target": "ready",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "don't",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "somewhere",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "what's",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "input",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "document",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 2,
+      "count": 2,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "right",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "something",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "create",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "don't",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "somewhere",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "maybe",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "right",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 4,
+      "count": 2,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "right",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "something",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "don't",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "paragraph",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "input",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "right",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "always",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "something",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "somewhere",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "what's",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "something",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "right",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "other",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 2,
+      "count": 2,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "that's",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "create",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "small",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "what's",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "something",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "plain",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "document",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "you'll",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 4,
+      "count": 2,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "that's",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "because",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "easily",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "something",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "plain",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "doesn't",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "other",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "don't",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "that's",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "because",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "matter",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "small",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "we'll",
+      "target": "worry",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "plain",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "that's",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "something",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "what's",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "doesn't",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "matter",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "anchor",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "always",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "because",
+      "target": "paragraph",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "somewhere",
+      "direction": "before",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "we'll",
+      "direction": "before",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "don't",
+      "direction": "before",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "right",
+      "direction": "before",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "we'll",
+      "direction": "after",
+      "distance": 1,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "something",
+      "direction": "after",
+      "distance": 2,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "that's",
+      "direction": "after",
+      "distance": 3,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "plain",
+      "direction": "after",
+      "distance": 4,
+      "count": 1,
+      "in_lexicon": true,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "because",
+      "direction": "after",
+      "distance": 5,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    },
+    {
+      "source": "what's",
+      "target": "doesn't",
+      "direction": "after",
+      "distance": 6,
+      "count": 1,
+      "in_lexicon": false,
+      "symbol": null
+    }
+  ]
+}

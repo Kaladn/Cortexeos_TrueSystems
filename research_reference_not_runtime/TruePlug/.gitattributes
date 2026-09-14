@@ -1,0 +1,5 @@
+# Frozen archaeology is exact-byte evidence, not repository-native source.
+# Suppress text conversion and diff-time whitespace rewriting/checks.
+ClearboxPluginRunner/** binary
+historical_html/** binary
+design_inputs/** binary

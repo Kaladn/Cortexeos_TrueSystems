@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wolf Engine — Command Center</title>
+<link rel="stylesheet" href="/static/css/dashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">W</div>
+    <div>
+      <div class="header-title">Wolf Engine</div>
+      <div class="header-subtitle">Command Center</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="live-indicator">
+      <span class="live-dot"></span>
+      <span id="conn-status">LIVE</span>
+    </div>
+    <div class="uptime-badge" id="uptime">00:00:00</div>
+  </div>
+</div>
+
+<!-- SUMMARY BAR -->
+<div class="summary-bar">
+  <div class="summary-stat">
+    <span class="label">Forge Symbols</span>
+    <span class="value cyan" id="sum-symbols">0</span>
+  </div>
+  <div class="summary-stat">
+    <span class="label">Total Ingested</span>
+    <span class="value green" id="sum-ingested">0</span>
+  </div>
+  <div class="summary-stat">
+    <span class="label">Analyses</span>
+    <span class="value blue" id="sum-analyses">0</span>
+  </div>
+  <div class="summary-stat">
+    <span class="label">Tokens</span>
+    <span class="value purple" id="sum-tokens">0</span>
+  </div>
+  <div class="summary-stat">
+    <span class="label">Avg Resonance</span>
+    <span class="value amber" id="sum-resonance">0.00</span>
+  </div>
+  <div class="summary-stat">
+    <span class="label">Verdicts</span>
+    <span class="value cyan" id="sum-verdicts">0</span>
+  </div>
+  <div class="summary-stat">
+    <span class="label">Error Rate</span>
+    <span class="value green" id="sum-error-rate">0%</span>
+  </div>
+</div>
+
+<!-- TAB NAVIGATION -->
+<div class="tab-nav">
+  <button class="tab-btn active" data-tab="command">Command</button>
+  <button class="tab-btn" data-tab="symbols">Symbols</button>
+  <button class="tab-btn" data-tab="monitor">Monitor</button>
+  <button class="tab-btn" data-tab="tools">Tools</button>
+</div>
+
+<!-- ================================================================== -->
+<!-- TAB 1: COMMAND (Analyze + Results + Activity)                      -->
+<!-- ================================================================== -->
+<div id="tab-command" class="tab-content active">
+
+  <!-- Analyze Section -->
+  <div class="analyze-section">
+    <!-- Input -->
+    <div class="analyze-input-card">
+      <h3>Analyze Text</h3>
+      <textarea id="analyze-input" class="input-field analyze-textarea"
+                placeholder="Enter text to analyze through the Wolf Engine pipeline...&#10;&#10;Perception &rarr; GNOME Symbolizer &rarr; Forge Memory &rarr; Reasoning &rarr; Archon Governance &rarr; Verdict"></textarea>
+      <div class="input-row">
+        <div class="input-group" style="flex:1;">
+          <label>Session ID (optional)</label>
+          <input type="text" id="session-id" class="input-field" placeholder="auto-generated">
+        </div>
+      </div>
+      <div class="analyze-actions">
+        <button class="btn btn-primary" id="btn-analyze" onclick="doAnalyze()">Analyze</button>
+        <button class="btn btn-secondary" id="btn-ingest" onclick="doIngest()">Ingest Only</button>
+        <button class="btn btn-secondary btn-sm" onclick="clearInput()">Clear</button>
+        <span class="analyze-status" id="analyze-status"></span>
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="result-card">
+      <div class="result-header">
+        <h3>Analysis Result</h3>
+        <span id="result-badge" class="badge" style="display:none;"></span>
+      </div>
+      <div class="result-body" id="result-body">
+        <div class="empty-state" id="result-empty">
+          <div class="icon">&#x2B22;</div>
+          <div>Enter text and click <strong>Analyze</strong> to run the full<br>
+          Perception &rarr; Forge &rarr; Reasoning &rarr; Archon pipeline<br>
+          <span style="color:var(--accent-cyan); font-size:11px; margin-top:6px; display:inline-block;">
+            Engine is live with seed data. Try analyzing any text.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Activity Log -->
+  <div class="dashboard-grid" style="padding-top:0;">
+    <div class="card card-full">
+      <div class="card-header">
+        <h3>Activity Log</h3>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <div class="card-body" style="padding:0;">
+        <div class="activity-log" id="activity-log">
+          <div class="empty-state" style="padding:24px;">Waiting for activity...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- TAB 2: SYMBOLS (Explorer + Cascade)                                -->
+<!-- ================================================================== -->
+<div id="tab-symbols" class="tab-content">
+  <div class="dashboard-grid">
+
+    <!-- Symbol Explorer -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Symbol Explorer</h3>
+        <span class="badge badge-interactive">Interactive</span>
+      </div>
+      <div class="card-body">
+        <div class="input-row" style="margin-bottom:14px;">
+          <input type="number" id="symbol-search-id" class="input-field"
+                 style="flex:1;" placeholder="Symbol ID (uint64)"
+                 onkeydown="if(event.key==='Enter')querySymbol()">
+          <button class="btn btn-primary btn-sm" onclick="querySymbol()">Query</button>
+          <button class="btn btn-accent btn-sm" onclick="loadTopSymbols()">Top Symbols</button>
+        </div>
+        <div id="symbol-table-wrap">
+          <table class="symbol-table" id="symbol-table" style="display:none;">
+            <thead>
+              <tr>
+                <th>Symbol ID</th>
+                <th>Resonance</th>
+                <th>Co-occur</th>
+                <th>Top Neighbors</th>
+              </tr>
+            </thead>
+            <tbody id="symbol-table-body"></tbody>
+          </table>
+          <div class="empty-state" id="symbol-empty">
+            <div class="icon">&#x2B21;</div>
+            <div>Ingest text first, then click <strong>Top Symbols</strong><br>or search by Symbol ID</div>
+          </div>
+        </div>
+        <div class="symbol-detail-panel" id="symbol-detail">
+          <h4>Symbol Detail</h4>
+          <div id="symbol-detail-content"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cascade Tracer -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Cascade Tracer</h3>
+        <span class="badge badge-interactive">Interactive</span>
+      </div>
+      <div class="card-body">
+        <div class="input-row" style="margin-bottom:14px;">
+          <div class="input-group" style="flex:1;">
+            <label>Symbol ID</label>
+            <input type="number" id="cascade-id" class="input-field" placeholder="Symbol ID"
+                   onkeydown="if(event.key==='Enter')traceCascade()">
+          </div>
+          <div class="input-group">
+            <label>Direction</label>
+            <select id="cascade-dir" class="input-field" style="min-width:120px;">
+              <option value="both">Both</option>
+              <option value="forward">Forward</option>
+              <option value="backward">Backward</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label>Depth</label>
+            <input type="number" id="cascade-depth" class="input-field"
+                   value="5" min="1" max="20" style="width:70px;">
+          </div>
+          <div class="input-group">
+            <label>&nbsp;</label>
+            <button class="btn btn-accent btn-sm" onclick="traceCascade()">Trace</button>
+          </div>
+        </div>
+        <div id="cascade-result">
+          <div class="empty-state" id="cascade-empty">
+            <div class="icon">&#x2B61;</div>
+            <div>Enter a Symbol ID and click <strong>Trace</strong><br>
+            to run BFS cascade analysis</div>
+          </div>
+          <div id="cascade-summary" style="display:none; margin-bottom:10px;"></div>
+          <div class="cascade-nodes" id="cascade-nodes"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- TAB 3: MONITOR (Node Health, Charts, Forge, Verdicts)              -->
+<!-- ================================================================== -->
+<div id="tab-monitor" class="tab-content">
+  <div class="dashboard-grid">
+
+    <!-- Node Health -->
+    <div class="card card-full">
+      <div class="card-header">
+        <h3>Node Health</h3>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <div class="card-body">
+        <div class="node-grid" id="node-grid">
+          <div class="node-box stale">
+            <div class="node-name">
+              <span class="node-status-dot stale"></span>
+              Waiting for data...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CPU / RAM Chart -->
+    <div class="card">
+      <div class="card-header">
+        <h3>CPU &amp; RAM Utilization</h3>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="chart-cpu-ram"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- GPU Panel -->
+    <div class="card">
+      <div class="card-header">
+        <h3>GPU Status</h3>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <div class="card-body" id="gpu-panel">
+        <div style="color: var(--text-muted); font-size: 13px;">Waiting for GPU data...</div>
+      </div>
+    </div>
+
+    <!-- Forge Stats -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Forge Memory</h3>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <div class="card-body">
+        <div class="forge-grid" id="forge-grid">
+          <div class="forge-stat"><div class="num" id="forge-symbols">0</div><div class="label">Symbols</div></div>
+          <div class="forge-stat"><div class="num" id="forge-chains">0</div><div class="label">Chains</div></div>
+          <div class="forge-stat"><div class="num" id="forge-resonance">0</div><div class="label">Avg Resonance</div></div>
+          <div class="forge-stat"><div class="num" id="forge-window">0</div><div class="label">Window Size</div></div>
+          <div class="forge-stat"><div class="num" id="forge-current">0</div><div class="label">Current</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Throughput Chart -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Request Throughput</h3>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-container">
+          <canvas id="chart-throughput"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verdict Breakdown -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Archon Verdicts</h3>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <div class="card-body">
+        <div class="chart-container" style="height: 180px;">
+          <canvas id="chart-verdicts"></canvas>
+        </div>
+        <div style="margin-top: 12px;" id="verdict-bars"></div>
+      </div>
+    </div>
+
+    <!-- Recent Verdicts Table -->
+    <div class="card card-full">
+      <div class="card-header">
+        <h3>Recent Verdicts</h3>
+        <span class="badge badge-live">Live</span>
+      </div>
+      <div class="card-body" style="padding: 0;">
+        <table class="verdict-table">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>Session</th>
+              <th>Status</th>
+              <th>Original</th>
+              <th>Adjusted</th>
+              <th>Flags</th>
+            </tr>
+          </thead>
+          <tbody id="verdict-table-body">
+            <tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:20px;">No verdicts yet</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================================================================== -->
+<!-- TAB 4: TOOLS (Debug, Recording, Export, Reset)                     -->
+<!-- ================================================================== -->
+<div id="tab-tools" class="tab-content">
+  <div class="dashboard-grid">
+
+    <!-- Debug / Self-Test -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Debug / Self-Test</h3>
+        <span class="badge badge-interactive">Round 1</span>
+      </div>
+      <div class="card-body">
+        <p style="color:var(--text-secondary); font-size:13px; margin-bottom:14px;">
+          Inject a synthetic metric tick + verdict to prove the dashboard is live and connected.
+        </p>
+        <button class="btn btn-primary" onclick="debugPush()">Push Debug Event</button>
+        <span id="debug-status" style="margin-left:12px; font-size:12px;"></span>
+        <div id="debug-result" style="margin-top:12px;"></div>
+      </div>
+    </div>
+
+    <!-- Session Recording -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Session Recording</h3>
+        <span id="rec-badge" class="badge" style="display:none;"></span>
+      </div>
+      <div class="card-body">
+        <p style="color:var(--text-secondary); font-size:13px; margin-bottom:14px;">
+          Start/stop evidence capture sessions. All ingest/analyze calls attach session_id when recording.
+        </p>
+        <div class="input-row" style="margin-bottom:14px;">
+          <input type="text" id="rec-label" class="input-field" style="flex:1;" placeholder="Session label (optional)">
+        </div>
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button class="btn btn-primary" id="btn-rec-start" onclick="startRecording()">Start Recording</button>
+          <button class="btn btn-secondary" id="btn-rec-stop" onclick="stopRecording()" disabled>Stop Recording</button>
+          <span id="rec-status" style="font-size:12px; color:var(--text-muted);"></span>
+        </div>
+        <div id="rec-info" style="margin-top:12px;"></div>
+      </div>
+    </div>
+
+    <!-- Export & Maintenance -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Export & Maintenance</h3>
+        <span class="badge badge-interactive">Round 4</span>
+      </div>
+      <div class="card-body">
+        <p style="color:var(--text-secondary); font-size:13px; margin-bottom:14px;">
+          Download data as JSON or reset engine state.
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:14px;">
+          <button class="btn btn-secondary btn-sm" onclick="exportData('verdicts')">Export Verdicts</button>
+          <button class="btn btn-secondary btn-sm" onclick="exportData('forge')">Export Forge Symbols</button>
+          <button class="btn btn-secondary btn-sm" onclick="exportData('sessions')">Export Sessions</button>
+          <button class="btn btn-secondary btn-sm" onclick="exportData('snapshot')">Export Snapshot</button>
+        </div>
+        <div style="border-top:1px solid var(--border); padding-top:14px; margin-top:4px;">
+          <button class="btn btn-danger" onclick="resetState()">Reset Forge + Counters</button>
+          <span style="font-size:11px; color:var(--text-muted); margin-left:10px;">Verdict audit trail is preserved.</span>
+        </div>
+        <div id="export-status" style="margin-top:12px;"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+{
+  "schema": "truesystems.detached_reference_import@1",
+  "status": "RESEARCH_REFERENCE_NOT_RUNTIME",
+  "imported_at_utc": "2026-09-13T23:58:50Z",
+  "target_repository": "/home/lamercey/TrueSystems-Alignment",
+  "target_path": "research_reference_not_runtime/TruePlug",
+  "runtime_registration": false,
+  "source_runner": {
+    "path": "/home/lamercey/CompuCog/ClearboxPluginRunner",
+    "repository": "/home/lamercey/CompuCog",
+    "head_commit": "1cce6b3ed8dfbeed48866deccdb7356fd065d922",
+    "working_state": "DIRTY_PRESERVED_AS_FOUND",
+    "tracked_base_file_count": 501,
+    "copied_working_file_count": 480,
+    "copied_working_bytes": 27110118,
+    "excluded": [
+      "__pycache__",
+      "*.pyc",
+      ".pytest_cache"
+    ],
+    "relative_file_hash_list_sha256": "fcaf82b1cbebd547f0c868a9ba3329fe257800749377cb6f8dcda40b8622a87e",
+    "dirty_binary_diff_sha256": "5fdbc898effd9fb372369ede0a17e9f554bd9bb0b447fb1c3d4aba7b5c19ba97",
+    "source_removed": false
+  },
+  "historical_html": [
+    {
+      "name": "forest_semantic_mapper.html",
+      "sha256": "3c80c500e1ed1bf8eddbb95abd5314324a0b89ee4da726c2b246d6143d89f680",
+      "bytes": 51059,
+      "duplicate_sources": [
+        "/run/media/lamercey/AWRAG ONLY/New folder/stuff/Download phone/forest_semantic_mapper.html",
+        "/run/media/lamercey/AWRAG/stuff/Download phone/forest_semantic_mapper.html"
+      ]
+    },
+    {
+      "name": "forest_semantic_mapper_real.html",
+      "sha256": "1775971c664c50b3147075a928ec1f9f015e4a8c820df916eb78451eedcee997",
+      "bytes": 31270,
+      "duplicate_sources": [
+        "/run/media/lamercey/AWRAG ONLY/New folder/stuff/Download phone/forest_semantic_mapper_real.html",
+        "/run/media/lamercey/AWRAG/stuff/Download phone/forest_semantic_mapper_real.html"
+      ]
+    },
+    {
+      "name": "ultimate_tokenizer.html",
+      "sha256": "7d63bd9a2e9397190221ec95fe9b7dd49b8a020997220d8cfee2b4e99a865264",
+      "bytes": 58942,
+      "duplicate_sources": [
+        "/run/media/lamercey/AWRAG ONLY/New folder/stuff/Download phone/ultimate_tokenizer.html",
+        "/run/media/lamercey/AWRAG/stuff/Download phone/ultimate_tokenizer.html"
+      ]
+    },
+    {
+      "name": "ultimate_tokenizer_real.html",
+      "sha256": "7492f878210bc2035e7f6df538a80a0acc6205fdf134fa3f9f99195f2bab567c",
+      "bytes": 57661,
+      "duplicate_sources": [
+        "/run/media/lamercey/AWRAG ONLY/New folder/stuff/Download phone/ultimate_tokenizer_real.html",
+        "/run/media/lamercey/AWRAG/stuff/Download phone/ultimate_tokenizer_real.html"
+      ]
+    }
+  ],
+  "design_inputs": [
+    {
+      "name": "TruePlug_Contained_Dataset_Plugin_Factory_Build_Specification.docx",
+      "sha256": "e1f60c627505618be6639b9aa2bdb58329549e1e82b797a64e95226f8a85ed6a",
+      "bytes": 47561,
+      "source": "/home/lamercey/Downloads/TruePlug_Contained_Dataset_Plugin_Factory_Build_Specification.docx"
+    },
+    {
+      "name": "conversation_tail_2026-09-13.txt",
+      "sha256": "3fbf138f51f0b7fac74aea4ba4c84cfbb76c0b957f692f7fa907944eb1dd12b1",
+      "bytes": 17071,
+      "source": "/home/lamercey/.codex/attachments/66e74fd9-ee5a-4f1f-8685-bec2b1b846c6/pasted-text.txt"
+    }
+  ],
+  "claims": {
+    "copy_byte_verified": true,
+    "source_worktree_modified_by_import": false,
+    "truecore_registered": false,
+    "control_api_exposed": false,
+    "runtime_qualified": false
+  }
+}
