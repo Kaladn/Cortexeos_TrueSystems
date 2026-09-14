@@ -1,0 +1,84 @@
+{
+  "schema": "truesystems.governing_todo_reconciliation@1",
+  "created_at_utc": "2026-09-13T23:15:19Z",
+  "repository": "/home/lamercey/TrueSystems-Alignment",
+  "starting_commit": "d6a030d786b39a0ed61afb350e587f948ece09a5",
+  "status": "RECONCILED_VALIDATED_AWAITING_COMMIT",
+  "implementation_authority": "CODE_AND_PASSING_EXTERNAL_TESTS",
+  "governing_todo": {
+    "path": "docs/TRUESYSTEMS_GOVERNING_TODO_2026-09-13.md",
+    "sha256": "999a2453c014e19b33ce2929d281ab5e6bad84e505b2dca19d37572cf8d44a7d",
+    "authority": "CURRENT_WORK_ORDER_NOT_CAPABILITY_PROOF",
+    "ordered_days": 10,
+    "next_gate": "DAY_1_SYNCHRONIZE_TRUTH_AND_QUALIFY_READ_ONLY_NAVIGATION"
+  },
+  "reconciled_documents": [
+    {
+      "path": "docs/SYSTEMS_ALIGNMENT.md",
+      "sha256": "6545bbfd024d785e3f42ecab1fd9cefdf0b7908b44d64993bcd3a05590079767",
+      "change": "CURRENT_MODEL_BOUNDARY_AND_REGISTERED_REPOSITORY_WORKER_BRIDGE"
+    },
+    {
+      "path": "docs/TRUESYSTEMS_LOCAL_TOOL_CATALOG.md",
+      "sha256": "3ab66d1040500cdb1b1f413a8901ceb224673e2563d9ccab4002a1e11d315dd1",
+      "change": "SEVEN_MISSING_AUTHORITY_WORKERS_EXPLICITLY_NOT_IMPLEMENTED"
+    },
+    {
+      "path": "docs/TRUESYSTEMS_DAY_RECONCILIATION_2026-09-13.md",
+      "sha256": "4aa3231f986e8d1dccd1a36904263eaaee9b192d85fcadde7e8ddc9e28c8beb3",
+      "change": "EVIDENCE_BACKED_DAY_STATUS_DRIFT_SEVERITY_AND_TRUEPLUG_REFACTOR_LAW"
+    },
+    {
+      "path": "research_reference_not_runtime/TruePlug/provenance/import_manifest.json",
+      "sha256": "fbdc346f9b2658441552478c5353fdd0686e85942e0681022f769ba3b8a88af1",
+      "change": "BYTE_VERIFIED_NON_RUNTIME_TRUEPLUG_SOURCE_ANCESTOR_CUSTODY"
+    }
+  ],
+  "preserved_authority_inputs": [
+    {
+      "path": "docs/work_orders/TRUECOG_REPOSITORY_GRAPH_WORK_ORDER_2026-09-13.md",
+      "sha256": "295e70a1e9270d81f91ff8a97df5ac49c410f120659d90fbfe870d1aa9d7a225",
+      "role": "PRESERVED_USER_WORK_ORDER"
+    },
+    {
+      "path": "docs/work_orders/TRUECOG_REPOSITORY_GRAPH_WORKER_GENERATION_1.md",
+      "sha256": "eb23535bcac027f7c6eb720b85d98585205942c61a98d8792981bd624e50ec33",
+      "role": "IMPLEMENTED_GENERATION_RECORD"
+    }
+  ],
+  "advisory_inputs": [
+    {
+      "path": "/home/lamercey/.codex/attachments/ed6ae271-e194-497d-b213-92bde5dfc3c6/pasted-text.txt",
+      "sha256": "2e7fcd9a24620dffa24dbc5db4fb48ffe12c8d798148733bd91c2ce1e84d04e6",
+      "authority": "HELPING_HAND_NOT_SYSTEM_AUTHORITY"
+    },
+    {
+      "path": "/home/lamercey/.codex/attachments/7bebc034-f3b9-4af9-b352-626f52d9043c/pasted-text.txt",
+      "sha256": "fd3e1c35a23f30148e880e39379d686b3916e8cdfe61fe3666e155cff359718e",
+      "authority": "HELPING_HAND_NOT_SYSTEM_AUTHORITY"
+    }
+  ],
+  "validation": {
+    "command": "python3 -B tests/test_local_tool_catalog.py",
+    "result": "PASS_8_OF_8",
+    "output_path": "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/output/day-reconciliation-20260914T004830Z.log",
+    "output_sha256": "698d16d7b93c4bd9707d3cfacda6fb1e0fea99ed0cda6e69bedc42772940540a",
+    "git_diff_check": "PASS"
+  },
+  "historical_receipt_policy": {
+    "prior_receipts_modified": false,
+    "reason": "HISTORICAL_RECEIPTS_REMAIN_IMMUTABLE; CURRENT_STATUS_USES_A_NEW_RECEIPT"
+  },
+  "current_limitations": [
+    "GENERAL_TRUEMACHINE_HOUSEKEEPING_NOT_IMPLEMENTED",
+    "GENERAL_TRUECORE_OPERATION_BOUND_APPROVAL_NOT_IMPLEMENTED",
+    "CONTROL_FLOW_NOT_IMPLEMENTED",
+    "DATA_FLOW_NOT_IMPLEMENTED",
+    "TEST_AND_DOCUMENTATION_RELATIONSHIPS_NOT_IMPLEMENTED",
+    "TRUEPLUG_NOT_SANDBOXED",
+    "TRUEPLUG_AUTOMATED_FACTORY_NOT_IMPLEMENTED",
+    "TRUEPLUG_REFACTOR_NOT_STARTED",
+    "DELVING_TYPED_ARGUMENT_BINDING_NOT_IMPLEMENTED",
+    "DOCUMENT_CHANGES_NOT_COMMITTED"
+  ]
+}

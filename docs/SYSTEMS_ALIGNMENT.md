@@ -34,7 +34,8 @@ every sensory modality or cross-system handoff is already connected.
 `TrueCore/truecore/operator_boundary.py` exposes `OperatorBoundary.handle`.
 Host integration supplies grants and artifact bindings; the request supplies only
 schema, request_id, operation and arguments. The completed read-only host connects
-`help.list`, `help.query`, `sensory.inspect`, `source.classify`, and `media.describe`.
+`help.list`, `help.query`, `sensory.inspect`, `source.classify`, `media.describe`,
+and `worker.invoke`.
 Unknown operations fail closed. See `MODEL_HOST_CONTRACT.md` for the transport,
 component readers and exact qualification boundary.
 
@@ -64,7 +65,7 @@ The combined TrueMem topic now uses DocuFilm admission, structured EvidenceNeed,
 no raw question/top_k, and diagnostic-only deeper-wider. The operator manual's
 missing TrueCore truth-document reference is explicitly corrected, not replaced
 with a fabricated file. The new boundary's help comes directly from its fixed
-operation table, so it advertises only its two actual operations.
+operation table, so it advertises only operations implemented at that boundary.
 
 ## Workflow and retry
 
@@ -88,7 +89,23 @@ an unrestricted transcription engine. TrueVisionIntake owns document/glyph state
 The external media catalog records exact source paths, hashes and Python argument
 declarations; Rust option literals are labelled as a narrower static extraction.
 
-Media execution is intentionally not exposed by the initial two-operation model
+Media execution is intentionally not exposed by the current read-only model
 boundary. Each future worker requires its own input/output, permission, side-effect,
 failure, retry and receipt qualification before registration. That is remaining
 integration work, not something the model should learn as completed.
+
+## Registered repository-worker bridge
+
+`worker.invoke` accepts only a host-granted repository worker identity, one
+host-bound TrueMachine repository-map resource identity, and a bounded integer
+result limit. `TrueCore/truecore/registered_worker_bridge.py` rejects workers
+outside the registered read-only repository-graph family, any worker with write
+authority, changed map manifests, model-supplied paths/modules/commands, and
+results that do not validate as `truecore.worker_result@1`.
+
+Fifteen repository workers are registered. Eight return witnessed/static
+investigation candidates. Seven deliberately return `NOT_IMPLEMENTED` with the
+missing graph authorities required for stronger conclusions. Their existence as
+callable workers does not imply that the missing control-flow, data-flow,
+test-target, documentation-claim, security-role, route-policy, privileged-sink,
+or canonical-object relationships exist.
