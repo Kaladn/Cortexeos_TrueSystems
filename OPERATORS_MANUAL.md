@@ -238,6 +238,13 @@ yet implemented, so operators must not claim that lifecycle is active.
 
 ## TrueCore
 
+Proposed work is recorded separately in
+`TrueCore/proposed_capabilities/catalog.json`, with usage rules in that
+directory's README. These are non-callable placeholders, not registered agents
+or model operations. The focused-dataset graph archive requirement is in
+`TrueCore/proposed_capabilities/GRAPH_ARCHIVE_POLICY.md`; automatic archive and
+archive-aware reader capabilities remain proposed until qualified externally.
+
 TrueCore is a distinct localhost defensive runtime. Its current command map
 comes from `truecore/cli/main.py`: `status`, `tail`, `cells`, `reaper`,
 `forge`, `help`, and `agents`. Read-only inspection comes before any action.

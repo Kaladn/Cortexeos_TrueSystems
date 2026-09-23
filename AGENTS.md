@@ -683,6 +683,20 @@ is not a performance success.
 
 ## 12. Filesystem, repository, and editing discipline
 
+For the dataset currently in focus, preserve previous graph snapshots as
+losslessly verified ZIP archives with provenance-bearing names. Follow
+`TrueCore/proposed_capabilities/GRAPH_ARCHIVE_POLICY.md`: bind dataset, scope,
+snapshot, source commit when known, manifest hash and UTC archive time; keep
+native manifests and member hashes inside the archive. Do not silently delete
+active/reference-pinned originals or put archival work in the AV/intake hot
+path. This policy does not establish an implemented archive worker.
+
+Record proposed capabilities in `TrueCore/proposed_capabilities/catalog.json`
+as non-callable placeholders, separate from real worker registration. New
+implementations belong outside the repository in the refactored PluginRunner;
+historical reference code must remain inactive. Read that directory's README
+before proposing implementation or promoting a placeholder.
+
 - Use `rg`/`rg --files` first for text/file discovery.
 - Read every applicable `AGENTS.md` before editing beneath it.
 - Preserve user changes and unrelated dirty-worktree files.

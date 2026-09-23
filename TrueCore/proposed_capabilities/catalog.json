@@ -1,0 +1,3840 @@
+{
+  "schema": "truecore.proposed_capability_catalog@1",
+  "catalog_kind": "NON_EXECUTABLE_PROPOSAL_LEDGER",
+  "owner_instruction_date": "2026-09-14",
+  "source_checkpoint": "059aeb3e3649d31bb74a370763920c596da6cc99",
+  "sources": {
+    "structural_completion_plan": {
+      "path": "/home/lamercey/Documents/Codex/2026-09-14/detailed-handoff-completed-at-graph-code/outputs/STRUCTURAL_COMPLETION_PLAN_2026-09-14.md",
+      "sha256": "895de7ca71100cad95d1b94ca4f8357b55e5bd3fdbdd74a99215c71b42183427"
+    },
+    "archaeology_mission": {
+      "path": "/home/lamercey/.codex/attachments/25981065-9c18-4cbe-83d6-9ebb547c30cc/pasted-text.txt",
+      "sha256": "ce9af2271c79579f1e340d9aa8182060624d534946256f040d0beb93876e47ad"
+    },
+    "current_user_instruction": {
+      "text": "from here out previous graphs from dataset in focus must be compressed to a zip with providence bearing names. placehold all proposed capability in truecore.",
+      "sha256": "3db0882e3b6deaede0386ce7ff66249a1ac3cd0541bc12cf1be54ac0506b826a"
+    }
+  },
+  "source_requirements": [
+    {
+      "source_id": "archaeology_mission",
+      "line": 6,
+      "text": "HISTORY ARCHAEOLOGY — AUTONOMOUS OPENAI CHAT LINEAGE SYSTEM",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 8,
+      "text": "MISSION",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 10,
+      "text": "I want to determine whether we can autonomously perform a historical archaeology pass over my existing OpenAI / ChatGPT conversation history.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 12,
+      "text": "Do not begin by assuming my proposed implementation is possible.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 14,
+      "text": "First inspect the environment, available OpenAI/ChatGPT interfaces, local data, authenticated capabilities, APIs, exports, browser-accessible surfaces, Codex capabilities, and any existing project infrastructure.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 16,
+      "text": "Determine the safest, most reliable, least destructive way to accomplish the objective.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 18,
+      "text": "DO NOT MODIFY, DELETE, REORDER, OR REWRITE ORIGINAL CHAT HISTORY.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 20,
+      "text": "The original conversations are evidence.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 22,
+      "text": "Any archaeology output is DERIVED DATA and must remain distinguishable from the source conversation that produced it.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 25,
+      "text": "THE OBJECTIVE",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 27,
+      "text": "I have years of historical ChatGPT conversations containing development work, experiments, failures, corrections, algorithms, architectural decisions, abandoned capabilities, terminology changes, and repeated rediscovery of old ideas.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 29,
+      "text": "I do NOT want ordinary conversation summaries.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 31,
+      "text": "I want DEVELOPMENT LINEAGE.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 33,
+      "text": "For each historical conversation, I want an archaeology pass that asks:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 35,
+      "text": "- What actually worked?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 36,
+      "text": "- What failed?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 37,
+      "text": "- What evidence showed why it failed?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 38,
+      "text": "- What useful capability appears to have been accidentally abandoned?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 39,
+      "text": "- What was intentionally rejected?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 40,
+      "text": "- What was explicitly superseded?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 41,
+      "text": "- Which temporary experiments later became architecture?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 42,
+      "text": "- Which later system laws have recognizable ancestors here?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 43,
+      "text": "- Where did names change while the underlying method survived?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 44,
+      "text": "- Where did AI advice create unnecessary work, drift, duplication, or damage?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 45,
+      "text": "- Where did Lee correct the AI and improve the engineering method?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 46,
+      "text": "- Which problems repeatedly returned?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 47,
+      "text": "- Which ideas repeatedly returned because the underlying need remained unsolved?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 48,
+      "text": "- What capabilities migrated between projects?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 49,
+      "text": "- What was believed causal at the time versus what later evidence established?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 50,
+      "text": "- When did authority, provenance, custody, deterministic operation, memory, graph, worker, evidence, retrieval, writer, and execution-boundary concepts appear?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 51,
+      "text": "- What code, files, commits, experiments, receipts, tests, or runtime observations support those conclusions?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 54,
+      "text": "CRITICAL EVIDENCE LAW",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 56,
+      "text": "An old statement is NOT automatically historical truth.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 58,
+      "text": "For every significant finding distinguish, where applicable:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 60,
+      "text": "1. OBSERVED EVIDENCE",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 61,
+      "text": "2. INTERPRETATION AT THE TIME",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 62,
+      "text": "3. LATER CORRECTION",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 63,
+      "text": "4. ACCEPTED / SURVIVING METHOD",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 64,
+      "text": "5. REJECTED METHOD",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 65,
+      "text": "6. EXPLICIT SUPERSESSION",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 66,
+      "text": "7. APPARENT ACCIDENTAL ABANDONMENT",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 67,
+      "text": "8. UNRESOLVED QUESTION",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 69,
+      "text": "Do not turn speculation into history.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 71,
+      "text": "Do not infer causality, ownership, implementation, success, or abandonment merely because someone claimed it in a chat.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 73,
+      "text": "Track uncertainty explicitly.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 76,
+      "text": "TRACK BOTH PARTICIPANTS",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 78,
+      "text": "The archaeology must examine both Lee and the AI assistants.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 80,
+      "text": "LEE:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 81,
+      "text": "- engineering-method evolution",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 82,
+      "text": "- terminology changes",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 83,
+      "text": "- priorities",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 84,
+      "text": "- corrections",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 85,
+      "text": "- discoveries",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 86,
+      "text": "- repeated requirements",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 87,
+      "text": "- mistakes",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 88,
+      "text": "- improvements in evidence discipline",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 90,
+      "text": "AI ASSISTANTS:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 91,
+      "text": "- useful discoveries",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 92,
+      "text": "- good technical advice",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 93,
+      "text": "- premature conclusions",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 94,
+      "text": "- architectural invention without evidence",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 95,
+      "text": "- unnecessary theorizing",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 96,
+      "text": "- duplicate recommendations for capabilities that already existed",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 97,
+      "text": "- drift",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 98,
+      "text": "- bad advice that caused rework",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 99,
+      "text": "- failures to inspect current state",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 100,
+      "text": "- later improvements in evidence discipline",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 103,
+      "text": "CURRENT HISTORICAL DESTINATION",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 105,
+      "text": "The historical walk ultimately approaches the current September 2026 architecture.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 107,
+      "text": "Current systems use substantially stronger concepts including:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 109,
+      "text": "- bounded admitted jobs",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 110,
+      "text": "- explicit authority boundaries",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 111,
+      "text": "- receipts",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 112,
+      "text": "- dependencies",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 113,
+      "text": "- replay behavior",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 114,
+      "text": "- provenance",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 115,
+      "text": "- custody",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 116,
+      "text": "- deterministic operation",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 117,
+      "text": "- compact result commitments",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 118,
+      "text": "- evidence-backed graph/history work",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 119,
+      "text": "- refusal to infer causality or ownership without admitted evidence",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 121,
+      "text": "Do NOT project those concepts backward merely because they exist today.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 123,
+      "text": "Only connect an older idea forward when evidence supports the lineage.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 125,
+      "text": "A historical system may be:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 126,
+      "text": "- an ancestor,",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 127,
+      "text": "- a failed branch,",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 128,
+      "text": "- a temporary experiment,",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 129,
+      "text": "- an independent idea,",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 130,
+      "text": "- an accidental precursor,",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 131,
+      "text": "- or unrelated.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 133,
+      "text": "Preserve those distinctions.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 136,
+      "text": "IMPORTANT KNOWN EXAMPLE",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 138,
+      "text": "A deep archaeology pass over a February 9–10, 2026 Forest AI conversation found recognizable ancestors including:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 140,
+      "text": "- reader/writer gateway",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 141,
+      "text": "- explicit map → inspect → append boundary",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 142,
+      "text": "- persistent cross-chat memory",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 143,
+      "text": "- lexicon stability",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 144,
+      "text": "- positional mapping",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 145,
+      "text": "- ARC/worker lessons",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 146,
+      "text": "- manual checkpoint discipline",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 147,
+      "text": "- “base of operations” thinking",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 149,
+      "text": "Some survived in altered forms.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 151,
+      "text": "Fixed 6-1-6 did NOT survive as a universal law. It was later corrected to one possible local geometry for one-dimensional ordered data.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 153,
+      "text": "This example demonstrates the required level of historical discrimination.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 156,
+      "text": "DESIRED SYSTEM BEHAVIOR",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 158,
+      "text": "If technically possible, I ultimately want to run a standardized archaeology protocol across many or all historical conversations.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 160,
+      "text": "Each conversation should produce a DERIVED ARCHAEOLOGY RECORD.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 162,
+      "text": "The source conversation remains untouched.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 164,
+      "text": "Each archaeology record should ideally contain provenance such as:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 166,
+      "text": "SOURCE",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 167,
+      "text": "- conversation identifier",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 168,
+      "text": "- conversation title",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 169,
+      "text": "- original creation timestamp if available",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 170,
+      "text": "- original message timestamps if available",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 171,
+      "text": "- source content hash or equivalent immutable identity",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 172,
+      "text": "- source span actually inspected",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 174,
+      "text": "ARCHAEOLOGY PASS",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 175,
+      "text": "- protocol version",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 176,
+      "text": "- generation timestamp",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 177,
+      "text": "- model / execution identity",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 178,
+      "text": "- findings",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 179,
+      "text": "- uncertainty",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 180,
+      "text": "- forward-lineage candidates",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 181,
+      "text": "- unresolved questions",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 183,
+      "text": "Do not use sidebar position as chronology.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 185,
+      "text": "Opening an old ChatGPT conversation may move it upward in the UI.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 187,
+      "text": "Historical ordering must come from authoritative timestamps or equivalent source metadata.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 190,
+      "text": "TWO-STAGE ARCHITECTURE",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 192,
+      "text": "Do not allow individual conversations to establish global history by themselves.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 194,
+      "text": "Stage 1:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 195,
+      "text": "LOCAL ARCHAEOLOGY",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 197,
+      "text": "Each conversation analyzes its own evidence and produces bounded historical findings.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 199,
+      "text": "Stage 2:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 200,
+      "text": "LINEAGE RECONCILIATION",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 202,
+      "text": "A later process compares archaeology records against:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 204,
+      "text": "- other conversations",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 205,
+      "text": "- source code",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 206,
+      "text": "- Git history",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 207,
+      "text": "- commits",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 208,
+      "text": "- files",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 209,
+      "text": "- documents",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 210,
+      "text": "- tests",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 211,
+      "text": "- receipts",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 212,
+      "text": "- runtime evidence",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 214,
+      "text": "That reconciliation process decides whether apparent lineage is actually supported.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 216,
+      "text": "Example:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 218,
+      "text": "Chat A says:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 219,
+      "text": "“This appears to be an ancestor of capability X.”",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 221,
+      "text": "That is a candidate, not historical fact.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 223,
+      "text": "Reconciliation later asks:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 224,
+      "text": "- Does another conversation support it?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 225,
+      "text": "- Did code implementing it subsequently appear?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 226,
+      "text": "- Did a commit preserve it?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 227,
+      "text": "- Was it explicitly rejected?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 228,
+      "text": "- Was it renamed?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 229,
+      "text": "- Did it disappear and later reappear independently?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 232,
+      "text": "ARCHAEOLOGY PROTOCOL VERSIONING",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 234,
+      "text": "The archaeology prompt/protocol must itself be versioned.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 236,
+      "text": "Start with something like:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 238,
+      "text": "LINEAGE_ARCHAEOLOGY_PROTOCOL_V1",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 240,
+      "text": "Record its exact contents and cryptographic hash.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 242,
+      "text": "Do not silently alter the archaeology criteria halfway through the corpus.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 244,
+      "text": "If the protocol improves later, create V2 and preserve V1 results.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 246,
+      "text": "Derived interpretations may evolve.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 248,
+      "text": "Original evidence never does.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 251,
+      "text": "FIRST TASK — FEASIBILITY ONLY",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 253,
+      "text": "DO NOT immediately start modifying repositories or processing hundreds of conversations.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 255,
+      "text": "First determine:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 257,
+      "text": "1. Can Codex/Astra access my historical ChatGPT conversations directly?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 259,
+      "text": "2. If not directly, what supported mechanisms exist?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 260,
+      "text": "   Examples to investigate rather than assume:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 261,
+      "text": "   - OpenAI account data export",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 262,
+      "text": "   - locally cached conversation data",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 263,
+      "text": "   - authenticated ChatGPT surfaces",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 264,
+      "text": "   - supported APIs",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 265,
+      "text": "   - browser automation",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 266,
+      "text": "   - existing local archives",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 267,
+      "text": "   - other legitimate mechanisms available in this environment",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 269,
+      "text": "3. Can historical conversations be processed WITHOUT:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 270,
+      "text": "   - modifying them",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 271,
+      "text": "   - moving/reordering them as the source of chronology",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 272,
+      "text": "   - polluting them with generated archaeology",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 273,
+      "text": "   - losing today's work",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 274,
+      "text": "   - confusing derived analysis with original evidence?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 276,
+      "text": "4. Can this run in parallel safely?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 278,
+      "text": "5. What rate limits, context limits, API costs, model costs, account restrictions, UI restrictions, or concurrency limits apply?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 280,
+      "text": "6. How should failures, partial reads, truncation, retries, and unavailable conversations be recorded?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 282,
+      "text": "7. How do we prove that a particular archaeology record corresponds to a particular immutable source conversation?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 284,
+      "text": "8. What parts can be autonomous and what parts require human authorization?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 286,
+      "text": "9. Is inserting the archaeology prompt INTO every historical ChatGPT conversation actually the best design?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 288,
+      "text": "Challenge that assumption.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 290,
+      "text": "A better design may be:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 291,
+      "text": "source conversation → read-only extraction → external archaeology record",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 293,
+      "text": "If so, explain why and prove it from the available interfaces.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 296,
+      "text": "SAFETY / CUSTODY RULES",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 298,
+      "text": "- READ ONLY until architecture is understood.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 299,
+      "text": "- Do not delete anything.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 300,
+      "text": "- Do not edit historical chats.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 301,
+      "text": "- Do not rewrite source files.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 302,
+      "text": "- Do not mass-submit prompts yet.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 303,
+      "text": "- Do not create branches unless implementation work is later explicitly admitted.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 304,
+      "text": "- Do not expose credentials or private tokens.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 305,
+      "text": "- Do not scrape around authentication controls.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 306,
+      "text": "- Do not invent unsupported OpenAI APIs.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 307,
+      "text": "- Do not assume UI automation is permitted or reliable.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 308,
+      "text": "- Do not confuse accessibility of a conversation in the UI with programmatic authority to retrieve it.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 309,
+      "text": "- Preserve exact provenance.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 310,
+      "text": "- Fail closed when source identity is uncertain.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 313,
+      "text": "WHAT I WANT BACK FIRST",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 315,
+      "text": "Produce a FEASIBILITY AND ARCHITECTURE REPORT.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 317,
+      "text": "It must contain:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 319,
+      "text": "A. AVAILABLE ACCESS PATHS",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 320,
+      "text": "What mechanisms actually exist in this environment?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 322,
+      "text": "B. VERIFIED LIMITATIONS",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 323,
+      "text": "What can we demonstrably not do?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 325,
+      "text": "C. RECOMMENDED ARCHITECTURE",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 326,
+      "text": "How should local archaeology and global lineage reconciliation work?",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 328,
+      "text": "D. SOURCE CUSTODY MODEL",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 329,
+      "text": "How original conversations remain immutable evidence.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 331,
+      "text": "E. DERIVED RECORD SCHEMA",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 332,
+      "text": "How archaeology results should be represented.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 334,
+      "text": "F. CHRONOLOGY MODEL",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 335,
+      "text": "How historical ordering is established without trusting sidebar position.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 337,
+      "text": "G. PARALLELIZATION PLAN",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 338,
+      "text": "How many conversations can safely be processed concurrently and how failures/retries are isolated.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 340,
+      "text": "H. COST / RATE-LIMIT MODEL",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 341,
+      "text": "Estimate tokens, requests, compute, and likely bottlenecks where evidence permits.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 343,
+      "text": "I. PROOF-OF-CONCEPT PLAN",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 344,
+      "text": "Design the smallest useful test:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 345,
+      "text": "preferably 3–5 conversations from different periods.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 347,
+      "text": "J. GO / NO-GO DECISION",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 348,
+      "text": "State whether autonomous corpus-wide archaeology is technically feasible with the interfaces actually available.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 350,
+      "text": "For every important statement, distinguish:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 352,
+      "text": "VERIFIED",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 353,
+      "text": "INFERRED",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 354,
+      "text": "PROPOSED",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 355,
+      "text": "UNKNOWN",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 358,
+      "text": "DO NOT BUILD YET.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 360,
+      "text": "Inspect first.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 361,
+      "text": "Report what is actually possible.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 362,
+      "text": "Then stop and wait for approval.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 364,
+      "text": "The goal is not to make something impressive.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 366,
+      "text": "The goal is to create a trustworthy historical machine that can tell us:",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 368,
+      "text": "WHAT WORKED,",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 369,
+      "text": "WHAT FAILED,",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 370,
+      "text": "WHAT SURVIVED,",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 371,
+      "text": "WHAT WE LOST,",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    },
+    {
+      "source_id": "archaeology_mission",
+      "line": 372,
+      "text": "AND WHY.",
+      "requirement_class": "PROPOSED_MISSION_OR_CONSTRAINT_NOT_CURRENT_AUTHORITY"
+    }
+  ],
+  "policy": {
+    "registration_authority": false,
+    "model_dispatch_authority": false,
+    "new_runtime_code_location": "EXTERNAL_REFACTORED_PLUGINRUNNER",
+    "historical_plugin_tree_callable": false,
+    "feasibility_only_for_archaeology": true,
+    "canonical_chat_history_mutable": false,
+    "all_entries_describe_proposed_deltas_not_absence_of_existing_components": true
+  },
+  "entries": [
+    {
+      "proposal_id": "proposed.graph_authority.truecore_bypass",
+      "title": "TrueCore bypass",
+      "family": "MISSING_GRAPH_AUTHORITY",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 127
+      },
+      "requirement": "Expected-route policy, security roles, control/data flow",
+      "existing_support": "Corresponding registered graph worker exists and reports NOT_IMPLEMENTED until the required authority is available.",
+      "missing_work": "Expected-route policy, security roles, control/data flow",
+      "depends_on": [
+        "proposed.completion.i"
+      ],
+      "acceptance_obligations": [
+        "Declared permitted entry→owner→operation paths plus witnessed path evidence; distinguish intentional alternate interfaces"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.graph_authority.security_config_writers",
+      "title": "Security/config writers",
+      "family": "MISSING_GRAPH_AUTHORITY",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 128
+      },
+      "requirement": "Security-object registry and data flow",
+      "existing_support": "Corresponding registered graph worker exists and reports NOT_IMPLEMENTED until the required authority is available.",
+      "missing_work": "Security-object registry and data flow",
+      "depends_on": [
+        "proposed.completion.i"
+      ],
+      "acceptance_obligations": [
+        "Exact protected objects and resolved writer-to-object flow"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.graph_authority.canonical_evidence_writers",
+      "title": "Canonical evidence writers",
+      "family": "MISSING_GRAPH_AUTHORITY",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 129
+      },
+      "requirement": "Canonical-object registry and data flow",
+      "existing_support": "Corresponding registered graph worker exists and reports NOT_IMPLEMENTED until the required authority is available.",
+      "missing_work": "Canonical-object registry and data flow",
+      "depends_on": [
+        "proposed.completion.i"
+      ],
+      "acceptance_obligations": [
+        "Owner, object identity, permitted publication path, resolved writes"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.graph_authority.untested_privileged_sinks",
+      "title": "Untested privileged sinks",
+      "family": "MISSING_GRAPH_AUTHORITY",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 130
+      },
+      "requirement": "Privileged-sink registry and test-target links",
+      "existing_support": "Corresponding registered graph worker exists and reports NOT_IMPLEMENTED until the required authority is available.",
+      "missing_work": "Privileged-sink registry and test-target links",
+      "depends_on": [
+        "proposed.completion.i"
+      ],
+      "acceptance_obligations": [
+        "Exact sink identity, privilege, explicit case→target/effect evidence"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.graph_authority.unresolved_privileged_reachability",
+      "title": "Unresolved privileged reachability",
+      "family": "MISSING_GRAPH_AUTHORITY",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 131
+      },
+      "requirement": "Sink registry and control/data flow",
+      "existing_support": "Corresponding registered graph worker exists and reports NOT_IMPLEMENTED until the required authority is available.",
+      "missing_work": "Sink registry and control/data flow",
+      "depends_on": [
+        "proposed.completion.i"
+      ],
+      "acceptance_obligations": [
+        "Supported path evidence; unknown stays unknown"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.graph_authority.documentation_without_code",
+      "title": "Documentation without code",
+      "family": "MISSING_GRAPH_AUTHORITY",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 132
+      },
+      "requirement": "Claim objects and semantic claim→code bindings",
+      "existing_support": "Corresponding registered graph worker exists and reports NOT_IMPLEMENTED until the required authority is available.",
+      "missing_work": "Claim objects and semantic claim→code bindings",
+      "depends_on": [
+        "proposed.completion.i"
+      ],
+      "acceptance_obligations": [
+        "Individually identified claims with source/implementation evidence"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.graph_authority.code_without_documentation",
+      "title": "Code without documentation",
+      "family": "MISSING_GRAPH_AUTHORITY",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 133
+      },
+      "requirement": "Claim bindings and capability classification",
+      "existing_support": "Corresponding registered graph worker exists and reports NOT_IMPLEMENTED until the required authority is available.",
+      "missing_work": "Claim bindings and capability classification",
+      "depends_on": [
+        "proposed.completion.i"
+      ],
+      "acceptance_obligations": [
+        "Exact capability ownership and documented contract coverage"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.housekeeping.one_outer_av_job_receipt",
+      "title": "One outer AV job receipt",
+      "family": "PRESERVATION_AND_CALLER_QUALIFICATION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 143
+      },
+      "requirement": "Retain: Source/state identities, native AV manifests, run/timing/replay evidence, per-call success/failure accounting. Reduce only: Duplicate outer wrappers and inventory snapshots. Blast radius: Less I/O and disclosure; migration affects consumers expecting one wrapper per call",
+      "existing_support": "Receipt consolidation helpers already exist; the proposed work is qualified caller/lifecycle integration, not reimplementation.",
+      "missing_work": "Retain: Source/state identities, native AV manifests, run/timing/replay evidence, per-call success/failure accounting. Reduce only: Duplicate outer wrappers and inventory snapshots. Blast radius: Less I/O and disclosure; migration affects consumers expecting one wrapper per call",
+      "depends_on": [
+        "proposed.completion.u",
+        "proposed.completion.v"
+      ],
+      "acceptance_obligations": [
+        "Same outputs/state hashes where deterministic; bounded multi-call job; partial failure and publication failure distinguished"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.housekeeping.inventory_reads",
+      "title": "Inventory reads",
+      "family": "PRESERVATION_AND_CALLER_QUALIFICATION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 144
+      },
+      "requirement": "Retain: Actual observation result and freshness scope. Reduce only: Durable receipt per successful read. Blast radius: Avoids needless files; loses historical read-by-read breadcrumb trail",
+      "existing_support": "Receipt consolidation helpers already exist; the proposed work is qualified caller/lifecycle integration, not reimplementation.",
+      "missing_work": "Retain: Actual observation result and freshness scope. Reduce only: Durable receipt per successful read. Blast radius: Avoids needless files; loses historical read-by-read breadcrumb trail",
+      "depends_on": [
+        "proposed.completion.u",
+        "proposed.completion.v"
+      ],
+      "acceptance_obligations": [
+        "Caller does not depend on vanished sidecar; failure/result still reportable"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.housekeeping.forge_diagnostics",
+      "title": "Forge diagnostics",
+      "family": "PRESERVATION_AND_CALLER_QUALIFICATION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 145
+      },
+      "requirement": "Retain: Canonical Forge entry, identity/sequence/hash, error/anomaly facts. Reduce only: Independent duplicate diagnostic sidecars. Blast radius: Less divergence; old receipt-path readers need reference migration",
+      "existing_support": "Receipt consolidation helpers already exist; the proposed work is qualified caller/lifecycle integration, not reimplementation.",
+      "missing_work": "Retain: Canonical Forge entry, identity/sequence/hash, error/anomaly facts. Reduce only: Independent duplicate diagnostic sidecars. Blast radius: Less divergence; old receipt-path readers need reference migration",
+      "depends_on": [
+        "proposed.completion.u",
+        "proposed.completion.v"
+      ],
+      "acceptance_obligations": [
+        "Receipt reference resolves exactly or fails explicitly"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.housekeeping.budget_health_intervals",
+      "title": "Budget/health intervals",
+      "family": "PRESERVATION_AND_CALLER_QUALIFICATION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 146
+      },
+      "requirement": "Retain: Current state, interval counts, last observation time, anomalies, explicit flush. Reduce only: Every healthy poll on disk. Blast radius: Lower overhead; buffered recent optional counts can be lost on crash",
+      "existing_support": "Receipt consolidation helpers already exist; the proposed work is qualified caller/lifecycle integration, not reimplementation.",
+      "missing_work": "Retain: Current state, interval counts, last observation time, anomalies, explicit flush. Reduce only: Every healthy poll on disk. Blast radius: Lower overhead; buffered recent optional counts can be lost on crash",
+      "depends_on": [
+        "proposed.completion.u",
+        "proposed.completion.v"
+      ],
+      "acceptance_obligations": [
+        "Stale health becomes unknown; contention bounded; flush/restart cases"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.housekeeping.performance_batches",
+      "title": "Performance batches",
+      "family": "PRESERVATION_AND_CALLER_QUALIFICATION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 147
+      },
+      "requirement": "Retain: Run-level counts, timings, maxima, missing samples, partial-run outcome. Reduce only: Per-sample synchronous receipt writes. Blast radius: Fewer write bottlenecks; loses unretained individual timing samples",
+      "existing_support": "Receipt consolidation helpers already exist; the proposed work is qualified caller/lifecycle integration, not reimplementation.",
+      "missing_work": "Retain: Run-level counts, timings, maxima, missing samples, partial-run outcome. Reduce only: Per-sample synchronous receipt writes. Blast radius: Fewer write bottlenecks; loses unretained individual timing samples",
+      "depends_on": [
+        "proposed.completion.u",
+        "proposed.completion.v"
+      ],
+      "acceptance_obligations": [
+        "Aggregates reconcile to known fixture; exception emits partial outcome"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.housekeeping.central_writer_truemem_job_publications",
+      "title": "Central Writer / TrueMem job publications",
+      "family": "PRESERVATION_AND_CALLER_QUALIFICATION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 148
+      },
+      "requirement": "Retain: Original facts, nonmutation/source proof, embedded publication/hash. Reduce only: Duplicate same-job proof files. Blast radius: One atomic publication; consumers must understand embedded metadata",
+      "existing_support": "Receipt consolidation helpers already exist; the proposed work is qualified caller/lifecycle integration, not reimplementation.",
+      "missing_work": "Retain: Original facts, nonmutation/source proof, embedded publication/hash. Reduce only: Duplicate same-job proof files. Blast radius: One atomic publication; consumers must understand embedded metadata",
+      "depends_on": [
+        "proposed.completion.u",
+        "proposed.completion.v"
+      ],
+      "acceptance_obligations": [
+        "Old/new consumer compatibility or explicit migration; fact hash validates"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.housekeeping.retention_cleanup",
+      "title": "Retention cleanup",
+      "family": "PRESERVATION_AND_CALLER_QUALIFICATION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 149
+      },
+      "requirement": "Retain: Active/referenced artifacts, canonical logs, anomalies, input and AV evidence. Reduce only: Only explicitly admitted completed inactive unreferenced operational detail. Blast radius: Bounded cleanup; destructive if classification or ownership is wrong",
+      "existing_support": "Receipt consolidation helpers already exist; the proposed work is qualified caller/lifecycle integration, not reimplementation.",
+      "missing_work": "Retain: Active/referenced artifacts, canonical logs, anomalies, input and AV evidence. Reduce only: Only explicitly admitted completed inactive unreferenced operational detail. Blast radius: Bounded cleanup; destructive if classification or ownership is wrong",
+      "depends_on": [
+        "proposed.completion.u",
+        "proposed.completion.v"
+      ],
+      "acceptance_obligations": [
+        "Exact identities; dry admission; changed file/symlink refusal; partial/interrupted state preserved"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.a",
+      "title": "A — Freeze identity",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 161
+      },
+      "requirement": "Preserve request, checkpoint, exact file catalog, full graph and its parser gaps",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Preserve request, checkpoint, exact file catalog, full graph and its parser gaps",
+      "depends_on": [
+        "Current checkpoint"
+      ],
+      "acceptance_obligations": [
+        "Catalog hashes and graph agree; reference/test/runtime scopes remain separate"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.b",
+      "title": "B — Repair existing map admission and output framing",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 162
+      },
+      "requirement": "Correct TrueCore adapter's Git worktree check and progress/result JSON framing, outside-repo tests first",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Correct TrueCore adapter's Git worktree check and progress/result JSON framing, outside-repo tests first",
+      "depends_on": [
+        "A"
+      ],
+      "acceptance_obligations": [
+        "Normal checkout and valid worktree map through TrueCore with default progress on 250+ files; invalid paths refused; no direct-map exception required"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.c",
+      "title": "C — Reconcile contracts",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 163
+      },
+      "requirement": "Bring existing help/docs/catalog expectations into agreement with executable eight-operation boundary",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Bring existing help/docs/catalog expectations into agreement with executable eight-operation boundary",
+      "depends_on": [
+        "A–B"
+      ],
+      "acceptance_obligations": [
+        "Help enumerates real routes and limits; no nonexistent operation is advertised as executable"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.d",
+      "title": "D — Establish external PluginRunner work area",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 164
+      },
+      "requirement": "Refactor from design knowledge, not by activating historical tree; exact plugin identities, isolated process lifecycle, fixed inputs/outputs, host grants, resource budgets, result schema",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Refactor from design knowledge, not by activating historical tree; exact plugin identities, isolated process lifecycle, fixed inputs/outputs, host grants, resource budgets, result schema",
+      "depends_on": [
+        "A–C"
+      ],
+      "acceptance_obligations": [
+        "External fixture plugin loads by admitted identity; historical source cannot be discovered; denied imports/paths/resources stay denied; crash/timeouts produce bounded results"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.e",
+      "title": "E — Close inventory authority gaps",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 165
+      },
+      "requirement": "In external runner, add required language/evidence adapters; preserve original source hashes and spans",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "In external runner, add required language/evidence adapters; preserve original source hashes and spans",
+      "depends_on": [
+        "D"
+      ],
+      "acceptance_obligations": [
+        "Every current code file has either qualified structure or an explicitly accepted unsupported disposition; no regex hint becomes parser truth"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.f",
+      "title": "F — Resolve declarations",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 166
+      },
+      "requirement": "Validate every manifest/catalog target, runtime dependency, schema and input/output contract; resolve ambiguous identities",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Validate every manifest/catalog target, runtime dependency, schema and input/output contract; resolve ambiguous identities",
+      "depends_on": [
+        "E"
+      ],
+      "acceptance_obligations": [
+        "Every declared capability has an owner and status: executable-qualified, declared-unqualified, unavailable, paused, or reference-only; no unlabeled remainder"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.g",
+      "title": "G — Establish test/evidence bindings",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 167
+      },
+      "requirement": "Bind external acceptance cases to exact implementations and outcomes",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Bind external acceptance cases to exact implementations and outcomes",
+      "depends_on": [
+        "F"
+      ],
+      "acceptance_obligations": [
+        "Each required production capability has positive/negative/recovery evidence; historical tests alone cannot confer coverage"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.h",
+      "title": "H — Define the allowed route graph",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 168
+      },
+      "requirement": "Specify existing and permitted request→gate→worker→owner→artifact paths; enumerate alternate APIs/CLIs",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Specify existing and permitted request→gate→worker→owner→artifact paths; enumerate alternate APIs/CLIs",
+      "depends_on": [
+        "F–G"
+      ],
+      "acceptance_obligations": [
+        "All intended entrypoints have an explicit disposition; alternate control-api paths are handled deliberately"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.i",
+      "title": "I — Build missing graph authorities externally",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 169
+      },
+      "requirement": "Produce role/object/claim/test/path evidence needed by the seven workers; this is the graph-question branch",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Produce role/object/claim/test/path evidence needed by the seven workers; this is the graph-question branch",
+      "depends_on": [
+        "D–H"
+      ],
+      "acceptance_obligations": [
+        "Supported fixture questions resolve correctly; unsupported questions remain unavailable; adversarial ambiguity is preserved; unrelated AV jobs do not wait on this branch"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.j",
+      "title": "J — Bind host job inputs",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 170
+      },
+      "requirement": "Existing ModelHost/OperatorBoundary bind exact source, resource, worker and plan identities",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing ModelHost/OperatorBoundary bind exact source, resource, worker and plan identities",
+      "depends_on": [
+        "H; I only for questions requiring its new authority"
+      ],
+      "acceptance_obligations": [
+        "Model cannot inject paths, code, grants or replacement plan; stale bindings reject"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.k",
+      "title": "K — Admit document sources",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 171
+      },
+      "requirement": "Existing TrueVision Intake/DocuFilm control, glyph/state reader and source typing",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing TrueVision Intake/DocuFilm control, glyph/state reader and source typing",
+      "depends_on": [
+        "J"
+      ],
+      "acceptance_obligations": [
+        "Full admission route succeeds on a known fixture; wrong format, stale witness, partial admission and replay have explicit outcomes"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.l",
+      "title": "L — Build dataset-local memory",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 172
+      },
+      "requirement": "Existing TrueMem intake/storage consume admitted structures and preserve citations/ownership",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing TrueMem intake/storage consume admitted structures and preserve citations/ownership",
+      "depends_on": [
+        "K"
+      ],
+      "acceptance_obligations": [
+        "Exact source→block/structure→dataset binding verifies; resource bounds and restart behavior pass"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.m",
+      "title": "M — Retrieve exact evidence",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 173
+      },
+      "requirement": "Existing EvidenceNeed public query; diagnostics kept separately typed",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing EvidenceNeed public query; diagnostics kept separately typed",
+      "depends_on": [
+        "L"
+      ],
+      "acceptance_obligations": [
+        "Cited proof for supported query; absent/ambiguous evidence remains absent/ambiguous; no free-text bypass of structured contract"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.n",
+      "title": "N — Connect chat custody where required",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 174
+      },
+      "requirement": "Existing ChatChain/LocalMemoryChat plus explicit source staging; missing lifecycle glue external",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing ChatChain/LocalMemoryChat plus explicit source staging; missing lifecycle glue external",
+      "depends_on": [
+        "J–M"
+      ],
+      "acceptance_obligations": [
+        "Conversation/turn/branch/speaker/order survive source-to-evidence round trip; no inferred owner or silent branch collapse"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.o",
+      "title": "O — Admit AV state inputs",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 175
+      },
+      "requirement": "Existing TrueAudio/TrueVision state and source witnesses; dedicated bounded route designed externally",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing TrueAudio/TrueVision state and source witnesses; dedicated bounded route designed externally",
+      "depends_on": [
+        "J; K where document-derived"
+      ],
+      "acceptance_obligations": [
+        "File/machine sources respect grants; logging retains run/time/hash/replay evidence; wrong source refuses"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.p",
+      "title": "P — Run speech/state analysis",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 176
+      },
+      "requirement": "Existing TrueSpeech and AV analysis implementations",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing TrueSpeech and AV analysis implementations",
+      "depends_on": [
+        "O"
+      ],
+      "acceptance_obligations": [
+        "Segment/profile outputs retain source lineage; lyrics remain supplied-text timing candidates, not transcript truth"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.q",
+      "title": "Q — Plan transforms",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 177
+      },
+      "requirement": "Existing templates, calibration, state profiles, source-language validators",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing templates, calibration, state profiles, source-language validators",
+      "depends_on": [
+        "M and/or P"
+      ],
+      "acceptance_obligations": [
+        "Valid plan binds exact source/state and output purpose; unsupported behavior is refused rather than invented"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.r",
+      "title": "R — Execute generation/replay",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 178
+      },
+      "requirement": "Existing AV dispatcher/renderers and audio replay through qualified bounded adapters",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing AV dispatcher/renderers and audio replay through qualified bounded adapters",
+      "depends_on": [
+        "Q"
+      ],
+      "acceptance_obligations": [
+        "Output is produced from the admitted plan; timeout/cancel/partial work reported; no blanket arbitrary-script route"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.s",
+      "title": "S — Verify output",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 179
+      },
+      "requirement": "Existing media/state QA, replay accuracy and source/hash checks, extended externally where missing",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing media/state QA, replay accuracy and source/hash checks, extended externally where missing",
+      "depends_on": [
+        "R"
+      ],
+      "acceptance_obligations": [
+        "Declared result is verified against fixture/acceptance metrics; declaration or render-process exit alone is insufficient"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.t",
+      "title": "T — Deliver typed desktop action if needed",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 180
+      },
+      "requirement": "Existing TrueComputer witness and four actions; new action types external only",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing TrueComputer witness and four actions; new action types external only",
+      "depends_on": [
+        "J and S if action uses generated result"
+      ],
+      "acceptance_obligations": [
+        "Active-window mismatch refuses; backend delivery and actual application outcome reported separately"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.u",
+      "title": "U — Publish one terminal job receipt",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 181
+      },
+      "requirement": "Existing bounded job/receipt store and native component evidence",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing bounded job/receipt store and native component evidence",
+      "depends_on": [
+        "All selected branches"
+      ],
+      "acceptance_obligations": [
+        "Request, admitted plan, source/output identities, verification, failed/omitted work and continuation inspectable in one job receipt"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.v",
+      "title": "V — Maintain and recover",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 182
+      },
+      "requirement": "Existing retention, budget, interval health and atomic publication helpers",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing retention, budget, interval health and atomic publication helpers",
+      "depends_on": [
+        "U"
+      ],
+      "acceptance_obligations": [
+        "Cleanup never blocks live flow; protected/active evidence survives; interrupted jobs do not auto-repeat mutations"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.w",
+      "title": "W — Run integrated acceptance",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 183
+      },
+      "requirement": "External tests for text, logged AV/replay/generation, chat and typed action branches",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "External tests for text, logged AV/replay/generation, chat and typed action branches",
+      "depends_on": [
+        "K–V"
+      ],
+      "acceptance_obligations": [
+        "Selected A→Z job passes from the model front door without manual detours; unsupported branches explicitly fail admission"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.x",
+      "title": "X — Package and deploy deliberately",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 184
+      },
+      "requirement": "Existing launch/package/service declarations plus qualified external plugins",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing launch/package/service declarations plus qualified external plugins",
+      "depends_on": [
+        "W"
+      ],
+      "acceptance_obligations": [
+        "Reproducible dependencies, startup order, storage ownership, private defaults, version/hash bindings and rollback instructions verified"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.y",
+      "title": "Y — Rebuild graph and reconcile coverage",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 185
+      },
+      "requirement": "Existing mapper/workers after accepted changes",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Existing mapper/workers after accepted changes",
+      "depends_on": [
+        "X"
+      ],
+      "acceptance_obligations": [
+        "New full graph is fresh; every changed capability/edge/contract has a disposition; seven authority workers report only supported findings"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.completion.z",
+      "title": "Z — Inspect final job receipt",
+      "family": "STRUCTURAL_COMPLETION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "structural_completion_plan",
+        "line": 186
+      },
+      "requirement": "Operator LLM reads canonical receipt and verifies artifact/evidence hashes",
+      "existing_support": "Existing owner and partial support are described in the source plan; this entry is its remaining completion/qualification gate.",
+      "missing_work": "Operator LLM reads canonical receipt and verifies artifact/evidence hashes",
+      "depends_on": [
+        "Y"
+      ],
+      "acceptance_obligations": [
+        "Report separates completed work, failures, limits, losses/gains, source changes, test evidence and remaining unavailable abilities; no side task concealed as complete"
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_01",
+      "title": "What actually worked?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 35
+      },
+      "requirement": "What actually worked?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "What actually worked?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_02",
+      "title": "What failed?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 36
+      },
+      "requirement": "What failed?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "What failed?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_03",
+      "title": "What evidence showed why it failed?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 37
+      },
+      "requirement": "What evidence showed why it failed?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "What evidence showed why it failed?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_04",
+      "title": "What useful capability appears to have been accidentally abandoned?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 38
+      },
+      "requirement": "What useful capability appears to have been accidentally abandoned?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "What useful capability appears to have been accidentally abandoned?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_05",
+      "title": "What was intentionally rejected?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 39
+      },
+      "requirement": "What was intentionally rejected?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "What was intentionally rejected?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_06",
+      "title": "What was explicitly superseded?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 40
+      },
+      "requirement": "What was explicitly superseded?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "What was explicitly superseded?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_07",
+      "title": "Which temporary experiments later became architecture?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 41
+      },
+      "requirement": "Which temporary experiments later became architecture?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Which temporary experiments later became architecture?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_08",
+      "title": "Which later system laws have recognizable ancestors here?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 42
+      },
+      "requirement": "Which later system laws have recognizable ancestors here?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Which later system laws have recognizable ancestors here?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_09",
+      "title": "Where did names change while the underlying method survived?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 43
+      },
+      "requirement": "Where did names change while the underlying method survived?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Where did names change while the underlying method survived?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_10",
+      "title": "Where did AI advice create unnecessary work, drift, duplication, or damage?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 44
+      },
+      "requirement": "Where did AI advice create unnecessary work, drift, duplication, or damage?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Where did AI advice create unnecessary work, drift, duplication, or damage?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_11",
+      "title": "Where did Lee correct the AI and improve the engineering method?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 45
+      },
+      "requirement": "Where did Lee correct the AI and improve the engineering method?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Where did Lee correct the AI and improve the engineering method?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_12",
+      "title": "Which problems repeatedly returned?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 46
+      },
+      "requirement": "Which problems repeatedly returned?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Which problems repeatedly returned?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_13",
+      "title": "Which ideas repeatedly returned because the underlying need remained unsolved?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 47
+      },
+      "requirement": "Which ideas repeatedly returned because the underlying need remained unsolved?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Which ideas repeatedly returned because the underlying need remained unsolved?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_14",
+      "title": "What capabilities migrated between projects?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 48
+      },
+      "requirement": "What capabilities migrated between projects?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "What capabilities migrated between projects?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_15",
+      "title": "What was believed causal at the time versus what later evidence established?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 49
+      },
+      "requirement": "What was believed causal at the time versus what later evidence established?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "What was believed causal at the time versus what later evidence established?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_16",
+      "title": "When did authority, provenance, custody, deterministic operation, memory, graph, worker, evidence, retrieval, writer, and execution-boundary concepts appear?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 50
+      },
+      "requirement": "When did authority, provenance, custody, deterministic operation, memory, graph, worker, evidence, retrieval, writer, and execution-boundary concepts appear?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "When did authority, provenance, custody, deterministic operation, memory, graph, worker, evidence, retrieval, writer, and execution-boundary concepts appear?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.question_17",
+      "title": "What code, files, commits, experiments, receipts, tests, or runtime observations support those conclusions?",
+      "family": "HISTORY_FINDING_REQUEST",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 51
+      },
+      "requirement": "What code, files, commits, experiments, receipts, tests, or runtime observations support those conclusions?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "What code, files, commits, experiments, receipts, tests, or runtime observations support those conclusions?",
+      "depends_on": [
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Local evidence and interpretation remain distinct.",
+        "Cross-conversation lineage is only accepted after separately evidenced reconciliation.",
+        "Ownership, causality, abandonment and success are not inferred from a chat claim alone."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_a",
+      "title": "AVAILABLE ACCESS PATHS",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 319
+      },
+      "requirement": "A. AVAILABLE ACCESS PATHS What mechanisms actually exist in this environment?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "A. AVAILABLE ACCESS PATHS What mechanisms actually exist in this environment?",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_b",
+      "title": "VERIFIED LIMITATIONS",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 322
+      },
+      "requirement": "B. VERIFIED LIMITATIONS What can we demonstrably not do?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "B. VERIFIED LIMITATIONS What can we demonstrably not do?",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_c",
+      "title": "RECOMMENDED ARCHITECTURE",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 325
+      },
+      "requirement": "C. RECOMMENDED ARCHITECTURE How should local archaeology and global lineage reconciliation work?",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "C. RECOMMENDED ARCHITECTURE How should local archaeology and global lineage reconciliation work?",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_d",
+      "title": "SOURCE CUSTODY MODEL",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 328
+      },
+      "requirement": "D. SOURCE CUSTODY MODEL How original conversations remain immutable evidence.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "D. SOURCE CUSTODY MODEL How original conversations remain immutable evidence.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_e",
+      "title": "DERIVED RECORD SCHEMA",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 331
+      },
+      "requirement": "E. DERIVED RECORD SCHEMA How archaeology results should be represented.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "E. DERIVED RECORD SCHEMA How archaeology results should be represented.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_f",
+      "title": "CHRONOLOGY MODEL",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 334
+      },
+      "requirement": "F. CHRONOLOGY MODEL How historical ordering is established without trusting sidebar position.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "F. CHRONOLOGY MODEL How historical ordering is established without trusting sidebar position.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_g",
+      "title": "PARALLELIZATION PLAN",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 337
+      },
+      "requirement": "G. PARALLELIZATION PLAN How many conversations can safely be processed concurrently and how failures/retries are isolated.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "G. PARALLELIZATION PLAN How many conversations can safely be processed concurrently and how failures/retries are isolated.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_h",
+      "title": "COST / RATE-LIMIT MODEL",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 340
+      },
+      "requirement": "H. COST / RATE-LIMIT MODEL Estimate tokens, requests, compute, and likely bottlenecks where evidence permits.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "H. COST / RATE-LIMIT MODEL Estimate tokens, requests, compute, and likely bottlenecks where evidence permits.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_i",
+      "title": "PROOF-OF-CONCEPT PLAN",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 343
+      },
+      "requirement": "I. PROOF-OF-CONCEPT PLAN Design the smallest useful test:",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "I. PROOF-OF-CONCEPT PLAN Design the smallest useful test:",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility_j",
+      "title": "GO / NO-GO DECISION",
+      "family": "FEASIBILITY_REPORT_SECTION",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 347
+      },
+      "requirement": "J. GO / NO-GO DECISION State whether autonomous corpus-wide archaeology is technically feasible with the interfaces actually available.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "J. GO / NO-GO DECISION State whether autonomous corpus-wide archaeology is technically feasible with the interfaces actually available.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Report VERIFIED, INFERRED, PROPOSED and UNKNOWN separately.",
+        "No corpus execution or implementation before the feasibility/architecture decision and required approval."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.feasibility",
+      "title": "Feasibility and architecture before implementation",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 251
+      },
+      "requirement": "Inspect available access mechanisms and existing archives without assuming APIs, permissions, cost, scale or completeness.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Inspect available access mechanisms and existing archives without assuming APIs, permissions, cost, scale or completeness.",
+      "depends_on": [],
+      "acceptance_obligations": [
+        "Preserve original chats.",
+        "Produce the ten requested feasibility sections with source-supported limits.",
+        "Stop at feasibility; implementation is not admitted."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.source_custody",
+      "title": "Read-only source custody and bounded extraction",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 328
+      },
+      "requirement": "Bind original conversation/message identities, timestamps, content hashes and exactly inspected spans; derived records stay separate.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Bind original conversation/message identities, timestamps, content hashes and exactly inspected spans; derived records stay separate.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Reject uncertain identity.",
+        "No rewrite, reorder, mass prompt submission or authentication bypass."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.protocol_versioning",
+      "title": "Versioned archaeology protocol",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 232
+      },
+      "requirement": "Freeze exact archaeology protocol contents/version/hash; retain earlier versions and their derived results.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Freeze exact archaeology protocol contents/version/hash; retain earlier versions and their derived results.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "No silent protocol changes midway through corpus."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.local_archaeology",
+      "title": "Conversation-local archaeology",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 195
+      },
+      "requirement": "Create bounded derived archaeology records of findings and uncertainty from each admitted source.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Create bounded derived archaeology records of findings and uncertainty from each admitted source.",
+      "depends_on": [
+        "proposed.history.source_custody",
+        "proposed.history.protocol_versioning"
+      ],
+      "acceptance_obligations": [
+        "Retain observed evidence, contemporaneous interpretation, later correction, surviving/rejected method, explicit supersession, apparent abandonment and unresolved questions.",
+        "Track both Lee and assistant contributions without conflating instruction, interpretation, implementation or outcome."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.lineage_reconciliation",
+      "title": "Cross-source lineage reconciliation",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 200
+      },
+      "requirement": "Compare local candidates against other chats, code, Git, tests, receipts and runtime observations.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Compare local candidates against other chats, code, Git, tests, receipts and runtime observations.",
+      "depends_on": [
+        "proposed.history.local_archaeology"
+      ],
+      "acceptance_obligations": [
+        "No global history established by a conversation alone.",
+        "Preserve ancestor, failed branch, temporary experiment, independent idea, accidental precursor and unrelated distinctions.",
+        "Do not project present-day concepts backward."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.chronology",
+      "title": "Source-backed chronology",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 334
+      },
+      "requirement": "Use authoritative timestamps and source order, preserving missing/ambiguous metadata and conversation branches.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Use authoritative timestamps and source order, preserving missing/ambiguous metadata and conversation branches.",
+      "depends_on": [
+        "proposed.history.source_custody"
+      ],
+      "acceptance_obligations": [
+        "Sidebar position never becomes chronology."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.derived_record",
+      "title": "Versioned derived archaeology record",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 331
+      },
+      "requirement": "Preserve source identity/span, exact protocol, generation time, execution/model identity, findings, uncertainty, lineage candidates and unresolved questions.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Preserve source identity/span, exact protocol, generation time, execution/model identity, findings, uncertainty, lineage candidates and unresolved questions.",
+      "depends_on": [
+        "proposed.history.source_custody",
+        "proposed.history.protocol_versioning"
+      ],
+      "acceptance_obligations": [
+        "Original and derived evidence are distinguishable.",
+        "Unavailable fields explicit."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.parallel_recovery",
+      "title": "Bounded parallel scheduling and isolated recovery",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 337
+      },
+      "requirement": "Qualify concurrency, incomplete reads, truncation, retries and unavailable conversations before scaling.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Qualify concurrency, incomplete reads, truncation, retries and unavailable conversations before scaling.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Each retry binds the same immutable source/protocol or explicitly versions the change.",
+        "No inferred unlimited access or rate limits."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.cost_budget",
+      "title": "Evidence-based cost and rate-limit budget",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 340
+      },
+      "requirement": "Measure/estimate tokens, calls, compute and bottlenecks only where actual interface evidence supports it.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Measure/estimate tokens, calls, compute and bottlenecks only where actual interface evidence supports it.",
+      "depends_on": [
+        "proposed.history.feasibility"
+      ],
+      "acceptance_obligations": [
+        "Unknown prices/limits stay unknown until verified.",
+        "No spend authorized by the placeholder."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.history.small_poc",
+      "title": "Small 3–5-conversation proof of concept",
+      "family": "HISTORY_ARCHITECTURE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "archaeology_mission",
+        "line": 343
+      },
+      "requirement": "Design a bounded cross-period pilot after feasibility; preserve exact read spans and distinguish local from reconciled findings.",
+      "existing_support": "No qualified implementation of this proposed delta is established by this placeholder.",
+      "missing_work": "Design a bounded cross-period pilot after feasibility; preserve exact read spans and distinguish local from reconciled findings.",
+      "depends_on": [
+        "proposed.history.feasibility",
+        "proposed.history.local_archaeology",
+        "proposed.history.lineage_reconciliation"
+      ],
+      "acceptance_obligations": [
+        "Separate authorization before execution.",
+        "Pilot success is not corpus-wide feasibility proof."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.graph.archive_superseded",
+      "title": "Archive previous focused-dataset graphs",
+      "family": "GRAPH_ARCHIVE_LIFECYCLE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "current_user_instruction",
+        "line": null
+      },
+      "requirement": "Bind explicit dataset/snapshot/scope, create provenance-named ZIPs, preserve native manifests and verify all member hashes before publication.",
+      "existing_support": "External operator archive packaging exists for this task; automatic registered TrueCore worker is not implemented.",
+      "missing_work": "Bind explicit dataset/snapshot/scope, create provenance-named ZIPs, preserve native manifests and verify all member hashes before publication.",
+      "depends_on": [],
+      "acceptance_obligations": [
+        "Unique archive names; unknown commit/time stays unknown.",
+        "Lossless round-trip and original stability checks.",
+        "One bounded job result, member provenance inside ZIP."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.graph.archive_aware_reader",
+      "title": "Read archived graph evidence by exact identity",
+      "family": "GRAPH_ARCHIVE_LIFECYCLE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "current_user_instruction",
+        "line": null
+      },
+      "requirement": "Qualify archive-aware map lookup/restoration with exact member paths, hashes, size budgets and immutable bindings.",
+      "existing_support": "Current map workers consume directories; ZIP awareness is not established.",
+      "missing_work": "Qualify archive-aware map lookup/restoration with exact member paths, hashes, size budgets and immutable bindings.",
+      "depends_on": [],
+      "acceptance_obligations": [
+        "Reject ambiguous snapshots, path escapes and changed members.",
+        "Existing directory-based consumers keep working until migration qualifies."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    },
+    {
+      "proposal_id": "proposed.graph.archive_retention_migration",
+      "title": "Migrate archive references before reclaiming original graph storage",
+      "family": "GRAPH_ARCHIVE_LIFECYCLE",
+      "status": "PROPOSED_NOT_IMPLEMENTED",
+      "status_scope": "PROPOSED_DELTA_OR_QUALIFICATION_ONLY",
+      "callable": false,
+      "entrypoint": null,
+      "implementation_admitted": false,
+      "implementation_location": "OUTSIDE_SOURCE_REPOSITORY_IN_REFACTORED_PLUGINRUNNER_FOR_NEW_CAPABILITIES",
+      "existing_source_repairs": "Separately admitted existing-source corrections and integration are distinct from new inventions.",
+      "source": {
+        "source_id": "current_user_instruction",
+        "line": null
+      },
+      "requirement": "Resolve active/reference-pinned originals and admit bounded cleanup only after verified archive publication and consumer migration.",
+      "existing_support": "Existing bounded retention helpers do not themselves make graph consumers archive-aware.",
+      "missing_work": "Resolve active/reference-pinned originals and admit bounded cleanup only after verified archive publication and consumer migration.",
+      "depends_on": [],
+      "acceptance_obligations": [
+        "Protected/live/reference-bound evidence preserved.",
+        "Report zero reclaimed bytes when originals retained.",
+        "Interrupted cleanup does not silently rerun."
+      ],
+      "promotion": "Preserve proposal; link a separately qualified implementation and real registration only after explicit admission.",
+      "unavailable_response": "NOT_IMPLEMENTED; no substitute or success-shaped stub",
+      "blocks_live_av_or_intake": false
+    }
+  ]
+}
