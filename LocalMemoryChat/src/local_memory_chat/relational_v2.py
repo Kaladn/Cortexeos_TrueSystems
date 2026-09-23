@@ -42,6 +42,12 @@ CREATE TABLE IF NOT EXISTS occurrences(
  occurrence_id TEXT PRIMARY KEY, object_id TEXT NOT NULL, anchor_id INTEGER NOT NULL,
  ordinal INTEGER NOT NULL, char_start INTEGER NOT NULL, char_end INTEGER NOT NULL,
  byte_start INTEGER NOT NULL, byte_end INTEGER NOT NULL);
+CREATE TABLE IF NOT EXISTS occurrence_positions(
+ occurrence_id TEXT PRIMARY KEY, source_id TEXT NOT NULL, block_id TEXT NOT NULL,
+ sentence_id TEXT NOT NULL, sentence_ordinal INTEGER NOT NULL,
+ block_ordinal INTEGER NOT NULL);
+CREATE INDEX IF NOT EXISTS occurrence_positions_block ON occurrence_positions(block_id, block_ordinal);
+CREATE INDEX IF NOT EXISTS occurrence_positions_sentence ON occurrence_positions(sentence_id, sentence_ordinal);
 CREATE TABLE IF NOT EXISTS relations(
  relation_id TEXT PRIMARY KEY, source_id TEXT NOT NULL, object_id TEXT NOT NULL,
  center_anchor_id INTEGER NOT NULL, neighbor_anchor_id INTEGER NOT NULL,
@@ -117,6 +123,18 @@ BEFORE DELETE ON occurrences WHEN EXISTS(
  SELECT 1 FROM objects o JOIN sources s ON s.source_id=o.source_id
  WHERE o.object_id=OLD.object_id AND s.status='historical_immutable')
 BEGIN SELECT RAISE(ABORT, 'historical occurrence is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS immutable_occurrence_position_insert
+BEFORE INSERT ON occurrence_positions WHEN EXISTS(
+ SELECT 1 FROM sources WHERE source_id=NEW.source_id AND status='historical_immutable')
+BEGIN SELECT RAISE(ABORT, 'historical occurrence position is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS immutable_occurrence_position_update
+BEFORE UPDATE ON occurrence_positions WHEN EXISTS(
+ SELECT 1 FROM sources WHERE source_id=OLD.source_id AND status='historical_immutable')
+BEGIN SELECT RAISE(ABORT, 'historical occurrence position is immutable'); END;
+CREATE TRIGGER IF NOT EXISTS immutable_occurrence_position_delete
+BEFORE DELETE ON occurrence_positions WHEN EXISTS(
+ SELECT 1 FROM sources WHERE source_id=OLD.source_id AND status='historical_immutable')
+BEGIN SELECT RAISE(ABORT, 'historical occurrence position is immutable'); END;
 CREATE TRIGGER IF NOT EXISTS immutable_relation_insert
 BEFORE INSERT ON relations WHEN EXISTS(
  SELECT 1 FROM sources WHERE source_id=NEW.source_id AND status='historical_immutable')
@@ -141,10 +159,6 @@ def _sha(value: bytes | str) -> str:
     return hashlib.sha256(raw).hexdigest()
 
 
-def _symbol(surface: str) -> str:
-    return "0x" + hashlib.sha1(surface.encode("utf-8")).hexdigest()[:12].upper()
-
-
 def _anchors(text: str) -> list[tuple[str, int, int]]:
     return [
         (match.group(0), match.start(), match.end())
@@ -153,158 +167,12 @@ def _anchors(text: str) -> list[tuple[str, int, int]]:
     ]
 
 
-def _source_id(path: Path, source_hash: str) -> str:
-    return "SRC2-" + _sha(f"{path}|{source_hash}")[:20]
-
-
-def _object_id(source_id: str, kind: str, ordinal: int, text: str) -> str:
-    return f"OBJ2-{_sha(f'{source_id}|{kind}|{ordinal}|{_sha(text)}')[:20]}"
-
-
-def _read_jsonl(path: Path) -> Iterable[tuple[int, int, str, dict[str, Any]]]:
-    raw = path.read_bytes()
-    offset = 0
-    for line_no, line in enumerate(raw.splitlines(keepends=True), start=1):
-        decoded = line.decode("utf-8", errors="strict")
-        body = decoded.rstrip("\r\n")
-        if body.strip():
-            yield line_no, offset, body, json.loads(body)
-        offset += len(line)
-
-
-def _event_text(row: dict[str, Any]) -> tuple[str, str | None]:
-    message = row.get("message")
-    if not isinstance(message, dict):
-        return "", None
-    role = str(message.get("role") or row.get("type") or "")
-    content = message.get("content")
-    if isinstance(content, str):
-        return content, role
-    if isinstance(content, list):
-        parts = []
-        for item in content:
-            if isinstance(item, dict) and item.get("type") == "text":
-                parts.append(str(item.get("text") or ""))
-        return "\n".join(part for part in parts if part), role
-    return "", role
-
-
 def init_v2(runtime_root: str | Path) -> Path:
     root = Path(runtime_root).expanduser().resolve()
     root.mkdir(parents=True, exist_ok=True)
     with sqlite3.connect(root / "relational_v2.sqlite3") as db:
         db.executescript(SCHEMA)
     return root
-
-
-def ingest_chat_jsonl(
-    source_path: str | Path,
-    *,
-    runtime_root: str | Path,
-    source_label: str | None = None,
-) -> dict[str, Any]:
-    path = Path(source_path).expanduser().resolve()
-    raw = path.read_bytes()
-    source_hash = _sha(raw)
-    source_id = _source_id(path, source_hash)
-    root = init_v2(runtime_root)
-    rows = list(_read_jsonl(path))
-    events = [(line, offset, body, row) for line, offset, body, row in rows]
-    session_ids = [str(row.get("sessionId") or "") for _, _, _, row in events if row.get("sessionId")]
-    conversation_value = session_ids[0] if session_ids else "UNKNOWN"
-    conversation_id = f"CONV2-{_sha(conversation_value)[:20]}"
-    objects: list[dict[str, Any]] = []
-    parent_for = {"conversation": None, "turn": conversation_id}
-    turn_ordinal = 0
-    message_ordinal = 0
-    block_ordinal = 0
-    objects.append({
-        "object_id": conversation_id, "source_id": source_id, "parent_id": None,
-        "object_type": "conversation", "ordinal": 0, "role": None,
-        "speaker": None, "timestamp": None, "line_start": 1, "line_end": 1,
-        "char_start": 0, "char_end": 0, "byte_start": 0, "byte_end": 0,
-        "exact_text_hash": _sha(""), "text": "",
-        "metadata_json": json.dumps({"session_id": conversation_value}, sort_keys=True),
-    })
-    for line_no, byte_start, body, row in events:
-        text, role = _event_text(row)
-        if not text:
-            continue
-        kind = str(row.get("type") or "event")
-        if kind == "user":
-            turn_ordinal += 1
-            turn_id = _object_id(source_id, "turn", turn_ordinal, text)
-            parent_for["turn"] = turn_id
-            objects.append(_object(source_id, turn_id, conversation_id, "turn", turn_ordinal, row, text, role, line_no, byte_start, body))
-        else:
-            turn_id = str(parent_for.get("turn") or conversation_id)
-        message_ordinal += 1
-        message_id = _object_id(source_id, "message", message_ordinal, text)
-        objects.append(_object(source_id, message_id, turn_id, "message", message_ordinal, row, text, role, line_no, byte_start, body))
-        block_ordinal += 1
-        block_id = _object_id(source_id, "block", block_ordinal, text)
-        objects.append(_object(source_id, block_id, message_id, "block", block_ordinal, row, text, role, line_no, byte_start, body))
-
-    with sqlite3.connect(root / "relational_v2.sqlite3") as db:
-        db.execute(
-            "INSERT OR IGNORE INTO sources VALUES(?,?,?,?,?,?,?,?)",
-            (source_id, str(path), "chat-jsonl", source_hash, len(raw), source_label or path.name, _now(), "admitted"),
-        )
-        for obj in objects:
-            db.execute(
-                "INSERT OR IGNORE INTO objects VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                tuple(obj[key] for key in (
-                    "object_id", "source_id", "parent_id", "object_type", "ordinal",
-                    "role", "speaker", "timestamp", "line_start", "line_end",
-                    "char_start", "char_end", "byte_start", "byte_end",
-                    "exact_text_hash", "text", "metadata_json",
-                )),
-            )
-            if obj["parent_id"]:
-                db.execute(
-                    "INSERT OR IGNORE INTO object_edges VALUES(?,?,?,?)",
-                    (obj["parent_id"], obj["object_id"], "contains", obj["ordinal"]),
-                )
-            anchor_rows = _anchors(obj["text"])
-            for ordinal, (surface, start, end) in enumerate(anchor_rows):
-                db.execute("INSERT OR IGNORE INTO anchors(surface,kind,symbol) VALUES(?,?,?)", (surface, "content", _symbol(surface)))
-                anchor_id = db.execute("SELECT anchor_id FROM anchors WHERE surface=?", (surface,)).fetchone()[0]
-                occurrence_key = f"{obj['object_id']}|{ordinal}|{surface}"
-                occurrence_id = f"OCC2-{_sha(occurrence_key)[:20]}"
-                db.execute(
-                    "INSERT OR IGNORE INTO occurrences VALUES(?,?,?,?,?,?,?,?)",
-                    (occurrence_id, obj["object_id"], anchor_id, ordinal, start, end, obj["byte_start"] + len(obj["text"][:start].encode("utf-8")), obj["byte_start"] + len(obj["text"][:end].encode("utf-8"))),
-                )
-            for center_index, (center, _, _) in enumerate(anchor_rows):
-                center_id = db.execute("SELECT anchor_id FROM anchors WHERE surface=?", (center,)).fetchone()[0]
-                # The 6-1-6 neighborhood is an ephemeral calculation window.
-                # Persist only its measured signed relationships.
-                for neighbor_index in range(max(0, center_index - 6), min(len(anchor_rows), center_index + 7)):
-                    if neighbor_index == center_index:
-                        continue
-                    neighbor = anchor_rows[neighbor_index][0]
-                    neighbor_id = db.execute("SELECT anchor_id FROM anchors WHERE surface=?", (neighbor,)).fetchone()[0]
-                    distance = neighbor_index - center_index
-                    relation_key = f"{source_id}|{obj['object_id']}|{center_id}|{neighbor_id}|{distance}"
-                    relation_id = f"REL2-{_sha(relation_key)[:20]}"
-                    db.execute(
-                        "INSERT INTO relations VALUES(?,?,?,?,?,?,?,?) ON CONFLICT(relation_id) DO UPDATE SET count=count+1",
-                        (relation_id, source_id, obj["object_id"], center_id, neighbor_id, "message", distance, 1),
-                    )
-        db.commit()
-    return {
-        "schema": "local_memory_relational_v2_intake@1",
-        "source_id": source_id,
-        "source_path": str(path),
-        "source_hash": source_hash,
-        "object_count": len(objects),
-        "conversation_id": conversation_id,
-        "turn_count": sum(1 for item in objects if item["object_type"] == "turn"),
-        "message_count": sum(1 for item in objects if item["object_type"] == "message"),
-        "block_count": sum(1 for item in objects if item["object_type"] == "block"),
-        "runtime_db": str(root / "relational_v2.sqlite3"),
-    }
-
 
 
 def ingest_native_chat(
@@ -337,7 +205,7 @@ def _admit_adapted_chat(adapted: AdaptedChat, *, runtime_root: str | Path) -> di
             db.commit()
             counts = {
                 kind: db.execute("SELECT COUNT(*) FROM objects WHERE source_id=? AND object_type=?", (source_id, kind)).fetchone()[0]
-                for kind in ("conversation", "turn", "message", "message_variant", "block", "tool_call", "tool_result")
+                for kind in ("conversation", "turn", "message", "message_variant", "block", "sentence", "tool_call", "tool_result")
             }
             return _native_receipt(adapted, source_id, root, counts, duplicate=True)
 
@@ -369,16 +237,36 @@ def _admit_adapted_chat(adapted: AdaptedChat, *, runtime_root: str | Path) -> di
             if item.object_type in {"message", "message_variant"} and item.text:
                 for paragraph_ordinal, (start, end, paragraph) in enumerate(_paragraphs(item.text)):
                     block_id = f"NATBLK2-{_sha(f'{object_id}|{paragraph_ordinal}|{_sha(paragraph)}')[:20]}"
+                    block_byte_start = len(item.text[:start].encode("utf-8"))
                     stored.append({
                         "object_id": block_id, "source_id": source_id, "parent_id": object_id,
                         "object_type": "block", "ordinal": paragraph_ordinal,
                         "role": item.role, "speaker": item.role, "timestamp": item.timestamp,
                         "line_start": 0, "line_end": 0, "char_start": start,
-                        "char_end": end, "byte_start": len(item.text[:start].encode("utf-8")),
-                        "byte_end": len(item.text[:end].encode("utf-8")),
+                        "char_end": end, "byte_start": block_byte_start,
+                        "byte_end": block_byte_start + len(paragraph.encode("utf-8")),
                         "exact_text_hash": _sha(paragraph), "text": paragraph,
                         "metadata_json": json.dumps({"paragraph_ordinal": paragraph_ordinal, "native_message_id": item.native_id}, sort_keys=True),
                     })
+                    block_word_ordinal = 0
+                    for sentence_ordinal, (sentence_start, sentence_end, sentence) in enumerate(_sentences(paragraph)):
+                        sentence_id = f"NATSENT2-{_sha(f'{block_id}|{sentence_ordinal}|{_sha(sentence)}')[:20]}"
+                        stored.append({
+                            "object_id": sentence_id, "source_id": source_id, "parent_id": block_id,
+                            "object_type": "sentence", "ordinal": sentence_ordinal,
+                            "role": item.role, "speaker": item.role, "timestamp": item.timestamp,
+                            "line_start": 0, "line_end": 0,
+                            "char_start": sentence_start, "char_end": sentence_end,
+                            "byte_start": block_byte_start + len(paragraph[:sentence_start].encode("utf-8")),
+                            "byte_end": block_byte_start + len(paragraph[:sentence_end].encode("utf-8")),
+                            "exact_text_hash": _sha(sentence), "text": sentence,
+                            "metadata_json": json.dumps({
+                                "sentence_ordinal": sentence_ordinal,
+                                "block_word_ordinal_start": block_word_ordinal,
+                                "native_message_id": item.native_id,
+                            }, sort_keys=True),
+                        })
+                        block_word_ordinal += len(_anchors(sentence))
 
         for obj in stored:
             db.execute(
@@ -395,8 +283,8 @@ def _admit_adapted_chat(adapted: AdaptedChat, *, runtime_root: str | Path) -> di
                     "INSERT OR IGNORE INTO object_edges VALUES(?,?,?,?)",
                     (obj["parent_id"], obj["object_id"], "contains", obj["ordinal"]),
                 )
-            if obj["object_type"] == "block":
-                _index_block(db, source_id, obj)
+            if obj["object_type"] == "sentence":
+                _index_sentence(db, source_id, obj)
 
         for artifact in adapted.artifacts:
             parent_id = id_map.get(artifact.parent_native_id)
@@ -428,34 +316,38 @@ def _paragraphs(text: str) -> Iterable[tuple[int, int, str]]:
         yield cursor, len(text), text[cursor:]
 
 
-def _index_block(db: sqlite3.Connection, source_id: str, obj: dict[str, Any]) -> None:
-    anchor_rows = _anchors(obj["text"])
-    anchor_ids: list[int] = []
-    for ordinal, (surface, start, end) in enumerate(anchor_rows):
-        # Chat lexicon values are exact observed surfaces. No hash symbolization.
+def _sentences(text: str) -> Iterable[tuple[int, int, str]]:
+    start = 0
+    for boundary in re.finditer(r"[.!?]+(?=\s|$)", text):
+        end = boundary.end()
+        if text[start:end].strip():
+            yield start, end, text[start:end]
+        start = end
+        while start < len(text) and text[start].isspace():
+            start += 1
+    if start < len(text) and text[start:].strip():
+        yield start, len(text), text[start:]
+
+
+def _index_sentence(db: sqlite3.Connection, source_id: str, obj: dict[str, Any]) -> None:
+    metadata = json.loads(obj["metadata_json"])
+    block_id = str(obj["parent_id"])
+    block_start = int(metadata["block_word_ordinal_start"])
+    for sentence_ordinal, (surface, start, end) in enumerate(_anchors(obj["text"])):
+        # Chat lexicon values are exact observed surfaces. No normalization or hash symbolization.
         db.execute("INSERT OR IGNORE INTO anchors(surface,kind,symbol) VALUES(?,?,?)", (surface, "word_surface", surface))
         anchor_id = db.execute("SELECT anchor_id FROM anchors WHERE surface=?", (surface,)).fetchone()[0]
-        anchor_ids.append(anchor_id)
-        occurrence_id = "OCC2-" + _sha(f"{obj['object_id']}|{ordinal}|{surface}")[:20]
+        occurrence_id = "OCC2-" + _sha(f"{obj['object_id']}|{sentence_ordinal}|{surface}")[:20]
         db.execute(
             "INSERT INTO occurrences VALUES(?,?,?,?,?,?,?,?)",
-            (occurrence_id, obj["object_id"], anchor_id, ordinal, start, end,
+            (occurrence_id, obj["object_id"], anchor_id, sentence_ordinal, start, end,
              obj["byte_start"] + len(obj["text"][:start].encode("utf-8")),
              obj["byte_start"] + len(obj["text"][:end].encode("utf-8"))),
         )
-    for center_index, center_id in enumerate(anchor_ids):
-        # Calculate ±6 temporarily; persist only collapsed measured counts.
-        for neighbor_index in range(max(0, center_index - 6), min(len(anchor_ids), center_index + 7)):
-            neighbor_id = anchor_ids[neighbor_index]
-            if center_index == neighbor_index:
-                continue
-            distance = neighbor_index - center_index
-            relation_id = "REL2-" + _sha(f"{source_id}|{obj['object_id']}|{center_id}|{neighbor_id}|{distance}")[:20]
-            db.execute(
-                "INSERT INTO relations VALUES(?,?,?,?,?,?,?,?) "
-                "ON CONFLICT(relation_id) DO UPDATE SET count=count+1",
-                (relation_id, source_id, obj["object_id"], center_id, neighbor_id, "paragraph", distance, 1),
-            )
+        db.execute(
+            "INSERT INTO occurrence_positions VALUES(?,?,?,?,?,?)",
+            (occurrence_id, source_id, block_id, obj["object_id"], sentence_ordinal, block_start + sentence_ordinal),
+        )
 
 
 def _native_receipt(adapted: AdaptedChat, source_id: str, root: Path, counts: dict[str, int], *, duplicate: bool) -> dict[str, Any]:
@@ -472,6 +364,8 @@ def _native_receipt(adapted: AdaptedChat, source_id: str, root: Path, counts: di
         "message_count": int(counts.get("message", 0)),
         "message_variant_count": int(counts.get("message_variant", 0)),
         "block_count": int(counts.get("block", 0)),
+        "sentence_count": int(counts.get("sentence", 0)),
+        "durable_relation_count": 0,
         "tool_call_count": int(counts.get("tool_call", 0)),
         "tool_result_count": int(counts.get("tool_result", 0)),
         "artifact_count": len(adapted.artifacts),
@@ -480,6 +374,120 @@ def _native_receipt(adapted: AdaptedChat, source_id: str, root: Path, counts: di
         "runtime_db": str(root / "relational_v2.sqlite3"),
     }
 
+
+def project_relationships(
+    center_surface: str,
+    *,
+    runtime_root: str | Path,
+    scope_ids: Iterable[str],
+    offsets: Iterable[int] | None = None,
+    top_k: int | None = None,
+    include_positional_mass: bool = False,
+) -> dict[str, Any]:
+    """Project an ephemeral directed relationship field from exact sentence occurrences."""
+    root = init_v2(runtime_root)
+    db_path = root / "relational_v2.sqlite3"
+    scope = list(dict.fromkeys(str(value) for value in scope_ids))
+    if not scope:
+        raise ValueError("at least one block or sentence scope ID is required")
+    lanes = list(dict.fromkeys(int(value) for value in (offsets or (-6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6))))
+    if not lanes or any(value == 0 for value in lanes):
+        raise ValueError("relationship offsets must be non-zero")
+    database_hash_before = _sha(db_path.read_bytes())
+    uri = f"file:{db_path}?mode=ro"
+    with sqlite3.connect(uri, uri=True) as db:
+        db.row_factory = sqlite3.Row
+        sentence_ids: list[str] = []
+        for object_id in scope:
+            row = db.execute("SELECT object_type FROM objects WHERE object_id=?", (object_id,)).fetchone()
+            if row is None:
+                raise ValueError(f"scope object not found: {object_id}")
+            if row["object_type"] == "sentence":
+                sentence_ids.append(object_id)
+            elif row["object_type"] == "block":
+                sentence_ids.extend(value[0] for value in db.execute(
+                    "SELECT object_id FROM objects WHERE parent_id=? AND object_type='sentence' ORDER BY ordinal,object_id",
+                    (object_id,),
+                ))
+            else:
+                raise ValueError(f"scope object must be block or sentence: {object_id}")
+        sentence_ids = list(dict.fromkeys(sentence_ids))
+        if not sentence_ids:
+            raise ValueError("scope contains no admitted sentences")
+        fields: dict[str, dict[str, Any]] = {}
+        observations = 0
+        source_ids: set[str] = set()
+        for sentence_id in sentence_ids:
+            sentence = db.execute("SELECT source_id,parent_id FROM objects WHERE object_id=?", (sentence_id,)).fetchone()
+            source_ids.add(str(sentence["source_id"]))
+            rows = db.execute(
+                "SELECT o.occurrence_id,o.ordinal,a.surface,p.block_id,p.block_ordinal "
+                "FROM occurrences o JOIN anchors a ON a.anchor_id=o.anchor_id "
+                "JOIN occurrence_positions p ON p.occurrence_id=o.occurrence_id "
+                "WHERE o.object_id=? ORDER BY o.ordinal",
+                (sentence_id,),
+            ).fetchall()
+            for center_index, center in enumerate(rows):
+                if center["surface"] != center_surface:
+                    continue
+                for distance in lanes:
+                    neighbor_index = center_index + distance
+                    if neighbor_index < 0 or neighbor_index >= len(rows):
+                        continue
+                    neighbor = rows[neighbor_index]
+                    field = fields.setdefault(str(neighbor["surface"]), {
+                        "surface": str(neighbor["surface"]), "lane_counts": {},
+                        "total": 0, "positional_mass": 0, "supporting_observations": [],
+                    })
+                    lane = str(distance)
+                    field["lane_counts"][lane] = int(field["lane_counts"].get(lane, 0)) + 1
+                    field["total"] += 1
+                    if abs(distance) <= 6:
+                        field["positional_mass"] += 7 - abs(distance)
+                    field["supporting_observations"].append({
+                        "sentence_id": sentence_id, "block_id": str(center["block_id"]),
+                        "center_occurrence_id": str(center["occurrence_id"]),
+                        "neighbor_occurrence_id": str(neighbor["occurrence_id"]),
+                        "signed_offset": distance,
+                    })
+                    observations += 1
+        candidates = sorted(fields.values(), key=lambda item: (-int(item["total"]), str(item["surface"])))
+        if not include_positional_mass:
+            for item in candidates:
+                item.pop("positional_mass", None)
+        sources = [dict(row) for row in db.execute(
+            f"SELECT source_id,source_path,source_hash,status FROM sources WHERE source_id IN ({','.join('?' for _ in source_ids)}) ORDER BY source_id",
+            sorted(source_ids),
+        )] if source_ids else []
+    database_hash_after = _sha(db_path.read_bytes())
+    if database_hash_before != database_hash_after:
+        raise RuntimeError("relationship projection mutated the flat memory database")
+    projection = {
+        "schema": "local_memory_relationship_projection@1",
+        "center_surface": center_surface,
+        "scope_ids": scope,
+        "sentence_ids": sentence_ids,
+        "offsets": lanes,
+        "complete_candidate_count": len(candidates),
+        "observation_count": observations,
+        "candidates": candidates,
+        "display_top_k": candidates[:max(0, int(top_k))] if top_k is not None else candidates,
+        "sources": sources,
+        "database_hash": database_hash_before,
+        "durable_graph_rows_written": 0,
+    }
+    projection_id = "PROJ2-" + _sha(json.dumps(projection, ensure_ascii=True, sort_keys=True))[:20]
+    receipt = {
+        "schema": "local_memory_relationship_projection_receipt@1",
+        "projection_id": projection_id,
+        "created_at": _now(),
+        "projection": projection,
+    }
+    receipt_root = root / "projection_receipts"
+    receipt_root.mkdir(parents=True, exist_ok=True)
+    receipt_path = receipt_root / f"{projection_id}.json"
+    receipt_path.write_text(json.dumps(receipt, ensure_ascii=True, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    return {"projection": projection, "receipt_path": str(receipt_path)}
 
 def retrieve_v2(
     question: str,
@@ -493,7 +501,7 @@ def retrieve_v2(
     with sqlite3.connect(root / "relational_v2.sqlite3") as db:
         db.row_factory = sqlite3.Row
         evidence: list[dict[str, Any]] = []
-        for row in db.execute("SELECT * FROM objects WHERE object_type IN ('message','block') ORDER BY source_id, line_start, ordinal"):
+        for row in db.execute("SELECT * FROM objects WHERE object_type='sentence' ORDER BY source_id, parent_id, ordinal"):
             surfaces = [value for value, _, _ in _anchors(row["text"])]
             direct = sorted(set(query) & set(surfaces))
             if not direct:
@@ -503,10 +511,7 @@ def retrieve_v2(
                 f"SELECT COUNT(*) FROM occurrences o JOIN anchors a ON a.anchor_id=o.anchor_id WHERE o.object_id=? AND a.surface IN ({placeholders})",
                 [row["object_id"], *direct],
             ).fetchone()[0]
-            relation_support = db.execute(
-                "SELECT COALESCE(SUM(count),0) FROM relations WHERE object_id=?",
-                (row["object_id"],),
-            ).fetchone()[0]
+            relation_support = 0
             citation = "MEMCIT2-" + _sha(row["object_id"])[:12]
             evidence.append({
                 "object_id": row["object_id"],
@@ -524,7 +529,7 @@ def retrieve_v2(
                     "query_coverage": len(direct),
                     "direct_occurrences": int(counts),
                     "relationship_support": int(relation_support),
-                    "reason": "direct anchor match plus measured message-local relations",
+                    "reason": "direct exact-surface occurrence in an admitted sentence",
                 },
             })
     evidence.sort(key=lambda item: (
@@ -555,23 +560,3 @@ def retrieve_v2(
     packet_path = root / f"memory_packet_v2_{_sha(question)[:16]}.json"
     packet_path.write_text(json.dumps(packet, ensure_ascii=True, indent=2) + "\n", encoding="utf-8")
     return {"packet": packet, "packet_path": str(packet_path), "candidate_count": len(evidence)}
-
-
-def _object(source_id: str, object_id: str, parent_id: str, kind: str, ordinal: int,
-            row: dict[str, Any], text: str, role: str | None, line_no: int,
-            byte_start: int, body: str) -> dict[str, Any]:
-    timestamp = row.get("timestamp")
-    return {
-        "object_id": object_id, "source_id": source_id, "parent_id": parent_id,
-        "object_type": kind, "ordinal": ordinal, "role": role,
-        "speaker": role, "timestamp": str(timestamp) if timestamp else None,
-        "line_start": line_no, "line_end": line_no, "char_start": 0,
-        "char_end": len(body), "byte_start": byte_start,
-        "byte_end": byte_start + len(body.encode("utf-8")),
-        "exact_text_hash": _sha(text), "text": text,
-        "metadata_json": json.dumps({
-            "uuid": row.get("uuid"), "parent_uuid": row.get("parentUuid"),
-            "session_id": row.get("sessionId"), "type": row.get("type"),
-            "is_sidechain": row.get("isSidechain"),
-        }, ensure_ascii=True, sort_keys=True),
-    }
