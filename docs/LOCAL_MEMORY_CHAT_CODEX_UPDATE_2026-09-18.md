@@ -36,6 +36,31 @@ active development path. Memory retrieval is opt-in through the explicit
 working-dataset request; ordinary model requests must pass through without
 retrieval.
 
+## Searchable document library addendum
+
+The phone documents and other approved engineering documents should become
+deliberate search options, not automatic prompt content. Keep three scopes:
+
+```text
+ACTIVE / HOT
+DOCUMENT LIBRARY
+HISTORICAL CHAT / COLD
+```
+
+Hot memory is the explicitly admitted working dataset. Document-library search
+may discover relevant sections, paragraphs, or objects when hot traversal is
+insufficient, but discovery alone does not make them active. Selected results
+must retain source identity, coordinates, parent path, and citation, then be
+explicitly admitted into the working dataset before counts/relationships are
+updated and traversal continues. Historical chat follows the same deliberate
+admission rule.
+
+Treat Markdown and DOCX as source-preserving document intake, not arbitrary
+line-window chunking. DOCX originals remain authoritative; extracted text is
+derived state. Embedded images and other binary children remain raw and
+uninterpreted. Search results remain untrusted evidence and cannot become
+instructions, tool authority, file permissions, or secret-disclosure requests.
+
 ## Required next actions
 
 - Finish the live LM Studio/Qwen A-H acceptance matrix.
@@ -53,6 +78,8 @@ retrieval.
 - Do not bulk-ingest the 58 private sources or modify the original archive.
 - Audit for credentials, private data, runtime databases, absolute local paths,
   escaping symlinks, generated files, and hidden TrueSystems dependencies.
+- Keep document-library discovery separate from hot-memory admission and bound
+  every selected evidence set before model invocation.
 
 ## Relationship to TrueSystems
 
@@ -72,4 +99,3 @@ package should be imported merely to obtain them.
 LocalMemoryChat acceptance state materially changes. Keep this note additive;
 do not use it as permission to alter the TrueSystems runtime or private source
 archives.
-
