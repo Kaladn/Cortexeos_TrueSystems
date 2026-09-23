@@ -915,14 +915,14 @@ class XpuAnswerWalker:
         lane_total=local.sum().clamp(min=1);conditional=local/lane_total;background=self.frequencies[candidates]/self.total_frequency.clamp(min=1);lift=torch.where(background>0,conditional/background,torch.zeros_like(background));support=torch.log1p(local)
         all_counts=[]
         for offset in self.OFFSETS:all_counts.append(self._lookup(centers,torch.full((n,),offset,dtype=torch.long,device=self.device),candidates))
-        lanes=torch.stack(all_counts,1);pair_total=lanes.sum(1).clamp(min=1);distribution=lanes/pair_total[:,None];stability=(distribution*distribution).sum(1);positive=lanes[:,6:].sum(1);negative=lanes[:,:6].sum(1);direction=(positive-negative)/pair_total
+        lanes=torch.stack(all_counts,1)
         backside=torch.zeros(n,device=self.device)
         for distance,previous in enumerate(reversed(history[-6:]),start=1):backside += self._lookup(torch.full((n,),previous,dtype=torch.long,device=self.device),torch.full((n,),distance,dtype=torch.long,device=self.device),candidates)
         forward=forward_counts[candidates]
         cloud=cloud_scores[candidates]
         native_rank=torch.arange(1,n+1,dtype=torch.long,device=self.device)
-        order=_lexicographic_order([-(cloud>0).long(),-(forward>0).long(),-backside,-local,-conditional,-lift,-stability,-direction,native_rank,candidates])
-        result={"candidates":candidates[order],"native_count":native[order],"local":local[order],"conditional":conditional[order],"lift":lift[order],"support":support[order],"stability":stability[order],"direction":direction[order],"backside":backside[order],"cloud":cloud[order],"forward":forward[order],"native_rank":native_rank[order]};_assert_xpu(*result.values());return result
+        order=_lexicographic_order([-(cloud>0).long(),-(forward>0).long(),-backside,-local,-conditional,-lift,*[-lanes[:,index] for index in (*range(6,12),*range(0,6))],native_rank,candidates])
+        result={"candidates":candidates[order],"native_count":native[order],"local":local[order],"conditional":conditional[order],"lift":lift[order],"signed_lanes":lanes[order],"support":support[order],"backside":backside[order],"cloud":cloud[order],"forward":forward[order],"native_rank":native_rank[order]};_assert_xpu(*result.values());return result
 
     def walk(self,question:str,evidence_texts:list[str],*,top_k:int,max_new_anchors:int=24)->dict[str,Any]:
         if top_k not in {3,6}:raise ValueError("top_k must be 3 or 6")
@@ -945,7 +945,8 @@ class XpuAnswerWalker:
                 field=self._field(branch["path"][-1],branch["path"],allowed,cloud_scores,forward_counts,top_k)
                 if not field:continue
                 for index in range(field["candidates"].numel()):
-                    candidate=int(field["candidates"][index].item());vector={name:(int(values[index].item()) if values.dtype in {torch.long,torch.int64} else float(values[index].item())) for name,values in field.items() if name!="candidates"}
+                    candidate=int(field["candidates"][index].item());vector={name:(int(values[index].item()) if values.dtype in {torch.long,torch.int64} else float(values[index].item())) for name,values in field.items() if name not in {"candidates","signed_lanes"}}
+                    vector["signed_lane_counts"]=[int(value) for value in field["signed_lanes"][index].cpu().tolist()]
                     branches.append({"path":[*branch["path"],candidate],"new":[*branch["new"],candidate],"steps":[*branch["steps"],{"output_position":output_position,"selected_anchor":self.id_to_surface[candidate],"candidate_vector":vector,"candidate_field":[self.id_to_surface[int(value)] for value in field["candidates"].cpu().tolist()]}]})
                     branch_vectors.append(torch.stack((
                         (field["cloud"][index] > 0).to(torch.float32),
@@ -954,8 +955,7 @@ class XpuAnswerWalker:
                         field["local"][index].to(torch.float32),
                         field["support"][index].to(torch.float32),
                         field["lift"][index].to(torch.float32),
-                        field["stability"][index].to(torch.float32),
-                        field["direction"][index].to(torch.float32),
+                        *[-field["signed_lanes"][index, lane].to(torch.float32) for lane in range(field["signed_lanes"].shape[1])],
                         -field["native_rank"][index].to(torch.float32),
                         -field["candidates"][index].to(torch.float32),
                     )))

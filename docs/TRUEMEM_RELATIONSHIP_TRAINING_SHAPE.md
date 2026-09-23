@@ -69,7 +69,7 @@ question strings
 
 Each candidate retains these fields independently:
 
-`Local, Back, Cloud, Forward, Support, Lift, DistanceStability, Direction`
+`Local, Back, Cloud, Forward, Support, Lift, SignedLanes`
 
 No weighted scalar combines them in the active answer path. Candidate rank one is not forced. Choosing a
 candidate moves the center and recalculates the next field. The optional

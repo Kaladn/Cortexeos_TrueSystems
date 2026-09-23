@@ -30,7 +30,6 @@ class RelationshipGraph:
     ) -> None:
         self.counts: Counter[tuple[str, str, int]] = Counter()
         self.lane_totals: Counter[tuple[str, int]] = Counter()
-        self.pair_totals: Counter[tuple[str, str]] = Counter()
         self.outgoing: dict[str, set[str]] = defaultdict(set)
         for value in relations:
             row = value if isinstance(value, RelationshipCount) else RelationshipCount(
@@ -41,7 +40,6 @@ class RelationshipGraph:
             key = (row.center, row.neighbor, row.offset)
             self.counts[key] += int(row.count)
             self.lane_totals[(row.center, row.offset)] += int(row.count)
-            self.pair_totals[(row.center, row.neighbor)] += int(row.count)
             self.outgoing[row.center].add(row.neighbor)
 
         self.anchor_frequencies = Counter({
@@ -77,41 +75,33 @@ class RelationshipGraph:
 
     def edge(self, center: str, neighbor: str) -> dict[str, Any]:
         lanes = [self.lane(center, neighbor, offset) for offset in SIGNED_LANES]
-        total = sum(int(row["count"]) for row in lanes)
-        distribution = {
-            str(row["signed_distance"]): _round(int(row["count"]) / total if total else 0.0)
-            for row in lanes
-        }
-        concentration = sum(value * value for value in distribution.values())
-        positive = sum(int(row["count"]) for row in lanes if int(row["signed_distance"]) > 0)
-        negative = sum(int(row["count"]) for row in lanes if int(row["signed_distance"]) < 0)
-        direction = (positive - negative) / total if total else 0.0
         return {
             "schema": "truemem_relationship_edge@1",
             "center_anchor": center,
             "neighbor_anchor": neighbor,
-            "total_support": total,
             "lanes": lanes,
-            "distance_distribution": distribution,
-            "distance_stability": _round(concentration),
-            "positive_support": positive,
-            "negative_support": negative,
-            "direction_consistency": _round(direction),
+            "signed_lane_counts": [int(row["count"]) for row in lanes],
             "measurements_collapsed": False,
         }
+
+    def lane_profile(self, center: str, neighbor: str) -> tuple[int, ...]:
+        """Return all signed lane counts as a vector; never collapse them."""
+
+        return tuple(int(self.counts.get((center, neighbor, offset), 0)) for offset in SIGNED_LANES)
+
+    def lane_selection_profile(self, center: str, neighbor: str) -> tuple[int, ...]:
+        """Order the complete cloud with forward lanes first for continuation."""
+
+        return tuple(int(self.counts.get((center, neighbor, offset), 0)) for offset in (*range(1, 7), *range(-6, 0)))
 
     def path_measurements(self, path: list[str]) -> dict[str, Any]:
         edges = [self.edge(left, right) for left, right in zip(path, path[1:])]
         conditional_values: list[float] = []
         lift_values: list[float] = []
-        stability_values: list[float] = []
-        total_support = 0.0
         for edge in edges:
             observed_lanes = [row for row in edge["lanes"] if int(row["count"]) > 0]
             conditional_values.append(max((float(row["conditional_probability"]) for row in observed_lanes), default=0.0))
             lift_values.append(max((float(row["lift"]) for row in observed_lanes), default=0.0))
-            stability_values.append(float(edge["distance_stability"]))
-            total_support += math.log1p(int(edge["total_support"]))
         return {
             "path": list(path),
             "edge_count": len(edges),
@@ -120,9 +110,7 @@ class RelationshipGraph:
             "conditional_geometric_mean": _geometric_mean(conditional_values),
             "lift_bottleneck": _minimum(lift_values),
             "lift_geometric_mean": _geometric_mean(lift_values),
-            "stability_bottleneck": _minimum(stability_values),
-            "stability_geometric_mean": _geometric_mean(stability_values),
-            "total_log_support": _round(total_support),
+            "signed_lane_profiles": [edge["signed_lane_counts"] for edge in edges],
             "measurements_collapsed": False,
         }
 
@@ -142,7 +130,7 @@ class RelationshipGraph:
                 current = path[-1]
                 neighbors = sorted(
                     self.outgoing.get(current, set()),
-                    key=lambda value: (-self.pair_totals[(current, value)], value),
+                    key=lambda value: (tuple(-count for count in self.lane_selection_profile(current, value)), value),
                 )[:12]
                 for neighbor in neighbors:
                     if neighbor in path:
@@ -165,8 +153,7 @@ def _path_order_key(row: dict[str, Any]) -> tuple[Any, ...]:
     return (
         -float(row["conditional_bottleneck"]),
         -float(row["lift_bottleneck"]),
-        -float(row["stability_bottleneck"]),
-        -float(row["total_log_support"]),
+        tuple(tuple(-count for count in profile) for profile in row["signed_lane_profiles"]),
         int(row["edge_count"]),
         tuple(row["path"]),
     )

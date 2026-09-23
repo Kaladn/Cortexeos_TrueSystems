@@ -14,18 +14,20 @@ without collapsing them:
 - directional lift and natural-log lift;
 - natural-log support confidence.
 
-Across all twelve lanes for a pair, it also exposes the signed-distance
-distribution, squared-probability concentration, positive and negative support,
-and direction consistency.
+The complete signed lane vector is retained for every centered observation.
+There is no standing center-neighbor total, pair total, distance distribution,
+or all-lane ranking scalar. Any comparison must retain the twelve signed
+positions as a vector and preserve the center that produced them.
 
-Multi-hop paths retain separate bottleneck and geometric-mean measurements for
-conditional strength, lift, and positional stability, plus total log support.
-Path selection is deterministic and lexicographic. No weighted scalar or guessed
-coefficient combines these fields.
+Multi-hop paths retain the ordered signed lane profiles and separate
+bottleneck/geometric-mean measurements for lane-local conditional strength and
+lift. Path selection is deterministic and lexicographic over preserved lane
+vectors. No weighted scalar, pair aggregate, or guessed coefficient combines
+the context cloud.
 
 Every prediction candidate exposes this vector:
 
-`Local, Back, Cloud, Forward, Support, Lift, DistanceStability, Direction`
+`Local, Back, Cloud, Forward, Support, Lift, SignedLanes`
 
 The current anchor supplies at most six observed `+1` candidates. Backside
 support checks the candidate against the actual expected signed lane for each of

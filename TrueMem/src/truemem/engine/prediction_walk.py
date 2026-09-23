@@ -167,7 +167,10 @@ def deeper_wider_relationship_search(
     for layer in range(1, depth + 1):
         relationships: list[dict[str, Any]] = []
         for center in sorted(frontier):
-            ranked = sorted(adjacency.get(center, set()), key=lambda neighbor: (-graph.pair_totals[(center, neighbor)], neighbor))
+            ranked = sorted(
+                adjacency.get(center, set()),
+                key=lambda neighbor: (tuple(-count for count in graph.lane_selection_profile(center, neighbor)), neighbor),
+            )
             for neighbor in ranked:
                 if neighbor in visited:
                     continue
@@ -278,8 +281,7 @@ def _candidate_field(
             "Forward": {"candidate_count": len(forward), "candidates": forward},
             "Support": local_lane["support_confidence"],
             "Lift": local_lane["lift"],
-            "DistanceStability": local_edge["distance_stability"],
-            "Direction": local_edge["direction_consistency"],
+            "SignedLanes": local_edge["signed_lane_counts"],
         }
         field.append({
             "anchor": anchor,
@@ -304,8 +306,7 @@ def _candidate_order_key(candidate: dict[str, Any]) -> tuple[Any, ...]:
         -int(local["count"]),
         -float(local["conditional_probability"]),
         -float(local["lift"]),
-        -float(vector["DistanceStability"]),
-        -float(vector["Direction"]),
+        tuple(-count for count in _forward_first_lanes(vector["SignedLanes"])),
         int(candidate["rank"]),
         candidate["anchor"],
     )
@@ -326,7 +327,13 @@ def _completed_order_key(branch: dict[str, Any]) -> tuple[Any, ...]:
 def _relationship_order_key(row: dict[str, Any]) -> tuple[Any, ...]:
     edge = row["relationship"]
     best_lane = max(edge["lanes"], key=lambda lane: (lane["count"], -abs(lane["signed_distance"])))
-    return (-int(edge["total_support"]), -float(best_lane["conditional_probability"]), -float(best_lane["lift"]), -float(edge["distance_stability"]), row["from_anchor"], row["anchor"])
+    return (
+        -float(best_lane["conditional_probability"]),
+        -float(best_lane["lift"]),
+        tuple(-count for count in edge["signed_lane_counts"]),
+        row["from_anchor"],
+        row["anchor"],
+    )
 
 
 def _branch_warning_reasons(candidate: dict[str, Any]) -> list[str]:
@@ -338,9 +345,15 @@ def _branch_warning_reasons(candidate: dict[str, Any]) -> list[str]:
         reasons.append("evidence_dead_end_ahead")
     if int(vector["Cloud"]["supported_path_count"]) == 0:
         reasons.append("cloud_divergence_no_query_trail")
-    if float(vector["Direction"]) < -0.5:
-        reasons.append("relationship_contradiction_reverse_dominant")
     return reasons
+
+
+def _forward_first_lanes(lanes: list[int]) -> tuple[int, ...]:
+    """Use the complete signed vector, with forward continuation first."""
+
+    if len(lanes) != 12:
+        return tuple(int(value) for value in lanes)
+    return tuple(int(value) for value in (*lanes[6:], *lanes[:6]))
 
 
 def _relation(row: Relation | tuple[str, str, int, int]) -> Relation:

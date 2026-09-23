@@ -49,8 +49,7 @@ coordinates, support, and receipts.
     "Forward": null,
     "Support": null,
     "Lift": null,
-    "DistanceStability": null,
-    "Direction": null
+    "SignedLanes": []
   },
   "provenance": {},
   "forbidden_outputs": [
