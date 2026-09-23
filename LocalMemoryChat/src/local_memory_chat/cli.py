@@ -15,6 +15,7 @@ from .memory import (
     inspect_binary,
     list_sources,
 )
+from .relational_v2 import ingest_chat_jsonl, ingest_native_chat, retrieve_v2
 
 
 def main() -> None:
@@ -75,6 +76,23 @@ def main() -> None:
     ask_cmd.add_argument("--profile", default="default")
     ask_cmd.add_argument("--limit", type=int, default=5)
     ask_cmd.add_argument("--json", action="store_true", help="Print full JSON result")
+
+    v2_intake_cmd = sub.add_parser("relational-v2-intake", help="Admit one JSONL chat source structurally")
+    v2_intake_cmd.add_argument("path", type=Path)
+    v2_intake_cmd.add_argument("--runtime-root", type=Path, required=True)
+    v2_intake_cmd.add_argument("--label")
+
+    native_cmd = sub.add_parser("native-chat-intake", help="Admit one native historical chat immutably")
+    native_cmd.add_argument("path", type=Path)
+    native_cmd.add_argument("--source-type", choices=["codex", "openai-export", "lm-studio"], required=True)
+    native_cmd.add_argument("--conversation-id", help="Required for a multi-conversation OpenAI export")
+    native_cmd.add_argument("--runtime-root", type=Path, required=True)
+
+    v2_ask_cmd = sub.add_parser("relational-v2-ask", help="Retrieve a bounded relational v2 packet")
+    v2_ask_cmd.add_argument("question")
+    v2_ask_cmd.add_argument("--runtime-root", type=Path, required=True)
+    v2_ask_cmd.add_argument("--limit", type=int, default=6)
+    v2_ask_cmd.add_argument("--max-chars", type=int, default=24000)
 
     args = parser.parse_args()
     if args.command == "init":
@@ -137,6 +155,17 @@ def main() -> None:
             print(json.dumps(result, ensure_ascii=True))
         else:
             print(format_ask_result(result))
+    elif args.command == "relational-v2-intake":
+        print(json.dumps(ingest_chat_jsonl(args.path, runtime_root=args.runtime_root, source_label=args.label), ensure_ascii=True))
+    elif args.command == "native-chat-intake":
+        print(json.dumps(ingest_native_chat(
+            args.path,
+            source_type=args.source_type,
+            conversation_id=args.conversation_id,
+            runtime_root=args.runtime_root,
+        ), ensure_ascii=True))
+    elif args.command == "relational-v2-ask":
+        print(json.dumps(retrieve_v2(args.question, runtime_root=args.runtime_root, limit=args.limit, max_chars=args.max_chars), ensure_ascii=True))
     else:
         parser.error("unknown command")
 
