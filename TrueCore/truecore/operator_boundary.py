@@ -50,10 +50,19 @@ class Rejected(ValueError):
 
 class OperatorBoundary:
     def __init__(self, *, grants, artifacts, worker_grants=(), resources=None,
-                 machine_worker_grants=(), machine_resources=None, jobs=None, max_bytes=4_000_000):
+                 machine_worker_grants=(), machine_resources=None, jobs=None, max_bytes=4_000_000,
+                 caller_identity=None):
         if not set(grants) <= OPERATIONS.keys():
             raise ValueError('UNKNOWN_HOST_GRANT')
+        if caller_identity is not None and (
+            not isinstance(caller_identity, dict) or
+            set(caller_identity) != {'kind', 'uid'} or
+            caller_identity['kind'] != 'local_os_uid' or
+            type(caller_identity['uid']) is not int or caller_identity['uid'] < 0
+        ):
+            raise ValueError('INVALID_HOST_CALLER_IDENTITY')
         self.grants = frozenset(grants)
+        self.caller_identity = dict(caller_identity) if caller_identity is not None else None
         self.artifacts = MappingProxyType({k: MappingProxyType(dict(v)) for k, v in artifacts.items()})
         self.worker_bridge = RegisteredWorkerBridge(worker_grants=worker_grants, resources=resources)
         self.machine_bridge = MachineNavigationBridge(
@@ -80,6 +89,8 @@ class OperatorBoundary:
                 raise Rejected('NOT_IMPLEMENTED_AT_MODEL_BOUNDARY')
             if operation not in self.grants:
                 raise Rejected('PERMISSION_DENIED')
+            if operation == 'machine.invoke' and self.caller_identity is None:
+                raise Rejected('CALLER_IDENTITY_REQUIRED')
             args = request['arguments']
             if not isinstance(args, dict):
                 raise Rejected('INVALID_ARGUMENTS')
@@ -130,6 +141,7 @@ class OperatorBoundary:
                                    'STOP_PARTIAL' if status == 'PARTIAL' else 'STOP_UNRESOLVED'),
                   'verification_scope': 'STRUCTURE_AND_HOST_BOUND_HASHES_NOT_SEMANTIC_TRUTH',
                   'execution_scope': ('EXACT_HOST_ADMITTED_JOB' if isinstance(request, dict) and request.get('operation') == 'job.invoke'
+                                      else 'READ_ONLY_HOST_GRANTED_MACHINE_WORKER' if isinstance(request, dict) and request.get('operation') == 'machine.invoke'
                                       else 'READ_ONLY_ADMITTED_ARTIFACT_NO_CAPTURE_OR_ACTION')}
         packet['receipt_sha256'] = digest(packet)
         return packet
