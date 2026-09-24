@@ -470,8 +470,6 @@ trueframegen/
 scripts/
   research CLIs and bridge commands
 
-tests/
-  unit and integration tests
 ```
 
 ## Current Proven Runs
@@ -517,13 +515,6 @@ Generated media is synthetic and not evidence.
 ```
 
 ## Development Checks
-
-Python tests:
-
-```powershell
-$env:PYTHONPATH='scripts;modules;.'
-python -m unittest discover -s tests -v
-```
 
 Rust build:
 

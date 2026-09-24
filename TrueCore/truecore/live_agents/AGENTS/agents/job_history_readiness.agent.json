@@ -36,11 +36,6 @@
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.bounded_job_workers:history_readiness",
   "source_entrypoint_hash": "sha256:87f370f73f132a6e51d65820d36272fc02c0cc95f2a1223042c65a82712d19f4",
-  "test_command": [
-    "python3",
-    "-B",
-    "/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/run_truecore_receipt_acceptance.py"
-  ],
   "usage": {
     "agent_id": "job_history_readiness",
     "definition": {

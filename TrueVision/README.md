@@ -103,10 +103,10 @@ chunk is flushed, frame records are flushed, and `failure.json` reports
 manifest. This is graceful error handling, not a guarantee against power loss,
 forced termination, or storage failure.
 
-External native tests are under
-`/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/tests/native_capture_contract`.
-Live checks use the external `benchmark_native_state.py`; binary chunk/frame
-accounting is independently checked by `analyze_native_observation.py`.
+Historical diagnostic scripts may inspect native capture records, but proof of
+a requested capture requires the authorized production route and its observed
+chunk, frame, manifest, and receipt. `analyze_native_observation.py` can inspect
+binary chunk/frame accounting without granting capture authority.
 
 `scripts/truevision_visual_identity_intake.py` reads an already captured native
 manifest, frame records, and `.tvcells` chunk. It does not capture, replay,
@@ -192,14 +192,7 @@ python scripts/truevision_preflight.py
 python scripts/truevision_preflight.py --json
 ```
 
-Run repository-native tests:
-
-```bash
-python -m pytest -q tests
-```
-
-User-authored acceptance tests and all verification logs belong outside this
-repository under:
+Operational verification receipts belong outside this repository under:
 
 ```text
 /home/lamercey/Documents/User System Test/repositories/linux TrueSystems/

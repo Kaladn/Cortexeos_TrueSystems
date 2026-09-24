@@ -5,6 +5,13 @@ and for human or model callers. It teaches selection and handoff, not prose
 generation. The model chooses a real operation, supplies its exact inputs, and
 returns the operation's result and citations to the calling model.
 
+The commands below identify component-local entrypoints and diagnostic
+mechanics. They do not authorize a system-level call. Read the repository-root
+and descendant `AGENTS.md` files, trace the actual production caller through
+SecureCore/TrueCore and TrueMachine, and check the returned result and receipt.
+The current control API has direct component routes; their presence does not
+prove that admission occurred.
+
 The operator-model learning boundary is defined in
 `docs/OPERATOR_MODEL_TRAINING_CONTRACT.md`. TrueMem map training and operator
 model training are separate processes. The operator may call, inspect, verify,
@@ -270,7 +277,7 @@ The operator boundary exposes `job.invoke` with only a caller-selected `job_id`.
 The host admits an exact hashed finite plan and its output/resource bindings.
 TrueCore invokes registered workers, preserves unsupported or failed steps,
 and publishes one terminal job receipt for inspection. The worker family covers
-exact source patches, external acceptance, graph review and historical evidence
+exact source patches, an optional admitted script executor, graph review and historical evidence
 readiness/order. It does not author code, infer instruction ownership, or make
 causal claims. Read `docs/TRUECORE_BOUNDED_JOBS_CONTRACT.md` for the scope,
 recovery limits and application-versus-OS protection boundary.

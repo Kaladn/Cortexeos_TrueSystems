@@ -36,12 +36,6 @@
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.repository_graph_workers:locate_security_config_writers",
   "source_entrypoint_hash": "sha256:a5b664d9affdae16b961fa9dbe98dcfc3bbd872666a77963ac19b7919754809c",
-  "test_command": [
-    "python3",
-    "-m",
-    "unittest",
-    "tests.live_agents.test_agent_creator"
-  ],
   "usage": {
     "agent_id": "repo_security_config_writers",
     "definition": {

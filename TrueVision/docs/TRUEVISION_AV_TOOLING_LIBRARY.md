@@ -336,7 +336,6 @@ edge_audio_river
 | --- | --- | --- | --- |
 | TrueVision recorder | `scripts/truevision_resonance_recorder.py` | exists | Python screen/state recorder. |
 | Native capture | `native/truevision_capture_rs` | exists | Rust screen capture and cell-state emitter. |
-| Native clarity test | `scripts/truevision_native_clarity_test.py` | exists | Runs capture and replay clarity tests. |
 | State replay | `scripts/truevision_state_replay.py` | exists | Replays stored TrueVision cell-state data. |
 | Region snip | `scripts/truevision_region_snip.py` | exists | Selects/snaps screen regions for capture prep. |
 | Still capture | `scripts/truevision_still_image_capture.py` | exists | Converts still images into video-shaped TrueVision state. |

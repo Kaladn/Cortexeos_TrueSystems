@@ -1,0 +1,119 @@
+{
+  "schema": "truesystems.instruction_resolution@1",
+  "scope": "Code-traced entrypoints in this checkout only; other requests require read-only code and runtime discovery before any operational plan or invocation.",
+  "root_instruction": "AGENTS.md",
+  "law": "Every TrueSystems operation enters SecureCore for authorization and dispatch. CompuCog supplies operation-specific observation and security findings without becoming a component transit router or execution authority. A callable or receipt does not supply a missing authority edge.",
+  "resolution_order": ["identify requested outcome", "match a code-backed operation", "read root and every listed concern instruction", "check current route facts and runtime admission", "plan only if the authorized production route is proven", "extend the chain before crossing an unexpected concern"],
+  "unmapped_operation": "UNVERIFIED_READ_ONLY_DISCOVERY; STOP_OPERATION_UNTIL_AUTHORITY_PROVEN",
+  "fact_vocabulary": {
+    "code_wired": "The cited caller invokes the cited callee in source code; this does not prove a deployed run.",
+    "admitted": "A current host grant, resource binding, or equivalent admission was observed for this operation.",
+    "securecore_edge": "The entrypoint traverses a SecureCore authorization and dispatch boundary before the component call; a proxy or caller label alone does not prove this edge.",
+    "compucog_observation": "Code-backed status of any observation required by the selected operation. A route-level NOT_ASSESSED value grants no authority and does not imply a universal component transit edge.",
+    "observed_operating": "A real request and requested effect were observed on this exact production route.",
+    "receipts": "The exact route produces a receipt; this alone does not establish the observed effect."
+  },
+  "routes": {
+    "model_host": {
+      "caller": "TrueCore/truecore/model_host.py:ModelHost.accept",
+      "callee": "TrueCore/truecore/operator_boundary.py:OperatorBoundary.handle",
+      "evidence": ["TrueCore/truecore/model_host.py:49", "TrueCore/truecore/operator_boundary.py:67", "TrueCore/truecore/operator_boundary.py:81"],
+      "facts": {"code_wired": true, "admitted": "MACHINE_INVOKE_FS_HASH_ONLY: private local host config bound one registered worker and docs root", "securecore_edge": true, "compucog_observation": "NATIVE_FS_HASH_OBSERVED; OTHER_OPERATIONS_NOT_ASSESSED", "observed_operating": "MACHINE_INVOKE_FS_HASH_ONLY: 2026-09-24 real committed docs file, local OS UID 1000", "bypass_present": false, "receipts": "truecore.operator_result@1 receipt_sha256 plus truecore.worker_result@1 and truemachine.navigation@1", "authorized_under_root": "MACHINE_INVOKE_FS_HASH_LOCAL_UID_1000_ONLY; OTHER_OPERATIONS_UNVERIFIED"},
+      "gap": "Only one local read-only fs.hash call has observed caller binding, host grant, native result, and completion; no other model-host operation or remotely authenticated principal is qualified by this run."
+    },
+    "repository_map_registered_runner": {
+      "caller": "TrueCore/truecore/live_agents/AGENTS/runner/truecore_agent_runner.py:run_agent",
+      "callee": "TrueCore/truecore/agents/repository_map.py:run_request -> truemachine.repository_map",
+      "evidence": ["TrueCore/truecore/live_agents/AGENTS/runner/truecore_agent_runner.py:176", "TrueCore/truecore/live_agents/AGENTS/runner/truecore_agent_runner.py:234", "TrueCore/truecore/agents/repository_map.py:56", "TrueCore/truecore/agents/repository_map.py:81", "TrueCore/truecore/live_agents/AGENTS/catalog/agent_catalog.csv:5"],
+      "facts": {"code_wired": true, "admitted": "CATALOG_REGISTERED; MODEL_HOST_GRANT_UNVERIFIED", "securecore_edge": "REGISTERED_RUNNER_ONLY", "compucog_observation": "NOT_ASSESSED", "observed_operating": "UNVERIFIED", "bypass_present": "MODEL_HOST_ROUTE_UNVERIFIED", "receipts": "truecore.worker_result@1 plus native mapper receipt", "authorized_under_root": "UNVERIFIED"},
+      "gap": "The registered runner reaches TrueMachine, but a current host-admitted model-facing route to this worker has not been proven."
+    },
+    "control_api": {
+      "caller": "control-api/src/truesystems_api/server.py:Handler.do_POST",
+      "callee": "control-api/src/truesystems_api/server.py:OPERATIONS",
+      "evidence": ["control-api/src/truesystems_api/server.py:13", "control-api/src/truesystems_api/server.py:42", "control-api/src/truesystems_api/server.py:49"],
+      "facts": {"code_wired": true, "admitted": false, "securecore_edge": false, "compucog_observation": "NOT_ASSESSED", "observed_operating": "UNVERIFIED", "bypass_present": true, "receipts": "UNVERIFIED", "authorized_under_root": false},
+      "gap": "The HTTP handler calls component runtime functions directly."
+    },
+    "truemem_cli": {
+      "caller": "TrueMem/src/truemem/cli.py:main",
+      "callee": "TrueMem/src/truemem/cli.py:docufilm_intake",
+      "evidence": ["TrueMem/src/truemem/cli.py:59", "TrueMem/src/truemem/cli.py:454"],
+      "facts": {"code_wired": true, "admitted": false, "securecore_edge": false, "compucog_observation": "NOT_ASSESSED", "observed_operating": "UNVERIFIED", "bypass_present": true, "receipts": "component output; authority receipt UNVERIFIED", "authorized_under_root": false},
+      "gap": "Direct TrueMem CLI intake has no proven preceding SecureCore authorization and dispatch."
+    },
+    "truemachine_cli": {
+      "caller": "TrueMachine/src/truemachine/cli.py:main",
+      "callee": "TrueMachine/src/truemachine/engine.py:TemporalEngine.run",
+      "evidence": ["TrueMachine/src/truemachine/cli.py:55", "TrueMachine/src/truemachine/cli.py:84"],
+      "facts": {"code_wired": true, "admitted": false, "securecore_edge": false, "compucog_observation": "NOT_ASSESSED", "observed_operating": "UNVERIFIED", "bypass_present": true, "receipts": "FusionStore verification; authority receipt UNVERIFIED", "authorized_under_root": false},
+      "gap": "TrueMachine component execution has no proven preceding SecureCore authorization and dispatch."
+    },
+    "truecomputer_cli": {
+      "caller": "TrueComputer/src/main.rs:run",
+      "callee": "TrueComputer/src/main.rs:execute_args",
+      "evidence": ["TrueComputer/src/main.rs:79", "TrueComputer/src/main.rs:86", "TrueComputer/src/main.rs:106", "TrueComputer/src/main.rs:111"],
+      "facts": {"code_wired": true, "admitted": false, "securecore_edge": false, "compucog_observation": "NOT_ASSESSED", "observed_operating": "UNVERIFIED", "bypass_present": true, "receipts": "native action receipt; authority receipt UNVERIFIED", "authorized_under_root": false},
+      "gap": "Native inspect, validate, and execute commands have no proven SecureCore ingress; the operation-specific CompuCog observation requirement has not been classified."
+    },
+    "trueaudio_cli": {
+      "caller": "TrueAudio/scripts/trueaudio_log_machine_replayable.py:main",
+      "callee": "TrueAudio/trueaudio_runtime/replayable.py:log_machine_replayable_audio_state",
+      "evidence": ["TrueAudio/scripts/trueaudio_log_machine_replayable.py:10", "TrueAudio/scripts/trueaudio_log_machine_replayable.py:13", "TrueAudio/scripts/trueaudio_log_machine_replayable.py:22"],
+      "facts": {"code_wired": true, "admitted": false, "securecore_edge": false, "compucog_observation": "NOT_ASSESSED", "observed_operating": "UNVERIFIED", "bypass_present": true, "receipts": "component receipt; authority receipt UNVERIFIED", "authorized_under_root": false},
+      "gap": "Direct capture script has no proven SecureCore ingress."
+    },
+    "truespeech_cli": {
+      "caller": "TrueSpeech/scripts/truespeech_detect_segments.py:main",
+      "callee": "TrueSpeech/truespeech_runtime/speech.py:detect_speech_segments_from_replayable_state",
+      "evidence": ["TrueSpeech/scripts/truespeech_detect_segments.py:10", "TrueSpeech/scripts/truespeech_detect_segments.py:13", "TrueSpeech/scripts/truespeech_detect_segments.py:22"],
+      "facts": {"code_wired": true, "admitted": false, "securecore_edge": false, "compucog_observation": "NOT_ASSESSED", "observed_operating": "UNVERIFIED", "bypass_present": true, "receipts": "component receipt; authority receipt UNVERIFIED", "authorized_under_root": false},
+      "gap": "Direct speech script has no proven SecureCore ingress."
+    },
+    "truevision_studio": {
+      "caller": "TrueVision/scripts/truevision_studio_server.py:StudioHandler.do_POST",
+      "callee": "TrueVision/scripts/truevision_studio_server.py:StudioHandler._handle_av_tool_call",
+      "evidence": ["TrueVision/scripts/truevision_studio_server.py:518", "TrueVision/scripts/truevision_studio_server.py:542", "TrueVision/scripts/truevision_studio_server.py:661"],
+      "facts": {"code_wired": true, "admitted": false, "securecore_edge": false, "compucog_observation": "NOT_ASSESSED", "observed_operating": "UNVERIFIED", "bypass_present": true, "receipts": "UNVERIFIED", "authorized_under_root": false},
+      "gap": "Studio request handling does not show the required authority traversal."
+    },
+    "truevision_render_cli": {
+      "caller": "TrueVision/scripts/truevision_render_template.py:main",
+      "callee": "TrueVision/truevision_runtime/rendering/template_renderer.py:render_template",
+      "evidence": ["TrueVision/scripts/truevision_render_template.py:10", "TrueVision/scripts/truevision_render_template.py:21", "TrueVision/scripts/truevision_render_template.py:23"],
+      "facts": {"code_wired": true, "admitted": false, "securecore_edge": false, "compucog_observation": "NOT_ASSESSED", "observed_operating": "UNVERIFIED", "bypass_present": true, "receipts": "component manifest; authority receipt UNVERIFIED", "authorized_under_root": false},
+      "gap": "Direct renderer CLI has no proven SecureCore ingress."
+    }
+  },
+  "operations": [
+    {"id": "help.list", "route": "model_host", "instructions": ["AGENTS.md", "TrueCore/AGENTS.md", "TrueCore/truecore/AGENTS.md"], "callee": "TrueCore/truecore/operator_boundary.py:OperatorBoundary.handle", "evidence": ["TrueCore/truecore/operator_boundary.py:86"]},
+    {"id": "sensory.inspect", "route": "model_host", "instructions": ["AGENTS.md", "TrueCore/AGENTS.md", "TrueCore/truecore/AGENTS.md", "TrueMachine/AGENTS.md", "TrueMachine/src/truemachine/AGENTS.md"], "callee": "TrueCore/truecore/operator_boundary.py:OperatorBoundary._inspect", "evidence": ["TrueCore/truecore/operator_boundary.py:97", "TrueCore/truecore/operator_boundary.py:156"], "note": "Reads a host-bound Fusion Pack; artifact consumption does not prove a live CompuCog observation requirement or observed effect."},
+    {"id": "help.query", "route": "model_host", "instructions": ["AGENTS.md", "TrueCore/AGENTS.md", "TrueCore/truecore/AGENTS.md", "control-api/AGENTS.md"], "callee": "TrueCore/truecore/operator_workers.py:dispatch_read_worker", "evidence": ["TrueCore/truecore/operator_boundary.py:119", "TrueCore/truecore/operator_workers.py:19"]},
+    {"id": "source.classify", "route": "model_host", "instructions": ["AGENTS.md", "TrueCore/AGENTS.md", "TrueCore/truecore/AGENTS.md", "TrueVisionIntake/AGENTS.md"], "callee": "truevision_intake.source_typing:classify_source", "evidence": ["TrueCore/truecore/operator_workers.py:36"]},
+    {"id": "media.describe", "route": "model_host", "instructions": ["AGENTS.md", "TrueCore/AGENTS.md", "TrueCore/truecore/AGENTS.md", "TrueVision/AGENTS.md", "TrueVision/truevision_runtime/AGENTS.md"], "callee": "truevision_runtime.state_language:build_state_language", "evidence": ["TrueCore/truecore/operator_workers.py:38", "TrueCore/truecore/operator_workers.py:48"]},
+    {"id": "worker.invoke", "route": "model_host", "instructions": ["AGENTS.md", "TrueCore/AGENTS.md", "TrueCore/truecore/AGENTS.md", "TrueCore/truecore/live_agents/AGENTS.md", "TrueCore/truecore/live_agents/AGENTS/AGENTS.md", "TrueMachine/AGENTS.md"], "callee": "TrueCore/truecore/registered_worker_bridge.py:RegisteredWorkerBridge.invoke", "evidence": ["TrueCore/truecore/operator_boundary.py:101", "TrueCore/truecore/registered_worker_bridge.py:143"], "note": "Repository-map worker family only; resource kind naming does not grant other CompuCog capabilities."},
+    {"id": "machine.invoke", "route": "model_host", "instructions": ["AGENTS.md", "TrueCore/AGENTS.md", "TrueCore/truecore/AGENTS.md", "TrueMachine/AGENTS.md", "TrueMachine/src/truemachine/AGENTS.md", "TrueCore/truecore/live_agents/AGENTS.md", "TrueCore/truecore/agents/AGENTS.md"], "callee": "TrueCore/truecore/machine_navigation_bridge.py:MachineNavigationBridge.invoke", "evidence": ["TrueCore/truecore/model_host.py:ModelHost.accept", "TrueCore/truecore/operator_boundary.py:OperatorBoundary.handle", "TrueCore/truecore/machine_navigation_bridge.py:MachineNavigationBridge.invoke", "TrueCore/truecore/agents/machine_navigation_workers.py:filesystem_hash", "TrueMachine/src/truemachine/navigation.py:run"], "observation_requirement": "NOT_REQUIRED_BY_CURRENT_CONTRACT: fs.hash is itself the bounded CompuCog observation; no separate observation was specified", "note": "One local fs.hash operation was observed through a private host config and OS UID binding on 2026-09-24. Other machine workers and callers remain unverified; no general CompuCog routing authority follows."},
+    {"id": "job.invoke", "route": "model_host", "instructions": ["AGENTS.md", "TrueCore/AGENTS.md", "TrueCore/truecore/AGENTS.md", "TrueCore/truecore/agents/AGENTS.md"], "callee": "TrueCore/truecore/bounded_jobs.py:JobBoundary.invoke", "evidence": ["TrueCore/truecore/operator_boundary.py:114", "TrueCore/truecore/bounded_jobs.py:272"], "note": "job_acceptance_run is an optional script executor, not operational proof of another job."},
+    {"id": "truemachine.repository_map_registered", "route": "repository_map_registered_runner", "instructions": ["AGENTS.md", "TrueCore/AGENTS.md", "TrueCore/truecore/AGENTS.md", "TrueCore/truecore/live_agents/AGENTS.md", "TrueCore/truecore/live_agents/AGENTS/AGENTS.md", "TrueCore/truecore/live_agents/AGENTS/agents/AGENTS.md", "TrueMachine/AGENTS.md", "TrueMachine/src/truemachine/AGENTS.md"], "callee": "TrueCore/truecore/agents/repository_map.py:run_request", "evidence": ["TrueCore/truecore/live_agents/AGENTS/runner/truecore_agent_runner.py:234", "TrueCore/truecore/agents/repository_map.py:81"], "note": "Registered runner is real; host admission for model invocation remains unverified."},
+    {"id": "/api/v1/truemachine/pulse", "route": "control_api", "instructions": ["AGENTS.md", "control-api/AGENTS.md", "TrueMachine/AGENTS.md", "TrueMachine/src/truemachine/AGENTS.md"], "callee": "control-api/src/truesystems_api/runtime.py:truemachine_pulse", "evidence": ["control-api/src/truesystems_api/server.py:14", "control-api/src/truesystems_api/runtime.py:57"], "note": "TrueMachine is the component callee, but SecureCore authorization and dispatch are bypassed."},
+    {"id": "/api/v1/truemem/query", "route": "control_api", "instructions": ["AGENTS.md", "control-api/AGENTS.md", "TrueMem/AGENTS.md", "TrueMem/src/truemem/engine/AGENTS.md"], "callee": "control-api/src/truesystems_api/runtime.py:truemem_query", "evidence": ["control-api/src/truesystems_api/server.py:15", "control-api/src/truesystems_api/runtime.py:72"]},
+    {"id": "/api/v1/truemem/deeper-wider", "route": "control_api", "instructions": ["AGENTS.md", "control-api/AGENTS.md", "TrueMem/AGENTS.md", "TrueMem/src/truemem/engine/AGENTS.md"], "callee": "control-api/src/truesystems_api/runtime.py:truemem_deeper_wider", "evidence": ["control-api/src/truesystems_api/server.py:16", "control-api/src/truesystems_api/runtime.py:90"]},
+    {"id": "/api/v1/help/query", "route": "control_api", "instructions": ["AGENTS.md", "control-api/AGENTS.md"], "callee": "control-api/src/truesystems_api/help.py:answer_help", "evidence": ["control-api/src/truesystems_api/server.py:21"]},
+    {"id": "truemem.docufilm-intake", "route": "truemem_cli", "instructions": ["AGENTS.md", "TrueMem/AGENTS.md", "TrueMem/src/truemem/engine/AGENTS.md", "TrueVisionIntake/AGENTS.md"], "callee": "TrueMem/src/truemem/cli.py:docufilm_intake", "evidence": ["TrueMem/src/truemem/cli.py:454"]},
+    {"id": "truemachine.run", "route": "truemachine_cli", "instructions": ["AGENTS.md", "TrueMachine/AGENTS.md", "TrueMachine/src/truemachine/AGENTS.md"], "callee": "TrueMachine/src/truemachine/engine.py:TemporalEngine.run", "evidence": ["TrueMachine/src/truemachine/cli.py:84"]},
+    {"id": "truecomputer.execute", "route": "truecomputer_cli", "instructions": ["AGENTS.md", "TrueComputer/AGENTS.md", "TrueComputer/src/AGENTS.md"], "callee": "TrueComputer/src/main.rs:execute_args", "evidence": ["TrueComputer/src/main.rs:106", "TrueComputer/src/main.rs:111"]},
+    {"id": "trueaudio.log_machine_replayable", "route": "trueaudio_cli", "instructions": ["AGENTS.md", "TrueAudio/AGENTS.md", "TrueAudio/scripts/AGENTS.md", "TrueAudio/trueaudio_runtime/AGENTS.md"], "callee": "TrueAudio/trueaudio_runtime/replayable.py:log_machine_replayable_audio_state", "evidence": ["TrueAudio/scripts/trueaudio_log_machine_replayable.py:22"]},
+    {"id": "truespeech.detect_segments", "route": "truespeech_cli", "instructions": ["AGENTS.md", "TrueSpeech/AGENTS.md", "TrueAudio/AGENTS.md"], "callee": "TrueSpeech/truespeech_runtime/speech.py:detect_speech_segments_from_replayable_state", "evidence": ["TrueSpeech/scripts/truespeech_detect_segments.py:22"]},
+    {"id": "truevision.studio.av_tool_call", "route": "truevision_studio", "instructions": ["AGENTS.md", "TrueVision/AGENTS.md", "TrueVision/scripts/AGENTS.md", "TrueVision/truevision_runtime/AGENTS.md", "TrueVision/truevision_runtime/av_tools/AGENTS.md"], "callee": "TrueVision/scripts/truevision_studio_server.py:StudioHandler._handle_av_tool_call", "evidence": ["TrueVision/scripts/truevision_studio_server.py:542", "TrueVision/scripts/truevision_studio_server.py:661"]},
+    {"id": "truevision.render_template", "route": "truevision_render_cli", "instructions": ["AGENTS.md", "TrueVision/AGENTS.md", "TrueVision/scripts/AGENTS.md", "TrueVision/truevision_runtime/AGENTS.md", "TrueVision/truevision_runtime/rendering/AGENTS.md"], "callee": "TrueVision/truevision_runtime/rendering/template_renderer.py:render_template", "evidence": ["TrueVision/scripts/truevision_render_template.py:23"]}
+  ],
+  "classification": {
+    "authorized_and_wired": "machine.invoke/fs.hash only: one local OS UID 1000 request against a real committed docs file traversed SecureCore host grant and registered CompuCog worker, returned the native SHA-256 and valid receipts on 2026-09-24; all other operations require their own admission and observed effect.",
+    "authority_unverified": ["model_host", "repository_map_registered_runner"],
+    "alternate_ingress_bypass": ["control_api", "truemem_cli", "truemachine_cli", "truecomputer_cli", "trueaudio_cli", "truespeech_cli", "truevision_studio", "truevision_render_cli"],
+    "legacy_conversation_surfaces": "Control API memory/chat routes and Clearbox Chat-Chain are code-wired conversation surfaces pending separate removal. Ordinary conversation does not acquire operational authority. Any privileged operation emerging from conversation still requires its own SecureCore route; the authority classification of memory/ask remains unverified.",
+    "staged": "Consult scoped component instructions and exact code; no staged capability is promoted by this map.",
+    "unavailable": "A locally callable capability with a missing required authority edge is unavailable as a system operation.",
+    "unverified": "Any request or route absent from this evidence-backed map must be traced from code and current runtime state before it can be admitted."
+  }
+}

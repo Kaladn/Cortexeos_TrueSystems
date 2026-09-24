@@ -35,7 +35,6 @@ REQUIRED_AGENT_FIELDS = {
     "mutation_class",
     "dry_run_supported",
     "log_stream",
-    "test_command",
     "risk_tier",
     "prompt_only_allowed",
     "required_params",

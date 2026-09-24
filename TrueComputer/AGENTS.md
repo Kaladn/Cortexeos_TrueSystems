@@ -1,8 +1,12 @@
 # TrueComputer agent and human operating contract
 
-Read the repository-root `AGENTS.md`, `OPERATORS_MANUAL.md`, this file, and
-`docs/CONTRACT.md` before changing or invoking TrueComputer. The narrowest rule
-wins when rules overlap.
+**DO NOT CREATE A NEW WORKFLOW UNTIL THE EXISTING ENTRYPOINT HAS BEEN TRACED.**
+
+Read the repository-root `AGENTS.md`, this file, the relevant TrueComputer
+section of `OPERATORS_MANUAL.md`, and `docs/CONTRACT.md` before changing or
+invoking TrueComputer. This file may narrow root rules but cannot waive them.
+The CLI sequence below describes component behavior; system-level execution
+still requires the admission path mandated by the root file.
 
 ## 1. Purpose and ownership
 
@@ -137,9 +141,11 @@ and execute; the receipt binds the exact executed bytes by SHA-256.
   reason to reimplement a maintained compositor protocol.
 - Do not edit `/usr/share/omarchy/`.
 - User-facing Omarchy/Hyprland configuration changes require the Omarchy skill,
-  a config reload, `hyprctl configerrors`, and external acceptance.
+  a config reload, `hyprctl configerrors`, and observation through the real
+  authorized desktop path with an external receipt.
 - Do not enable `ydotoold`, alter `/dev/uinput` permissions, or install input
-  software without explicit authorization and a separate system test.
+  software without explicit authorization and observed operation through the
+  authorized path.
 
 ## 8. Receipts and verification
 
@@ -202,8 +208,8 @@ verification succeeded.
 - Keep this component dependency-light and comments short.
 - Reject unknown JSON fields.
 - Add a strict typed action rather than a stringly generic dispatcher.
-- Every new action needs positive and negative unit tests, a redaction rule, a
-  precondition, a postcondition, and an external acceptance case.
+- Every new action needs a redaction rule, a precondition, a postcondition,
+  and operational verification through the authorized production path.
 - Never add `run_command`, `exec`, `script`, arbitrary Hyprland dispatcher, or
   arbitrary `wtype` option fields.
 - Keep screen observation, semantic reasoning, action execution, and receipts as
@@ -212,11 +218,12 @@ verification succeeded.
 - Do not add silent retries, hidden background services, or action batching.
 - Do not write runtime requests, receipts, build targets, logs, screenshots, or
   generated fixtures into this repository.
-- Use `CARGO_TARGET_DIR` outside the repository for all builds and tests.
-- Run `cargo fmt --check`, `cargo clippy -- -D warnings`, unit tests, the external
-  acceptance suite, `git diff --check`, and `git status --short`.
-- Save external tests and UTC timestamped logs under
-  `/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/`.
+- Use `CARGO_TARGET_DIR` outside the repository for all builds.
+- Run `cargo fmt --check`, `cargo clippy -- -D warnings`,
+  `git diff --check`, and `git status --short`; verify the real action through
+  the authorized production path before claiming operational success.
+- Save operation receipts and UTC timestamped logs under
+  `/home/lamercey/Documents/User System Test/repositories/TrueSystems-Alignment/`.
 
 ## 11. Change review checklist
 
@@ -234,7 +241,8 @@ Before accepting a change, verify:
 - failures do not auto-retry;
 - no system service, global config, device permission, or Omarchy source changed;
 - documentation matches executable behavior;
-- external acceptance proves both useful action validation and refusal paths.
+- the real authorized action path demonstrates the requested effect and its
+  refusal behavior with external receipts.
 
 ## 12. Stop conditions
 
@@ -250,7 +258,8 @@ Stop and return a truthful status when:
 - verification cannot distinguish success from partial action;
 - a secret would need to pass through the executor;
 - the human takes over input;
-- external acceptance fails in a way that undermines the capability.
+- operational verification through the authorized path fails or remains
+  unavailable in a way that undermines the capability.
 
 Use `NOT_IMPLEMENTED`, `AUTHORIZATION_REQUIRED`, `PRECONDITION_FAILED`,
 `OPERATION_FAILED`, or `AMBIGUOUS_PARTIAL_ACTION` as appropriate. Precision is

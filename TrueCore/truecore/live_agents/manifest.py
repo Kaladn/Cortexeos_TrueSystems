@@ -30,7 +30,6 @@ REQUIRED_FIELDS = {
     "mutation_class",
     "dry_run_supported",
     "log_stream",
-    "test_command",
     "risk_tier",
     "prompt_only_allowed",
     "required_params",
@@ -81,7 +80,6 @@ def validate_agent_manifest(manifest: dict[str, Any]) -> dict[str, Any]:
     _require_bool(manifest, "prompt_only_allowed")
     _require_string_list(manifest, "allowed_reads")
     _require_string_list(manifest, "allowed_writes")
-    _require_string_list(manifest, "test_command")
     _require_string_list(manifest, "required_params")
     if "command" in manifest:
         _require_string_list(manifest, "command")

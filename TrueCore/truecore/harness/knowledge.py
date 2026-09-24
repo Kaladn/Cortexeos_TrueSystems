@@ -194,8 +194,8 @@ class TrueCoreHarness:
     def _notes_for_intent(self, intent: HarnessIntent) -> list[str]:
         if intent.target_kind in {"logger", "worker", "agent"}:
             return [
-                f"{intent.target_kind} creation is draft-only until tests pass.",
-                "Activation requires policy approval and a validated manifest/contract.",
+                f"{intent.target_kind} creation is draft-only until the authorized production route has an observed effect.",
+                "Activation requires policy approval, a validated manifest/contract, and native operational receipts.",
             ]
         if intent.target_kind == "containment":
             return [

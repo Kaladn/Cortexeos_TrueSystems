@@ -104,7 +104,8 @@ continuation compatibility. It still uses one SQLite database and does not yet
 implement per-day SQLite rotation, 00:01 sealing, immutable historical-day
 enforcement, automatic DocuFilm/TrueMem conversion, or the binary-to-SQLite
 address verifier. Those items remain required work and must not be claimed as
-implemented until their executable path and acceptance tests exist.
+implemented until their executable path, authority admission, real observed
+effect, and external operation receipts exist.
 
 The dataset-local symbol law above specifies the unimplemented chat-conversion
 shape. It does not describe the active general `docufilm-intake` storage format,

@@ -93,7 +93,7 @@ def run_request(request_path: str, out_dir: str) -> dict[str, Any]:
                     reason_code="REPOSITORY_REQUIRED",
                 )
             repo = Path(repo_text).expanduser().resolve()
-            if not (repo / ".git").is_dir():
+            if not (repo / ".git").exists():
                 return build_result(
                     worker_id=WORKER_ID,
                     operation=operation,

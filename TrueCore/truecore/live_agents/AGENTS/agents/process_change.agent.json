@@ -21,10 +21,6 @@
   "mutation_class": "local_agent_state",
   "dry_run_supported": true,
   "log_stream": "agent_decision",
-  "test_command": [
-    "python",
-    "/home/lamercey/Documents/User System Test/repositories/linux TrueSystems/tests/test_process_change_agent.py"
-  ],
   "risk_tier": 1,
   "prompt_only_allowed": false,
   "worker_result_schema": "truecore.worker_result@1",

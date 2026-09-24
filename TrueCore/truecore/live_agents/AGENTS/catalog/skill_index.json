@@ -1,5 +1,5 @@
 {
-  "index_sha256": "sha256:479ca5fc8bd8d520f49aab102a66599275c1b57c1bdeb55c787ffb1ccb8ec8ed",
+  "index_sha256": "sha256:a13cb91d6ded05227b54ded932dfa62667d910a0588c553d395b2e4dc18b6615",
   "schema": "truecore.skill_index@1",
   "worker_result_schema": "truecore.worker_result@1",
   "workers": [
@@ -13,7 +13,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/device.inventory.agent.json",
-      "manifest_sha256": "sha256:53fbe8ede390fe2791013e64bdcf2d4d5e2e48f1eb140dd1bfd12816bbd7358d",
+      "manifest_sha256": "sha256:2d46dca7bc1c4c6428d22315a56c73ec47eac0db19fd56125eea2482dd1234ed",
       "mutation_class": "contract_declared:read",
       "name": "device_inventory",
       "required_params": [
@@ -38,7 +38,7 @@
       "entrypoint": "AGENTS/docs-to-pdf/docs_folder_to_pdf.py",
       "entrypoint_hash": "sha256:72de09c8ef09b72132b798c7b6a618b24587dc51e9a5d86bfd77d66dca03252c",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/docs_folder_to_pdf.agent.json",
-      "manifest_sha256": "sha256:857a11a4c86ffd0e8d65e398f4b4c5f5c834f28ff372c1741e6f4f6b6be3faff",
+      "manifest_sha256": "sha256:cd603e144369e242e000f5f588cb0475241134f9be48639c856a9d284e2faf90",
       "mutation_class": "generated_artifact_file_write",
       "name": "Docs Folder To PDF",
       "required_params": [
@@ -63,7 +63,7 @@
       "entrypoint": "truecore/agents/evidence_workspace.py",
       "entrypoint_hash": "sha256:3dd4f4bc9562f8652dd875a7a79e83d9e7540645cc5cc5cc056bfddd7b13c0f8",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/evidence_workspace_agent.agent.json",
-      "manifest_sha256": "sha256:aa5db91c9a9cb789efc19549ef6ff0ac16481437f4c98e8d5a195643d40fb092",
+      "manifest_sha256": "sha256:4677d9ec475314a8e3853ab1d8be349340d3bb5047331e48da2aab6ed0ffa252",
       "mutation_class": "read_only",
       "name": "Evidence Workspace Agent",
       "required_params": [
@@ -87,7 +87,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.disk_usage.agent.json",
-      "manifest_sha256": "sha256:a3375a7b6dd8292ff1b4bb6005dd6e5c609b1d487d80e67fbabf053a1a3e6e3d",
+      "manifest_sha256": "sha256:77d7ab887990d66a594e579dbbecd83daf6dabc62d49ad269583542752632e06",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_disk_usage",
       "required_params": [
@@ -110,7 +110,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.duplicate_scan.agent.json",
-      "manifest_sha256": "sha256:2c8818650094601eb6152fa359093d1b783a5b1de8007e6a5ca3556dd5759d23",
+      "manifest_sha256": "sha256:4928a47bc4fefaa3d5f5e04e0c90806e0fc1f5a897dc40ac1d9f7e31e61fe198",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_duplicate_scan",
       "required_params": [
@@ -133,7 +133,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.find.agent.json",
-      "manifest_sha256": "sha256:eab1f33ac96c1476ff8a4394fa8d068c8b42fd9eb6e872207417b64742639e45",
+      "manifest_sha256": "sha256:2535951111eba597ccea956723fe7a851dd86d2b0b4fca9cafe4b28e582707c3",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_find",
       "required_params": [
@@ -156,7 +156,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.hash.agent.json",
-      "manifest_sha256": "sha256:bda4fa073d1a4a4288672687d25d97b895f9b3b78dd846dea97d401ffc2edfe7",
+      "manifest_sha256": "sha256:01c69fdfa20e93e9f324ab03a60693497a6d9aa4687559358fa52c5c59554bcd",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_hash",
       "required_params": [
@@ -179,7 +179,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.list.agent.json",
-      "manifest_sha256": "sha256:4edaf007df47bdd8c9bc006233c80d4a279b5c70d526ffa816ff42f5c030aa1a",
+      "manifest_sha256": "sha256:06c40a486ef650e2f4d2b49ae87eaf889958ef6fbea5cd709b7061115696f376",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_list",
       "required_params": [
@@ -202,7 +202,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/fs.read_metadata.agent.json",
-      "manifest_sha256": "sha256:3e761eee7ec9cdf56475501f43075d78e19aa5974934117c440b2b004ff342f1",
+      "manifest_sha256": "sha256:5d40e10ba3e951dd24c61dc504ed076b721d99bc9d95c78ee07100231541de2c",
       "mutation_class": "contract_declared:read",
       "name": "filesystem_read_metadata",
       "required_params": [
@@ -225,7 +225,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/integrity.verify.agent.json",
-      "manifest_sha256": "sha256:ec976298015608bea7de703755f5ed22b74fbf606645ecee6d4057e5b29e5126",
+      "manifest_sha256": "sha256:38d3b80751162e12990d8c9378d86101924ac4b29a39cdf4362a220514ea5118",
       "mutation_class": "contract_declared:read",
       "name": "repository_integrity_verify",
       "required_params": [
@@ -251,7 +251,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/job_acceptance_run.agent.json",
-      "manifest_sha256": "sha256:4c782178ff1c94920937d47141348a2ffc7f6fcb1ab8e2801b9fa3af8b6fd7ce",
+      "manifest_sha256": "sha256:d22e1a22581d2be1cd4021c2c3e4cca9fc0e9b90a9d8d2d7cb7a879e4d5cecde",
       "mutation_class": "contract_declared:write",
       "name": "acceptance_run",
       "required_params": [
@@ -277,7 +277,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/job_graph_review.agent.json",
-      "manifest_sha256": "sha256:467845447ec4d95f857e28570bfb7c0915e2d5e4380c15de7d52368fc8bb67b8",
+      "manifest_sha256": "sha256:18ef225e868d930f3849a6e9c7f89f354de13d77e9e1b6f00b043690ff48e8d4",
       "mutation_class": "contract_declared:write",
       "name": "graph_review",
       "required_params": [
@@ -303,7 +303,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/job_history_order.agent.json",
-      "manifest_sha256": "sha256:0f9cb5ce3d60a080138c101fa62964c01c7b09af80e7f3f537785884740b5b2b",
+      "manifest_sha256": "sha256:8ca23c054304ee9e41f55eff27b8dbd6009ede4074a3064ae6713c83f984dafd",
       "mutation_class": "contract_declared:write",
       "name": "history_order",
       "required_params": [
@@ -327,7 +327,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/job_history_readiness.agent.json",
-      "manifest_sha256": "sha256:4d8d2f7248392cf23d936cf0755579e367235de1d3ab8b3a0f35dfa56118a58d",
+      "manifest_sha256": "sha256:c0ed4e1a67bf80559f2250f4ae0bbcf8846d6c983f2d2c907f4f36e1c51a5742",
       "mutation_class": "contract_declared:read",
       "name": "history_readiness",
       "required_params": [
@@ -354,7 +354,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/job_patch_files.agent.json",
-      "manifest_sha256": "sha256:769a1cd5bb4f4b856d81ac6b47e44b010bb8ee11e071a2790291e11e56726ddd",
+      "manifest_sha256": "sha256:1c48a0875c55da233c976b73e12f1a9f67c02433c21129d881a814c7547b20f8",
       "mutation_class": "contract_declared:write",
       "name": "patch_files",
       "required_params": [
@@ -377,7 +377,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/log.query.agent.json",
-      "manifest_sha256": "sha256:8ee1ee55a595c4ac68ab183455cefcc5a3b5f2ef8c6df2a5db37ef4d088b668e",
+      "manifest_sha256": "sha256:f14b03f6bb42bdd6a85756ef3ca22f41e0cf501027f777163674f22a43036db8",
       "mutation_class": "contract_declared:read",
       "name": "log_query",
       "required_params": [
@@ -400,7 +400,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/mount.inspect.agent.json",
-      "manifest_sha256": "sha256:38bef859ee5627f90c54093b66e82befa3cb23567b85a7ee95a9f6b0a43fcb12",
+      "manifest_sha256": "sha256:19c29a21667ab556cefd6aa8b0a72b13ad3101cd9c5034cb4280e2764aa550c1",
       "mutation_class": "contract_declared:read",
       "name": "mount_inspect",
       "required_params": [
@@ -423,7 +423,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/network.status.agent.json",
-      "manifest_sha256": "sha256:5d464668a306f1cfa05fbd16368bb94b6befdcc678505cf6e5780cd323a0a42d",
+      "manifest_sha256": "sha256:18cffa24b1587b4c98f4023b3e5a18280081781419c241adf348feb34708abc1",
       "mutation_class": "contract_declared:read",
       "name": "network_status",
       "required_params": [
@@ -446,7 +446,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/package.inventory.agent.json",
-      "manifest_sha256": "sha256:6c241c78c95b9312cb57bb8cd70d35cac2ee2347ff2e355d241f515d98b47cdf",
+      "manifest_sha256": "sha256:149aff1fcee766567037c7d6d44394ec3ba71d4364b670c162aaf1951d872582",
       "mutation_class": "contract_declared:read",
       "name": "package_inventory",
       "required_params": [
@@ -469,7 +469,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/process.list.agent.json",
-      "manifest_sha256": "sha256:0f814c971d36e77a9a0887e63659f869dc5f3b85c099eada1a33bc386f0f8cc8",
+      "manifest_sha256": "sha256:d0a299bc446b0f04ab087dbf51a6a356c6b71e7610f15150773e239325eb7736",
       "mutation_class": "contract_declared:read",
       "name": "process_list",
       "required_params": [
@@ -496,7 +496,7 @@
       "entrypoint": "../agents/process_change.py",
       "entrypoint_hash": "sha256:c4ed35f589cf6775f79258c533c2d7a7c1ca6c8ec609830d6249d423aa930dbd",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/process_change.agent.json",
-      "manifest_sha256": "sha256:2f986f73ada458fbbc34106e5fa5e82be34a5cfea216e057f17032a3624470e2",
+      "manifest_sha256": "sha256:cc675afa51c9a7e66129131683d3049f4b7dce1cc01f3441146c7b39cc116531",
       "mutation_class": "local_agent_state",
       "name": "Process Change Agent",
       "required_params": [
@@ -520,7 +520,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo.status.agent.json",
-      "manifest_sha256": "sha256:a42d4565254d1a2a30a45ed13de237b7d1a5e0882314f2cbf33ac05a4162715e",
+      "manifest_sha256": "sha256:20a2d882b7d0d94df71dec4745f4b541c88ffd9b121e516c9db6b549b8bcb8e7",
       "mutation_class": "contract_declared:read|subprocess",
       "name": "repository_status",
       "required_params": [
@@ -544,7 +544,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_agent_registration.agent.json",
-      "manifest_sha256": "sha256:cd17c3e1151bfaa8842db49afbf557df3337caf667fdfa153e61060b43912feb",
+      "manifest_sha256": "sha256:f5f0e867ac507c62da19dd56e631251467a7337e9100790883697478e1fa99f4",
       "mutation_class": "contract_declared:read",
       "name": "locate_agent_registration_surfaces",
       "required_params": [
@@ -568,7 +568,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_canonical_evidence_writers.agent.json",
-      "manifest_sha256": "sha256:c59ff0cd790173dc693a5b079577105296f585d024e876f3319bc7fc63904484",
+      "manifest_sha256": "sha256:a9b44acb7bbbfd35dd7498e4a9abf7e7f199d889a49085c7e9dd9a020245107e",
       "mutation_class": "contract_declared:read",
       "name": "locate_canonical_evidence_writers",
       "required_params": [
@@ -592,7 +592,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_code_without_documentation.agent.json",
-      "manifest_sha256": "sha256:e6e8de906ee0b2cbee0002c7da10c8c9cc1bb2d59018d3644839b933065b836c",
+      "manifest_sha256": "sha256:39141e322ac239eb31d09533c46cf8abb2cfc0a4e030f09d756e2346986d6199",
       "mutation_class": "contract_declared:read",
       "name": "locate_code_without_documentation",
       "required_params": [
@@ -616,7 +616,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_detached_subgraphs.agent.json",
-      "manifest_sha256": "sha256:7567154fbd9af8eb80e99f825b7fc3ff22c82d525ec9dc00986137ce3a0e3d05",
+      "manifest_sha256": "sha256:77fcd02902b7ab2b9ddbd64d457d31519f557dee2d9585b35973398aabbcde0b",
       "mutation_class": "contract_declared:read",
       "name": "locate_detached_subgraphs",
       "required_params": [
@@ -640,7 +640,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_direct_truemem_references.agent.json",
-      "manifest_sha256": "sha256:0087184063afc56ef4ef852a0cefe9bdd9551dd9ca61a992ab2aafad1fa8f880",
+      "manifest_sha256": "sha256:eb8420dfcb1aafe1408a83b154df15a0d6374d5902eb4c7d0cbcf4881ffc7b06",
       "mutation_class": "contract_declared:read",
       "name": "locate_direct_truemem_references",
       "required_params": [
@@ -664,7 +664,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_documentation_without_code.agent.json",
-      "manifest_sha256": "sha256:b00607c0ed32926c14c853988c5abe4623d2e951233d0dceb2cf4166cc4fbea3",
+      "manifest_sha256": "sha256:632a7b478d739e44856f9869bc9a28fb42dca7a6abe83b2aff0414c66f2791d1",
       "mutation_class": "contract_declared:read",
       "name": "locate_documentation_claims_without_code",
       "required_params": [
@@ -688,7 +688,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_duplicate_implementations.agent.json",
-      "manifest_sha256": "sha256:8e4bd5f45216dc4c5090c2371e20b0af244ac92c1e9d7788c9b27ba7411e8eb7",
+      "manifest_sha256": "sha256:8c0a469b8b02298c22e3b1f6ca30848984232352ebfaabc5a42a9d5cdd0cd5e0",
       "mutation_class": "contract_declared:read",
       "name": "locate_duplicate_implementations",
       "required_params": [
@@ -712,7 +712,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_external_entrypoints.agent.json",
-      "manifest_sha256": "sha256:418dec9a7f7256c2d445044a0b3bac4e40bd92fe2c2bf570fe0824c396121858",
+      "manifest_sha256": "sha256:2c0087b34a59b679b0bfba985214c830ecd1768168890037d65f491a0be5b9a9",
       "mutation_class": "contract_declared:read",
       "name": "locate_external_entrypoints",
       "required_params": [
@@ -736,7 +736,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_filesystem_writers.agent.json",
-      "manifest_sha256": "sha256:96fa02bec5e04940ee38a11e0a7506009bbacfebb7a7f1fdd0e0863ee48286b7",
+      "manifest_sha256": "sha256:90f4f186a6698c28f76a4eb1f81380d0c78b7c069077e4872fdd249b20b70250",
       "mutation_class": "contract_declared:read",
       "name": "locate_filesystem_writers",
       "required_params": [
@@ -760,7 +760,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_no_incoming_dependencies.agent.json",
-      "manifest_sha256": "sha256:3010c63d81da0c01d98a0b186549a50171b3f0795f20c882034982a84f4d5a98",
+      "manifest_sha256": "sha256:d3e9bebbed4e34f6ff3ea503b7a60b1d5c89731a2f56dbdc45a97ea0ee8ffe79",
       "mutation_class": "contract_declared:read",
       "name": "locate_no_incoming_dependencies",
       "required_params": [
@@ -784,7 +784,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_process_execution.agent.json",
-      "manifest_sha256": "sha256:cca871fdca65eb4e2239f8342ffc48dccae48625d965d6a6e0ff81ded2fe61c4",
+      "manifest_sha256": "sha256:ae3bb4698e1a715a3c6a55162f9946c0adfa6cdf2a021f4712819a4bb6514d96",
       "mutation_class": "contract_declared:read",
       "name": "locate_process_execution",
       "required_params": [
@@ -808,7 +808,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_security_config_writers.agent.json",
-      "manifest_sha256": "sha256:2bf99b467974d848132c3a9816fd06004d5191c07d993dafa3d0b4dc8c54a6ae",
+      "manifest_sha256": "sha256:00f060b6637ebdd95f870c5d3f3d817740a89eebb43625963479f46ba3eee4b6",
       "mutation_class": "contract_declared:read",
       "name": "locate_security_config_writers",
       "required_params": [
@@ -832,7 +832,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_truecore_bypass.agent.json",
-      "manifest_sha256": "sha256:33d4199eb4bac0620eb7bb9d309444318d0a4414bc58b8d4adff89682cc11d55",
+      "manifest_sha256": "sha256:f0a43b6cc4c129a61bc28834c47033c3429f40b9114c0ac1daf2c9dab1b45e5c",
       "mutation_class": "contract_declared:read",
       "name": "locate_truecore_bypass_candidates",
       "required_params": [
@@ -856,7 +856,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_unresolved_privileged_reachability.agent.json",
-      "manifest_sha256": "sha256:a93ecc92d40c0e0f0e1bdc541dee7af9aff0cf7140f8c74064557b829dc79685",
+      "manifest_sha256": "sha256:eb276a8807b8f0788f9254ff6101dd9c710c5285afd36fab6f8fc8809d20c9ca",
       "mutation_class": "contract_declared:read",
       "name": "locate_unresolved_privileged_reachability",
       "required_params": [
@@ -880,7 +880,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/repo_untested_privileged_sinks.agent.json",
-      "manifest_sha256": "sha256:bca0dae23d6e7a340dafce6fe8f36d9db0d0896cea3f5a7b894c028ead163c0c",
+      "manifest_sha256": "sha256:659e192a6996483b010b0cd19e19f3733528a2d25dca3a86efe5411e10a9feb6",
       "mutation_class": "contract_declared:read",
       "name": "locate_untested_privileged_sinks",
       "required_params": [
@@ -903,7 +903,7 @@
       "entrypoint": "truecore.live_agents.generated_runtime",
       "entrypoint_hash": "sha256:1d2a86e4010b1229ba38895c0247ba26c795f02efd65330037186b8b50c9a41a",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/service.status.agent.json",
-      "manifest_sha256": "sha256:905e74fa1846f3a09409a862b276548b37b471ffef85a414157a2e28af1352ba",
+      "manifest_sha256": "sha256:cab56684b28b8df671ba87cf8ece4639a8aa89478f369f1927558ad76359baad",
       "mutation_class": "contract_declared:read|subprocess",
       "name": "service_status",
       "required_params": [
@@ -928,7 +928,7 @@
       "entrypoint": "AGENTS/temporal-causality/temporal_causality_log_checker.py",
       "entrypoint_hash": "sha256:e76ef7cb1a90028537e82e232e4eb12bb2211571b3a40158acde738779547459",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/temporal_causality_log_checker.agent.json",
-      "manifest_sha256": "sha256:fb4bdf74c72347ce54d9ce256200b144c734c3ae03800267243b9906fbe487a9",
+      "manifest_sha256": "sha256:354d05003c99726b78d07e66e2816673dda695b2e19db9ed4d7cf8c0c702a946",
       "mutation_class": "read_only",
       "name": "Temporal Causality Log Checker",
       "required_params": [
@@ -953,9 +953,9 @@
       "approval_phrase": "",
       "callable": true,
       "entrypoint": "../agents/repository_map.py",
-      "entrypoint_hash": "sha256:f99e459e12e6743ea04affabbe874893a7d2946b9e9ea9e125d5b315471c37d1",
+      "entrypoint_hash": "sha256:b27733567cd2bc4e838c083b511ba1e18cf565c9483f0375b2d2e3411ad29164",
       "manifest_path": "/home/lamercey/TrueSystems-Alignment/TrueCore/truecore/live_agents/AGENTS/agents/truemachine_repository_map.agent.json",
-      "manifest_sha256": "sha256:2d5563f51482644ed2a1e26988699dbb37c952b628f4cbe19e20cb7833c040e3",
+      "manifest_sha256": "sha256:d31b8f01877101f91231efa36dce684e813533676f15681ff222d72464d26bbb",
       "mutation_class": "derived_artifact_only",
       "name": "TrueMachine Repository Map Worker",
       "required_params": [

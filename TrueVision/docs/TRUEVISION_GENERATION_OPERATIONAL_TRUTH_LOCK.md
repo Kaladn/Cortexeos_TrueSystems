@@ -4,6 +4,15 @@
 - Authority: code, tests, receipts, and this document outrank older planning docs when they conflict.
 - Scope: TrueVision Generation only.
 
+This document describes component-local media behavior. A local renderer or
+AV tool being callable does not prove a system-level SecureCore/TrueCore and
+TrueMachine admission path. Follow the repository-root and TrueVision
+`AGENTS.md` files for current operating policy, and inspect executing code for
+the exact path. The AV tool named `video_render_preview` currently prepares a
+manifest, while `video_execute_full_render` returns `execution_gated` in
+`truevision_runtime/av_tools/av_tool_runner.py`; neither branch proves a
+rendered video.
+
 ## Core Law
 
 ```text

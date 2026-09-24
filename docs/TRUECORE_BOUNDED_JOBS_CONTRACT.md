@@ -29,9 +29,11 @@ The registered family is generated from
   unsupported target modes and budget overruns are refused. Multi-file changes
   are not an atomic filesystem transaction; partial changes preserve pre-state
   and stop for inspection.
-- `job_acceptance_run`: execute one hash-bound external Python acceptance script
-  with pinned source inputs, a timeout and bounded combined output. The script
-  is trusted host code; this is not a sandbox for arbitrary hostile tests.
+- `job_acceptance_run`: execute one hash-bound external Python script with
+  pinned source inputs, a timeout and bounded combined output. The script is
+  trusted host code; this is not a sandbox. Its receipt proves only what the
+  script executed. It is not proof that a different user operation traversed
+  its authorized production path or produced the requested effect.
 - `job_history_readiness`: report missing historical evidence prerequisites.
   Readiness is not analysis or causal authority.
 - `job_history_order`: delegate admitted TrueMem block projection to TrueMem;

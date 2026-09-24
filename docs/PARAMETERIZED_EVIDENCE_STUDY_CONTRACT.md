@@ -203,7 +203,7 @@ whitespace. Array order remains meaningful.
 15. Inspect raw sibling/state-machine relationships.
 16. Audit each material claim by class and evidence reference.
 17. Produce exact-labeled charts and an ordinary-language answer.
-18. Run external acceptance tests.
+18. Verify through the authorized production route against real runtime state and retain external receipts.
 
 ## Validation rules
 

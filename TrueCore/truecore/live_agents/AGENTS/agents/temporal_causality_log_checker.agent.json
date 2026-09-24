@@ -19,12 +19,6 @@
   "mutation_class": "read_only",
   "dry_run_supported": true,
   "log_stream": "agent_decision",
-  "test_command": [
-    "python",
-    "-m",
-    "unittest",
-    "truecore.live_agents.AGENTS.tests.test_truecore_agent_runner"
-  ],
   "risk_tier": 1,
   "prompt_only_allowed": false,
   "worker_result_schema": "truecore.worker_result@1",

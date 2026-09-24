@@ -35,12 +35,6 @@
   "runtime_language": "python",
   "source_entrypoint": "truecore.agents.machine_navigation_workers:filesystem_find",
   "source_entrypoint_hash": "sha256:0a5a8c23ed33f06a7780164f24989fdc2c0b07afdcdce6f085098de05dcd0404",
-  "test_command": [
-    "python3",
-    "-m",
-    "unittest",
-    "tests.live_agents.test_agent_creator"
-  ],
   "usage": {
     "agent_id": "fs.find",
     "definition": {

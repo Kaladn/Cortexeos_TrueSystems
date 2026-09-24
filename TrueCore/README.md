@@ -71,7 +71,6 @@ not memory and do not create authority.
 
 ## Repo layout
 - `truecore/` runtime organism
-- `tests/` runtime and support tests
 - `security_local/` legacy prototype retained for lineage only
 
 ## Quick start
@@ -79,7 +78,6 @@ not memory and do not create authority.
 python -m pip install -r truecore/requirements.txt
 cp truecore/.env.example truecore/.env
 python truecore/cli/seed_admin.py
-python -m unittest discover -s tests -t . -v
 python -c "import truecore.app; print('truecore app import ok')"
 ```
 
@@ -87,7 +85,6 @@ python -c "import truecore.app; print('truecore app import ok')"
 - `python truecore\app.py` starts the localhost API/control backend on `127.0.0.1:5057`
 - `frontdoor\` is API proxy infrastructure only; UI/chat runtime is not installed.
 - `python truecore\cli\seed_admin.py` seeds the admin account
-- `python -m unittest discover -s tests -t . -v` runs the current support suite
 
 The Flask backend is API-only. Legacy Flask templates/static UI files are not active runtime surfaces.
 

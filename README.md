@@ -78,10 +78,10 @@ application and not an authority-free collection of scripts.
   generation, and state profiles.
 - **TrueAudio / TrueSpeech** own deterministic audio state and bounded speech
   detection/alignment.
-- **TrueMachine / CompuCog** own temporal machine and activity observations;
-  they do not grant authority.
-- **TrueComputer / TrueIO** own bounded host actions and postcondition checks;
-  they are not arbitrary shell access.
+- **CompuCog** (legacy `TrueMachine` paths) owns temporal machine, activity,
+  and its machine I/O observations; these observations do not grant authority.
+- **TrueComputer** owns bounded host actions and postcondition checks; its
+  component CLI is not arbitrary shell access or a system-level grant.
 - **LocalMemoryChat** owns cited local-memory packets and daily chat history;
   it is not general truth authority.
 - The **operator model** decomposes questions, requests capabilities, reasons

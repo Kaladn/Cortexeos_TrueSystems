@@ -388,7 +388,8 @@ binding, resource-to-worker assignment, grant, or host budget. All results use
 ## Morning build list: bounded local housekeeping
 
 These IDs are proposed catalog names only. They are not live until code,
-schemas, grants, approval behavior, receipts, and external acceptance tests exist.
+schemas, grants, approval behavior, and an observed authorized operation with
+external receipts exist.
 
 ### Reversible/scoped writes
 

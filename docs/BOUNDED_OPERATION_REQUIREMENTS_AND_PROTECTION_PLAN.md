@@ -130,9 +130,12 @@ service.
 - Event spam and repeated equivalent receipts must not become architectural
   authority.
 
-## Required external acceptance
+## Required operational verification
 
-The implementation is incomplete until external tests prove:
+The implementation remains unverified until real requests through the
+authorized production path demonstrate the following behavior and preserve
+external receipts. Diagnostic scripts may inspect a branch but cannot prove
+another production operation:
 
 1. missing required argument;
 2. misnamed and unknown arguments;
@@ -154,4 +157,3 @@ before schemas, worker identities, safe-mode events, manifests, and the final
 seal are frozen. Current `TrueCog` and `CompuCog` wording is provisional lineage
 and owner-facing terminology. Rename only after a complete witnessed impact map
 and explicit owner approval.
-

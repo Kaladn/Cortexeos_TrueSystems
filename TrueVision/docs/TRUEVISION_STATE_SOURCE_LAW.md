@@ -66,11 +66,8 @@ The executable law lives in:
 truevision_runtime/state_source_law.py
 ```
 
-Focused tests:
-
-```powershell
-python -m unittest discover -s tests -p test_state_source_law.py -v
-```
+The selected production caller and observed state/receipt determine whether
+this law is actually enforced for an operation.
 
 ## Chain
 

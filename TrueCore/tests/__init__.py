@@ -1,1 +1,0 @@
-# TrueCore test suite
